@@ -1,0 +1,13 @@
+./src/gen/*
+./libs/AndroidSliderPreference/gen/*
+./libs/AndroidSliderPreference/bin/classes/*
+./src/bin/classes/*
+.classpath
+.project
+.settings
+./src/.settings
+./src/.classpath
+./src/.project
+./libs/AndroidSliderPreference/.settings
+./libs/AndroidSliderPreference/.project
+./libs/AndroidSliderPreference/.classpath
