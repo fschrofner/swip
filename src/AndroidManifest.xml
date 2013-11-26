@@ -19,6 +19,7 @@
     <!-- <uses-permission android:name="android.permission.DISABLE_KEYGUARD" /> -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -125,6 +126,9 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+        
+        <meta-data android:name="com.google.android.gms.version"
+           android:value="13" />
     </application>
 
 </manifest>
