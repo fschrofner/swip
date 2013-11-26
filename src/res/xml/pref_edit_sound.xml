@@ -1,0 +1,34 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ListPreference
+        android:defaultValue="unchanged"
+        android:entries="@array/pref_ringer_mode_titles"
+        android:entryValues="@array/pref_ringer_mode_values"
+        android:key="ringer_mode"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_ringer_mode" />
+
+    <net.jayschwa.android.preference.SliderPreference
+        maximum_value="7"
+        android:defaultValue="@string/slider_default_ringtone"
+        android:dialogMessage="@string/slider_message_ringtone"
+        android:key="ringtone_volume"
+        android:summary="@array/slider_summaries_ringtone"
+        android:title="@string/slider_title_ringtone" />
+    <net.jayschwa.android.preference.SliderPreference
+        maximum_value="15"
+        android:defaultValue="@string/slider_default_media"
+        android:dialogMessage="@string/slider_message_media"
+        android:key="media_volume"
+        android:summary="@array/slider_summaries_media"
+        android:title="@string/slider_title_media" />
+    <net.jayschwa.android.preference.SliderPreference
+        maximum_value="7"
+        android:defaultValue="@string/slider_default_alarm"
+        android:dialogMessage="@string/slider_message_alarm"
+        android:key="alarm_volume"
+        android:summary="@array/slider_summaries_alarm"
+        android:title="@string/slider_title_alarm" />
+
+</PreferenceScreen>
