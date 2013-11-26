@@ -13,3 +13,9 @@ src/project.properties
 libs/AndroidSliderPreference/.settings
 libs/AndroidSliderPreference/.project
 libs/AndroidSliderPreference/.classpath
+libs/GooglePlayServices/.settings
+libs/GooglePlayServices/.project
+libs/GooglePlayServices/.classpath
+libs/GooglePlayServices/bin/*
+libs/GooglePlayServices/gen/*
+libs/GooglePlayServices/project.properties
