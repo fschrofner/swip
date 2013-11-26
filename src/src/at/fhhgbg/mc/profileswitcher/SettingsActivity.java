@@ -1,26 +1,34 @@
 package at.fhhgbg.mc.profileswitcher;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
+import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.NotificationCompat;
 
 import java.util.List;
+
+import com.stericson.RootTools.RootTools;
 
 /**
  * 
@@ -48,6 +56,12 @@ public class SettingsActivity extends PreferenceActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setupActionBar();
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		if(pref.getBoolean("root", false) && !RootTools.isAccessGiven()){
+			Editor editor = pref.edit();
+			editor.putBoolean("root", false);
+			editor.commit();
+		}		
 	}
 
 	/**
@@ -227,6 +241,28 @@ public class SettingsActivity extends PreferenceActivity implements
 		} else {
 			NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			notificationManager.cancel(123);
+		}
+		
+		if(_pref.getBoolean("root", false)){
+			if(!RootTools.isAccessGiven()){
+				AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+				dialog.setTitle("Root access not granted");
+				dialog.setMessage("Please check if your device is rooted and you have a superuser app installed!");
+				dialog.setNeutralButton("Dismiss", new DialogInterface.OnClickListener(){
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();					
+					}
+					
+				});
+				dialog.show();
+				Editor editor = _pref.edit();
+				editor.putBoolean("root", false);
+				editor.commit();
+				CheckBoxPreference checkBox = (CheckBoxPreference) super.findPreference("root");
+				checkBox.setChecked(false);
+			}
 		}
 	}
 }

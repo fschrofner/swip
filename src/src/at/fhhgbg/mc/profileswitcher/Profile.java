@@ -30,6 +30,17 @@ public class Profile {
 	private state wifi = state.unchanged;
 	private state mobileData = state.unchanged;
 	private state gps = state.unchanged;
+	private state airplane_mode = state.unchanged;
+	
+	
+	public state getAirplane_mode() {
+		return airplane_mode;
+	}
+
+	public void setAirplane_mode(state airplane_mode) {
+		this.airplane_mode = airplane_mode;
+	}
+
 	private int screenBrightness = -1;
 	private state screenBrightnessAutoMode = state.unchanged;
 	private int screenTimeOut = -1;

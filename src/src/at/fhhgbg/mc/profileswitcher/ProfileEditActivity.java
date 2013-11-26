@@ -14,6 +14,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,8 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+
+import com.stericson.RootTools.RootTools;
 
 /**
  * Activity used to edit the different settings of a profile.
@@ -162,6 +165,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("mobile_data"));
 		bindPreferenceSummaryToValue(findPreference("wifi"));
 		bindPreferenceSummaryToValue(findPreference("bluetooth"));
+		bindPreferenceSummaryToValue(findPreference("airplane_mode"));
 		bindPreferenceSummaryToValue(findPreference("display_auto_mode"));
 		bindPreferenceSummaryToValue(findPreference("display_time_out"));
 
@@ -172,6 +176,21 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		if (pref.getString("ringer_mode", "unchanged").equals("vibrate")
 				|| pref.getString("ringer_mode", "unchanged").equals("silent")) {
 			findPreference("ringtone_volume").setEnabled(false);
+		}
+		
+		//checks if the root access is disabled inside the settings and disables all root settings in this case
+		PreferenceScreen screen = getPreferenceScreen();
+		
+		if(!pref.getBoolean("root", false)){
+			Preference airplane_mode = findPreference("airplane_mode");
+			screen.removePreference(airplane_mode);
+		}
+		//if root is enabled, it checks if the app really has root permissions and disables all root settings otherwise
+		else if(pref.getBoolean("root", false)){
+			if(!RootTools.isAccessGiven()){
+				Preference airplane_mode = findPreference("airplane_mode");
+				screen.removePreference(airplane_mode);
+			}
 		}
 
 	}
