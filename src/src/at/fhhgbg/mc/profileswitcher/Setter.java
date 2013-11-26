@@ -1,9 +1,17 @@
 package at.fhhgbg.mc.profileswitcher;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.concurrent.TimeoutException;
 
+import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.exceptions.RootDeniedException;
+import com.stericson.RootTools.execution.Command;
+import com.stericson.RootTools.execution.CommandCapture;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -114,6 +122,46 @@ public class Setter {
 			Log.i("Setter", "GPS not changed.");
 		}
 
+	}
+	
+	public void setAirplaneMode(Context _context, boolean _enable){
+		CommandCapture command;
+		try{
+			if(_enable && !isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
+				command = new CommandCapture(0, "settings put global airplane_mode_on 1","am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true");
+				RootTools.getShell(true).add(command);
+
+			}
+			if(!_enable && isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
+				command = new CommandCapture(0, "settings put global airplane_mode_on 0", "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state false");
+				RootTools.getShell(true).add(command);
+			}		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RootDeniedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * Checks if airplane mode is on at the moment.
+	 * There are two different checks, because the setting moved to a different location in the newer apis.
+	 * @param context
+	 * @return
+	 */
+	@SuppressLint("NewApi")
+	public static boolean isAirplaneModeOn(Context context) {
+	    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+	        return Settings.System.getInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;          
+	    } else {
+	        return Settings.Global.getInt(context.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, 0) != 0;
+	    }       
 	}
 
 	/**

@@ -325,7 +325,7 @@ public class MainActivity extends Activity implements OnItemClickListener,
 	/**
 	 * Used to delete profiles after a longpress.
 	 * 
-	 * @author Florian Schrofner & Dominik Költringer
+	 * @author Florian Schrofner & Dominik Koeltringer
 	 * 
 	 */
 	private class LongPressMenuListener implements OnClickListener {

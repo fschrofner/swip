@@ -148,12 +148,29 @@
         <item>Disabled</item>
         <item>Unchanged</item>
     </string-array>
+    
     <string-array name="pref_bluetooth_values">
         <item>enabled</item>
         <item>disabled</item>
         <item>unchanged</item>
     </string-array>
 
+    <!-- Airplane Mode -->
+    <string name="pref_title_airplane_mode">Airplane Mode</string>
+    
+    <string-array name="pref_airplane_mode_titles">
+        <item>Enabled</item>
+        <item>Disabled</item>
+        <item>Unchanged</item>
+    </string-array>
+    
+    <string-array name="pref_airplane_mode_values">
+        <item>enabled</item>
+        <item>disabled</item>
+        <item>unchanged</item>
+    </string-array>
+    
+        
     <!-- Settings for Display -->
     <string name="pref_header_display">Display</string>
 
