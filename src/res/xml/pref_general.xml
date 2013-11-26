@@ -1,0 +1,18 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="notification"
+        android:summary="@string/pref_description_notification"
+        android:title="@string/pref_title_notification" />
+
+    <Preference
+        android:key="about"
+        android:title="@string/title_activity_about" >
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="at.fhhgbg.mc.profileswitcher.AboutActivity"
+            android:targetPackage="at.fhhgbg.mc.profileswitcher" />
+    </Preference>
+
+</PreferenceScreen>
