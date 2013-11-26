@@ -8,6 +8,8 @@ src/bin/*
 src/.settings
 src/.classpath
 src/.project
+src/.proguard-project.txt
+src/project.properties
 libs/AndroidSliderPreference/.settings
 libs/AndroidSliderPreference/.project
 libs/AndroidSliderPreference/.classpath
