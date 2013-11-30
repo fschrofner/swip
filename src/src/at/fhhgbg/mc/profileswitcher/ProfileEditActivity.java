@@ -169,13 +169,31 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("display_auto_mode"));
 		bindPreferenceSummaryToValue(findPreference("display_time_out"));
 
+		
+		//disables the option to set the exact display brightness, when auto-brightness is enabled
 		if (pref.getString("display_auto_mode", "unchanged").equals("enabled")) {
 			findPreference("display_brightness").setEnabled(false);
 		}
 
+		//disables the option to set the ringtone volume, when either vibrate or silent ring mode is selected
 		if (pref.getString("ringer_mode", "unchanged").equals("vibrate")
 				|| pref.getString("ringer_mode", "unchanged").equals("silent")) {
 			findPreference("ringtone_volume").setEnabled(false);
+		}
+		
+		//disables all other connectivity settings, when airplane mode is enabled
+		if(pref.getString("airplane_mode", "unchanged").equals("enabled")){
+			findPreference("gps").setEnabled(false);
+			findPreference("mobile_data").setEnabled(false);
+			findPreference("wifi").setEnabled(false);
+			findPreference("bluetooth").setEnabled(false);
+		}
+		
+		if (!pref.getBoolean("root", false)){
+			findPreference("gps").setEnabled(true);
+			findPreference("mobile_data").setEnabled(true);
+			findPreference("wifi").setEnabled(true);
+			findPreference("bluetooth").setEnabled(true);
 		}
 		
 		//checks if the root access is disabled inside the settings and disables all root settings in this case
@@ -188,7 +206,14 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		//if root is enabled, it checks if the app really has root permissions and disables all root settings otherwise
 		else if(pref.getBoolean("root", false)){
 			if(!RootTools.isAccessGiven()){
+				
+				//if no root access is given anymore, airplane mode gets set to unchanged and all other settings that may be block get enabled again.
 				Preference airplane_mode = findPreference("airplane_mode");
+				pref.edit().putString("airplane_mode", "unchanged").commit();
+				findPreference("gps").setEnabled(true);
+				findPreference("mobile_data").setEnabled(true);
+				findPreference("wifi").setEnabled(true);
+				findPreference("bluetooth").setEnabled(true);
 				screen.removePreference(airplane_mode);
 			}
 		}
@@ -265,6 +290,14 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			profile.setBluetooth(Profile.state.disabled);
 		} else {
 			profile.setBluetooth(Profile.state.unchanged);
+		}
+		
+		if(pref.getString("airplane_mode", "unchanged").equals("enabled")){
+			profile.setAirplane_mode(Profile.state.enabled);
+		} else if (pref.getString("airplane_mode", "unchanged").equals("disabled")){
+			profile.setAirplane_mode(Profile.state.disabled);
+		} else {
+			profile.setAirplane_mode(Profile.state.unchanged);
 		}
 
 		if (pref.getString("display_auto_mode", "unchanged").equals("enabled")) {
@@ -418,6 +451,22 @@ public class ProfileEditActivity extends PreferenceActivity implements
 						.equals("normal") || _pref.getString("ringer_mode",
 						"unchanged").equals("unchanged"))) {
 			findPreference("ringtone_volume").setEnabled(true);
+		}
+		
+		if (key.equals("airplane_mode")
+				&& (_pref.getString("airplane_mode", "unchanged")
+						.equals("enabled"))){
+			findPreference("gps").setEnabled(false);
+			findPreference("mobile_data").setEnabled(false);
+			findPreference("wifi").setEnabled(false);
+			findPreference("bluetooth").setEnabled(false);
+		} else if (key.equals("airplane_mode")
+				&& (_pref.getString("airplane_mode", "unchanged")
+						.equals("disabled") || _pref.getString("airplane_mode", "unchanged").equals("unchanged"))){
+			findPreference("gps").setEnabled(true);
+			findPreference("mobile_data").setEnabled(true);
+			findPreference("wifi").setEnabled(true);
+			findPreference("bluetooth").setEnabled(true);
 		}
 	}
 }

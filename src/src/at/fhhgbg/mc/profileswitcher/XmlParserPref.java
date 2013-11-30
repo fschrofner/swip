@@ -85,6 +85,8 @@ public class XmlParserPref {
 				setMobileData(_parser);
 			} else if (name.equals("wifi")) {
 				setWifi(_parser);
+			} else if (name.equals("airplane_mode")) {
+				setAirplaneMode(_parser);
 			} else if (name.equals("display")) {
 				setDisplay(_parser);
 			} else {
@@ -335,6 +337,33 @@ public class XmlParserPref {
 			}
 		} else {
 			Log.i("XmlParserPref", "MobileData: No change.");
+		}
+		_parser.nextTag();
+	}
+	
+	/**
+	 * Sets the airplane mode state according to the next attributes inside the given parser.
+	 * @param _parser the parser of which you want to read the strings
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
+	private void setAirplaneMode(XmlPullParser _parser) throws XmlPullParserException, IOException {
+		_parser.require(XmlPullParser.START_TAG, null, "airplane_mode");
+		if (_parser.getAttributeValue(null, "enabled") != null) {
+			if (_parser.getAttributeValue(null, "enabled").equals("1")) {
+				prefEdit.putString("airplane_mode", "enabled");
+				Log.i("XmlParserPref", "Airplane Mode on.");
+			} else if (_parser.getAttributeValue(null, "enabled").equals("0")) {
+				prefEdit.putString("airplane_mode", "disabled");
+				Log.i("XmlParserPref", "Airplane Mode off.");
+			} else if (_parser.getAttributeValue(null, "enabled").equals("-1")) {
+				prefEdit.putString("airplane_mode", "unchanged");
+				Log.i("XmlParserPref", "Airplane Mode unchanged.");
+			} else {
+				Log.e("XmlParserPref", "Airplane Mode: Invalid Argument!");
+			}
+		} else {
+			Log.i("XmlParserPref", "Airplane Mode: No change.");
 		}
 		_parser.nextTag();
 	}

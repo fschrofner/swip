@@ -16,11 +16,13 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
@@ -124,18 +126,34 @@ public class Setter {
 
 	}
 	
+	/**
+	 * Sets the airplane mode. This setter needs the app to have root access, otherwise it won't work.
+	 * If root access isn't given already the app will ask for permission (if the device is not rooted, nothing will happen)
+	 * If the device already is in the desired setting, nothing will be executed.
+	 * @param _context  the context of your activity.
+	 * @param _enable true enables airplane mode, false disables it
+	 */
 	public void setAirplaneMode(Context _context, boolean _enable){
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_context);
+		
 		CommandCapture command;
+		//the following comparisons check if root is enabled, if there will be a change compared to the current setting
+		//and if root access is actually given
 		try{
-			if(_enable && !isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
+			if(pref.getBoolean("root", false) && _enable && !isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
 				command = new CommandCapture(0, "settings put global airplane_mode_on 1","am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true");
 				RootTools.getShell(true).add(command);
+				Log.i("Setter", "Airplane Mode: enabled");
 
-			}
-			if(!_enable && isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
+			} else if
+			(pref.getBoolean("root", false) && !_enable && isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
 				command = new CommandCapture(0, "settings put global airplane_mode_on 0", "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state false");
 				RootTools.getShell(true).add(command);
-			}		
+				Log.i("Setter", "Airplane Mode: disabled");
+			} else {
+				Log.i("Setter", "Airplane Mode: no change or no root access");
+			}
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -145,15 +163,23 @@ public class Setter {
 		} catch (RootDeniedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			//the root shell needs to be closed
+			try {
+				RootTools.closeAllShells();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	
 	/**
-	 * Checks if airplane mode is on at the moment.
+	 * Checks if airplane mode is activated at the moment.
 	 * There are two different checks, because the setting moved to a different location in the newer apis.
 	 * @param context
-	 * @return
+	 * @return true if the airplane mode is enabled, false otherwise.
 	 */
 	@SuppressLint("NewApi")
 	public static boolean isAirplaneModeOn(Context context) {
