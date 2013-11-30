@@ -81,6 +81,8 @@ public class XmlParser {
 				setMobileData(_parser);
 			} else if (name.equals("wifi")) {
 				setWifi(_parser);
+			} else if (name.equals("airplane_mode")){
+				setAirplaneMode(_parser);
 			} else if (name.equals("display")) {
 				setDisplay(_parser);
 			} else {
@@ -113,10 +115,10 @@ public class XmlParser {
 				setter.setRingerMode(context, Profile.mode.vibrate);
 				Log.i("XmlParser", "RingerMode: vibrate");
 			} else {															//for log messages only
-				Log.e("XmlParser", "RingerMode: Invalid Argument!");
+				Log.i("XmlParser", "RingerMode: No change.");
 			}
 		} else {
-			Log.i("XmlParser", "RingerMode: No change.");
+			Log.e("XmlParser", "RingerMode: Invalid Argument!");
 		}
 		_parser.nextTag();														//goes to the next tag (otherwise the readAndApplyTags method would not continue)
 	}
@@ -142,10 +144,10 @@ public class XmlParser {
 						"MediaVolume: "
 								+ _parser.getAttributeValue(null, "media"));
 			} else {																//if the media volume is set to an invalid value
-				Log.e("XmlParser", "MediaVolume: Invalid Argument!");
+				Log.i("XmlParser", "MediaVolume: No change.");
 			}
 		} else {
-			Log.i("XmlParser", "MediaVolume: No change.");							//if the media attribute is not set
+			Log.e("XmlParser", "MediaVolume: Invalid Argument!");					//if the media attribute is not set
 		}
 
 		if (_parser.getAttributeValue(null, "alarm") != null) {						//if the alarm attribute is set
@@ -158,10 +160,10 @@ public class XmlParser {
 						"AlarmVolume: "
 								+ _parser.getAttributeValue(null, "alarm"));
 			} else {																//if the alarm volume is set to an invalid value
-				Log.e("XmlParser", "AlarmVolume: Invalid Argument!");
+				Log.i("XmlParser", "AlarmVolume: No change.");
 			}
 		} else {
-			Log.i("XmlParser", "AlarmVolume: No change.");							//if the alarm attribute is not set
+			Log.e("XmlParser", "AlarmVolume: Invalid Argument!");					//if the alarm attribute is not set
 		}
 
 		if (_parser.getAttributeValue(null, "ringtone") != null) {					//if the ringtone attribute is set
@@ -174,10 +176,10 @@ public class XmlParser {
 						"Ringtone-Volume: "
 								+ _parser.getAttributeValue(null, "ringtone"));
 			} else {
-				Log.e("XmlParser", "RingtoneVolume: Invalid Argument!");			//if the value would be invalid
+				Log.i("XmlParser", "RingtoneVolume: No change.");					//if the value would be invalid
 			}
 		} else {
-			Log.i("XmlParser", "RingtoneVolume: No change.");						//if the ringtone attribute was not set
+			Log.e("XmlParser", "RingtoneVolume: Invalid Argument!");				//if the ringtone attribute was not set
 		}
 
 		_parser.nextTag();
@@ -201,10 +203,10 @@ public class XmlParser {
 				setter.setGps(context, false);
 				Log.i("XmlParser", "GPS off.");
 			} else {
-				Log.e("XmlParser", "GPS: Invalid Argument!");				//if it is set to an invalid value
+				Log.i("XmlParser", "GPS: No change.");						//if it is set to an invalid value
 			}
 		} else {															//if the enabled attribute is not set
-			Log.i("XmlParser", "GPS: No change.");
+			Log.e("XmlParser", "GPS: Invalid Argument!");
 		}
 		_parser.nextTag();
 	}
@@ -226,11 +228,11 @@ public class XmlParser {
 				Log.i("XmlParser",
 						"ScreenBrightness: "
 								+ _parser.getAttributeValue(null, "brightness"));
-			} else {																//if the brightness is set to an invalid value
-				Log.e("XmlParser", "ScreenBrightness: Invalid Argument!");
+			} else {																	//if the brightness is set to an invalid value
+				Log.i("XmlParser", "ScreenBrightness: No change.");	
 			}
 		} else {
-			Log.i("XmlParser", "ScreenBrightness: No change.");							//if the brightness attribute is not set
+			Log.e("XmlParser", "ScreenBrightness: Invalid Argument!");					//if the brightness attribute is not set
 		}
 		
 		if (_parser.getAttributeValue(null, "auto_mode_enabled") != null) {
@@ -241,10 +243,10 @@ public class XmlParser {
 				setter.setScreenBrightnessMode(context, false);
 				Log.i("XmlParser", "ScreenBrightnessAutoMode off.");
 			} else {
-				Log.e("XmlParser", "ScreenBrightnessAutoMode: Invalid Argument!");				//if it is set to an invalid value
+				Log.i("XmlParser", "ScreenBrightnessAutoMode: No change.");				
 			}
-		} else {															//if the enabled attribute is not set
-			Log.i("XmlParser", "ScreenBrightnessAutoMode: No change.");
+		} else {																			//if the enabled attribute is not set
+			Log.e("XmlParser", "ScreenBrightnessAutoMode: Invalid Argument!");				
 		}
 		
 		if (_parser.getAttributeValue(null, "time_out") != null) {				//if the timeOut-attribute is set
@@ -257,10 +259,10 @@ public class XmlParser {
 						"TimeOut: "
 								+ _parser.getAttributeValue(null, "time_out"));
 			} else {																//if the timeOut is set to an invalid value
-				Log.e("XmlParser", "TimeOut: Invalid Argument!");
+				Log.i("XmlParser", "TimeOut: No change.");
 			}
 		} else {
-			Log.i("XmlParser", "TimeOut: No change.");							//if the timeOut attribute is not set
+			Log.e("XmlParser", "TimeOut: Invalid Argument!");						//if the timeOut attribute is not set
 		}
 		
 		_parser.nextTag();
@@ -283,10 +285,10 @@ public class XmlParser {
 				setter.setBluetooth(context, false);
 				Log.i("XmlParser", "Bluetooth off.");
 			} else {															//invalid value for the attribute
-				Log.e("XmlParser", "Bluetooth: Invalid Argument!");
+				Log.i("XmlParser", "Bluetooth: No change.");
 			}
 		} else {																//enabled not set
-			Log.i("XmlParser", "Bluetooth: No change.");
+			Log.e("XmlParser", "Bluetooth: Invalid Argument!");
 		}
 		_parser.nextTag();
 	}
@@ -336,10 +338,35 @@ public class XmlParser {
 				}
 				Log.i("XmlParser", "MobileData off.");
 			} else {
-				Log.e("XmlParser", "MobileData: Invalid Argument!");
+				Log.i("XmlParser", "MobileData: No change.");
+				
 			}
 		} else {
-			Log.i("XmlParser", "MobileData: No change.");
+			Log.e("XmlParser", "MobileData: Invalid Argument!");
+		}
+		_parser.nextTag();
+	}
+	
+	/**
+	 * Sets the airplane mode according to the next attributes inside the given parser.
+	 * @param _parser the parser of which you want to read the settings.
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
+	private void setAirplaneMode(XmlPullParser _parser) throws XmlPullParserException, IOException {
+		_parser.require(XmlPullParser.START_TAG,  null, "airplane_mode");
+		if(_parser.getAttributeValue(null, "enabled") != null){
+			if(_parser.getAttributeValue(null, "enabled").equals("1")){
+				setter.setAirplaneMode(context, true);
+				Log.i("XmlParser", "Airplane Mode on.");
+			} else if(_parser.getAttributeValue(null, "enabled").equals("0")){
+				setter.setAirplaneMode(context,false);
+				Log.i("XmlParser","Airplane Mode off");
+			} else {
+				Log.i("XmlParser", "Airplane Mode: No change.");
+			}
+		} else {
+			Log.e("XmlParser","Airplane Mode: Invalid Argument!");
 		}
 		_parser.nextTag();
 	}
@@ -361,10 +388,10 @@ public class XmlParser {
 				setter.setWifi(context, false);
 				Log.i("XmlParser", "WiFi off.");
 			} else {																//if there is not a valid value
-				Log.e("XmlParser", "WiFi: Invalid Argument!");
+				Log.i("XmlParser", "WiFi: No change.");
 			}
 		} else {
-			Log.i("XmlParser", "WiFi: No change.");									//if the enabled attribute is not there
+			Log.e("XmlParser", "WiFi: Invalid Argument!");							//if the enabled attribute is not there
 		}
 		_parser.nextTag();
 	}

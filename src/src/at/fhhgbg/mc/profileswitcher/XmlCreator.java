@@ -148,6 +148,17 @@ public class XmlCreator {
 		rootElement.appendChild(gpsElement);
 		Log.i("XMLCreator",
 				String.format("gps was defined as %s", _profile.getGps()));
+		
+		// writes airplane mode change
+		Element airplaneElement = xmlProfile.createElement("airplane_mode");
+		
+		if(_profile.getAirplane_mode() != Profile.state.unchanged){
+			airplaneElement.setAttribute("enabled", String.format("%s", _profile.getAirplane_mode().ordinal()));
+		} else {
+			airplaneElement.setAttribute("enabled", String.format("%s", -1));
+		}
+		rootElement.appendChild(airplaneElement);
+		Log.i("XMLCreator", String.format("airplane mode was defined as %s", _profile.getAirplane_mode()));
 
 		// writes display changes
 		if (_profile.getScreenBrightness() >= -1
