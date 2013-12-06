@@ -168,6 +168,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("airplane_mode"));
 		bindPreferenceSummaryToValue(findPreference("display_auto_mode"));
 		bindPreferenceSummaryToValue(findPreference("display_time_out"));
+		bindPreferenceSummaryToValue(findPreference("lockscreen"));
 
 		
 		//disables the option to set the exact display brightness, when auto-brightness is enabled
@@ -201,7 +202,9 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		
 		if(!pref.getBoolean("root", false)){
 			Preference airplane_mode = findPreference("airplane_mode");
+			Preference lockscreen = findPreference("lockscreen");
 			screen.removePreference(airplane_mode);
+			screen.removePreference(lockscreen);
 		}
 		//if root is enabled, it checks if the app really has root permissions and disables all root settings otherwise
 		else if(pref.getBoolean("root", false)){
@@ -210,11 +213,14 @@ public class ProfileEditActivity extends PreferenceActivity implements
 				//if no root access is given anymore, airplane mode gets set to unchanged and all other settings that may be block get enabled again.
 				Preference airplane_mode = findPreference("airplane_mode");
 				pref.edit().putString("airplane_mode", "unchanged").commit();
+				Preference lockscreen = findPreference("lockscreen");
+				pref.edit().putString("lockscreen", "unchanged").commit();
 				findPreference("gps").setEnabled(true);
 				findPreference("mobile_data").setEnabled(true);
 				findPreference("wifi").setEnabled(true);
 				findPreference("bluetooth").setEnabled(true);
 				screen.removePreference(airplane_mode);
+				screen.removePreference(lockscreen);
 			}
 		}
 
@@ -318,6 +324,14 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		profile.setScreenTimeOut(Integer.parseInt(pref.getString(
 				"display_time_out", "-1")));
 
+		if(pref.getString("lockscreen", "unchanged").equals("enabled")){
+			profile.setLockscreen(Profile.state.enabled);
+		} else if (pref.getString("lockscreen", "unchanged").equals("disabled")){
+			profile.setLockscreen(Profile.state.disabled);
+		} else {
+			profile.setLockscreen(Profile.state.unchanged);
+		}
+		
 		XmlCreator creator = new XmlCreator();
 		try {
 			FileOutputStream output = openFileOutput(

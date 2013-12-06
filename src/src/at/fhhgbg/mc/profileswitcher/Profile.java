@@ -31,8 +31,17 @@ public class Profile {
 	private state mobileData = state.unchanged;
 	private state gps = state.unchanged;
 	private state airplane_mode = state.unchanged;
+	private state lockscreen =  state.unchanged;
 	
 	
+	public state getLockscreen() {
+		return lockscreen;
+	}
+
+	public void setLockscreen(state lockscreen) {
+		this.lockscreen = lockscreen;
+	}
+
 	public state getAirplane_mode() {
 		return airplane_mode;
 	}

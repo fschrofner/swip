@@ -27,5 +27,14 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_title_time_out" />
+    
+    <ListPreference
+        android:defaultValue="unchanged"
+        android:entries="@array/pref_lockscreen_titles"
+        android:entryValues="@array/pref_lockscreen_values"
+        android:key="lockscreen"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_lockscreen" />
 
 </PreferenceScreen>
