@@ -1,5 +1,6 @@
 package at.fhhgbg.mc.profileswitcher;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -27,6 +28,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 /**
  * Class that provides methods to apply different settings.
@@ -36,6 +38,12 @@ import android.view.WindowManager;
  */
 public class Setter {
 
+	
+	public void setNfc(Context _context, boolean _enable) {
+		
+	}
+	
+	
 	/**
 	 * Sets the bluetooth adapter to the given state. If the adapter already has
 	 * the desired state, nothing will be changed.
@@ -141,9 +149,6 @@ public class Setter {
 			if (_enable && !provider.contains(LocationManager.GPS_PROVIDER)){
 				newProviders = String.format ("%s,%s",
 	                     provider, LocationManager.GPS_PROVIDER);				//adds the gps provider to the available providers
-				Settings.Secure.putString (_context.getContentResolver(),
-	                     Settings.Secure.LOCATION_PROVIDERS_ALLOWED,
-	                     newProviders); 
 				Settings.Secure.putString (_context.getContentResolver(),
 	                    Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newProviders);	//applies the providers set before
 				Log.i("Setter", "GPS: changed to on");
@@ -524,5 +529,47 @@ public class Setter {
 		android.provider.Settings.System.putInt(_context.getContentResolver(),
 				Settings.System.SCREEN_OFF_TIMEOUT, time);
 		Log.i("Setter", "TimeOut: " + time);
+	}
+	
+	/**
+	 * Dis- or enables the lockscreen. This setter needs root privileges, otherwise it won't work!
+	 * If root access isn't given already the app will ask for permission (if the device is not rooted, nothing will happen).
+	 * This moves the file responsible for the lockscreen into an own directory (and back to enable it again)
+	 * @param _context your activity context
+	 * @param _enable true reenables the last lockscreen, false disables the current lockscreen
+	 */
+	public void setLockscreen(Context _context,  boolean _enable){
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_context);
+		File keyFile = new File("/data/system/gesture.key");												//this file can be checked for existence, which will mean that there is a lockscreen present
+		
+		if(pref.getBoolean("root", false) && _enable && !keyFile.exists() && RootTools.isAccessGiven()){	//if you want to enable the lockscreen and none is activated at the moment (and root is checked)
+			CommandCapture command = new CommandCapture(2, "mv /data/system/disabled_lockscreen/*.key /data/system/");
+			try {
+				RootTools.getShell(true).add(command);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (TimeoutException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RootDeniedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else if (pref.getBoolean("root", false) && !_enable &&  RootTools.isAccessGiven()){				//if you want to disable the lockscreen (and root is checked)
+			CommandCapture command = new CommandCapture(2, "mkdir /data/system/disabled_lockscreen/","mv /data/system/*.key /data/system/disabled_lockscreen/");
+			try {
+				RootTools.getShell(true).add(command);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (TimeoutException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RootDeniedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -89,6 +89,8 @@ public class XmlParserPref {
 				setAirplaneMode(_parser);
 			} else if (name.equals("display")) {
 				setDisplay(_parser);
+			} else if(name.equals("lockscreen")){
+				setLockscreen(_parser);
 			} else {
 				Log.i("XmlParser", "Skip!");							//invalid tag, will be skipped
 				_parser.nextTag();
@@ -285,6 +287,34 @@ public class XmlParserPref {
 		_parser.nextTag();
 	}
 
+	
+	/**
+	 * Sets the lockscreen state according to the next attributes.
+	 * @param _parser the xmlparser containing the next attributes
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
+	private void setLockscreen(XmlPullParser _parser)
+			throws XmlPullParserException, IOException {
+		_parser.require(XmlPullParser.START_TAG, null, "lockscreen");
+		if (_parser.getAttributeValue(null, "enabled") != null) {				//if the right attribute is here
+			if (_parser.getAttributeValue(null, "enabled").equals("1")) {		//enables lockscreen
+				prefEdit.putString("lockscreen", "enabled");
+				Log.i("XmlParserPref", "Lockscreen on.");
+			} else if (_parser.getAttributeValue(null, "enabled").equals("0")) {//disables lockscreen
+				prefEdit.putString("lockscreen", "disabled");
+				Log.i("XmlParserPref", "Lockscreen off.");
+			} else if (_parser.getAttributeValue(null, "enabled").equals("-1")) {//lockscreen unchanged
+				prefEdit.putString("lockscreen", "unchanged");
+				Log.i("XmlParserPref", "Lockscreen unchanged.");
+			} else {															//invalid value for the attribute
+				Log.e("XmlParserPref", "Lockscreen: Invalid Argument!");
+			}
+		} else {																//enabled not set
+			Log.i("XmlParserPref", "Lockscreen: No change.");
+		}
+		_parser.nextTag();
+	}
 	/**
 	 * Sets the bluetooth state according to the next attributes.
 	 * @param _parser the parser of which you want to read the attributes.

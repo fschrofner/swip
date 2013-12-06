@@ -479,4 +479,18 @@
         <item>6</item>
         <item>-1</item>
     </string-array>
+    
+    <!-- Lockscreen -->
+    <string name="pref_title_lockscreen">Lockscreen</string>
+    <string-array name="pref_lockscreen_titles">
+        <item>Enabled</item>
+        <item>Disabled</item>
+        <item>Unchanged</item>
+    </string-array>
+    
+    <string-array name="pref_lockscreen_values">
+        <item>enabled</item>
+        <item>disabled</item>
+        <item>unchanged</item>
+    </string-array>
 </resources>

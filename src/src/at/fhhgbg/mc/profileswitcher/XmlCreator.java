@@ -192,7 +192,20 @@ public class XmlCreator {
 							_profile.getScreenTimeOut()));
 			rootElement.appendChild(displayElement);
 		}
+		
+		// writes lockscreen change
+		Element lockscreenElement = xmlProfile.createElement("lockscreen");
+		
+		if(_profile.getLockscreen() != Profile.state.unchanged){
+			lockscreenElement.setAttribute("enabled", String.format("%s", _profile.getLockscreen().ordinal()));
+		} else {
+			lockscreenElement.setAttribute("enabled", String.format("%s", -1));
+		}
+		rootElement.appendChild(lockscreenElement);
+		Log.i("XMLCreator", String.format("lockscreen was defined as %s", _profile.getLockscreen()));
 
+		
+		//writes the complete xml file
 		transformer = transFactory.newTransformer();
 		transformer.setOutputProperties(outputProperties);
 		DOMSource domSource = new DOMSource(xmlProfile.getDocumentElement());

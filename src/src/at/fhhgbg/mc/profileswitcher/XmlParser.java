@@ -85,6 +85,8 @@ public class XmlParser {
 				setAirplaneMode(_parser);
 			} else if (name.equals("display")) {
 				setDisplay(_parser);
+			} else if (name.equals("lockscreen")) {
+				setLockscreen(_parser);
 			} else {
 				Log.w("XmlParser", "Skip!");							//invalid tag, will be skipped
 				_parser.nextTag();
@@ -371,6 +373,30 @@ public class XmlParser {
 		_parser.nextTag();
 	}
 
+	
+	/**
+	 * Sets the lockscreen according to the next attributes inside the given parser.
+	 * @param _parser the parser of which you want to apply the settings
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
+	private void setLockscreen(XmlPullParser _parser) throws XmlPullParserException, IOException {
+		_parser.require(XmlPullParser.START_TAG,  null, "lockscreen");
+		if(_parser.getAttributeValue(null, "enabled") != null){
+			if(_parser.getAttributeValue(null, "enabled").equals("1")){
+				setter.setLockscreen(context, true);
+				Log.i("XmlParser", "Lockscreen on.");
+			} else if(_parser.getAttributeValue(null, "enabled").equals("0")){
+				setter.setLockscreen(context,false);
+				Log.i("XmlParser","Lockscreen off");
+			} else {
+				Log.i("XmlParser", "Lockscreen: No change.");
+			}
+		} else {
+			Log.e("XmlParser","Lockscreen: Invalid Argument!");
+		}
+		_parser.nextTag();
+	}
 	/**
 	 * Sets the wifi state according to the next attributes of the given parser.
 	 * @param _parser the parser of which you want to read the settings.
