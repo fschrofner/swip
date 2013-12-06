@@ -17,6 +17,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -99,6 +100,9 @@ public class Setter {
 	 * of sending an intent to the official settings widget, otherwise changing
 	 * the gps state would not be possible. Most probably won't work on not AOSP
 	 * base roms.
+	 * If the app is installed as system-app (can be activated inside the settings)
+	 * this is not a problem, it should then work on every rooted phone no matter what the
+	 * rom is based on.
 	 * 
 	 * @param _context
 	 *            the context of your activity.
@@ -109,19 +113,68 @@ public class Setter {
 		String provider = Settings.Secure.getString(
 				_context.getContentResolver(),
 				Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_context);
+		
+		//if the app is not installed as system-app
+		if(!pref.getBoolean("systemapp", false)){
+			
+			// if gps is disabled and you want to enable it or the other way round
+			if ((_enable && !provider.contains("gps"))
+					|| (!_enable && provider.contains("gps"))) {
+				final Intent poke = new Intent();
+				poke.setClassName("com.android.settings", // sets the class of the intent to the class of the settings widget
+						"com.android.settings.widget.SettingsAppWidgetProvider");
+				poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+				poke.setData(Uri.parse("3"));
+				_context.sendBroadcast(poke); // sends an intent to the official settings widget
+				Log.i("Setter", "GPS: state changed");
+			} else { // just for log messages
+				Log.i("Setter", "GPS: not changed.");
+			}
+			
+		//this method will be used if the app is installed as system-app
+		} else if(pref.getBoolean("systemapp", false)){
+			String newProviders = new String();
+			
+			// if gps is disabled and you want to enable it
+			Log.i("Setter", "GPS: changed as system-app");
+			if (_enable && !provider.contains(LocationManager.GPS_PROVIDER)){
+				newProviders = String.format ("%s,%s",
+	                     provider, LocationManager.GPS_PROVIDER);				//adds the gps provider to the available providers
+				Settings.Secure.putString (_context.getContentResolver(),
+	                     Settings.Secure.LOCATION_PROVIDERS_ALLOWED,
+	                     newProviders); 
+				Settings.Secure.putString (_context.getContentResolver(),
+	                    Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newProviders);	//applies the providers set before
+				Log.i("Setter", "GPS: changed to on");
+			} 
+			
+			// if gps is enabled and you want to disable it
+			else if(!_enable && provider.contains(LocationManager.GPS_PROVIDER)){
+	            String[] providerList = provider.split (",");
 
-		// if gps is disabled and you want to enable it or the other way round
-		if ((_enable && !provider.contains("gps"))
-				|| (!_enable && provider.contains("gps"))) {
-			final Intent poke = new Intent();
-			poke.setClassName("com.android.settings", // sets the class of the intent to the class of the settings widget
-					"com.android.settings.widget.SettingsAppWidgetProvider");
-			poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-			poke.setData(Uri.parse("3"));
-			_context.sendBroadcast(poke); // sends an intent to the official settings widget
-			Log.i("Setter", "GPS: state changed");
-		} else { // just for log messages
-			Log.i("Setter", "GPS not changed.");
+	            newProviders = "";
+	            
+	            //goes through the list of providers and removes the GPS
+	            int j = 0;
+	            for (int i = 0; i < providerList.length; i++)
+	            {
+	                if (!providerList[i].equals (LocationManager.GPS_PROVIDER))
+	                {
+	                    if (j > 0)
+	                    {
+	                        newProviders += ",";
+	                    }
+
+	                    newProviders += providerList[i];
+	                    j++;
+	                }
+	            }
+				Settings.Secure.putString (_context.getContentResolver(),
+	                    Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newProviders);	//applies the providers set before
+				Log.i("Setter", "GPS: changed to off");
+			}
+			
 		}
 
 	}
