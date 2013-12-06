@@ -20,6 +20,11 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
+    
+    <!--  make sure to ignore the error message here, so the project can be build -->
+    <!--  to do so in eclipse just change Window -> Preferences -> Android -> Lint Error Checking -> ProtectedPermission to something less sincere -->
+    <!--  this permission is needed so that some of the system-app  -->
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
 
     <application
         android:allowBackup="true"

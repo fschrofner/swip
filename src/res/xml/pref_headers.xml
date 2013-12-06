@@ -16,7 +16,7 @@
         android:fragment="at.fhhgbg.mc.profileswitcher.ProfileEditActivity$DisplayPreferenceFragment"
         android:title="@string/pref_header_display" />
 
-    <!-- These settings headers are only used on tablets. -->
+    These settings headers are only used on tablets.
 
     <header
         android:fragment="at.fhhgbg.mc.profileswitcher.SettingsActivity$GeneralPreferenceFragment"

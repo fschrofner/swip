@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -18,6 +19,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -26,9 +28,13 @@ import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.NotificationCompat;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.exceptions.RootDeniedException;
+import com.stericson.RootTools.execution.CommandCapture;
 
 /**
  * 
@@ -38,7 +44,7 @@ import com.stericson.RootTools.RootTools;
  * 
  */
 public class SettingsActivity extends PreferenceActivity implements
-		OnSharedPreferenceChangeListener {
+		OnSharedPreferenceChangeListener,OnPreferenceClickListener,OnClickListener {
 	/**
 	 * Determines whether to always show the simplified settings UI, where
 	 * settings are presented in a single list. When false, settings are shown
@@ -61,7 +67,7 @@ public class SettingsActivity extends PreferenceActivity implements
 			Editor editor = pref.edit();
 			editor.putBoolean("root", false);
 			editor.commit();
-		}		
+		}
 	}
 
 	/**
@@ -97,6 +103,8 @@ public class SettingsActivity extends PreferenceActivity implements
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		setupSimplePreferencesScreen();
+		Preference systemappPreference = (Preference) super.findPreference("systemapp");
+		systemappPreference.setOnPreferenceClickListener(this);
 	}
 
 	/**
@@ -263,6 +271,87 @@ public class SettingsActivity extends PreferenceActivity implements
 				CheckBoxPreference checkBox = (CheckBoxPreference) super.findPreference("root");
 				checkBox.setChecked(false);
 			}
+		}
+	}
+
+	/**
+	 * This code will be executed, when the
+	 */
+	@Override
+	public boolean onPreferenceClick(Preference arg0) {
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+		dialog.setTitle("Install SwiP as system-app?");
+		dialog.setMessage("Please understand that this will prevent the app from being uninstalled, make sure to get back to these settings to make it uninstallable again.");
+		dialog.setPositiveButton("Ok", this);
+		dialog.setNegativeButton("No", new DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();					
+			}
+			
+		});
+		dialog.show();
+		return true;
+	}
+
+	/**
+	 * When the user decides to install the app as system-app this will be called
+	 */
+	@Override
+	public void onClick(DialogInterface arg0, int arg1) {
+		if(RootTools.isAccessGiven()){
+			//this will copy the apk to the system-apps folder and therefor swip will become a system-app
+			CommandCapture command;
+			command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
+					"cp /data/app/at.fhhgbg.mc.profileswitcher-[12].apk /system/app/",			//copies the apk of the app to the system-apps folder
+					"chmod 644 /system/app/at.fhhgbg.mc.profileswitcher-[12].apk",				//fixes the permissions
+					"mount -o remount,r /system");												//mounts the system partition to be read-only again
+			
+			try {
+				RootTools.getShell(true).add(command);
+				RootTools.closeAllShells();
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+				pref.edit().putBoolean("systemapp", true).commit();					//saves the fact that it can use system-app possibilities now
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (TimeoutException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RootDeniedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+			dialog.setTitle("Install Successful!");
+			dialog.setMessage("Please restart your phone for the changes to take effect.");
+			dialog.setNeutralButton("Dismiss", new DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();					
+				}
+				
+			});
+			dialog.show();
+
+			
+		}
+		else{
+			AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+			dialog.setTitle("Root access not granted");
+			dialog.setMessage("Please check if your device is rooted and you have a superuser app installed!");
+			dialog.setNeutralButton("Dismiss", new DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();					
+				}
+				
+			});
+			dialog.show();
 		}
 	}
 }
