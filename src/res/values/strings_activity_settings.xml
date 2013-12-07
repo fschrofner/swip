@@ -11,5 +11,19 @@
     <string name="pref_title_root">Enable root</string>
 	<string name="pref_description_root">Enables root access, which allows additional settings.</string>
 	<string name="pref_title_systemapp">Install as system-app</string>
-	<string name="pref_description_systemapp">Install SwiP as system-app, which will allow the app to use methods that should work on every device (for certain settings).\n[Needs Root]</string>
+	<string name="pref_description_systemapp">Install SwiP as system-app, which will allow the app to use methods that should work on every device (for certain settings) and add new functionality.\n[Needs Root]</string>
+	<string name="pref_headline_systemapp">Install SwiP as system-app?</string>
+	<string name="pref_text_systemapp">Please understand that this will prevent the app from being uninstalled, make sure to get back to these settings to make it uninstallable again.</string>
+	<string name="pref_title_removeSystemapp">Uninstall as system-app</string>
+	<string name="pref_description_removeSystemapp">Removes SwiP as system-app, so it can be uninstalled again</string>
+	<string name="pref_headline_removeSystemapp">Uninstall SwiP as system-app?</string>
+	<string name="pref_text_removeSystemapp">Uninstalling the app as system-app will make it uninstallable again, however you will not be able to use all settings.</string>
+	<string name="pref_title_systemapp_successful">Install Successful!</string>
+	<string name="pref_title_removeSystemapp_successful">Uninstall Successful!</string>
+	<string name="pref_text_pleaseRestart">Please restart your phone for the changes to take effect.</string>
+	<string name="pref_title_noRoot">Root access not granted</string>
+	<string name="pref_text_noRoot">Please check if your device is rooted and you have a superuser app installed!</string>
+	<string name="pref_positive_button">OK</string>
+	<string name="pref_negative_button">No</string>
+	<string name="pref_neutral_button">Dismiss</string>
 </resources>

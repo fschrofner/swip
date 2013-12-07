@@ -19,10 +19,12 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceScreen;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 import android.support.v4.app.NavUtils;
@@ -44,7 +46,7 @@ import com.stericson.RootTools.execution.CommandCapture;
  * 
  */
 public class SettingsActivity extends PreferenceActivity implements
-		OnSharedPreferenceChangeListener,OnPreferenceClickListener,OnClickListener {
+		OnSharedPreferenceChangeListener,OnPreferenceClickListener {
 	/**
 	 * Determines whether to always show the simplified settings UI, where
 	 * settings are presented in a single list. When false, settings are shown
@@ -103,8 +105,6 @@ public class SettingsActivity extends PreferenceActivity implements
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		setupSimplePreferencesScreen();
-		Preference systemappPreference = (Preference) super.findPreference("systemapp");
-		systemappPreference.setOnPreferenceClickListener(this);
 	}
 
 	/**
@@ -128,6 +128,23 @@ public class SettingsActivity extends PreferenceActivity implements
 		// Add 'general' preferences.
 		addPreferencesFromResource(R.xml.pref_general);
 
+		PreferenceScreen screen = getPreferenceScreen();
+		Setter setter = new Setter();
+		
+		if(pref.getBoolean("systemapp", false) || setter.checkSystemapp(this)){
+			Preference install = findPreference("systemapp");
+			screen.removePreference(install);
+			Preference removeSystemappPreference = (Preference) super.findPreference("removeSystemapp");
+			removeSystemappPreference.setOnPreferenceClickListener(this);
+		}
+		
+		else if(!pref.getBoolean("systemapp", false)){
+			Preference uninstall = findPreference("removeSystemapp");
+			screen.removePreference(uninstall);
+			Preference systemappPreference = (Preference) super.findPreference("systemapp");
+			systemappPreference.setOnPreferenceClickListener(this);
+		}
+		
 	}
 
 	/**
@@ -254,8 +271,8 @@ public class SettingsActivity extends PreferenceActivity implements
 		if(_pref.getBoolean("root", false)){
 			if(!RootTools.isAccessGiven()){
 				AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-				dialog.setTitle("Root access not granted");
-				dialog.setMessage("Please check if your device is rooted and you have a superuser app installed!");
+				dialog.setTitle(getResources().getString(R.string.pref_title_noRoot));
+				dialog.setMessage(getResources().getString(R.string.pref_text_noRoot));
 				dialog.setNeutralButton("Dismiss", new DialogInterface.OnClickListener(){
 
 					@Override
@@ -275,83 +292,185 @@ public class SettingsActivity extends PreferenceActivity implements
 	}
 
 	/**
-	 * This code will be executed, when the
+	 * This code will be executed, when the install as system app preference is clicked.
 	 */
 	@Override
-	public boolean onPreferenceClick(Preference arg0) {
-		AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-		dialog.setTitle("Install SwiP as system-app?");
-		dialog.setMessage("Please understand that this will prevent the app from being uninstalled, make sure to get back to these settings to make it uninstallable again.");
-		dialog.setPositiveButton("Ok", this);
-		dialog.setNegativeButton("No", new DialogInterface.OnClickListener(){
+	public boolean onPreferenceClick(Preference _preference) {
+		if(_preference.getKey().equals("systemapp")){
+			AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+			dialog.setTitle(getResources().getString(R.string.pref_headline_systemapp));
+			dialog.setMessage(getResources().getString(R.string.pref_text_systemapp));
+			dialog.setPositiveButton(getResources().getString(R.string.pref_positive_button), new InstallOnClick(this));
+			dialog.setNegativeButton(getResources().getString(R.string.pref_negative_button), new DialogInterface.OnClickListener(){
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();					
-			}
-			
-		});
-		dialog.show();
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();					
+				}
+				
+			});
+			Log.i("SettingsActivity", "Install as systemapp selected");
+			dialog.show();
+		}
+		else if(_preference.getKey().equals("removeSystemapp")){
+			AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+			dialog.setTitle(getResources().getString(R.string.pref_headline_removeSystemapp));
+			dialog.setMessage(getResources().getString(R.string.pref_text_removeSystemapp));
+			dialog.setPositiveButton(getResources().getString(R.string.pref_positive_button), new UninstallOnClick(this));
+			dialog.setNegativeButton(getResources().getString(R.string.pref_negative_button), new DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();					
+				}
+				
+			});
+			Log.i("SettingsActivity", "Uninstall as systemapp selected");
+			dialog.show();
+		}
 		return true;
 	}
 
+	
 	/**
-	 * When the user decides to install the app as system-app this will be called
+	 * Inner class used to install the app as system-app, if the user confirms the dialog.
+	 * @author Florian Schrofner & Dominik Koeltringer
+	 *
 	 */
-	@Override
-	public void onClick(DialogInterface arg0, int arg1) {
-		if(RootTools.isAccessGiven()){
-			//this will copy the apk to the system-apps folder and therefor swip will become a system-app
-			CommandCapture command;
-			command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
-					"cp /data/app/at.fhhgbg.mc.profileswitcher-[12].apk /system/app/",			//copies the apk of the app to the system-apps folder
-					"chmod 644 /system/app/at.fhhgbg.mc.profileswitcher-[12].apk",				//fixes the permissions
-					"mount -o remount,r /system");												//mounts the system partition to be read-only again
-			
-			try {
-				RootTools.getShell(true).add(command);
-				RootTools.closeAllShells();
-				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-				pref.edit().putBoolean("systemapp", true).commit();					//saves the fact that it can use system-app possibilities now
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (TimeoutException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (RootDeniedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	private class InstallOnClick implements DialogInterface.OnClickListener{
+		Context context;
+		
+		InstallOnClick(Context _context){
+			context = _context;
+		}
+
+		@Override
+		public void onClick(DialogInterface _dialog, int _which) {
+			if(RootTools.isAccessGiven()){
+				//this will copy the apk to the system-apps folder and therefor swip will become a system-app
+				CommandCapture command;
+				command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
+						"cp /data/app/at.fhhgbg.mc.profileswitcher-[12].apk /system/app/",			//copies the apk of the app to the system-apps folder
+						"chmod 644 /system/app/at.fhhgbg.mc.profileswitcher-[12].apk",				//fixes the permissions
+						"mount -o remount,r /system");												//mounts the system partition to be read-only again
+				
+				try {
+					RootTools.getShell(true).add(command);
+					RootTools.closeAllShells();
+					SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+					pref.edit().putBoolean("systemapp", true).commit();								//saves the fact that it can use system-app possibilities now (there still will be a real check before using the system-app functionality)
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (TimeoutException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (RootDeniedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				AlertDialog.Builder dialog = new AlertDialog.Builder(context,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+				dialog.setTitle(getResources().getString(R.string.pref_title_systemapp_successful));
+				dialog.setMessage(getResources().getString(R.string.pref_text_pleaseRestart));
+				dialog.setNeutralButton(getResources().getString(R.string.pref_neutral_button), new DialogInterface.OnClickListener(){
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();					
+					}
+					
+				});
+				dialog.show();
+
+				
+			}
+			else{
+				AlertDialog.Builder dialog = new AlertDialog.Builder(context,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+				dialog.setTitle(getResources().getString(R.string.pref_title_noRoot));
+				dialog.setMessage(getResources().getString(R.string.pref_text_noRoot));
+				dialog.setNeutralButton(getResources().getString(R.string.pref_neutral_button), new DialogInterface.OnClickListener(){
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();					
+					}
+					
+				});
+				dialog.show();
 			}
 			
-			AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-			dialog.setTitle("Install Successful!");
-			dialog.setMessage("Please restart your phone for the changes to take effect.");
-			dialog.setNeutralButton("Dismiss", new DialogInterface.OnClickListener(){
+		}	
+	}
+	
+	/**
+	 * Inner class used to uninstall the app as system-app, if the user confirms.
+	 * @author Florian Schrofner & Dominik Koeltringer
+	 *
+	 */
+	private class UninstallOnClick implements DialogInterface.OnClickListener{
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();					
-				}
-				
-			});
-			dialog.show();
-
-			
+		Context context;
+		
+		UninstallOnClick(Context _context){
+			context = _context;
 		}
-		else{
-			AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-			dialog.setTitle("Root access not granted");
-			dialog.setMessage("Please check if your device is rooted and you have a superuser app installed!");
-			dialog.setNeutralButton("Dismiss", new DialogInterface.OnClickListener(){
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();					
+		@Override
+		public void onClick(DialogInterface _dialog, int _which) {
+			if(RootTools.isAccessGiven()){
+				//this will copy the apk to the system-apps folder and therefor swip will become a system-app
+				CommandCapture command;
+				command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
+						"rm /system/app/at.fhhgbg.mc.profileswitcher-[12].apk",						//removes the apk inside the system-apps folder
+						"mount -o remount,r /system");												//mounts the system partition to be read-only again
+				
+				try {
+					RootTools.getShell(true).add(command);
+					RootTools.closeAllShells();
+					SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+					pref.edit().putBoolean("systemapp", false).commit();							//saves that the app is not a systemapp anymore
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (TimeoutException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (RootDeniedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				
-			});
-			dialog.show();
+				AlertDialog.Builder dialog = new AlertDialog.Builder(context,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+				dialog.setTitle(getResources().getString(R.string.pref_title_removeSystemapp_successful));
+				dialog.setMessage(getResources().getString(R.string.pref_text_pleaseRestart));
+				dialog.setNeutralButton(getResources().getString(R.string.pref_neutral_button), new DialogInterface.OnClickListener(){
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();					
+					}
+					
+				});
+				dialog.show();
+
+				
+			}
+			else{
+				AlertDialog.Builder dialog = new AlertDialog.Builder(context,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+				dialog.setTitle(getResources().getString(R.string.pref_title_noRoot));
+				dialog.setMessage(getResources().getString(R.string.pref_text_noRoot));
+				dialog.setNeutralButton(getResources().getString(R.string.pref_neutral_button), new DialogInterface.OnClickListener(){
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();					
+					}
+					
+				});
+				dialog.show();
+			}
+			
 		}
 	}
 }

@@ -18,11 +18,13 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -38,9 +40,85 @@ import android.widget.Toast;
  */
 public class Setter {
 
+	/**
+	 * Checks if the app is installed as systemapp.
+	 * It does so by checking for the write to secure settings permission.
+	 * @param _context the context of your activity
+	 * @return true = app is installed as systemapp, false = it is not
+	 */
+	public boolean checkSystemapp(Context _context)
+	{
+	    String permission = "android.permission.WRITE_SECURE_SETTINGS";
+	    int res = _context.checkCallingOrSelfPermission(permission);
+	    return (res == PackageManager.PERMISSION_GRANTED);            
+	}
 	
+	/**
+	 * Sets nfc to the given state. If it is aleady in the desired state nothing will be changed.
+	 * This method needs the app to be installed as systemapp, root is not enough!
+	 * This is because it uses code reflection to get a hand on the system methods to control nfc, which are only available
+	 * to systemapps.
+	 * @param _context your activity context
+	 * @param _enable the state you want the nfc adapter to be in. true = enabled, false = disabled.
+	 */
 	public void setNfc(Context _context, boolean _enable) {
-		
+		if(checkSystemapp(_context)){
+			Class<?> NfcClass;
+			NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(_context);
+			
+			//if nfc is disabled and you want to enable it
+			if(_enable && !nfcAdapter.isEnabled()){
+				try {
+					Method enableNfc;
+					NfcClass = Class.forName(nfcAdapter.getClass().getName());
+					enableNfc   = NfcClass.getDeclaredMethod("enable");
+					enableNfc.setAccessible(true);
+					enableNfc.invoke(nfcAdapter);
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			//if nfc is enabled and you want to disable it
+			if(!_enable && nfcAdapter.isEnabled()){
+				try {
+					Method disableNfc;
+					NfcClass = Class.forName(nfcAdapter.getClass().getName());
+					disableNfc   = NfcClass.getDeclaredMethod("disable");
+					disableNfc.setAccessible(true);
+					disableNfc.invoke(nfcAdapter);
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}
 	}
 	
 	
@@ -124,7 +202,7 @@ public class Setter {
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_context);
 		
 		//if the app is not installed as system-app
-		if(!pref.getBoolean("systemapp", false)){
+		if(!checkSystemapp(_context)){
 			
 			// if gps is disabled and you want to enable it or the other way round
 			if ((_enable && !provider.contains("gps"))
@@ -141,7 +219,7 @@ public class Setter {
 			}
 			
 		//this method will be used if the app is installed as system-app
-		} else if(pref.getBoolean("systemapp", false)){
+		} else if(checkSystemapp(_context)){
 			String newProviders = new String();
 			
 			// if gps is disabled and you want to enable it
@@ -534,7 +612,7 @@ public class Setter {
 	/**
 	 * Dis- or enables the lockscreen. This setter needs root privileges, otherwise it won't work!
 	 * If root access isn't given already the app will ask for permission (if the device is not rooted, nothing will happen).
-	 * This moves the file responsible for the lockscreen into an own directory (and back to enable it again)
+	 * This moves the files responsible for the lockscreen into an own directory to disable the lockscreen (and back to enable it again)
 	 * @param _context your activity context
 	 * @param _enable true reenables the last lockscreen, false disables the current lockscreen
 	 */
