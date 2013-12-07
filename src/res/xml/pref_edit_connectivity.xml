@@ -38,6 +38,15 @@
     
     <ListPreference
         android:defaultValue="unchanged"
+        android:entries="@array/pref_nfc_titles"
+        android:entryValues="@array/pref_nfc_values"
+        android:key="nfc"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_nfc" />
+    
+    <ListPreference
+        android:defaultValue="unchanged"
         android:entries="@array/pref_airplane_mode_titles"
         android:entryValues="@array/pref_airplane_mode_values"
         android:key="airplane_mode"

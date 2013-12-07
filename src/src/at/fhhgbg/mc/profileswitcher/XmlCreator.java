@@ -95,6 +95,20 @@ public class XmlCreator {
 			rootElement.appendChild(volumeElement);
 		}
 
+		//writes nfc change
+		Element nfcElement = xmlProfile.createElement("nfc");
+		
+		if (_profile.getNfc() != Profile.state.unchanged) {
+			nfcElement.setAttribute("enabled",
+					String.format("%s", _profile.getNfc().ordinal()));
+		} else {
+			nfcElement.setAttribute("enabled", String.format("%s", -1));
+		}
+		Log.i("XMLCreator",
+				String.format("nfc was defined as %s",
+						_profile.getNfc()));
+		rootElement.appendChild(nfcElement);
+		
 		// writes bluetooth change
 		Element bluetoothElement = xmlProfile.createElement("bluetooth");
 

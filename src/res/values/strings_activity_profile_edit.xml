@@ -155,6 +155,21 @@
         <item>unchanged</item>
     </string-array>
 
+    <!-- Nfc -->
+    <string name="pref_title_nfc">NFC</string>
+
+    <string-array name="pref_nfc_titles">
+        <item>Enabled</item>
+        <item>Disabled</item>
+        <item>Unchanged</item>
+    </string-array>
+    
+    <string-array name="pref_nfc_values">
+        <item>enabled</item>
+        <item>disabled</item>
+        <item>unchanged</item>
+    </string-array>
+    
     <!-- Airplane Mode -->
     <string name="pref_title_airplane_mode">Airplane Mode</string>
     

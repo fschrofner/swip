@@ -26,6 +26,7 @@ public class Profile {
 	private int alarmVolume = -1;
 	private int mediaVolume = -1;
 	private int ringtoneVolume = -1;
+	private state nfc = state.unchanged;
 	private state bluetooth = state.unchanged;
 	private state wifi = state.unchanged;
 	private state mobileData = state.unchanged;
@@ -33,6 +34,14 @@ public class Profile {
 	private state airplane_mode = state.unchanged;
 	private state lockscreen =  state.unchanged;
 	
+	public state getNfc() {
+		return nfc;
+	}
+
+	public void setNfc(state nfc) {
+		this.nfc = nfc;
+	}
+
 	
 	public state getLockscreen() {
 		return lockscreen;

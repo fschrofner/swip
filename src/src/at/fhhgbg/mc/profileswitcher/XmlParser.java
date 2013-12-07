@@ -73,6 +73,8 @@ public class XmlParser {
 				setRingerMode(_parser);
 			} else if (name.equals("volume")) {	
 				setVolume(_parser);
+			} else if (name.equals("nfc")){
+				setNfc(_parser);
 			} else if (name.equals("bluetooth")) {
 				setBluetooth(_parser);
 			} else if (name.equals("gps")) {
@@ -295,6 +297,31 @@ public class XmlParser {
 		_parser.nextTag();
 	}
 
+	/**
+	 * Applies the nfc state according to the next attributes inside the given parser.
+	 * @param _parser the parser of which you want to read the settings.
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
+	private void setNfc(XmlPullParser _parser)
+			throws XmlPullParserException, IOException {
+		_parser.require(XmlPullParser.START_TAG, null, "nfc");
+		if (_parser.getAttributeValue(null, "enabled") != null) {				//if the right attribute is here
+			if (_parser.getAttributeValue(null, "enabled").equals("1")) {		//enables nfc
+				setter.setNfc(context, true);
+				Log.i("XmlParser", "NFC on.");
+			} else if (_parser.getAttributeValue(null, "enabled").equals("0")) {//disables nfc
+				setter.setNfc(context, false);
+				Log.i("XmlParser", "NFC off.");
+			} else {															//invalid value for the attribute
+				Log.i("XmlParser", "NFC: No change.");
+			}
+		} else {																//enabled not set
+			Log.e("XmlParser", "NFC: Invalid Argument!");
+		}
+		_parser.nextTag();
+	}
+	
 	/**
 	 * Sets the mobile-data state according to the next attributes inside the given parser.
 	 * @param _parser the parser of which you want to read the settings.

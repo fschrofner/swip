@@ -165,6 +165,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("mobile_data"));
 		bindPreferenceSummaryToValue(findPreference("wifi"));
 		bindPreferenceSummaryToValue(findPreference("bluetooth"));
+		bindPreferenceSummaryToValue(findPreference("nfc"));
 		bindPreferenceSummaryToValue(findPreference("airplane_mode"));
 		bindPreferenceSummaryToValue(findPreference("display_auto_mode"));
 		bindPreferenceSummaryToValue(findPreference("display_time_out"));
@@ -188,6 +189,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			findPreference("mobile_data").setEnabled(false);
 			findPreference("wifi").setEnabled(false);
 			findPreference("bluetooth").setEnabled(false);
+			findPreference("nfc").setEnabled(false);
 		}
 		
 		if (!pref.getBoolean("root", false)){
@@ -195,6 +197,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			findPreference("mobile_data").setEnabled(true);
 			findPreference("wifi").setEnabled(true);
 			findPreference("bluetooth").setEnabled(true);
+			findPreference("nfc").setEnabled(true);
 		}
 		
 		//checks if the root access is disabled inside the settings and disables all root settings in this case
@@ -206,6 +209,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			screen.removePreference(airplane_mode);
 			screen.removePreference(lockscreen);
 		}
+		
 		//if root is enabled, it checks if the app really has root permissions and disables all root settings otherwise
 		else if(pref.getBoolean("root", false)){
 			if(!RootTools.isAccessGiven()){
@@ -219,9 +223,18 @@ public class ProfileEditActivity extends PreferenceActivity implements
 				findPreference("mobile_data").setEnabled(true);
 				findPreference("wifi").setEnabled(true);
 				findPreference("bluetooth").setEnabled(true);
+				findPreference("nfc").setEnabled(true);
 				screen.removePreference(airplane_mode);
 				screen.removePreference(lockscreen);
 			}
+		}
+		
+		//checks if the app is installed as systemapp and if not it removes the options that require it
+		Setter setter = new Setter();
+		if(!setter.checkSystemapp(this)){
+			pref.edit().putString("nfc", "unchanged");
+			Preference nfc = findPreference("nfc");
+			screen.removePreference(nfc);
 		}
 
 	}
@@ -296,6 +309,14 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			profile.setBluetooth(Profile.state.disabled);
 		} else {
 			profile.setBluetooth(Profile.state.unchanged);
+		}
+		
+		if (pref.getString("nfc", "unchanged").equals("enabled")) {
+			profile.setNfc(Profile.state.enabled);
+		} else if (pref.getString("nfc", "unchanged").equals("disabled")) {
+			profile.setNfc(Profile.state.disabled);
+		} else {
+			profile.setNfc(Profile.state.unchanged);
 		}
 		
 		if(pref.getString("airplane_mode", "unchanged").equals("enabled")){
@@ -474,6 +495,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			findPreference("mobile_data").setEnabled(false);
 			findPreference("wifi").setEnabled(false);
 			findPreference("bluetooth").setEnabled(false);
+			findPreference("nfc").setEnabled(false);
 		} else if (key.equals("airplane_mode")
 				&& (_pref.getString("airplane_mode", "unchanged")
 						.equals("disabled") || _pref.getString("airplane_mode", "unchanged").equals("unchanged"))){
@@ -481,6 +503,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			findPreference("mobile_data").setEnabled(true);
 			findPreference("wifi").setEnabled(true);
 			findPreference("bluetooth").setEnabled(true);
+			findPreference("nfc").setEnabled(true);
 		}
 	}
 }

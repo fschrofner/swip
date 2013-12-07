@@ -17,6 +17,12 @@
         android:summary="@string/pref_description_systemapp"
         android:title="@string/pref_title_systemapp" 
         android:dependency="root"/>
+        
+        <Preference 
+        android:key="removeSystemapp"
+        android:summary="@string/pref_description_removeSystemapp"
+        android:title="@string/pref_title_removeSystemapp" 
+        android:dependency="root" />
                 
     <Preference
         android:key="about"
