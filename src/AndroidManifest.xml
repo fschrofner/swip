@@ -20,11 +20,11 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
-    
-    <!--  make sure to ignore the error message here, so the project can be build -->
-    <!--  to do so in eclipse just change Window -> Preferences -> Android -> Lint Error Checking -> ProtectedPermission to something less severe -->
-    <!--  this permission is needed so that some of the system-app  -->
-    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
+
+    <!-- make sure to ignore the error message here, so the project can be build -->
+    <!-- to do so in eclipse just change Window -> Preferences -> Android -> Lint Error Checking -> ProtectedPermission to something less severe -->
+    <!-- this permission is needed so that some of the system-app -->
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
 
     <application
         android:allowBackup="true"
@@ -127,9 +127,22 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="at.fhhgbg.mc.profileswitcher.MainActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.ProfileFragment"
+            android:label="@string/title_activity_profile_fragment"
+            android:parentActivityName="Fragment" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="Fragment" />
+        </activity>
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.TriggerFragment"
+            android:label="@string/title_activity_trigger_fragment" >
         </activity>
     </application>
 

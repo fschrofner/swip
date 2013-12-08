@@ -32,7 +32,10 @@
     <string name="credits1">The SliderPreferences were developed by:</string>
     <string name="credits2">Jay Weisskopf, 2012</string>
     <string name="credits3">They are licensed under:</string>
-	<string name="credits4"><u>MIT-License</u></string>
-	<string name="credits5">We thank him for a solid basis to work on</string>
-	<string name="ourLicense">This app is licensed under GPLv3</string>
+    <string name="credits4"><u>MIT-License</u></string>
+    <string name="credits5">We thank him for a solid basis to work on</string>
+    <string name="ourLicense">This app is licensed under GPLv3</string>
+    <string name="title_activity_profile_fragment">ProfileFragment</string>
+    <string name="title_activity_trigger_fragment">TriggerFragment</string>
+
 </resources>
