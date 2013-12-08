@@ -37,5 +37,9 @@
     <string name="ourLicense">This app is licensed under GPLv3</string>
     <string name="title_activity_profile_fragment">ProfileFragment</string>
     <string name="title_activity_trigger_fragment">TriggerFragment</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
 
 </resources>
