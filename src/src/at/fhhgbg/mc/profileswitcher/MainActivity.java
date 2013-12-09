@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -31,6 +32,7 @@ import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources.NotFoundException;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +41,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+import at.fhhgbg.mc.profileswitcher.trigger.TriggerService;
 import at.fhhgbg.mc.profileswitcher.widgets.ListWidget;
 
 /**
@@ -127,6 +130,8 @@ public class MainActivity extends Activity implements OnItemClickListener,
 			editor.commit();
 		}
 
+		Toast.makeText(this, String.valueOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)), Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, String.valueOf(Calendar.getInstance().get(Calendar.MINUTE)), Toast.LENGTH_SHORT).show();
 		// starts the permanent notification if it is activated
 		if (pref.getBoolean("notification", false)) {
 			Intent resultIntent = new Intent(this, ListDialogActivity.class);
@@ -155,6 +160,10 @@ public class MainActivity extends Activity implements OnItemClickListener,
 			NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			notificationManager.cancel(123);
 		}
+		
+		Intent intent = new Intent(this, at.fhhgbg.mc.profileswitcher.trigger.TriggerService.class);
+		startService(intent);
+		Log.i("MainActivity", "started TriggerService");
 	}
 
 	/**

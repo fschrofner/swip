@@ -20,11 +20,11 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
-    
-    <!--  make sure to ignore the error message here, so the project can be build -->
-    <!--  to do so in eclipse just change Window -> Preferences -> Android -> Lint Error Checking -> ProtectedPermission to something less severe -->
-    <!--  this permission is needed so that some of the system-app  -->
-    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
+
+    <!-- make sure to ignore the error message here, so the project can be build -->
+    <!-- to do so in eclipse just change Window -> Preferences -> Android -> Lint Error Checking -> ProtectedPermission to something less severe -->
+    <!-- this permission is needed so that some of the system-app -->
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
 
     <application
         android:allowBackup="true"
@@ -93,6 +93,8 @@
         </service>
         <service android:name="at.fhhgbg.mc.profileswitcher.AutostartService" >
         </service>
+        <service android:name="at.fhhgbg.mc.profileswitcher.trigger.TriggerService" >
+        </service>
 
         <activity
             android:name="at.fhhgbg.mc.profileswitcher.widgets.WidgetActivity"
@@ -127,6 +129,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="at.fhhgbg.mc.profileswitcher.MainActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
