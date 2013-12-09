@@ -15,7 +15,7 @@ public class ListWidgetService extends RemoteViewsService {
 
 	@Override
 	public RemoteViewsFactory onGetViewFactory(Intent _intent) {
-		Log.i("service", "service called!");
+		Log.i("ListWidgetService", "service called!");
 		return new ListWidgetFactory(this.getApplicationContext(), _intent,
 				getFilesDir());
 	}
