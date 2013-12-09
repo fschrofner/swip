@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Profile Switcher</string>
+    <string name="app_name">SwiP</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_profile_edit">Edit</string>
     <string name="title_activity_refresh_screen">RefreshScreen</string>
     <string name="textNotificationContentText">Touch to change profile</string>
-    <string name="textNotificationTitle">Profile Switcher</string>
+    <string name="textNotificationTitle">SwiP - </string>
+    <string name="textNotificationNoProfile">None</string>
     <string name="textListDialogTitle">Choose a profile</string>
     <string name="title_activity_list_dialog">ListDialogActivity</string>
     <string name="button_edit">Edit</string>

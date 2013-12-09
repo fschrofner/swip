@@ -3,4 +3,5 @@
     <issue id="MissingRegistered">
         <ignore path="res/xml/pref_headers.xml" />
     </issue>
+    <issue id="MissingTranslation" severity="ignore" />
 </lint>

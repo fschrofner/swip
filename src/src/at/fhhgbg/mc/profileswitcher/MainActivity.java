@@ -139,7 +139,8 @@ public class MainActivity extends Activity implements OnItemClickListener,
 			nBuilder.setContentText(getResources().getString(
 					R.string.textNotificationContentText));
 			nBuilder.setContentTitle(getResources().getString(
-					R.string.textNotificationTitle));
+					R.string.textNotificationTitle) + " " + pref.getString("active_profile", getResources().getString(
+							R.string.textNotificationNoProfile)));
 			nBuilder.setContentIntent(resultPendingIntent);
 			nBuilder.setOngoing(true);
 			nBuilder.setWhen(0);
@@ -296,6 +297,10 @@ public class MainActivity extends Activity implements OnItemClickListener,
 			e.printStackTrace();
 		}
 
+		//saves the active profile into the shared preferences
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		pref.edit().putString("active_profile", (String)_a.getItemAtPosition(_position)).commit();
+		
 		Toast toast = Toast.makeText(this, _a.getItemAtPosition(_position)
 				+ " was applied!", Toast.LENGTH_SHORT);
 		toast.show();

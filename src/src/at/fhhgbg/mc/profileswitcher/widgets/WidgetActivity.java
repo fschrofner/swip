@@ -1,10 +1,14 @@
 package at.fhhgbg.mc.profileswitcher.widgets;
 
 import java.io.IOException;
+
 import org.xmlpull.v1.XmlPullParserException;
+
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 import at.fhhgbg.mc.profileswitcher.XmlParser;
@@ -37,6 +41,10 @@ public class WidgetActivity extends Activity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		//saves the active profile into the shared preferences
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		pref.edit().putString("active_profile", fileName).commit();
 
 		Toast toast = Toast.makeText(this, fileName + " was applied!",
 				Toast.LENGTH_SHORT);
