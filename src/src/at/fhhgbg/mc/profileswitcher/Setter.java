@@ -9,7 +9,6 @@ import java.util.concurrent.TimeoutException;
 
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.exceptions.RootDeniedException;
-import com.stericson.RootTools.execution.Command;
 import com.stericson.RootTools.execution.CommandCapture;
 
 import android.annotation.SuppressLint;
@@ -30,7 +29,6 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 /**
  * Class that provides methods to apply different settings.

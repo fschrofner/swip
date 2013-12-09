@@ -34,12 +34,12 @@ public class AutostartService extends Service {
 	 */
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		SharedPreferences _pref = PreferenceManager
+		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		Log.i("AutostartService", "checking if notification is enabled");
 
 		// checks if the permanent notification option is enabled
-		if (_pref.getBoolean("notification", false)) {
+		if (pref.getBoolean("notification", false)) {
 			Intent resultIntent = new Intent(this, ListDialogActivity.class);
 			PendingIntent resultPendingIntent = PendingIntent.getActivity(this,
 					0, resultIntent, 0);
@@ -51,7 +51,8 @@ public class AutostartService extends Service {
 			nBuilder.setContentText(getResources().getString(
 					R.string.textNotificationContentText));
 			nBuilder.setContentTitle(getResources().getString(
-					R.string.textNotificationTitle));
+					R.string.textNotificationTitle) + " " + pref.getString("active_profile", getResources().getString(
+							R.string.textNotificationNoProfile)));
 			nBuilder.setContentIntent(resultPendingIntent);
 			nBuilder.setOngoing(true);
 			nBuilder.setWhen(0);

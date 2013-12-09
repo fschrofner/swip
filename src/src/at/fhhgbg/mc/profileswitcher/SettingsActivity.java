@@ -254,7 +254,8 @@ public class SettingsActivity extends PreferenceActivity implements
 			nBuilder.setContentText(getResources().getString(
 					R.string.textNotificationContentText));
 			nBuilder.setContentTitle(getResources().getString(
-					R.string.textNotificationTitle));
+					R.string.textNotificationTitle) + " " + _pref.getString("active_profile", getResources().getString(
+							R.string.textNotificationNoProfile)));
 			nBuilder.setContentIntent(resultPendingIntent);
 			nBuilder.setOngoing(true);
 			nBuilder.setWhen(0);

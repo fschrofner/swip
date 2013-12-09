@@ -8,10 +8,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 /**
@@ -80,6 +82,10 @@ public class ListDialog extends DialogFragment implements OnClickListener {
 			e.printStackTrace();
 		}
 
+		//saves the active profile into the shared preferences
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		pref.edit().putString("active_profile", list[which]).commit();
+		
 		Toast toast = Toast.makeText(getActivity(), list[which]
 				+ " was applied!", Toast.LENGTH_SHORT);
 		toast.show();
