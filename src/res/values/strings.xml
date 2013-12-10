@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">Profile Switcher</string>
+    <string name="app_name">SwiP</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="tab_profile_title">Profiles</string>
+    <string name="tab_trigger_title">Triggers</string>
+    <string name="menu_new_profile">New Profile</string>
+    <string name="menu_new_trigger">New Trigger</string>
+    <string name="menu_settings">Settings</string>
     <string name="title_activity_profile_edit">Edit</string>
     <string name="title_activity_refresh_screen">RefreshScreen</string>
     <string name="textNotificationContentText">Touch to change profile</string>
-    <string name="textNotificationTitle">Profile Switcher</string>
+    <string name="textNotificationTitle">SwiP - </string>
+    <string name="textNotificationNoProfile">None</string>
     <string name="textListDialogTitle">Choose a profile</string>
     <string name="title_activity_list_dialog">ListDialogActivity</string>
     <string name="button_edit">Edit</string>
@@ -38,8 +42,4 @@
     <string name="title_activity_profile_fragment">ProfileFragment</string>
     <string name="title_activity_trigger_fragment">TriggerFragment</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-
 </resources>
