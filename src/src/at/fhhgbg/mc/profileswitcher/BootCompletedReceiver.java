@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import at.fhhgbg.mc.profileswitcher.trigger.TriggerService;
 
 /**
  * BootCompletedReceiver which starts the AutostartService to show the permanent
@@ -26,9 +25,6 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 		Log.i("BootCompletedReceiver", "boot completed");
 		
 		Intent intent = new Intent(_context, AutostartService.class);
-		_context.startService(intent);
-		
-		intent = new Intent(_context, TriggerService.class);
 		_context.startService(intent);
 	}
 }
