@@ -235,7 +235,14 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			pref.edit().putString("nfc", "unchanged");
 			Preference nfc = findPreference("nfc");
 			screen.removePreference(nfc);
+			//gps only works on kitkat if the app is installed as systemapp
+			if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
+				pref.edit().putString("gps", "unchanged");
+				Preference gps = findPreference("gps");
+				screen.removePreference(gps);
+			}
 		}
+		
 
 	}
 
