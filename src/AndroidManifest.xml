@@ -93,8 +93,6 @@
         </service>
         <service android:name="at.fhhgbg.mc.profileswitcher.AutostartService" >
         </service>
-        <service android:name="at.fhhgbg.mc.profileswitcher.trigger.TriggerService" >
-        </service>
 
         <activity
             android:name="at.fhhgbg.mc.profileswitcher.widgets.WidgetActivity"
@@ -133,6 +131,18 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.ProfileFragment"
+            android:label="@string/title_activity_profile_fragment"
+            android:parentActivityName="Fragment" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="Fragment" />
+        </activity>
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.TriggerFragment"
+            android:label="@string/title_activity_trigger_fragment" >
         </activity>
     </application>
 

@@ -1,6 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/FrameLayout1"
+    android:id="@+id/FragmentFrame1"
     style="@style/Theme.Transparent"
     android:layout_width="0dp"
     android:layout_height="0dp"

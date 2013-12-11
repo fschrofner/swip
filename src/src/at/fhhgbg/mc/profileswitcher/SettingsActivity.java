@@ -350,10 +350,18 @@ public class SettingsActivity extends PreferenceActivity implements
 			if(RootTools.isAccessGiven()){
 				//this will copy the apk to the system-apps folder and therefor swip will become a system-app
 				CommandCapture command;
-				command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
-						"cp /data/app/at.fhhgbg.mc.profileswitcher-[12].apk /system/app/",			//copies the apk of the app to the system-apps folder
-						"chmod 644 /system/app/at.fhhgbg.mc.profileswitcher-[12].apk",				//fixes the permissions
-						"mount -o remount,r /system");												//mounts the system partition to be read-only again
+				//in kitkat the systemapps were moved to the /system/priv-app folder
+				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+					command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
+							"cp /data/app/at.fhhgbg.mc.profileswitcher-[12].apk /system/priv-app/",		//copies the apk of the app to the system-apps folder
+							"chmod 644 /system/priv-app/at.fhhgbg.mc.profileswitcher-[12].apk",				//fixes the permissions
+							"mount -o remount,r /system");												//mounts the system partition to be read-only again
+				} else{
+					command = new CommandCapture(1,"mount -o remount,rw /system", 						
+							"cp /data/app/at.fhhgbg.mc.profileswitcher-[12].apk /system/app/",
+							"chmod 644 /system/app/at.fhhgbg.mc.profileswitcher-[12].apk",		
+							"mount -o remount,r /system");									
+				}
 				
 				try {
 					RootTools.getShell(true).add(command);
@@ -422,10 +430,16 @@ public class SettingsActivity extends PreferenceActivity implements
 			if(RootTools.isAccessGiven()){
 				//this will copy the apk to the system-apps folder and therefor swip will become a system-app
 				CommandCapture command;
-				command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
-						"rm /system/app/at.fhhgbg.mc.profileswitcher-[12].apk",						//removes the apk inside the system-apps folder
-						"mount -o remount,r /system");												//mounts the system partition to be read-only again
-				
+				//the systemapps were moved to the /system/priv-app folder in kitkat
+				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+					command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
+							"rm /system/priv-app/at.fhhgbg.mc.profileswitcher-[12].apk",				//removes the apk inside the system-apps folder
+							"mount -o remount,r /system");												//mounts the system partition to be read-only again
+				} else {
+					command = new CommandCapture(1,"mount -o remount,rw /system", 						
+							"rm /system/app/at.fhhgbg.mc.profileswitcher-[12].apk",						
+							"mount -o remount,r /system");	
+				}																	
 				try {
 					RootTools.getShell(true).add(command);
 					RootTools.closeAllShells();

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">SwiP</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="tab_profile_title">Profiles</string>
+    <string name="tab_trigger_title">Triggers</string>
+    <string name="menu_new_profile">New Profile</string>
+    <string name="menu_new_trigger">New Trigger</string>
+    <string name="menu_settings">Settings</string>
     <string name="title_activity_profile_edit">Edit</string>
     <string name="title_activity_refresh_screen">RefreshScreen</string>
     <string name="textNotificationContentText">Touch to change profile</string>
@@ -33,7 +36,10 @@
     <string name="credits1">The SliderPreferences were developed by:</string>
     <string name="credits2">Jay Weisskopf, 2012</string>
     <string name="credits3">They are licensed under:</string>
-	<string name="credits4"><u>MIT-License</u></string>
-	<string name="credits5">We thank him for a solid basis to work on</string>
-	<string name="ourLicense">This app is licensed under GPLv3</string>
+    <string name="credits4"><u>MIT-License</u></string>
+    <string name="credits5">We thank him for a solid basis to work on</string>
+    <string name="ourLicense">This app is licensed under GPLv3</string>
+    <string name="title_activity_profile_fragment">ProfileFragment</string>
+    <string name="title_activity_trigger_fragment">TriggerFragment</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>
