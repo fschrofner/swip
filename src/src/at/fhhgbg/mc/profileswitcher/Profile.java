@@ -10,11 +10,11 @@ public class Profile {
 	
 	// IMPORTANT:
 	// do not change the position of dis- and enabled!
-	enum state {
+	public enum state {
 		disabled, enabled, unchanged
 	};
 
-	enum mode {
+	public enum mode {
 		silent, vibrate, normal, unchanged
 	};
 
