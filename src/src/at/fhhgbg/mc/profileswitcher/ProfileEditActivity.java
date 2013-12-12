@@ -345,9 +345,9 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		profile.setScreenTimeOut(Integer.parseInt(pref.getString(
 				"display_time_out", "-1")));
 
-		if(pref.getString("lockscreen", "unchanged").equals("enabled")){
+		if (pref.getString("lockscreen", "unchanged").equals("enabled")) {
 			profile.setLockscreen(Profile.state.enabled);
-		} else if (pref.getString("lockscreen", "unchanged").equals("disabled")){
+		} else if (pref.getString("lockscreen", "unchanged").equals("disabled")) {
 			profile.setLockscreen(Profile.state.disabled);
 		} else {
 			profile.setLockscreen(Profile.state.unchanged);
