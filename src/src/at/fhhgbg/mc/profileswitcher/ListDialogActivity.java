@@ -35,10 +35,12 @@ public class ListDialogActivity extends Activity {
 		String[] fileList = getFilesDir().list();
 		StringBuffer sb = new StringBuffer();
 		for (String file : fileList) {
-			sb.append(file);
-			sb.delete(sb.length() - 4, sb.length());
-			profileList.add(sb.toString());
-			sb.delete(0, sb.length());
+			if (file.contains("_profile")) {
+				sb.append(file);
+				sb.delete(sb.length() - 12, sb.length());
+				profileList.add(sb.toString());
+				sb.delete(0, sb.length());
+			}
 		}
 
 		// sorts the list alphabetically

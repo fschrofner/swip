@@ -1,9 +1,14 @@
 package at.fhhgbg.mc.profileswitcher.trigger;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -15,6 +20,7 @@ import android.content.IntentFilter;
 import android.content.res.Resources.NotFoundException;
 import android.os.IBinder;
 import android.util.Log;
+import at.fhhgbg.mc.profileswitcher.XmlCreator;
 import at.fhhgbg.mc.profileswitcher.XmlParser;
 
 public class TriggerService extends Service {
@@ -34,11 +40,29 @@ public class TriggerService extends Service {
 
 		Log.i("TriggerService", "TriggerService started");
 
-		// Trigger test = new Trigger();
-		// test.setHours(20);
-		// test.setMinutes(8);
-		// test.setProfileName("Test");
-		// triggerList.add(test);
+		 Trigger test = new Trigger();
+		 test.setName("test");
+		 test.setHours(20);
+		 test.setMinutes(8);
+		 test.setProfileName("Home");
+		 
+		 XmlCreatorTrigger creator = new XmlCreatorTrigger();
+			try {
+				FileOutputStream output = openFileOutput(
+						test.getName() + "_trigger.xml", Context.MODE_PRIVATE);
+				output.write(creator.create(test).getBytes());
+				output.close();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ParserConfigurationException e) {
+				e.printStackTrace();
+			} catch (TransformerException e) {
+				e.printStackTrace();
+			}
+			
+			refreshTriggers();
 
 		// Create a broadcast receiver to handle change in time
 		tickReceiver = new BroadcastReceiver() {
@@ -95,22 +119,31 @@ public class TriggerService extends Service {
 		}
 	}
 
-//	private void refreshTriggers() {
-//
-//		String[] fileList = getFilesDir().list();
-//		XmlParser parser = new XmlParser(this);
-//
-//		try {
-//			for (int i = 0; i < fileList.length; i++) {
-//				parser.initializeXmlParser(openFileInput(fileList[i]));
-//			}
-//		} catch (NotFoundException e) {
-//			e.printStackTrace();
-//		} catch (XmlPullParserException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	private void refreshTriggers() {
+		
+		triggerList.clear();
+
+		String[] fileList = getFilesDir().list();
+		XmlParserTrigger parser = new XmlParserTrigger(this);
+
+		try {
+			for (int i = 0; i < fileList.length; i++) {
+				if (fileList[i].contains("_trigger")) {
+					Log.i("TriggerService", "Trigger found");
+					triggerList.add(parser.initializeXmlParser(openFileInput(fileList[i])));
+				} else {
+					Log.i("TriggerService", "no Trigger found");
+				}
+			}
+		} catch (NotFoundException e) {
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		Log.i("TriggerService", "triggerList: " + triggerList.size());
+	}
 
 }

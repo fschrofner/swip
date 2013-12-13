@@ -55,7 +55,7 @@ public class NfcReaderActivity extends Activity {
 					String profileName = new String(
 							msg.getRecords()[0].getPayload());
 					parser.initializeXmlParser(openFileInput(profileName
-							+ ".xml"));
+							+ "_profile.xml"));
 					Toast toast = Toast.makeText(this, profileName
 							+ " was applied!", Toast.LENGTH_SHORT);
 					toast.show();
@@ -87,7 +87,7 @@ public class NfcReaderActivity extends Activity {
 					fileOutput.close();
 					XmlParser parser = new XmlParser(this);
 					parser.initializeXmlParser(openFileInput(profileName
-							+ ".xml"));
+							+ "_profile.xml"));
 					Toast toast = Toast.makeText(this, profileName
 							+ " was applied!", Toast.LENGTH_SHORT);
 					toast.show();

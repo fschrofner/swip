@@ -60,7 +60,7 @@ public class NfcWriterActivity extends Activity implements
 
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		filePath = new String(getFilesDir() + "/"
-				+ getIntent().getStringExtra("fileName") + ".xml");
+				+ getIntent().getStringExtra("fileName") + "_profile.xml");
 		adapter = NfcAdapter.getDefaultAdapter(this);
 	}
 

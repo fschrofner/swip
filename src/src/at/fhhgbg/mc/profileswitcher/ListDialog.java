@@ -73,7 +73,7 @@ public class ListDialog extends DialogFragment implements OnClickListener {
 		XmlParser parser = new XmlParser(getActivity());
 		try {
 			parser.initializeXmlParser(getActivity().openFileInput(
-					list[which] + ".xml"));
+					list[which] + "_profile.xml"));
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 		} catch (XmlPullParserException e) {

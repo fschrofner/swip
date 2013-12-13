@@ -38,18 +38,21 @@ public class XmlParserTrigger {
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	public void initializeXmlParser(InputStream _in)
+	public Trigger initializeXmlParser(InputStream _in)
 			throws XmlPullParserException, IOException {
+		
+		Trigger trigger = new Trigger();
 		
 		try {
 			XmlPullParser parser = Xml.newPullParser();
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 			parser.setInput(_in, null);
 			parser.nextTag();
-			readAndApplyTags(parser);
+			readAndApplyTags(parser, trigger);
 		} finally {
 			_in.close();					//closes the inputstream in the end
 		}
+		return trigger;
 	}
 
 	/**
@@ -59,11 +62,9 @@ public class XmlParserTrigger {
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	private Trigger readAndApplyTags(XmlPullParser _parser)
+	private void readAndApplyTags(XmlPullParser _parser, Trigger _trigger)
 			throws XmlPullParserException, IOException {
 		_parser.require(XmlPullParser.START_TAG, null, "trigger");
-		
-		Trigger trigger = new Trigger();
 		
 		while (_parser.next() != XmlPullParser.END_TAG) {				//while the tag is not the closing tag
 			
@@ -76,7 +77,7 @@ public class XmlParserTrigger {
 //			if (name.equals("ringer_mode")) {
 //				setRingerMode(_parser);
 			if (name.equals("time")) {	
-				setTime(_parser, trigger);
+				setTime(_parser, _trigger);
 //			} else if (name.equals("nfc")){
 //				setNfc(_parser);
 //			} else if (name.equals("bluetooth")) {
@@ -98,7 +99,6 @@ public class XmlParserTrigger {
 				_parser.nextTag();
 			}
 		}
-		return trigger;
 	}
 
 	

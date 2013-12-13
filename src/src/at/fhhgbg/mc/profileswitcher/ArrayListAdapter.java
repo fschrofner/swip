@@ -83,7 +83,7 @@ public class ArrayListAdapter extends ArrayAdapter<String> implements
 
 		try {
 			xmlParserPref.initializeXmlParser(context.openFileInput(v.getTag()
-					+ ".xml"));
+					+ "_profile.xml"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (XmlPullParserException e) {

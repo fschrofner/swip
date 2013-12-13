@@ -33,7 +33,7 @@ public class WidgetActivity extends Activity {
 
 		XmlParser parser = new XmlParser(this);
 		try {
-			parser.initializeXmlParser(openFileInput(fileName + ".xml"));
+			parser.initializeXmlParser(openFileInput(fileName + "_profile.xml"));
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 		} catch (XmlPullParserException e) {

@@ -356,7 +356,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		XmlCreator creator = new XmlCreator();
 		try {
 			FileOutputStream output = openFileOutput(
-					profile.getName() + ".xml", Context.MODE_PRIVATE);
+					profile.getName() + "_profile.xml", Context.MODE_PRIVATE);
 			output.write(creator.create(profile).getBytes());
 			output.close();
 		} catch (FileNotFoundException e1) {
@@ -371,7 +371,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 
 		if (!(name.equals(previousName))) {
 			File file = new File(String.valueOf(getFilesDir()) + "/"
-					+ previousName + ".xml");
+					+ previousName + "_profile.xml");
 			file.delete();
 		}
 	}

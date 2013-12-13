@@ -101,17 +101,17 @@ public class MainActivity extends Activity implements OnItemClickListener,
 			XmlCreator creator = new XmlCreator();
 			FileOutputStream output;
 			try {
-				output = openFileOutput(pDefault.getName() + ".xml",
+				output = openFileOutput(pDefault.getName() + "_profile.xml",
 						Context.MODE_PRIVATE);
 				output.write(creator.create(pDefault).getBytes());
 				output.close();
 
-				output = openFileOutput(pHome.getName() + ".xml",
+				output = openFileOutput(pHome.getName() + "_profile.xml",
 						Context.MODE_PRIVATE);
 				output.write(creator.create(pHome).getBytes());
 				output.close();
 
-				output = openFileOutput(pMeeting.getName() + ".xml",
+				output = openFileOutput(pMeeting.getName() + "_profile.xml",
 						Context.MODE_PRIVATE);
 				output.write(creator.create(pMeeting).getBytes());
 				output.close();
@@ -130,8 +130,6 @@ public class MainActivity extends Activity implements OnItemClickListener,
 			editor.commit();
 		}
 
-		Toast.makeText(this, String.valueOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)), Toast.LENGTH_SHORT).show();
-		Toast.makeText(this, String.valueOf(Calendar.getInstance().get(Calendar.MINUTE)), Toast.LENGTH_SHORT).show();
 		// starts the permanent notification if it is activated
 		if (pref.getBoolean("notification", false)) {
 			Intent resultIntent = new Intent(this, ListDialogActivity.class);
@@ -230,10 +228,12 @@ public class MainActivity extends Activity implements OnItemClickListener,
 		StringBuffer sb = new StringBuffer();
 
 		for (String file : fileList) {
-			sb.append(file);
-			sb.delete(sb.length() - 4, sb.length());
-			profileList.add(sb.toString());
-			sb.delete(0, sb.length());
+			if (file.contains("_profile")) {
+				sb.append(file);
+				sb.delete(sb.length() - 12, sb.length());
+				profileList.add(sb.toString());
+				sb.delete(0, sb.length());
+			}
 		}
 
 		Collections.sort(profileList, new Comparator<String>() {
@@ -297,7 +297,7 @@ public class MainActivity extends Activity implements OnItemClickListener,
 		try {
 			// applies the profile.
 			parser.initializeXmlParser(openFileInput(_a
-					.getItemAtPosition(_position) + ".xml"));
+					.getItemAtPosition(_position) + "_profile.xml"));
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 		} catch (XmlPullParserException e) {
@@ -362,7 +362,7 @@ public class MainActivity extends Activity implements OnItemClickListener,
 			switch (which) {
 			case 0: {
 				File file = new File(String.valueOf(getFilesDir()) + "/"
-						+ a.getItemAtPosition(position) + ".xml");
+						+ a.getItemAtPosition(position) + "_profile.xml");
 				file.delete();
 				refreshListView();
 			}
