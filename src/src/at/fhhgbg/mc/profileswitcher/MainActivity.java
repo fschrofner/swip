@@ -130,8 +130,6 @@ public class MainActivity extends Activity implements OnItemClickListener,
 			editor.commit();
 		}
 
-		Toast.makeText(this, String.valueOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)), Toast.LENGTH_SHORT).show();
-		Toast.makeText(this, String.valueOf(Calendar.getInstance().get(Calendar.MINUTE)), Toast.LENGTH_SHORT).show();
 		// starts the permanent notification if it is activated
 		if (pref.getBoolean("notification", false)) {
 			Intent resultIntent = new Intent(this, ListDialogActivity.class);

@@ -4,14 +4,28 @@ import android.util.Log;
 
 public class Trigger {
 
+	protected enum listen_state {
+		listen_off, listen_on, ignore;
+	}
+	
 	protected enum state {
 		ignore, enabled
 	};
 
 	private String name;
+	private String profileName;
 	private int hours;
 	private int minutes;
-	private String profileName;
+	private listen_state headphones;
+	
+
+	public listen_state getHeadphones() {
+		return headphones;
+	}
+
+	public void setHeadphones(listen_state headphones) {
+		this.headphones = headphones;
+	}
 
 	public int getHours() {
 		return hours;
