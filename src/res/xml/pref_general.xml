@@ -1,0 +1,36 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="notification"
+        android:summary="@string/pref_description_notification"
+        android:title="@string/pref_title_notification" />
+    
+        <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="root"
+        android:summary="@string/pref_description_root"
+        android:title="@string/pref_title_root" />
+
+        <Preference
+        android:key="systemapp"
+        android:summary="@string/pref_description_systemapp"
+        android:title="@string/pref_title_systemapp" 
+        android:dependency="root"/>
+        
+        <Preference 
+        android:key="removeSystemapp"
+        android:summary="@string/pref_description_removeSystemapp"
+        android:title="@string/pref_title_removeSystemapp" 
+        android:dependency="root" />
+                
+    <Preference
+        android:key="about"
+        android:title="@string/title_activity_about" >
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="at.fhhgbg.mc.profileswitcher.AboutActivity"
+            android:targetPackage="at.fhhgbg.mc.profileswitcher" />
+    </Preference>
+
+</PreferenceScreen>
