@@ -13,16 +13,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources.NotFoundException;
+import android.media.AudioManager;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 import at.fhhgbg.mc.profileswitcher.XmlParser;
 
 public class TriggerService extends Service {
-
-	private static BroadcastReceiver tickReceiver;
+		
+	private TriggerBroadcastReceiver triggerReceiver;
 	private int currentHours;
 	private int currentMinutes;
+
+	public void setHeadPhones(boolean headPhones) {
+		this.headPhones = headPhones;
+		Log.i("TriggerService", "Headphones changed");
+		compareTriggers();
+	}
+
+	private boolean headPhones;
 	private List<Trigger> triggerList = new ArrayList<Trigger>();
+	
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -34,54 +45,75 @@ public class TriggerService extends Service {
 
 		Log.i("TriggerService", "TriggerService started");
 
-		// Trigger test = new Trigger();
-		// test.setHours(20);
-		// test.setMinutes(8);
-		// test.setProfileName("Test");
-		// triggerList.add(test);
-
-		// Create a broadcast receiver to handle change in time
-		tickReceiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context _context, Intent _intent) {
-				Log.i("TriggerService", "TimeTick");
-
-				if (_intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
-					int h = Integer.parseInt(String.valueOf(Calendar
-							.getInstance().get(Calendar.HOUR_OF_DAY)));
-					int m = Integer.parseInt(String.valueOf(Calendar
-							.getInstance().get(Calendar.MINUTE)));
-					setTime(h, m);
-				}
-			}
-		};
-
-		// Register the broadcast receiver to receive TIME_TICK
-		registerReceiver(tickReceiver,
-				new IntentFilter(Intent.ACTION_TIME_TICK));
+//		 Trigger test = new Trigger();
+//		 test.setProfileName("Test");
+//		 test.setHours(19);
+//		 test.setMinutes(10);
+//		 test.setHeadphones(Trigger.listen_state.listen_off);
+//		 triggerList.add(test);
+//		
+//		 Trigger test2 = new Trigger();
+//		 test2.setProfileName("Test2");
+//		 test2.setHeadphones(Trigger.listen_state.listen_on);
+//		 triggerList.add(test2);
+		 
+		setInitialHeadphones();
+		
+		// Create a broadcast receiver to handle changes
+		triggerReceiver = new TriggerBroadcastReceiver(this);
 
 		return super.onStartCommand(intent, flags, startId);
 	}
 
-	private void setTime(int _currentHours, int _currentMinutes) {
-		Log.i("TriggerService", "current time updated");
-
+	public void setTime(int _currentHours, int _currentMinutes) {
 		currentHours = _currentHours;
 		currentMinutes = _currentMinutes;
+		Log.i("TriggerService", "current time updated");
 		compareTriggers();
+	}
+	
+	private void setInitialHeadphones(){
+		AudioManager audiomanager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+		if(audiomanager.isWiredHeadsetOn()){
+			headPhones = true;
+			Log.i("TriggerService", "initial headphone value defined as: plugged");
+		} else if (!audiomanager.isWiredHeadsetOn()){
+			headPhones = false;
+			Log.i("TriggerService", "initial headphone value defined as: unplugged");
+		}
 	}
 
 	private void compareTriggers() {
 		for (Trigger trigger : triggerList) {
-			if (trigger.getHours() == currentHours
-					&& trigger.getMinutes() == currentMinutes) {
-				Log.i("TriggerService", "matching trigger found");
+//			if (trigger.getHours() == currentHours
+//					&& trigger.getMinutes() == currentMinutes) {
+//				Log.i("TriggerService", "matching trigger found");
+//
+//				XmlParser parser = new XmlParser(getApplicationContext());
+//				try {
+//					// applies the profile.
+//					parser.initializeXmlParser(openFileInput(trigger
+//							.getProfileName() + ".xml"));
+//				} catch (NotFoundException e) {
+//					e.printStackTrace();
+//				} catch (XmlPullParserException e) {
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//
+//				Log.i("TriggerService", "profile applied");
+//			}
+			if(trigger.getHeadphones() == Trigger.listen_state.listen_on && headPhones || 
+					trigger.getHeadphones() == Trigger.listen_state.listen_off && !headPhones){
+				Log.i("TriggerService", "matching headphone trigger found");
 
 				XmlParser parser = new XmlParser(getApplicationContext());
 				try {
 					// applies the profile.
 					parser.initializeXmlParser(openFileInput(trigger
 							.getProfileName() + ".xml"));
+					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
 				} catch (NotFoundException e) {
 					e.printStackTrace();
 				} catch (XmlPullParserException e) {
@@ -89,12 +121,10 @@ public class TriggerService extends Service {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
-				Log.i("TriggerService", "profile applied");
 			}
 		}
 	}
-
+	
 //	private void refreshTriggers() {
 //
 //		String[] fileList = getFilesDir().list();
@@ -112,5 +142,6 @@ public class TriggerService extends Service {
 //			e.printStackTrace();
 //		}
 //	}
-
+		
 }
+
