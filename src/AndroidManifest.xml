@@ -86,9 +86,11 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-<!--         <receiver android:name="at.fhhgbg.mc.profileswitcher.trigger.TriggerBroadcastReceiver" >
+<!--          <receiver android:name="at.fhhgbg.mc.profileswitcher.trigger.TriggerBroadcastReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_HEADSET_PLUG" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+    			<action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
             </intent-filter>
         </receiver> -->
 
