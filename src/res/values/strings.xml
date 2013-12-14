@@ -36,4 +36,6 @@
 	<string name="credits4"><u>MIT-License</u></string>
 	<string name="credits5">We thank him for a solid basis to work on</string>
 	<string name="ourLicense">This app is licensed under GPLv3</string>
+	<string name="set">Set</string>
+	<string name="cancel">Cancel</string>
 </resources>

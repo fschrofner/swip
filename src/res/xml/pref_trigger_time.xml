@@ -1,0 +1,9 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <at.fhhgbg.mc.profileswitcher.trigger.TimePickerPreference
+        android:key="time"
+        android:title="@string/picker_title_time"
+        />
+
+
+</PreferenceScreen>

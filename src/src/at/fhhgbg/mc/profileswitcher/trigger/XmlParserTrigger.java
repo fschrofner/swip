@@ -38,21 +38,18 @@ public class XmlParserTrigger {
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	public Trigger initializeXmlParser(InputStream _in)
+	public void initializeXmlParser(InputStream _in, Trigger _trigger)
 			throws XmlPullParserException, IOException {
-		
-		Trigger trigger = new Trigger();
 		
 		try {
 			XmlPullParser parser = Xml.newPullParser();
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 			parser.setInput(_in, null);
 			parser.nextTag();
-			readAndApplyTags(parser, trigger);
+			readAndApplyTags(parser, _trigger);
 		} finally {
 			_in.close();					//closes the inputstream in the end
 		}
-		return trigger;
 	}
 
 	/**
