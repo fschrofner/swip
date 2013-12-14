@@ -16,8 +16,26 @@ public class Trigger {
 	private String profileName;
 	private int hours;
 	private int minutes;
+	private int batteryLevel;
+	public int getBatteryLevel() {
+		return batteryLevel;
+	}
+
+	public void setBatteryLevel(int batteryLevel) {
+		this.batteryLevel = batteryLevel;
+	}
+
 	private listen_state headphones;
+	private	listen_state batteryCharging;
 	
+
+	public listen_state getBatteryState() {
+		return batteryCharging;
+	}
+
+	public void setBatteryState(listen_state batteryState) {
+		this.batteryCharging = batteryState;
+	}
 
 	public listen_state getHeadphones() {
 		return headphones;
