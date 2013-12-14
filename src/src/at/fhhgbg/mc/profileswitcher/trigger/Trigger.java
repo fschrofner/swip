@@ -12,6 +12,10 @@ public class Trigger {
 	private int hours;
 	private int minutes;
 	private String profileName;
+	
+	public Trigger(String _name) {
+		name = _name;
+	}
 
 	public int getHours() {
 		return hours;

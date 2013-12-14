@@ -134,6 +134,14 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.trigger.TriggerEditActivity"
+            android:label="@string/title_activity_trigger_edit"
+            android:parentActivityName="at.fhhgbg.mc.profileswitcher.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="at.fhhgbg.mc.profileswitcher.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -23,6 +23,12 @@ import android.util.Log;
 import at.fhhgbg.mc.profileswitcher.XmlCreator;
 import at.fhhgbg.mc.profileswitcher.XmlParser;
 
+/**
+ * Service which manages the triggers.
+ * 
+ * @author Florian Schrofner & Dominik Koeltringer
+ * 
+ */
 public class TriggerService extends Service {
 
 	private static BroadcastReceiver tickReceiver;
@@ -40,29 +46,28 @@ public class TriggerService extends Service {
 
 		Log.i("TriggerService", "TriggerService started");
 
-		 Trigger test = new Trigger();
-		 test.setName("test");
-		 test.setHours(20);
-		 test.setMinutes(8);
-		 test.setProfileName("Home");
-		 
-		 XmlCreatorTrigger creator = new XmlCreatorTrigger();
-			try {
-				FileOutputStream output = openFileOutput(
-						test.getName() + "_trigger.xml", Context.MODE_PRIVATE);
-				output.write(creator.create(test).getBytes());
-				output.close();
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ParserConfigurationException e) {
-				e.printStackTrace();
-			} catch (TransformerException e) {
-				e.printStackTrace();
-			}
-			
-			refreshTriggers();
+		Trigger test = new Trigger("test");
+		test.setHours(20);
+		test.setMinutes(8);
+		test.setProfileName("Home");
+
+		XmlCreatorTrigger creator = new XmlCreatorTrigger();
+		try {
+			FileOutputStream output = openFileOutput(test.getName()
+					+ "_trigger.xml", Context.MODE_PRIVATE);
+			output.write(creator.create(test).getBytes());
+			output.close();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		}
+
+		refreshTriggers();
 
 		// Create a broadcast receiver to handle change in time
 		tickReceiver = new BroadcastReceiver() {
@@ -87,6 +92,14 @@ public class TriggerService extends Service {
 		return super.onStartCommand(intent, flags, startId);
 	}
 
+	/**
+	 * sets the time.
+	 * 
+	 * @param _currentHours
+	 *            the current number of hours.
+	 * @param _currentMinutes
+	 *            the current number of minutes.
+	 */
 	private void setTime(int _currentHours, int _currentMinutes) {
 		Log.i("TriggerService", "current time updated");
 
@@ -95,6 +108,9 @@ public class TriggerService extends Service {
 		compareTriggers();
 	}
 
+	/**
+	 * compares the triggers with the actual state.
+	 */
 	private void compareTriggers() {
 		for (Trigger trigger : triggerList) {
 			if (trigger.getHours() == currentHours
@@ -119,8 +135,11 @@ public class TriggerService extends Service {
 		}
 	}
 
+	/**
+	 * refreshes the list of triggers.
+	 */
 	private void refreshTriggers() {
-		
+
 		triggerList.clear();
 
 		String[] fileList = getFilesDir().list();
@@ -129,8 +148,12 @@ public class TriggerService extends Service {
 		try {
 			for (int i = 0; i < fileList.length; i++) {
 				if (fileList[i].contains("_trigger")) {
-					Log.i("TriggerService", "Trigger found");
-					triggerList.add(parser.initializeXmlParser(openFileInput(fileList[i])));
+					Trigger trigger = new Trigger(fileList[i].substring(0,
+							fileList[i].length() - 12));
+					Log.i("TriggerService", "Trigger found: " + trigger.getName());
+					parser.initializeXmlParser(openFileInput(fileList[i]),
+							trigger);
+					triggerList.add(trigger);
 				} else {
 					Log.i("TriggerService", "no Trigger found");
 				}
@@ -142,7 +165,7 @@ public class TriggerService extends Service {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		Log.i("TriggerService", "triggerList: " + triggerList.size());
 	}
 
