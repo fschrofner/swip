@@ -15,7 +15,9 @@
     <header
         android:fragment="at.fhhgbg.mc.profileswitcher.ProfileEditActivity$DisplayPreferenceFragment"
         android:title="@string/pref_header_display" />
-    These settings headers are only used on tablets.
+
+    <!-- These settings headers are only used on tablets. -->
+
     <header
         android:fragment="at.fhhgbg.mc.profileswitcher.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
@@ -26,10 +28,10 @@
         android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
     <header
-        android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$NotificationPreferenceFragment"
+        android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$TimePreferenceFragment"
         android:title="@string/pref_header_time" />
     <header
-        android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$DataSyncPreferenceFragment"
-        android:title="@string/pref_header_data_sync" />
+        android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$ProfilePreferenceFragment"
+        android:title="@string/pref_header_profile" />
 
 </preference-headers>

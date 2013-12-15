@@ -78,17 +78,17 @@ OnSharedPreferenceChangeListener {
 		}
 	}
 	
-//	/**
-//	 * Adds the buttons to the actionbar (apply, cancel and write to tag).
-//	 * 
-//	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
-//	 */
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.profile_edit, menu);
-//		return true;
-//	}
+	/**
+	 * Adds the buttons to the actionbar (apply, cancel and write to tag).
+	 * 
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.trigger_edit, menu);
+		return true;
+	}
 
 	/**
 	 * If one of the items on the actionbar is pressed.
@@ -98,10 +98,10 @@ OnSharedPreferenceChangeListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
-		if (item.getItemId() == R.id.save_profile) {
+		if (item.getItemId() == R.id.save_trigger) {
 			this.saveTrigger();
 			this.finish();
-		} else if (item.getItemId() == R.id.cancel_profile) {
+		} else if (item.getItemId() == R.id.cancel_trigger) {
 			this.finish();
 		} else if (item.getItemId() == android.R.id.home) {
 			NavUtils.navigateUpFromSameTask(this);
@@ -147,12 +147,19 @@ OnSharedPreferenceChangeListener {
 		fakeHeader.setTitle(R.string.pref_header_time);
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_trigger_time);
+		
+//		// Add 'Sound' preferences, and a corresponding header.
+//		fakeHeader = new PreferenceCategory(this);
+//		fakeHeader.setTitle(R.string.pref_header_profile);
+//		getPreferenceScreen().addPreference(fakeHeader);
+//		addPreferencesFromResource(R.xml.pref_trigger_profile);
 
 		// Bind the summaries of EditText/List/Dialog/Ringtone preferences to
 		// their values. When their values change, their summaries are updated
 		// to reflect the new value, per the Android Design guidelines.
 		bindPreferenceSummaryToValue(findPreference("name_trigger"));
 		bindPreferenceSummaryToValue(findPreference("time"));
+//		bindPreferenceSummaryToValue(findPreference("profile"));
 	}
 
 	/** {@inheritDoc} */
@@ -287,65 +294,6 @@ OnSharedPreferenceChangeListener {
 				PreferenceManager.getDefaultSharedPreferences(
 						preference.getContext()).getString(preference.getKey(),
 						""));
-	}
-
-	/**
-	 * This fragment shows general preferences only. It is used when the
-	 * activity is showing a two-pane settings UI.
-	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public static class GeneralPreferenceFragment extends PreferenceFragment {
-		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			addPreferencesFromResource(R.xml.pref_general);
-
-			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
-			// to their values. When their values change, their summaries are
-			// updated to reflect the new value, per the Android Design
-			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("example_text"));
-			bindPreferenceSummaryToValue(findPreference("example_list"));
-		}
-	}
-
-	/**
-	 * This fragment shows notification preferences only. It is used when the
-	 * activity is showing a two-pane settings UI.
-	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public static class NotificationPreferenceFragment extends
-			PreferenceFragment {
-		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			addPreferencesFromResource(R.xml.pref_trigger_time);
-
-			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
-			// to their values. When their values change, their summaries are
-			// updated to reflect the new value, per the Android Design
-			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
-		}
-	}
-
-	/**
-	 * This fragment shows data and sync preferences only. It is used when the
-	 * activity is showing a two-pane settings UI.
-	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public static class DataSyncPreferenceFragment extends PreferenceFragment {
-		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			addPreferencesFromResource(R.xml.pref_data_sync);
-
-			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
-			// to their values. When their values change, their summaries are
-			// updated to reflect the new value, per the Android Design
-			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("sync_frequency"));
-		}
 	}
 
 	@Override
