@@ -131,14 +131,14 @@ public class SettingsActivity extends PreferenceActivity implements
 		PreferenceScreen screen = getPreferenceScreen();
 		Setter setter = new Setter();
 		
-		if(pref.getBoolean("systemapp", false) || setter.checkSystemapp(this)){
+		if (pref.getBoolean("systemapp", false) || setter.checkSystemapp(this)) {
 			Preference install = findPreference("systemapp");
 			screen.removePreference(install);
 			Preference removeSystemappPreference = (Preference) super.findPreference("removeSystemapp");
 			removeSystemappPreference.setOnPreferenceClickListener(this);
 		}
 		
-		else if(!pref.getBoolean("systemapp", false)){
+		else if (!pref.getBoolean("systemapp", false)) {
 			Preference uninstall = findPreference("removeSystemapp");
 			screen.removePreference(uninstall);
 			Preference systemappPreference = (Preference) super.findPreference("systemapp");
