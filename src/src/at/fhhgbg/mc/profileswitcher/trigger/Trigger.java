@@ -4,17 +4,46 @@ import android.util.Log;
 
 public class Trigger {
 
-	protected enum state {
-		ignore, enabled
-	};
+	protected enum listen_state {
+		listen_off, listen_on, ignore;
+	}
 
 	private String name;
+	private String profileName;
 	private int hours;
 	private int minutes;
-	private String profileName;
-	
+	private int batteryLevel;
+
 	public Trigger(String _name) {
 		name = _name;
+	}
+
+	public int getBatteryLevel() {
+		return batteryLevel;
+	}
+
+	public void setBatteryLevel(int batteryLevel) {
+		this.batteryLevel = batteryLevel;
+	}
+
+	private listen_state headphones;
+	private	listen_state batteryCharging;
+	
+
+	public listen_state getBatteryState() {
+		return batteryCharging;
+	}
+
+	public void setBatteryState(listen_state batteryState) {
+		this.batteryCharging = batteryState;
+	}
+
+	public listen_state getHeadphones() {
+		return headphones;
+	}
+
+	public void setHeadphones(listen_state headphones) {
+		this.headphones = headphones;
 	}
 
 	public int getHours() {
