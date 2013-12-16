@@ -1,7 +1,5 @@
 package at.fhhgbg.mc.profileswitcher.trigger;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,9 +16,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources.NotFoundException;
+import android.media.AudioManager;
+import android.os.BatteryManager;
 import android.os.IBinder;
 import android.util.Log;
-import at.fhhgbg.mc.profileswitcher.XmlCreator;
+import android.widget.Toast;
 import at.fhhgbg.mc.profileswitcher.XmlParser;
 
 /**
@@ -31,11 +31,56 @@ import at.fhhgbg.mc.profileswitcher.XmlParser;
  */
 public class TriggerService extends Service {
 
-	private static BroadcastReceiver tickReceiver;
+	private TriggerBroadcastReceiver triggerReceiver;
 	private int currentHours;
 	private int currentMinutes;
+	private boolean headphones;
+	private boolean batteryCharging;
+	private int batteryLevel;
 	private List<Trigger> triggerList = new ArrayList<Trigger>();
 
+	private void setInitialHeadphones(){
+		AudioManager audiomanager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+		if(audiomanager.isWiredHeadsetOn()){
+			headphones = true;
+			Log.i("TriggerService", "initial headphone value defined as: plugged");
+		} else if (!audiomanager.isWiredHeadsetOn()){
+			headphones = false;
+			Log.i("TriggerService", "initial headphone value defined as: unplugged");
+		}
+		compareTriggers();
+	}
+	
+	protected void setInitialBatteryState(Intent _intent){
+		int status = _intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+		boolean batteryCharging = (status == BatteryManager.BATTERY_STATUS_CHARGING);
+		Log.i("TriggerService", "initial battery state defined as " + batteryCharging);
+		int level = _intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+		int scale = _intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+		float batteryLevelF = level / (float)scale;
+		batteryLevel = (int)(batteryLevelF * 100);
+		Log.i("TriggerService", "initial battery level defined as " + batteryLevel);
+		compareTriggers();
+	}
+	
+	public void setBatteryCharging(boolean batteryCharging) {
+		this.batteryCharging = batteryCharging;
+		Log.i("TriggerService", "batterystate changed to " + batteryCharging);
+		compareTriggers();
+	}
+
+	public void setHeadPhones(boolean _headphones) {
+		this.headphones = _headphones;
+		Log.i("TriggerService", "headphones changed to " + _headphones);
+		compareTriggers();
+	}
+	
+	public void setBatteryLevel(int batteryLevel) {
+		this.batteryLevel = batteryLevel;
+		Log.i("TriggerService", "batterylevel changed to " + batteryLevel);
+		compareTriggers();
+	}
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -46,54 +91,32 @@ public class TriggerService extends Service {
 
 		Log.i("TriggerService", "TriggerService started");
 
-		Trigger test = new Trigger("test");
-		test.setHours(20);
-		test.setMinutes(8);
-		test.setProfileName("Home");
-
-		XmlCreatorTrigger creator = new XmlCreatorTrigger();
-		try {
-			FileOutputStream output = openFileOutput(test.getName()
-					+ "_trigger.xml", Context.MODE_PRIVATE);
-			output.write(creator.create(test).getBytes());
-			output.close();
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (TransformerException e) {
-			e.printStackTrace();
-		}
-
+//		 Trigger test = new Trigger();
+//		 test.setProfileName("Test");
+//		 test.setHours(19);
+//		 test.setMinutes(10);
+//		 test.setHeadphones(Trigger.listen_state.listen_off);
+//		 test.setBatteryState(Trigger.listen_state.listen_on);
+//		 test.setBatteryLevel(96);
+//		 triggerList.add(test);
+		
+//		 Trigger test2 = new Trigger();
+//		 test2.setProfileName("Test2");
+//		 test2.setHeadphones(Trigger.listen_state.listen_on);
+//		 test2.setBatteryState(Trigger.listen_state.listen_off);
+//		 triggerList.add(test2);
+		 
+		setInitialHeadphones();
+		
+		// Create a broadcast receiver to handle changes
+		triggerReceiver = new TriggerBroadcastReceiver(this);
 		refreshTriggers();
-
-		// Create a broadcast receiver to handle change in time
-		tickReceiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context _context, Intent _intent) {
-				Log.i("TriggerService", "TimeTick");
-
-				if (_intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
-					int h = Integer.parseInt(String.valueOf(Calendar
-							.getInstance().get(Calendar.HOUR_OF_DAY)));
-					int m = Integer.parseInt(String.valueOf(Calendar
-							.getInstance().get(Calendar.MINUTE)));
-					setTime(h, m);
-				}
-			}
-		};
-
-		// Register the broadcast receiver to receive TIME_TICK
-		registerReceiver(tickReceiver,
-				new IntentFilter(Intent.ACTION_TIME_TICK));
 
 		return super.onStartCommand(intent, flags, startId);
 	}
 
 	/**
-	 * sets the time.
+	 * Sets the time.
 	 * 
 	 * @param _currentHours
 	 *            the current number of hours.
@@ -101,27 +124,82 @@ public class TriggerService extends Service {
 	 *            the current number of minutes.
 	 */
 	private void setTime(int _currentHours, int _currentMinutes) {
-		Log.i("TriggerService", "current time updated");
-
 		currentHours = _currentHours;
 		currentMinutes = _currentMinutes;
+		Log.i("TriggerService", "current time updated");
 		compareTriggers();
 	}
 
 	/**
-	 * compares the triggers with the actual state.
+	 * Compares the triggers with the actual state.
 	 */
 	private void compareTriggers() {
+		Log.i("TriggerService", "compareTriggers called");
 		for (Trigger trigger : triggerList) {
-			if (trigger.getHours() == currentHours
-					&& trigger.getMinutes() == currentMinutes) {
-				Log.i("TriggerService", "matching trigger found");
+//			if (trigger.getHours() == currentHours
+//					&& trigger.getMinutes() == currentMinutes) {
+//				Log.i("TriggerService", "matching trigger found");
+//
+//				XmlParser parser = new XmlParser(getApplicationContext());
+//				try {
+//					// applies the profile.
+//					parser.initializeXmlParser(openFileInput(trigger
+//							.getProfileName() + ".xml"));
+//				} catch (NotFoundException e) {
+//					e.printStackTrace();
+//				} catch (XmlPullParserException e) {
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//
+//				Log.i("TriggerService", "profile applied");
+//			}
+//			if((trigger.getHeadphones() == Trigger.listen_state.listen_on && headphones) || 
+//					(trigger.getHeadphones() == Trigger.listen_state.listen_off && !headphones)){
+//				Log.i("TriggerService", "matching headphone trigger found");
+//
+//				XmlParser parser = new XmlParser(getApplicationContext());
+//				try {
+//					// applies the profile.
+//					parser.initializeXmlParser(openFileInput(trigger
+//							.getProfileName() + ".xml"));
+//					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
+//				} catch (NotFoundException e) {
+//					e.printStackTrace();
+//				} catch (XmlPullParserException e) {
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			if((trigger.getBatteryState() == Trigger.listen_state.listen_on && batteryCharging) ||
+//					(trigger.getBatteryState() == Trigger.listen_state.listen_off && !batteryCharging)){
+//				Log.i("TriggerService", "matching batterystate trigger found");
+//
+//				XmlParser parser = new XmlParser(getApplicationContext());
+//				try {
+//					// applies the profile.
+//					parser.initializeXmlParser(openFileInput(trigger
+//							.getProfileName() + ".xml"));
+//					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
+//				} catch (NotFoundException e) {
+//					e.printStackTrace();
+//				} catch (XmlPullParserException e) {
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+			if(trigger.getBatteryLevel() == batteryLevel){
+				Log.i("TriggerService", "matching batterylevel trigger found");
 
 				XmlParser parser = new XmlParser(getApplicationContext());
 				try {
 					// applies the profile.
 					parser.initializeXmlParser(openFileInput(trigger
 							.getProfileName() + ".xml"));
+					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
 				} catch (NotFoundException e) {
 					e.printStackTrace();
 				} catch (XmlPullParserException e) {
@@ -136,7 +214,7 @@ public class TriggerService extends Service {
 	}
 
 	/**
-	 * refreshes the list of triggers.
+	 * Refreshes the list of triggers.
 	 */
 	private void refreshTriggers() {
 
