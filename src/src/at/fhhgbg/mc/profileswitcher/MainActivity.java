@@ -192,8 +192,7 @@ public class MainActivity extends Activity implements OnItemClickListener,
 			Editor prefEditor = preferences.edit();
 
 			// loads the default values into the shared preferences
-//			prefEditor.putString("name", "Insert name");
-			prefEditor.putString("name_trigger", "Insert name");
+			prefEditor.putString("name", "Insert name");
 			prefEditor.putString("ringer_mode", "unchanged");
 			prefEditor.putInt("alarm_volume", -1);
 			prefEditor.putInt("media_volume", -1);
@@ -208,7 +207,7 @@ public class MainActivity extends Activity implements OnItemClickListener,
 
 			prefEditor.commit();
 
-			Intent i = new Intent(this, TriggerEditActivity.class);
+			Intent i = new Intent(this, ProfileEditActivity.class);
 			startActivity(i);
 		} else if (item.getItemId() == R.id.settings) {
 			// if the settings are selected
