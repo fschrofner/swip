@@ -13,6 +13,8 @@ public class Trigger {
 	private int hours;
 	private int minutes;
 	private int batteryLevel;
+	private listen_state headphones;
+	private	listen_state batteryCharging;
 
 	public Trigger(String _name) {
 		name = _name;
@@ -25,10 +27,6 @@ public class Trigger {
 	public void setBatteryLevel(int batteryLevel) {
 		this.batteryLevel = batteryLevel;
 	}
-
-	private listen_state headphones;
-	private	listen_state batteryCharging;
-	
 
 	public listen_state getBatteryState() {
 		return batteryCharging;
@@ -74,8 +72,8 @@ public class Trigger {
 		return profileName;
 	}
 
-	public void setProfileName(String profileName) {
-		this.profileName = profileName;
+	public void setProfileName(String _profileName) {
+		this.profileName = _profileName;
 	}
 
 	public String getName() {

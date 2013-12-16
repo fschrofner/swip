@@ -91,7 +91,7 @@ public class TriggerService extends Service {
 
 		Log.i("TriggerService", "TriggerService started");
 
-//		 Trigger test = new Trigger();
+//		 Trigger test = new Trigger("Test");
 //		 test.setProfileName("Test");
 //		 test.setHours(19);
 //		 test.setMinutes(10);
@@ -100,7 +100,7 @@ public class TriggerService extends Service {
 //		 test.setBatteryLevel(96);
 //		 triggerList.add(test);
 		
-//		 Trigger test2 = new Trigger();
+//		 Trigger test2 = new Trigger("Test2");
 //		 test2.setProfileName("Test2");
 //		 test2.setHeadphones(Trigger.listen_state.listen_on);
 //		 test2.setBatteryState(Trigger.listen_state.listen_off);
@@ -123,7 +123,7 @@ public class TriggerService extends Service {
 	 * @param _currentMinutes
 	 *            the current number of minutes.
 	 */
-	private void setTime(int _currentHours, int _currentMinutes) {
+	public void setTime(int _currentHours, int _currentMinutes) {
 		currentHours = _currentHours;
 		currentMinutes = _currentMinutes;
 		Log.i("TriggerService", "current time updated");
@@ -155,24 +155,24 @@ public class TriggerService extends Service {
 //
 //				Log.i("TriggerService", "profile applied");
 //			}
-//			if((trigger.getHeadphones() == Trigger.listen_state.listen_on && headphones) || 
-//					(trigger.getHeadphones() == Trigger.listen_state.listen_off && !headphones)){
-//				Log.i("TriggerService", "matching headphone trigger found");
-//
-//				XmlParser parser = new XmlParser(getApplicationContext());
-//				try {
-//					// applies the profile.
-//					parser.initializeXmlParser(openFileInput(trigger
-//							.getProfileName() + ".xml"));
-//					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-//				} catch (NotFoundException e) {
-//					e.printStackTrace();
-//				} catch (XmlPullParserException e) {
-//					e.printStackTrace();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
+			if((trigger.getHeadphones() == Trigger.listen_state.listen_on && headphones) || 
+					(trigger.getHeadphones() == Trigger.listen_state.listen_off && !headphones)){
+				Log.i("TriggerService", "matching headphone trigger found");
+
+				XmlParser parser = new XmlParser(getApplicationContext());
+				try {
+					// applies the profile.
+					parser.initializeXmlParser(openFileInput(trigger
+							.getProfileName() + "_profile.xml"));
+					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
+				} catch (NotFoundException e) {
+					e.printStackTrace();
+				} catch (XmlPullParserException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 //			if((trigger.getBatteryState() == Trigger.listen_state.listen_on && batteryCharging) ||
 //					(trigger.getBatteryState() == Trigger.listen_state.listen_off && !batteryCharging)){
 //				Log.i("TriggerService", "matching batterystate trigger found");
@@ -191,25 +191,25 @@ public class TriggerService extends Service {
 //					e.printStackTrace();
 //				}
 //			}
-			if(trigger.getBatteryLevel() == batteryLevel){
-				Log.i("TriggerService", "matching batterylevel trigger found");
-
-				XmlParser parser = new XmlParser(getApplicationContext());
-				try {
-					// applies the profile.
-					parser.initializeXmlParser(openFileInput(trigger
-							.getProfileName() + ".xml"));
-					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-				} catch (NotFoundException e) {
-					e.printStackTrace();
-				} catch (XmlPullParserException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				Log.i("TriggerService", "profile applied");
-			}
+//			if(trigger.getBatteryLevel() == batteryLevel){
+//				Log.i("TriggerService", "matching batterylevel trigger found");
+//
+//				XmlParser parser = new XmlParser(getApplicationContext());
+//				try {
+//					// applies the profile.
+//					parser.initializeXmlParser(openFileInput(trigger
+//							.getProfileName() + ".xml"));
+//					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
+//				} catch (NotFoundException e) {
+//					e.printStackTrace();
+//				} catch (XmlPullParserException e) {
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//
+//				Log.i("TriggerService", "profile applied");
+//			}
 		}
 	}
 
