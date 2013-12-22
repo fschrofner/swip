@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -42,7 +41,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 import at.fhhgbg.mc.profileswitcher.trigger.TriggerEditActivity;
-import at.fhhgbg.mc.profileswitcher.trigger.TriggerService;
 import at.fhhgbg.mc.profileswitcher.widgets.ListWidget;
 
 /**
@@ -204,10 +202,13 @@ public class MainActivity extends Activity implements OnItemClickListener,
 			prefEditor.putInt("display_brightness", -1);
 			prefEditor.putString("display_auto_mode", "unchanged");
 			prefEditor.putString("display_time_out", "-1");
-
+			
+			prefEditor.putString("name_trigger", "Insert name");
+			prefEditor.putString("profile", "Choose a profile");
+			prefEditor.putString("time", "00:00");
 			prefEditor.commit();
 
-			Intent i = new Intent(this, ProfileEditActivity.class);
+			Intent i = new Intent(this, TriggerEditActivity.class);
 			startActivity(i);
 		} else if (item.getItemId() == R.id.settings) {
 			// if the settings are selected

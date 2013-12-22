@@ -60,14 +60,14 @@ public class XmlCreatorTrigger {
 		outputProperties.setProperty(OutputKeys.VERSION, "1.0");
 		outputProperties.setProperty(OutputKeys.ENCODING, "UTF-8");
 
-//		// writes the ringer mode change
-//		Element ringerModeElement = xmlProfile.createElement("ringer_mode");
-//		ringerModeElement.setAttribute("mode",
-//				String.format("%s", _profile.getRingerMode()));
-//		rootElement.appendChild(ringerModeElement);
-//		Log.i("XMLCreator",
-//				String.format("vibration was defined as %s",
-//						_profile.getRingerMode()));
+		// writes the selected profile
+		Element profile = xmlProfile.createElement("profile");
+		profile.setAttribute("name",
+				String.format("%s", _trigger.getProfileName()));
+		rootElement.appendChild(profile);
+		Log.i("XMLCreatorTrigger",
+				String.format("Profile was selected: %s",
+						_trigger.getProfileName()));
 
 		// writes time changes
 		if (_trigger.getMinutes() >= -1 && _trigger.getHours() >= -1) {

@@ -71,9 +71,9 @@ public class XmlParserTrigger {
 			
 			String name = _parser.getName();
 			// Starts by looking for the entry tag
-//			if (name.equals("ringer_mode")) {
-//				setRingerMode(_parser);
-			if (name.equals("time")) {	
+			if (name.equals("profile")) {
+				setProfile(_parser, _trigger);
+			}	else if (name.equals("time")) {	
 				setTime(_parser, _trigger);
 //			} else if (name.equals("nfc")){
 //				setNfc(_parser);
@@ -105,26 +105,16 @@ public class XmlParserTrigger {
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	private void setRingerMode(XmlPullParser _parser)
+	private void setProfile(XmlPullParser _parser, Trigger _trigger)
 			throws XmlPullParserException, IOException {
-		_parser.require(XmlPullParser.START_TAG, null, "ringer_mode");			//the start-tag is ringer_mode
+		_parser.require(XmlPullParser.START_TAG, null, "profile");				//the start-tag is ringer_mode
 
-		if (_parser.getAttributeValue(null, "mode") != null) {					//if there is a mode attribute inside(otherwise it would not be a valid setting)
-			if (_parser.getAttributeValue(null, "mode").equals("normal")) {		//if the mode is defined as normal
-				setter.setRingerMode(context, Profile.mode.normal);
-				Log.i("XmlParser", "RingerMode: normal");
-			} else if (_parser.getAttributeValue(null, "mode").equals("silent")) {//if the mode is defined as silent
-				setter.setRingerMode(context, Profile.mode.silent);
-				Log.i("XmlParser", "RingerMode: silent");
-			} else if (_parser.getAttributeValue(null, "mode")					//if the mode is defined as vibrate
-					.equals("vibrate")) {
-				setter.setRingerMode(context, Profile.mode.vibrate);
-				Log.i("XmlParser", "RingerMode: vibrate");
-			} else {															//for log messages only
-				Log.i("XmlParser", "RingerMode: No change.");
-			}
+		if (_parser.getAttributeValue(null, "name") != null) {					//if there is a mode attribute inside(otherwise it would not be a valid setting)			
+			_trigger.setProfileName(_parser.getAttributeValue(null, "name"));
+			Log.i("XmlParserTrigger", "Profile: " 
+					+ _parser.getAttributeValue(null, "name"));
 		} else {
-			Log.e("XmlParser", "RingerMode: Invalid Argument!");
+			Log.e("XmlParserTrigger", "Profile: Invalid Argument!");
 		}
 		_parser.nextTag();														//goes to the next tag (otherwise the readAndApplyTags method would not continue)
 	}

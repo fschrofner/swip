@@ -136,35 +136,15 @@ public class TriggerService extends Service {
 	private void compareTriggers() {
 		Log.i("TriggerService", "compareTriggers called");
 		for (Trigger trigger : triggerList) {
-//			if (trigger.getHours() == currentHours
-//					&& trigger.getMinutes() == currentMinutes) {
-//				Log.i("TriggerService", "matching trigger found");
-//
-//				XmlParser parser = new XmlParser(getApplicationContext());
-//				try {
-//					// applies the profile.
-//					parser.initializeXmlParser(openFileInput(trigger
-//							.getProfileName() + ".xml"));
-//				} catch (NotFoundException e) {
-//					e.printStackTrace();
-//				} catch (XmlPullParserException e) {
-//					e.printStackTrace();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//
-//				Log.i("TriggerService", "profile applied");
-//			}
-			if((trigger.getHeadphones() == Trigger.listen_state.listen_on && headphones) || 
-					(trigger.getHeadphones() == Trigger.listen_state.listen_off && !headphones)){
-				Log.i("TriggerService", "matching headphone trigger found");
+			if (trigger.getHours() == currentHours
+					&& trigger.getMinutes() == currentMinutes) {
+				Log.i("TriggerService", "matching trigger found");
 
 				XmlParser parser = new XmlParser(getApplicationContext());
 				try {
 					// applies the profile.
 					parser.initializeXmlParser(openFileInput(trigger
 							.getProfileName() + "_profile.xml"));
-					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
 				} catch (NotFoundException e) {
 					e.printStackTrace();
 				} catch (XmlPullParserException e) {
@@ -172,7 +152,27 @@ public class TriggerService extends Service {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+
+				Log.i("TriggerService", "profile applied");
 			}
+//			if((trigger.getHeadphones() == Trigger.listen_state.listen_on && headphones) || 
+//					(trigger.getHeadphones() == Trigger.listen_state.listen_off && !headphones)){
+//				Log.i("TriggerService", "matching headphone trigger found");
+//
+//				XmlParser parser = new XmlParser(getApplicationContext());
+//				try {
+//					// applies the profile.
+//					parser.initializeXmlParser(openFileInput(trigger
+//							.getProfileName() + "_profile.xml"));
+//					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
+//				} catch (NotFoundException e) {
+//					e.printStackTrace();
+//				} catch (XmlPullParserException e) {
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
 //			if((trigger.getBatteryState() == Trigger.listen_state.listen_on && batteryCharging) ||
 //					(trigger.getBatteryState() == Trigger.listen_state.listen_off && !batteryCharging)){
 //				Log.i("TriggerService", "matching batterystate trigger found");
