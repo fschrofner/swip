@@ -7,12 +7,19 @@
 
     <!-- General settings -->
     <string name="pref_header_general">General</string>
+    <string name="pref_trigger_name_default">Insert name</string>
+    <string name="pref_title_profile">Profile</string>
+    <string name="pref_profile_default">Choose a profile</string>
 
     <!-- Settings for Time -->
     <string name="pref_header_time">Time</string>
     <string name="picker_title_time">Time</string>
     
-    <!-- Settings for Profile -->
-    <string name="pref_header_profile">Profile</string>
-
+    <!-- Strings for Alert Dialog -->
+    <string name="alert_name_title">Trigger Name</string>
+    <string name="alert_profile_title">Profile Name</string>
+    <string name="alert_name_text">Please input a valid name for the trigger!</string>
+	<string name="alert_profile_text">Please input a valid name for the profile!</string>
+	<string name="alert_button">Okay</string>
+    
 </resources>

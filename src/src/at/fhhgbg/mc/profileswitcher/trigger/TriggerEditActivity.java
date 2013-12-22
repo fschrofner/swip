@@ -1,14 +1,12 @@
 package at.fhhgbg.mc.profileswitcher.trigger;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -17,22 +15,16 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
-import at.fhhgbg.mc.profileswitcher.NfcWriterActivity;
-import at.fhhgbg.mc.profileswitcher.Profile;
 import at.fhhgbg.mc.profileswitcher.R;
-import at.fhhgbg.mc.profileswitcher.XmlCreator;
-import at.fhhgbg.mc.profileswitcher.R.string;
-import at.fhhgbg.mc.profileswitcher.R.xml;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -45,7 +37,7 @@ import javax.xml.transform.TransformerException;
  * 
  */
 public class TriggerEditActivity extends PreferenceActivity implements
-OnSharedPreferenceChangeListener {
+		OnSharedPreferenceChangeListener {
 	/**
 	 * Determines whether to always show the simplified settings UI, where
 	 * settings are presented in a single list. When false, settings are shown
@@ -53,8 +45,11 @@ OnSharedPreferenceChangeListener {
 	 * shown on tablets.
 	 */
 	private static final boolean ALWAYS_SIMPLE_PREFS = false;
-	private String previousName; 	// saves the previous profile name for the case the profile gets renamed
-									// (so the previous file of this profile can be deleted)
+	private CharSequence[] profileArray;
+	private String previousName; // saves the previous profile name for the case
+									// the profile gets renamed
+									// (so the previous file of this profile can
+									// be deleted)
 
 	/**
 	 * Sets up the actionbar.
@@ -77,7 +72,7 @@ OnSharedPreferenceChangeListener {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
-	
+
 	/**
 	 * Adds the buttons to the actionbar (apply, cancel and write to tag).
 	 * 
@@ -97,17 +92,64 @@ OnSharedPreferenceChangeListener {
 	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
+
+		SharedPreferences pref = PreferenceManager
+				.getDefaultSharedPreferences(this);
+
 		if (item.getItemId() == R.id.save_trigger) {
-			this.saveTrigger();
-			this.finish();
+			if (pref.getString(
+					"name_trigger",
+					getResources()
+							.getString(R.string.pref_trigger_name_default))
+					.equals(getResources().getString(
+							R.string.pref_trigger_name_default))
+					|| pref.getString(
+							"profile",
+							getResources().getString(
+									R.string.pref_profile_default)).equals(
+							getResources().getString(
+									R.string.pref_profile_default))) {
+				AlertDialog.Builder dialog = new AlertDialog.Builder(this,
+						AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+				if (pref.getString(
+						"name_trigger",
+						getResources().getString(
+								R.string.pref_trigger_name_default)).equals(
+						getResources().getString(
+								R.string.pref_trigger_name_default))) {
+					dialog.setTitle(getResources().getString(
+							R.string.alert_name_title));
+					dialog.setMessage(getResources().getString(
+							R.string.alert_name_text));
+				} else {
+					dialog.setTitle(getResources().getString(
+							R.string.alert_profile_title));
+					dialog.setMessage(getResources().getString(
+							R.string.alert_profile_text));
+				}
+				dialog.setNegativeButton(
+						getResources().getString(R.string.alert_button),
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+
+						});
+				dialog.show();
+			} else {
+				this.saveTrigger();
+				this.finish();
+			}
 		} else if (item.getItemId() == R.id.cancel_trigger) {
 			this.finish();
 		} else if (item.getItemId() == android.R.id.home) {
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
-		
+
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -127,12 +169,12 @@ OnSharedPreferenceChangeListener {
 		if (!isSimplePreferences(this)) {
 			return;
 		}
-		
+
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		
+
 		previousName = pref.getString("name_trigger", "default name");
-		
+
 		pref.registerOnSharedPreferenceChangeListener(this);
 
 		// In the simplified UI, fragments are not used at all and we instead
@@ -140,26 +182,24 @@ OnSharedPreferenceChangeListener {
 
 		// Add 'general' preferences.
 		addPreferencesFromResource(R.xml.pref_trigger_general);
+		refreshProfileArray();
+		ListPreference lp = (ListPreference) findPreference("profile");
+		lp.setEntries(profileArray);
+		lp.setEntryValues(profileArray);
 
 		PreferenceCategory fakeHeader = new PreferenceCategory(this);
-		
+
 		// Add 'Time' preferences, and a corresponding header.
 		fakeHeader.setTitle(R.string.pref_header_time);
 		getPreferenceScreen().addPreference(fakeHeader);
-		addPreferencesFromResource(R.xml.pref_trigger_time);
-		
-//		// Add 'Sound' preferences, and a corresponding header.
-//		fakeHeader = new PreferenceCategory(this);
-//		fakeHeader.setTitle(R.string.pref_header_profile);
-//		getPreferenceScreen().addPreference(fakeHeader);
-//		addPreferencesFromResource(R.xml.pref_trigger_profile);
+		addPreferencesFromResource(R.xml.pref_trigger_time);	
 
-		// Bind the summaries of EditText/List/Dialog/Ringtone preferences to
+		// Bind the summaries of EditText/List/Dialog preferences to
 		// their values. When their values change, their summaries are updated
 		// to reflect the new value, per the Android Design guidelines.
 		bindPreferenceSummaryToValue(findPreference("name_trigger"));
 		bindPreferenceSummaryToValue(findPreference("time"));
-//		bindPreferenceSummaryToValue(findPreference("profile"));
+		bindPreferenceSummaryToValue(findPreference("profile"));
 	}
 
 	/** {@inheritDoc} */
@@ -167,35 +207,38 @@ OnSharedPreferenceChangeListener {
 	public boolean onIsMultiPane() {
 		return isXLargeTablet(this) && !isSimplePreferences(this);
 	}
-	
+
 	/**
 	 * Saves the current settings of the activity to a profile object and lets
 	 * it be written by the XmlCreator.
 	 */
 	public void saveTrigger() {
+
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 
-		String name = pref.getString("name_trigger", "Insert name");
+		String name = pref.getString("name_trigger",
+				getResources().getString(R.string.pref_trigger_name_default));
 
 		Trigger trigger = new Trigger(name);
 
-		trigger.setHours(pref.getInt("hours", -1));
-		trigger.setMinutes(pref.getInt("minutes", -1));
+		// if (!findPreference("time").isEnabled()) {
+		// trigger.setHours(-1);
+		// trigger.setMinutes(-1);
+		// } else {
+		trigger.setHours(Integer.parseInt(pref.getString("time", "00:00")
+				.split(":")[0]));
+		trigger.setMinutes(Integer.parseInt(pref.getString("time", "00:00")
+				.split(":")[1]));
+		// }
 
-//		if (!findPreference("time").isEnabled()) {
-//			trigger.setHours(-1);
-//			trigger.setMinutes(-1);
-//		} else {
-			trigger.setHours(Integer.parseInt(pref.getString("time", "00:00").split(":")[0]));
-			trigger.setMinutes(Integer.parseInt(pref.getString("time", "00:00").split(":")[1]));
-//		}
+		trigger.setProfileName(pref.getString("profile", getResources()
+				.getString(R.string.pref_profile_default)));
 
-		
 		XmlCreatorTrigger creator = new XmlCreatorTrigger();
 		try {
-			FileOutputStream output = openFileOutput(
-					trigger.getName() + "_trigger.xml", Context.MODE_PRIVATE);
+			FileOutputStream output = openFileOutput(trigger.getName()
+					+ "_trigger.xml", Context.MODE_PRIVATE);
 			output.write(creator.create(trigger).getBytes());
 			output.close();
 		} catch (FileNotFoundException e1) {
@@ -212,7 +255,9 @@ OnSharedPreferenceChangeListener {
 			File file = new File(String.valueOf(getFilesDir()) + "/"
 					+ previousName + "_trigger.xml");
 			file.delete();
+
 		}
+
 	}
 
 	/**
@@ -300,6 +345,33 @@ OnSharedPreferenceChangeListener {
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	/**
+	 * Refreshes the profile array.
+	 */
+	private void refreshProfileArray() {
+		List<String> profileList = new ArrayList<String>();
+
+		String[] fileList = getFilesDir().list();
+		StringBuffer sb = new StringBuffer();
+
+		for (String file : fileList) {
+			if (file.contains("_profile")) {
+				sb.append(file);
+				sb.delete(sb.length() - 12, sb.length());
+				profileList.add(sb.toString());
+				sb.delete(0, sb.length());
+			}
+		}
+
+		profileArray = new CharSequence[profileList.size() + 1];
+		profileArray[0] = getResources().getString(
+				R.string.pref_profile_default);
+
+		for (int i = 0; i < profileArray.length - 1; i++) {
+			profileArray[i + 1] = profileList.get(i);
+		}
 	}
 }

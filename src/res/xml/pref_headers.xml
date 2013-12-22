@@ -5,7 +5,7 @@
 
     <header
         android:fragment="at.fhhgbg.mc.profileswitcher.ProfileEditActivity$GeneralPreferenceFragment"
-        android:title="@string/pref_header_general" />
+        android:title="@string/pref_header_name" />
     <header
         android:fragment="at.fhhgbg.mc.profileswitcher.ProfileEditActivity$SoundPreferenceFragment"
         android:title="@string/pref_header_sound" />
@@ -30,8 +30,5 @@
     <header
         android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$TimePreferenceFragment"
         android:title="@string/pref_header_time" />
-    <header
-        android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$ProfilePreferenceFragment"
-        android:title="@string/pref_header_profile" />
 
 </preference-headers>
