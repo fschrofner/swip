@@ -202,10 +202,15 @@ public class MainActivity extends Activity implements OnItemClickListener,
 			prefEditor.putInt("display_brightness", -1);
 			prefEditor.putString("display_auto_mode", "unchanged");
 			prefEditor.putString("display_time_out", "-1");
+			prefEditor.putString("lockscreen", "unchanged");
+			prefEditor.putString("nfc", "unchanged");
+			prefEditor.putString("airplane_mode", "unchanged");
 			
 			prefEditor.putString("name_trigger", "Insert name");
 			prefEditor.putString("profile", "Choose a profile");
-			prefEditor.putString("time", "unchanged");
+			prefEditor.putString("time", "Ignored");
+			prefEditor.putString("battery_state", "ignored");
+			prefEditor.putInt("battery_level", -1);
 			prefEditor.commit();
 
 			Intent i = new Intent(this, TriggerEditActivity.class);

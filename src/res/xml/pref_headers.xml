@@ -30,5 +30,8 @@
     <header
         android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$TimePreferenceFragment"
         android:title="@string/pref_header_time" />
+    <header
+        android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$BatteryPreferenceFragment"
+        android:title="@string/pref_header_battery" />
 
 </preference-headers>

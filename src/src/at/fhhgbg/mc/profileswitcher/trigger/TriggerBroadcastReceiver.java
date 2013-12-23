@@ -32,12 +32,13 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 	public void onReceive(Context _context, Intent _intent) {
 		// TODO Auto-generated method stub
 		if (_intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
-			Log.i("TriggerBroadcastReceiver", "TimeTick");
+			
 			int h = Integer.parseInt(String.valueOf(Calendar
 					.getInstance().get(Calendar.HOUR_OF_DAY)));
 			int m = Integer.parseInt(String.valueOf(Calendar
 					.getInstance().get(Calendar.MINUTE)));
 			triggerservice.setTime(h, m);
+			Log.i("TriggerBroadcastReceiver", "TimeTick: " + h + ":" + m);
 		}
 		else if (_intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)){
 			int state = _intent.getIntExtra("state", -1);

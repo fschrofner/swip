@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+     <ListPreference
+        android:defaultValue="ignored"
+        android:entries="@array/pref_battery_state_titles"
+        android:entryValues="@array/pref_battery_state_values"
+        android:key="battery_state"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_battery_state" />
+     
+     <net.jayschwa.android.preference.SliderPreference
+        maximum_value="100"
+        android:defaultValue="@string/slider_default_battery_level"
+        android:dialogMessage="@string/slider_message_battery_level"
+        android:key="battery_level"
+        android:summary="@array/slider_summaries_battery_level"
+        android:title="@string/slider_title_battery_level" />
+    
+
+</PreferenceScreen>

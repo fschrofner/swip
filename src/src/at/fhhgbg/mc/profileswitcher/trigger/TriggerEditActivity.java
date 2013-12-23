@@ -18,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import at.fhhgbg.mc.profileswitcher.Profile;
 import at.fhhgbg.mc.profileswitcher.R;
 
 import java.io.File;
@@ -193,6 +194,12 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		fakeHeader.setTitle(R.string.pref_header_time);
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_trigger_time);
+		
+		// Add 'Battery' preferences, and a corresponding header.
+		fakeHeader = new PreferenceCategory(this);
+		fakeHeader.setTitle(R.string.pref_header_battery);
+		getPreferenceScreen().addPreference(fakeHeader);
+		addPreferencesFromResource(R.xml.pref_trigger_battery);
 
 		// Bind the summaries of EditText/List/Dialog preferences to
 		// their values. When their values change, their summaries are updated
@@ -200,6 +207,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("name_trigger"));
 		bindPreferenceSummaryToValue(findPreference("time"));
 		bindPreferenceSummaryToValue(findPreference("profile"));
+		bindPreferenceSummaryToValue(findPreference("battery_state"));
 	}
 
 	/** {@inheritDoc} */
@@ -222,7 +230,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 		Trigger trigger = new Trigger(name);
 
-		if (pref.getString("time", "unchanged").equals("unchanged")) {
+		if (pref.getString("time", "Ignored").equals("Ignored")) {
 			trigger.setHours(-1);
 			trigger.setMinutes(-1);
 		} else {
@@ -234,6 +242,17 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 		trigger.setProfileName(pref.getString("profile", getResources()
 				.getString(R.string.pref_profile_default)));
+		
+		trigger.setBatteryLevel(pref.getInt("battery_level", -1));
+		
+		if (pref.getString("battery_state", "ignored").equals("charging")) {
+			trigger.setBatteryState(Trigger.listen_state.listen_on);
+		} else if (pref.getString("battery_state", "ignored").equals(
+				"discharging")) {
+			trigger.setBatteryState(Trigger.listen_state.listen_off);
+		} else {
+			trigger.setBatteryState(Trigger.listen_state.ignore);
+		}
 
 		XmlCreatorTrigger creator = new XmlCreatorTrigger();
 		try {
