@@ -192,7 +192,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		// Add 'Time' preferences, and a corresponding header.
 		fakeHeader.setTitle(R.string.pref_header_time);
 		getPreferenceScreen().addPreference(fakeHeader);
-		addPreferencesFromResource(R.xml.pref_trigger_time);	
+		addPreferencesFromResource(R.xml.pref_trigger_time);
 
 		// Bind the summaries of EditText/List/Dialog preferences to
 		// their values. When their values change, their summaries are updated
@@ -222,15 +222,15 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 		Trigger trigger = new Trigger(name);
 
-		// if (!findPreference("time").isEnabled()) {
-		// trigger.setHours(-1);
-		// trigger.setMinutes(-1);
-		// } else {
-		trigger.setHours(Integer.parseInt(pref.getString("time", "00:00")
-				.split(":")[0]));
-		trigger.setMinutes(Integer.parseInt(pref.getString("time", "00:00")
-				.split(":")[1]));
-		// }
+		if (pref.getString("time", "unchanged").equals("unchanged")) {
+			trigger.setHours(-1);
+			trigger.setMinutes(-1);
+		} else {
+			trigger.setHours(Integer.parseInt(pref.getString("time", "00:00")
+					.split(":")[0]));
+			trigger.setMinutes(Integer.parseInt(pref.getString("time", "00:00")
+					.split(":")[1]));
+		}
 
 		trigger.setProfileName(pref.getString("profile", getResources()
 				.getString(R.string.pref_profile_default)));
