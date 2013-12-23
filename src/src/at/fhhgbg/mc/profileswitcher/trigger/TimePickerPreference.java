@@ -4,14 +4,21 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TimePicker;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import at.fhhgbg.mc.profileswitcher.R;
 
-public class TimePickerPreference extends DialogPreference {
+public class TimePickerPreference extends DialogPreference implements
+OnCheckedChangeListener {
+	
 	private int lastHour = 0;
 	private int lastMinute = 0;
 	private TimePicker picker = null;
+	private CheckBox checkbox;
 
 	public static int getHour(String time) {
 		String[] pieces = time.split(":");
@@ -27,8 +34,9 @@ public class TimePickerPreference extends DialogPreference {
 		return (Integer.parseInt(pieces[1]));
 	}
 
-	public TimePickerPreference(Context ctxt, AttributeSet attrs) {
-		super(ctxt, attrs);
+	public TimePickerPreference(Context _context, AttributeSet attrs) {
+		super(_context, attrs);
+		setDialogLayoutResource(R.layout.layout_timepicker);
 
 		setPositiveButtonText(R.string.set);
 		setNegativeButtonText(R.string.cancel);
@@ -36,10 +44,23 @@ public class TimePickerPreference extends DialogPreference {
 
 	@Override
 	protected View onCreateDialogView() {
-		picker = new TimePicker(getContext());
+		View view = super.onCreateDialogView();
+		
+		picker = (TimePicker) view.findViewById(R.id.timepicker);
 		picker.setIs24HourView(true);
+		
+		checkbox = (CheckBox) view.findViewById(R.id.checkbox_timepicker);
+		checkbox.setOnCheckedChangeListener(this);
+		
+		if (getPersistedString("unchanged").contains(":")) {
+			checkbox.setChecked(true);
+			picker.setEnabled(true);
+		} else {
+			checkbox.setChecked(false);
+			picker.setEnabled(false);
+		}
 
-		return (picker);
+		return view;
 	}
 
 	@Override
@@ -54,13 +75,19 @@ public class TimePickerPreference extends DialogPreference {
 	protected void onDialogClosed(boolean positiveResult) {
 		super.onDialogClosed(positiveResult);
 
-		if (positiveResult) {
+		if (checkbox.isChecked() && positiveResult) {
 			lastHour = picker.getCurrentHour();
 			lastMinute = picker.getCurrentMinute();
 
 			String time = String.format("%02d", lastHour) + ":"
 					+ String.format("%02d", lastMinute);
 
+			if (callChangeListener(time)) {
+				persistString(time);
+			}
+		} else if (positiveResult) {
+			String time = "unchanged";
+			
 			if (callChangeListener(time)) {
 				persistString(time);
 			}
@@ -78,15 +105,31 @@ public class TimePickerPreference extends DialogPreference {
 
 		if (restoreValue) {
 			if (defaultValue == null) {
-				time = getPersistedString("00:00");
-			} else {
+				time = getPersistedString("unchanged");
+			} else  if (getPersistedString("unchanged").contains(":")){
+				Log.i("TimePreference", "contains :");
 				time = getPersistedString(defaultValue.toString());
+				checkbox.setChecked(true);
+				picker.setEnabled(true);
+				lastHour = getHour(time);
+				lastMinute = getMinute(time);
+			} else {
+				Log.i("TimePreference", "else");
+				time = getPersistedString(defaultValue.toString());
+				checkbox.setChecked(false);
+				picker.setEnabled(false);
 			}
 		} else {
 			time = defaultValue.toString();
 		}
+	}
 
-		lastHour = getHour(time);
-		lastMinute = getMinute(time);
+	@Override
+	public void onCheckedChanged(CompoundButton arg0, boolean _isChecked) {
+		if (_isChecked) {
+			picker.setEnabled(true);
+		} else {
+			picker.setEnabled(false);
+		}
 	}
 }

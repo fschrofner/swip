@@ -205,7 +205,7 @@ public class MainActivity extends Activity implements OnItemClickListener,
 			
 			prefEditor.putString("name_trigger", "Insert name");
 			prefEditor.putString("profile", "Choose a profile");
-			prefEditor.putString("time", "00:00");
+			prefEditor.putString("time", "unchanged");
 			prefEditor.commit();
 
 			Intent i = new Intent(this, TriggerEditActivity.class);

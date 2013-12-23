@@ -73,13 +73,12 @@ public class XmlCreatorTrigger {
 		if (_trigger.getMinutes() >= -1 && _trigger.getHours() >= -1) {
 			Element timeElement = xmlProfile.createElement("time");
 			
-			if (_trigger.getMinutes() >= -1)
-				timeElement.setAttribute("minutes",
-						String.format("%d", _trigger.getMinutes()));
-			
 			if (_trigger.getHours() >= -1)
 				timeElement.setAttribute("hours",
 						String.format("%d", _trigger.getHours()));
+			if (_trigger.getMinutes() >= -1)
+				timeElement.setAttribute("minutes",
+						String.format("%d", _trigger.getMinutes()));
 			
 			Log.i("XMLCreatorTrigger",
 					String.format(
