@@ -52,7 +52,7 @@ OnCheckedChangeListener {
 		checkbox = (CheckBox) view.findViewById(R.id.checkbox_timepicker);
 		checkbox.setOnCheckedChangeListener(this);
 		
-		if (getPersistedString("unchanged").contains(":")) {
+		if (getPersistedString("Ignored").contains(":")) {
 			checkbox.setChecked(true);
 			picker.setEnabled(true);
 		} else {
@@ -86,7 +86,7 @@ OnCheckedChangeListener {
 				persistString(time);
 			}
 		} else if (positiveResult) {
-			String time = "unchanged";
+			String time = "Ignored";
 			
 			if (callChangeListener(time)) {
 				persistString(time);
@@ -105,8 +105,8 @@ OnCheckedChangeListener {
 
 		if (restoreValue) {
 			if (defaultValue == null) {
-				time = getPersistedString("unchanged");
-			} else  if (getPersistedString("unchanged").contains(":")){
+				time = getPersistedString("Ignored");
+			} else  if (getPersistedString("Ignored").contains(":")){
 				Log.i("TimePreference", "contains :");
 				time = getPersistedString(defaultValue.toString());
 				checkbox.setChecked(true);

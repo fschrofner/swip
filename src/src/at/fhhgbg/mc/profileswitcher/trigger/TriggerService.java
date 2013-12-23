@@ -51,6 +51,14 @@ public class TriggerService extends Service {
 		compareTriggers();
 	}
 	
+	private void setInitialTime() {
+		int h = Integer.parseInt(String.valueOf(Calendar
+				.getInstance().get(Calendar.HOUR_OF_DAY)));
+		int m = Integer.parseInt(String.valueOf(Calendar
+				.getInstance().get(Calendar.MINUTE)));
+		setTime(h, m);
+	}
+	
 	protected void setInitialBatteryState(Intent _intent){
 		int status = _intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
 		boolean batteryCharging = (status == BatteryManager.BATTERY_STATUS_CHARGING);
@@ -106,6 +114,7 @@ public class TriggerService extends Service {
 //		 test2.setBatteryState(Trigger.listen_state.listen_off);
 //		 triggerList.add(test2);
 		 
+		setInitialTime();
 		setInitialHeadphones();
 		
 		// Create a broadcast receiver to handle changes
@@ -126,7 +135,7 @@ public class TriggerService extends Service {
 	public void setTime(int _currentHours, int _currentMinutes) {
 		currentHours = _currentHours;
 		currentMinutes = _currentMinutes;
-		Log.i("TriggerService", "current time updated");
+		Log.i("TriggerService", "current time updated: " + currentHours + ":" + currentMinutes);
 		compareTriggers();
 	}
 
@@ -136,25 +145,27 @@ public class TriggerService extends Service {
 	private void compareTriggers() {
 		Log.i("TriggerService", "compareTriggers called");
 		for (Trigger trigger : triggerList) {
-			if (trigger.getHours() == currentHours
-					&& trigger.getMinutes() == currentMinutes) {
-				Log.i("TriggerService", "matching trigger found");
-
-				XmlParser parser = new XmlParser(getApplicationContext());
-				try {
-					// applies the profile.
-					parser.initializeXmlParser(openFileInput(trigger
-							.getProfileName() + "_profile.xml"));
-				} catch (NotFoundException e) {
-					e.printStackTrace();
-				} catch (XmlPullParserException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				Log.i("TriggerService", "profile applied");
-			}
+			
+//			if (trigger.getHours() == currentHours
+//					&& trigger.getMinutes() == currentMinutes) {
+//				Log.i("TriggerService", "matching trigger found");
+//
+//				XmlParser parser = new XmlParser(getApplicationContext());
+//				try {
+//					// applies the profile.
+//					parser.initializeXmlParser(openFileInput(trigger
+//							.getProfileName() + "_profile.xml"));
+//					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
+//				} catch (NotFoundException e) {
+//					e.printStackTrace();
+//				} catch (XmlPullParserException e) {
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//
+//				Log.i("TriggerService", "profile applied");
+//			}
 //			if((trigger.getHeadphones() == Trigger.listen_state.listen_on && headphones) || 
 //					(trigger.getHeadphones() == Trigger.listen_state.listen_off && !headphones)){
 //				Log.i("TriggerService", "matching headphone trigger found");
@@ -181,7 +192,7 @@ public class TriggerService extends Service {
 //				try {
 //					// applies the profile.
 //					parser.initializeXmlParser(openFileInput(trigger
-//							.getProfileName() + ".xml"));
+//							.getProfileName() + "_profile.xml"));
 //					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
 //				} catch (NotFoundException e) {
 //					e.printStackTrace();
@@ -198,7 +209,7 @@ public class TriggerService extends Service {
 //				try {
 //					// applies the profile.
 //					parser.initializeXmlParser(openFileInput(trigger
-//							.getProfileName() + ".xml"));
+//							.getProfileName() + "_profile.xml"));
 //					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
 //				} catch (NotFoundException e) {
 //					e.printStackTrace();
