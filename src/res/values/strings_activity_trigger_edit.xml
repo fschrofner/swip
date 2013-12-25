@@ -151,5 +151,9 @@
     <string name="alert_name_text">Please input a valid name for the trigger!</string>
     <string name="alert_profile_text">Please input a valid name for the profile!</string>
     <string name="alert_button">Okay</string>
+    <string name="alert_discard_title">Discard Changes?</string>
+    <string name="alert_discard_text">Do you want to discard the changes and exit the editor?</string>
+    <string name="alert_discard_yes">Yes</string>
+    <string name="alert_discard_no">No</string>
 
 </resources>

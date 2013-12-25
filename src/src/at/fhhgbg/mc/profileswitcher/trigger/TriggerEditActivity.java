@@ -137,8 +137,8 @@ public class TriggerEditActivity extends PreferenceActivity implements
 									int which) {
 								dialog.dismiss();
 							}
-
 						});
+				
 				dialog.show();
 			} else {
 				this.saveTrigger();
@@ -152,6 +152,34 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBackPressed() {
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this,
+				AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+
+		dialog.setTitle(getResources().getString(R.string.alert_discard_title));
+		dialog.setMessage(getResources().getString(R.string.alert_discard_text));
+
+		dialog.setPositiveButton(
+				getResources().getString(R.string.alert_discard_yes),
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				});
+
+		dialog.setNegativeButton(
+				getResources().getString(R.string.alert_discard_no),
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+		dialog.show();
 	}
 
 	@Override
@@ -194,7 +222,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		fakeHeader.setTitle(R.string.pref_header_time);
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_trigger_time);
-		
+
 		// Add 'Battery' preferences, and a corresponding header.
 		fakeHeader = new PreferenceCategory(this);
 		fakeHeader.setTitle(R.string.pref_header_battery);
@@ -242,9 +270,9 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 		trigger.setProfileName(pref.getString("profile", getResources()
 				.getString(R.string.pref_profile_default)));
-		
+
 		trigger.setBatteryLevel(pref.getInt("battery_level", -1));
-		
+
 		if (pref.getString("battery_state", "ignored").equals("charging")) {
 			trigger.setBatteryState(Trigger.listen_state.listen_on);
 		} else if (pref.getString("battery_state", "ignored").equals(
@@ -393,4 +421,5 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			profileArray[i + 1] = profileList.get(i);
 		}
 	}
+
 }
