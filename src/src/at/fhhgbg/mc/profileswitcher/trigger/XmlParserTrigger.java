@@ -80,6 +80,8 @@ public class XmlParserTrigger {
 				setTime(_parser, _trigger);
 			} else if (name.equals("battery")) {
 				setBattery(_parser, _trigger);
+			} else if (name.equals("headphone")) {
+				setHeadphone(_parser, _trigger);
 			} else {
 				Log.w("XmlParser", "Skip!"); 					// invalid tag, will be skipped
 				_parser.nextTag();
@@ -185,17 +187,46 @@ public class XmlParserTrigger {
 		if (_parser.getAttributeValue(null, "state") != null) {
 			if (_parser.getAttributeValue(null, "state").equals("1")) {
 				_trigger.setBatteryState(Trigger.listen_state.listen_on);
-				Log.i("XmlParserTrigger", "BatteryLevel listen on.");
+				Log.i("XmlParserTrigger", "BatteryState listen on.");
 			} else if (_parser.getAttributeValue(null, "state").equals("0")) {
 				_trigger.setBatteryState(Trigger.listen_state.listen_off);
-				Log.i("XmlParserTrigger", "BatteryLevel listen off.");
+				Log.i("XmlParserTrigger", "BatteryState listen off.");
 			} else {
-				Log.i("XmlParserTrigger", "BateryLevel: ignore.");
+				Log.i("XmlParserTrigger", "BateryState: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "BatteryLevel: Invalid Argument!");
+			Log.e("XmlParserTrigger", "BatteryState: Invalid Argument!");
 		}
 
+		_parser.nextTag();
+	}
+	
+	
+	/**
+	 * Applies the Headphone settings.
+	 * 
+	 * @param _parser
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
+	private void setHeadphone(XmlPullParser _parser, Trigger _trigger)
+			throws XmlPullParserException, IOException {
+		_parser.require(XmlPullParser.START_TAG, null, "headphone");
+		
+		if (_parser.getAttributeValue(null, "state") != null) {
+			if (_parser.getAttributeValue(null, "state").equals("1")) {
+				_trigger.setHeadphones(Trigger.listen_state.listen_on);
+				Log.i("XmlParserTrigger", "Headphones listen on.");
+			} else if (_parser.getAttributeValue(null, "state").equals("0")) {
+				_trigger.setHeadphones(Trigger.listen_state.listen_off);
+				Log.i("XmlParserTrigger", "Headphones listen off.");
+			} else {
+				Log.i("XmlParserTrigger", "Headphones: ignore.");
+			}
+		} else {
+			Log.e("XmlParserTrigger", "Headphones: Invalid Argument!");
+		}
+		
 		_parser.nextTag();
 	}
 }

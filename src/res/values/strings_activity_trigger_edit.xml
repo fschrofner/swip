@@ -144,6 +144,23 @@
     <item name="slider_default_battery_level" format="integer" type="string">0</item>
 
     <string name="slider_message_battery_level">Check the box and adjust the slider to trigger the battery level.</string>
+    
+    
+    <!-- Settings for Headphone -->
+    <string name="pref_header_headphone">Headphone</string>
+    <string name="pref_title_headphone">Headphone State</string>
+
+    <string-array name="pref_headphone_titles">
+        <item>Plugged in</item>
+        <item>Unplugged</item>
+        <item>Ignored</item>
+    </string-array>
+    <string-array name="pref_headphone_values">
+        <item>plugged_in</item>
+        <item>unplugged</item>
+        <item>ignored</item>
+    </string-array>
+    
 
     <!-- Strings for Alert Dialog -->
     <string name="alert_name_title">Trigger Name</string>

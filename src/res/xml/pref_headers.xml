@@ -33,5 +33,9 @@
     <header
         android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$BatteryPreferenceFragment"
         android:title="@string/pref_header_battery" />
+    
+    <header
+        android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$HeadphonePreferenceFragment"
+        android:title="@string/pref_header_headphone" />
 
 </preference-headers>

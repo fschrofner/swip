@@ -228,6 +228,12 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		fakeHeader.setTitle(R.string.pref_header_battery);
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_trigger_battery);
+		
+		// Add 'Headphone' preferences, and a corresponding header.
+		fakeHeader = new PreferenceCategory(this);
+		fakeHeader.setTitle(R.string.pref_header_headphone);
+		getPreferenceScreen().addPreference(fakeHeader);
+		addPreferencesFromResource(R.xml.pref_trigger_headphone);
 
 		// Bind the summaries of EditText/List/Dialog preferences to
 		// their values. When their values change, their summaries are updated
@@ -236,6 +242,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("time"));
 		bindPreferenceSummaryToValue(findPreference("profile"));
 		bindPreferenceSummaryToValue(findPreference("battery_state"));
+		bindPreferenceSummaryToValue(findPreference("headphone"));
 	}
 
 	/** {@inheritDoc} */
@@ -280,6 +287,15 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			trigger.setBatteryState(Trigger.listen_state.listen_off);
 		} else {
 			trigger.setBatteryState(Trigger.listen_state.ignore);
+		}
+		
+		if (pref.getString("headphone", "ignored").equals("plugged_in")) {
+			trigger.setHeadphones(Trigger.listen_state.listen_on);
+		} else if (pref.getString("headphone", "ignored").equals(
+				"unplugged")) {
+			trigger.setHeadphones(Trigger.listen_state.listen_off);
+		} else {
+			trigger.setHeadphones(Trigger.listen_state.ignore);
 		}
 
 		XmlCreatorTrigger creator = new XmlCreatorTrigger();
