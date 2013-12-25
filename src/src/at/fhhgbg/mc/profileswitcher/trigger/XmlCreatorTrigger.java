@@ -111,6 +111,24 @@ public class XmlCreatorTrigger {
 							_trigger.getBatteryState()));
 			rootElement.appendChild(batteryElement);
 		}
+		
+		// writes headphone changes
+		if (_trigger.getHeadphones() != Trigger.listen_state.ignore) {
+			Element headphoneElement = xmlProfile.createElement("headphone");
+			
+			if (_trigger.getHeadphones() != Trigger.listen_state.ignore) {
+				headphoneElement.setAttribute("state", String.format("%d",
+						_trigger.getHeadphones().ordinal()));
+			} else {
+				headphoneElement.setAttribute("state", String.format("%d", -1));
+			}
+			
+			Log.i("XMLCreatorTrigger",
+					String.format(
+							"trigger changes were defined as follows: headphone_state: %s",
+							_trigger.getHeadphones()));
+			rootElement.appendChild(headphoneElement);
+		}
 
 		// writes the complete xml file
 		transformer = transFactory.newTransformer();

@@ -211,6 +211,7 @@ public class MainActivity extends Activity implements OnItemClickListener,
 			prefEditor.putString("time", "Ignored");
 			prefEditor.putString("battery_state", "ignored");
 			prefEditor.putInt("battery_level", -1);
+			prefEditor.putString("headphone", "ignored");
 			prefEditor.commit();
 
 			Intent i = new Intent(this, TriggerEditActivity.class);
