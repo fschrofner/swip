@@ -26,6 +26,8 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 		_service.registerReceiver(this, filter);
 		filter = new IntentFilter(Intent.ACTION_POWER_DISCONNECTED);
 		_service.registerReceiver(this, filter);
+		filter = new IntentFilter("at.fhhgbg.mc.profileswitcher.trigger.refresh");
+		_service.registerReceiver(this, filter);
 	}
 
 	@Override
@@ -44,11 +46,11 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 			int state = _intent.getIntExtra("state", -1);
             switch (state) {
             case 0:
-            	triggerservice.setHeadPhones(false);
+            	triggerservice.setHeadphones(false);
                 Log.i("TriggerBroadcastReceiver", "Headset unplugged");
                 break;
             case 1:
-            	triggerservice.setHeadPhones(true);
+            	triggerservice.setHeadphones(true);
                 Log.i("TriggerBroadcastReceiver", "Headset plugged");
                 break;
             }
@@ -65,6 +67,9 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 			float batteryLevel = level / (float)scale;
 			batteryLevel = batteryLevel * 100;
 			triggerservice.setBatteryLevel((int)batteryLevel);
+		}
+		if(_intent.getAction().equals("at.fhhgbg.mc.profileswitcher.trigger.refresh")){
+			triggerservice.refreshTriggers();
 		}
 		}
 	}

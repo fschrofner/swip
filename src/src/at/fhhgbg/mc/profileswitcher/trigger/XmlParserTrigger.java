@@ -124,7 +124,7 @@ public class XmlParserTrigger {
 		_parser.require(XmlPullParser.START_TAG, null, "time");
 
 		if (_parser.getAttributeValue(null, "hours") != null) {
-			if (Integer.parseInt(_parser.getAttributeValue(null, "hours")) >= 0
+			if (Integer.parseInt(_parser.getAttributeValue(null, "hours")) >= -1
 					&& Integer.parseInt(_parser
 							.getAttributeValue(null, "hours")) <= 23) {
 				_trigger.setHours(Integer.parseInt(_parser.getAttributeValue(
@@ -139,7 +139,7 @@ public class XmlParserTrigger {
 		}
 
 		if (_parser.getAttributeValue(null, "minutes") != null) {
-			if (Integer.parseInt(_parser.getAttributeValue(null, "minutes")) >= 0
+			if (Integer.parseInt(_parser.getAttributeValue(null, "minutes")) >= -1
 					&& Integer.parseInt(_parser.getAttributeValue(null,
 							"minutes")) <= 59) {
 				_trigger.setMinutes(Integer.parseInt(_parser.getAttributeValue(
