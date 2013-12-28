@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
@@ -320,7 +321,10 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			file.delete();
 
 		}
-
+		
+		Intent intent = new Intent();
+		intent.setAction("at.fhhgbg.mc.profileswitcher.trigger.refresh");
+		sendBroadcast(intent);
 	}
 
 	/**
