@@ -70,20 +70,28 @@ public class XmlCreatorTrigger {
 						_trigger.getProfileName()));
 
 		// writes time changes
-		if (_trigger.getMinutes() >= -1 && _trigger.getHours() >= -1) {
+		if (_trigger.getStartMinutes() >= -1 && _trigger.getStartHours() >= -1) {
 			Element timeElement = xmlProfile.createElement("time");
 
-			if (_trigger.getHours() >= -1)
-				timeElement.setAttribute("hours",
-						String.format("%d", _trigger.getHours()));
-			if (_trigger.getMinutes() >= -1)
-				timeElement.setAttribute("minutes",
-						String.format("%d", _trigger.getMinutes()));
+			if (_trigger.getStartHours() >= -1)
+				timeElement.setAttribute("start_hours",
+						String.format("%d", _trigger.getStartHours()));
+			if (_trigger.getStartMinutes() >= -1)
+				timeElement.setAttribute("start_minutes",
+						String.format("%d", _trigger.getStartMinutes()));
+			if (_trigger.getEndHours() >= -1)
+				timeElement.setAttribute("end_hours",
+						String.format("%d", _trigger.getEndHours()));
+			if (_trigger.getEndMinutes() >= -1)
+				timeElement.setAttribute("end_minutes",
+						String.format("%d", _trigger.getEndMinutes()));
 
 			Log.i("XMLCreatorTrigger",
 					String.format(
-							"trigger changes were defined as follows: hours: %s minutes: %s",
-							_trigger.getHours(), _trigger.getMinutes()));
+							"trigger changes were defined as follows: start_hours: %s start_minutes: %s end_minutes: %s end_hours: %s",
+							_trigger.getStartHours(),
+							_trigger.getStartMinutes(), _trigger.getEndHours(),
+							_trigger.getEndMinutes()));
 			rootElement.appendChild(timeElement);
 		}
 
@@ -111,18 +119,19 @@ public class XmlCreatorTrigger {
 							_trigger.getBatteryState()));
 			rootElement.appendChild(batteryElement);
 		}
-		
+
 		// writes headphone changes
-		if (_trigger.getHeadphones() != Trigger.listen_state.ignore) {
+		if (_trigger.getHeadphones() != Trigger.listen_state.ignore) { // TODO sinnvoll?
 			Element headphoneElement = xmlProfile.createElement("headphone");
-			
+
 			if (_trigger.getHeadphones() != Trigger.listen_state.ignore) {
-				headphoneElement.setAttribute("state", String.format("%d",
-						_trigger.getHeadphones().ordinal()));
+				headphoneElement
+						.setAttribute("state", String.format("%d", _trigger
+								.getHeadphones().ordinal()));
 			} else {
 				headphoneElement.setAttribute("state", String.format("%d", -1));
 			}
-			
+
 			Log.i("XMLCreatorTrigger",
 					String.format(
 							"trigger changes were defined as follows: headphone_state: %s",

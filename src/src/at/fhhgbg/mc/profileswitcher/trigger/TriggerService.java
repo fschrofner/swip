@@ -15,10 +15,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Resources.NotFoundException;
 import android.media.AudioManager;
 import android.os.BatteryManager;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 import at.fhhgbg.mc.profileswitcher.XmlParser;
@@ -161,20 +163,31 @@ public class TriggerService extends Service {
 					Log.i("TriggerService", "trigger matching headphones");
 					if(compareBatteryCharging(trigger)){
 						Log.i("TriggerService", "trigger matching battery state");
-						Log.i("TriggerService", "matching trigger found: " + trigger.getName());
-						XmlParser parser = new XmlParser(getApplicationContext());
-						try {
-							// applies the profile.
-							parser.initializeXmlParser(openFileInput(trigger
-									.getProfileName() + "_profile.xml"));
-							Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-						} catch (NotFoundException e) {
-							e.printStackTrace();
-						} catch (XmlPullParserException e) {
-							e.printStackTrace();
-						} catch (IOException e) {
-							e.printStackTrace();
+						
+						SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+						
+						if (!trigger.getProfileName().equals(pref.getString("active_profile", "Default"))) {
+							Log.i("TriggerService", "matching trigger found: " + trigger.getName());
+							
+							XmlParser parser = new XmlParser(getApplicationContext());
+							try {
+								// applies the profile.
+								parser.initializeXmlParser(openFileInput(trigger
+										.getProfileName() + "_profile.xml"));
+								
+								Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
+								pref.edit().putString("active_profile", trigger.getProfileName()).commit();
+							} catch (NotFoundException e) {
+								e.printStackTrace();
+							} catch (XmlPullParserException e) {
+								e.printStackTrace();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 						}
+						else{
+							Log.i("TriggerService", trigger.getName() + " is already applied");
+						}						
 					}
 					else{
 						Log.i("TriggerService", trigger.getName() + " does not match battery state");
@@ -313,7 +326,7 @@ public class TriggerService extends Service {
 				return true;
 			}
 			//if the hour is the same as the start hour
-			else if(currentHours == _trigger.getStartHours() && currentMinutes >= _trigger.getStartHours()){
+			else if(currentHours == _trigger.getStartHours() && currentMinutes >= _trigger.getStartMinutes()){
 				return true;
 			}
 			//if the hour is the same as the end hour
