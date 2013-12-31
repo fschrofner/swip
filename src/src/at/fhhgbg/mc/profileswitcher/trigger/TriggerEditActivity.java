@@ -240,7 +240,8 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		// their values. When their values change, their summaries are updated
 		// to reflect the new value, per the Android Design guidelines.
 		bindPreferenceSummaryToValue(findPreference("name_trigger"));
-		bindPreferenceSummaryToValue(findPreference("time"));
+		bindPreferenceSummaryToValue(findPreference("start_time"));
+		bindPreferenceSummaryToValue(findPreference("end_time"));
 		bindPreferenceSummaryToValue(findPreference("profile"));
 		bindPreferenceSummaryToValue(findPreference("battery_state"));
 		bindPreferenceSummaryToValue(findPreference("headphone"));
@@ -266,13 +267,23 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 		Trigger trigger = new Trigger(name);
 
-		if (pref.getString("time", "Ignored").equals("Ignored")) {
-			trigger.setHours(-1);
-			trigger.setMinutes(-1);
+		if (pref.getString("start_time", "Ignored").equals("Ignored")) {
+			trigger.setStartHours(-1);
+			trigger.setStartMinutes(-1);
 		} else {
-			trigger.setHours(Integer.parseInt(pref.getString("time", "00:00")
+			trigger.setStartHours(Integer.parseInt(pref.getString("start_time", "00:00")
 					.split(":")[0]));
-			trigger.setMinutes(Integer.parseInt(pref.getString("time", "00:00")
+			trigger.setStartMinutes(Integer.parseInt(pref.getString("start_time", "00:00")
+					.split(":")[1]));
+		}
+		
+		if (pref.getString("end_time", "Ignored").equals("Ignored")) {
+			trigger.setEndHours(-1);
+			trigger.setEndMinutes(-1);
+		} else {
+			trigger.setEndHours(Integer.parseInt(pref.getString("end_time", "00:00")
+					.split(":")[0]));
+			trigger.setEndMinutes(Integer.parseInt(pref.getString("end_time", "00:00")
 					.split(":")[1]));
 		}
 
