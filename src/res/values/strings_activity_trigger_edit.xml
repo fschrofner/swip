@@ -13,8 +13,10 @@
 
     <!-- Settings for Time -->
     <string name="pref_header_time">Time</string>
-    <string name="picker_title_time">Time</string>
-    <string name="picker_message">Check the box and adjust the picker to trigger the time.</string>
+    <string name="picker_title_start_time">Start-Time</string>
+    <string name="picker_start_message">Check the box and adjust the picker to trigger the start-time.</string>
+    <string name="picker_title_end_time">End-Time</string>
+    <string name="picker_end_message">Check the box and adjust the picker to trigger the end-time.</string>
 
     <!-- Settings for Battery -->
     <string name="pref_header_battery">Battery</string>
