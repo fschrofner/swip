@@ -15,10 +15,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Resources.NotFoundException;
 import android.media.AudioManager;
 import android.os.BatteryManager;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 import at.fhhgbg.mc.profileswitcher.XmlParser;
@@ -77,7 +79,7 @@ public class TriggerService extends Service {
 		compareTriggers();
 	}
 
-	public void setHeadPhones(boolean _headphones) {
+	public void setHeadphones(boolean _headphones) {
 		this.headphones = _headphones;
 		Log.i("TriggerService", "headphones changed to " + _headphones);
 		compareTriggers();
@@ -101,6 +103,10 @@ public class TriggerService extends Service {
 
 //		 Trigger test = new Trigger("Test");
 //		 test.setProfileName("Test");
+//		 test.setStartHours(15);
+//		 test.setStartMinutes(26);
+//		 test.setEndHours(15);
+//		 test.setEndMinutes(28);
 //		 test.setHours(19);
 //		 test.setMinutes(10);
 //		 test.setHeadphones(Trigger.listen_state.listen_off);
@@ -109,6 +115,11 @@ public class TriggerService extends Service {
 //		 triggerList.add(test);
 		
 //		 Trigger test2 = new Trigger("Test2");
+//		 test2.setProfileName("Test4");
+//		 test2.setStartHours(19);
+//		 test2.setStartMinutes(22);
+//		 test2.setEndHours(20);
+//		 test2.setEndMinutes(24);
 //		 test2.setProfileName("Test2");
 //		 test2.setHeadphones(Trigger.listen_state.listen_on);
 //		 test2.setBatteryState(Trigger.listen_state.listen_off);
@@ -145,89 +156,230 @@ public class TriggerService extends Service {
 	private void compareTriggers() {
 		Log.i("TriggerService", "compareTriggers called");
 		for (Trigger trigger : triggerList) {
+			Log.i("TriggerService", "compare trigger: " + trigger.getName());
+			if(compareTime(trigger)){
+				Log.i("TriggerService", "trigger matching time");
+				if(compareHeadphones(trigger)){
+					Log.i("TriggerService", "trigger matching headphones");
+					if(compareBatteryCharging(trigger)){
+						Log.i("TriggerService", "trigger matching battery state");
+						
+						SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+						
+						if (!trigger.getProfileName().equals(pref.getString("active_profile", "Default"))) {
+							Log.i("TriggerService", "matching trigger found: " + trigger.getName());
+							
+							XmlParser parser = new XmlParser(getApplicationContext());
+							try {
+								// applies the profile.
+								parser.initializeXmlParser(openFileInput(trigger
+										.getProfileName() + "_profile.xml"));
+								
+								Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
+								pref.edit().putString("active_profile", trigger.getProfileName()).commit();
+							} catch (NotFoundException e) {
+								e.printStackTrace();
+							} catch (XmlPullParserException e) {
+								e.printStackTrace();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+						else{
+							Log.i("TriggerService", trigger.getName() + " is already applied");
+						}						
+					}
+					else{
+						Log.i("TriggerService", trigger.getName() + " does not match battery state");
+					}
+				}
+				else{
+					Log.i("TriggerService", trigger.getName() + " does not match headphones");
+				}
+			}
+			else{
+				Log.i("TriggerService", trigger.getName() + " does not match time " + trigger.getStartHours() + " " + trigger.getEndHours());
+			}
 			
-//			if (trigger.getHours() == currentHours
-//					&& trigger.getMinutes() == currentMinutes) {
-//				Log.i("TriggerService", "matching trigger found");
-//
-//				XmlParser parser = new XmlParser(getApplicationContext());
-//				try {
-//					// applies the profile.
-//					parser.initializeXmlParser(openFileInput(trigger
-//							.getProfileName() + "_profile.xml"));
-//					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-//				} catch (NotFoundException e) {
-//					e.printStackTrace();
-//				} catch (XmlPullParserException e) {
-//					e.printStackTrace();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//
-//				Log.i("TriggerService", "profile applied");
-//			}
-//			if((trigger.getHeadphones() == Trigger.listen_state.listen_on && headphones) || 
-//					(trigger.getHeadphones() == Trigger.listen_state.listen_off && !headphones)){
-//				Log.i("TriggerService", "matching headphone trigger found");
-//
-//				XmlParser parser = new XmlParser(getApplicationContext());
-//				try {
-//					// applies the profile.
-//					parser.initializeXmlParser(openFileInput(trigger
-//							.getProfileName() + "_profile.xml"));
-//					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-//				} catch (NotFoundException e) {
-//					e.printStackTrace();
-//				} catch (XmlPullParserException e) {
-//					e.printStackTrace();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			if((trigger.getBatteryState() == Trigger.listen_state.listen_on && batteryCharging) ||
-//					(trigger.getBatteryState() == Trigger.listen_state.listen_off && !batteryCharging)){
-//				Log.i("TriggerService", "matching batterystate trigger found");
-//
-//				XmlParser parser = new XmlParser(getApplicationContext());
-//				try {
-//					// applies the profile.
-//					parser.initializeXmlParser(openFileInput(trigger
-//							.getProfileName() + "_profile.xml"));
-//					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-//				} catch (NotFoundException e) {
-//					e.printStackTrace();
-//				} catch (XmlPullParserException e) {
-//					e.printStackTrace();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			if(trigger.getBatteryLevel() == batteryLevel){
-//				Log.i("TriggerService", "matching batterylevel trigger found");
-//
-//				XmlParser parser = new XmlParser(getApplicationContext());
-//				try {
-//					// applies the profile.
-//					parser.initializeXmlParser(openFileInput(trigger
-//							.getProfileName() + "_profile.xml"));
-//					Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-//				} catch (NotFoundException e) {
-//					e.printStackTrace();
-//				} catch (XmlPullParserException e) {
-//					e.printStackTrace();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//
-//				Log.i("TriggerService", "profile applied");
-//			}
 		}
 	}
 
+//	if (trigger.getHours() == currentHours
+//	&& trigger.getMinutes() == currentMinutes) {
+//Log.i("TriggerService", "matching trigger found");
+//
+//XmlParser parser = new XmlParser(getApplicationContext());
+//try {
+//	// applies the profile.
+//	parser.initializeXmlParser(openFileInput(trigger
+//			.getProfileName() + "_profile.xml"));
+//	Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
+//} catch (NotFoundException e) {
+//	e.printStackTrace();
+//} catch (XmlPullParserException e) {
+//	e.printStackTrace();
+//} catch (IOException e) {
+//	e.printStackTrace();
+//}
+//
+//Log.i("TriggerService", "profile applied");
+//}
+//if((trigger.getHeadphones() == Trigger.listen_state.listen_on && headphones) || 
+//	(trigger.getHeadphones() == Trigger.listen_state.listen_off && !headphones)){
+//Log.i("TriggerService", "matching headphone trigger found");
+//
+//XmlParser parser = new XmlParser(getApplicationContext());
+//try {
+//	// applies the profile.
+//	parser.initializeXmlParser(openFileInput(trigger
+//			.getProfileName() + "_profile.xml"));
+//	Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
+//} catch (NotFoundException e) {
+//	e.printStackTrace();
+//} catch (XmlPullParserException e) {
+//	e.printStackTrace();
+//} catch (IOException e) {
+//	e.printStackTrace();
+//}
+//}
+//if((trigger.getBatteryState() == Trigger.listen_state.listen_on && batteryCharging) ||
+//	(trigger.getBatteryState() == Trigger.listen_state.listen_off && !batteryCharging)){
+//Log.i("TriggerService", "matching batterystate trigger found");
+//
+//XmlParser parser = new XmlParser(getApplicationContext());
+//try {
+//	// applies the profile.
+//	parser.initializeXmlParser(openFileInput(trigger
+//			.getProfileName() + "_profile.xml"));
+//	Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
+//} catch (NotFoundException e) {
+//	e.printStackTrace();
+//} catch (XmlPullParserException e) {
+//	e.printStackTrace();
+//} catch (IOException e) {
+//	e.printStackTrace();
+//}
+//}
+//if(trigger.getBatteryLevel() == batteryLevel){
+//Log.i("TriggerService", "matching batterylevel trigger found");
+//
+//XmlParser parser = new XmlParser(getApplicationContext());
+//try {
+//	// applies the profile.
+//	parser.initializeXmlParser(openFileInput(trigger
+//			.getProfileName() + "_profile.xml"));
+//	Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
+//} catch (NotFoundException e) {
+//	e.printStackTrace();
+//} catch (XmlPullParserException e) {
+//	e.printStackTrace();
+//} catch (IOException e) {
+//	e.printStackTrace();
+//}
+//
+//Log.i("TriggerService", "profile applied");
+	
+	private boolean compareTime(Trigger _trigger){
+		Log.i("TriggerService", "compare time called!");
+		//if no time range is set
+		if (_trigger.getStartHours() == -1 && _trigger.getEndHours() == -1){
+			Log.i("TriggerService", "time ignored");
+			return true;
+		}
+		//if the end time is not set (trigger is only activated at a certain time)
+		else if (_trigger.getEndHours() == -1){
+			Log.i("TriggerService", "no end time set, only compared to certain time");
+			//if the current time matches the time set in the trigger
+			if(currentHours == _trigger.getStartHours() && currentMinutes == _trigger.getStartMinutes()){
+				Log.i("TriggerService", "trigger matches exact current time");
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		//if the start and end hours are on the same day
+		else if((_trigger.getStartHours() < _trigger.getEndHours()) || 
+				(_trigger.getStartHours() == _trigger.getEndHours() && _trigger.getStartMinutes() < _trigger.getEndMinutes())){
+			Log.i("TriggerService", "time range on same day");
+			//if the hours are inbetween the trigger hours
+			if(currentHours > _trigger.getStartHours() && currentHours < _trigger.getEndHours()){
+				return true;
+			}
+			//if the start hours are the same as the current hour
+			else if(currentHours == _trigger.getStartHours() && currentMinutes >= _trigger.getStartMinutes()){
+				return true;
+			}
+			//if the end hours are the same as the current hour
+			else if(currentHours == _trigger.getEndHours() && currentMinutes <= _trigger.getEndMinutes()){
+				return true;
+			}
+			else{
+				return false;
+			}
+		//if the end time is already on the next day
+		} else if (_trigger.getStartHours() > _trigger.getEndHours() || 
+				(_trigger.getStartHours() == _trigger.getEndHours() && _trigger.getStartMinutes() > _trigger.getEndMinutes())){
+			Log.i("TriggerService", "time range on other day");
+			//if the time is after the start time or before the end time
+			if(currentHours > _trigger.getStartHours() || currentHours < _trigger.getEndHours()){
+				return true;
+			}
+			//if the hour is the same as the start hour
+			else if(currentHours == _trigger.getStartHours() && currentMinutes >= _trigger.getStartMinutes()){
+				return true;
+			}
+			//if the hour is the same as the end hour
+			else if(currentHours == _trigger.getEndHours() && currentMinutes <= _trigger.getEndMinutes()){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+	}
+	
+	private boolean compareHeadphones(Trigger _trigger){
+		if(!_trigger.getHeadphones().equals(Trigger.listen_state.ignore)){
+			if(headphones && _trigger.getHeadphones().equals(Trigger.listen_state.listen_on)){
+				return true;
+			}
+			if(!headphones && _trigger.getHeadphones().equals(Trigger.listen_state.listen_off)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else {
+			return true;
+		}
+	}
+	
+	private boolean compareBatteryCharging(Trigger _trigger){
+		if(!_trigger.getBatteryState().equals(Trigger.listen_state.ignore)){
+			if(_trigger.getBatteryState().equals(Trigger.listen_state.listen_on) && batteryCharging){
+				return true;
+			}
+			if(_trigger.getBatteryState().equals(Trigger.listen_state.listen_off) && !batteryCharging){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return true;
+		}
+	}
+	
 	/**
 	 * Refreshes the list of triggers.
 	 */
-	private void refreshTriggers() {
+	public void refreshTriggers() {
 
 		triggerList.clear();
 
