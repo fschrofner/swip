@@ -28,7 +28,7 @@ public class XmlParserPref {
 	 * Initializes the xml parser with the given context.
 	 * @param _context
 	 */
-	XmlParserPref(Context _context, String _name) {
+	public XmlParserPref(Context _context, String _name) {
 		context = _context;
 		prefEdit = PreferenceManager.getDefaultSharedPreferences(context).edit();
 		profileName = _name;

@@ -135,6 +135,18 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="at.fhhgbg.mc.profileswitcher.ProfileFragment"
+            android:label="@string/title_activity_profile_fragment"
+            android:parentActivityName="Fragment" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="Fragment" />
+        </activity>
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.TriggerFragment"
+            android:label="@string/title_activity_trigger_fragment" >
+        </activity>
+		<activity
             android:name="at.fhhgbg.mc.profileswitcher.trigger.TriggerEditActivity"
             android:label="@string/title_activity_trigger_edit"
             android:parentActivityName="at.fhhgbg.mc.profileswitcher.MainActivity" >
