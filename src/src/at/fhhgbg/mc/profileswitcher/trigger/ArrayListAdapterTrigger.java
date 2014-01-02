@@ -80,8 +80,7 @@ public class ArrayListAdapterTrigger extends ArrayAdapter<String> implements
 	 */
 	@Override
 	public void onClick(View v) {
-		//TODO XmlParserTriggerPref schreiben
-		XmlParserPref xmlParserPref = new XmlParserPref(context, v.getTag()
+		XmlParserPrefTrigger xmlParserPref = new XmlParserPrefTrigger(context, v.getTag()
 				.toString());
 
 		try {

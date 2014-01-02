@@ -13,16 +13,20 @@ import android.util.Log;
 import android.util.Xml;
 
 public class XmlParserPrefTrigger {
+	
 	Context context;
 	Editor prefEdit;
+	String triggerName;
+	
 	/**
 	 * Initializes the xml parser with the given context.
 	 * 
 	 * @param _context
 	 */
-	public XmlParserPrefTrigger(Context _context) {
-		prefEdit = PreferenceManager.getDefaultSharedPreferences(context).edit();
+	public XmlParserPrefTrigger(Context _context, String _name) {
 		context = _context;
+		prefEdit = PreferenceManager.getDefaultSharedPreferences(context).edit();
+		triggerName = _name;
 	}
 
 	/**
@@ -34,7 +38,7 @@ public class XmlParserPrefTrigger {
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	public void initializeXmlParser(InputStream _in, Trigger _trigger)
+	public void initializeXmlParser(InputStream _in)
 			throws XmlPullParserException, IOException {
 
 		try {
@@ -42,7 +46,7 @@ public class XmlParserPrefTrigger {
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 			parser.setInput(_in, null);
 			parser.nextTag();
-			readAndApplyTags(parser, _trigger);
+			readAndApplyTags(parser);
 		} finally {
 			_in.close(); 										// closes the inputstream in the end
 		}
@@ -56,8 +60,11 @@ public class XmlParserPrefTrigger {
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	private void readAndApplyTags(XmlPullParser _parser, Trigger _trigger)
+	private void readAndApplyTags(XmlPullParser _parser)
 			throws XmlPullParserException, IOException {
+		
+		prefEdit.putString("name_trigger", triggerName);
+		
 		_parser.require(XmlPullParser.START_TAG, null, "trigger");
 
 		while (_parser.next() != XmlPullParser.END_TAG) { 		// while the tag is not the closing tag
@@ -70,13 +77,13 @@ public class XmlParserPrefTrigger {
 			
 			// Starts by looking for the entry tag
 			if (name.equals("profile")) {
-				setProfile(_parser, _trigger);
+				setProfile(_parser);
 			} else if (name.equals("time")) {
-				setTime(_parser, _trigger);
+				setTime(_parser);
 			} else if (name.equals("battery")) {
-				setBattery(_parser, _trigger);
+				setBattery(_parser);
 			} else if (name.equals("headphone")) {
-				setHeadphone(_parser, _trigger);
+				setHeadphone(_parser);
 			} else {
 				Log.w("XmlParser", "Skip!"); 					// invalid tag, will be skipped
 				_parser.nextTag();
@@ -92,16 +99,16 @@ public class XmlParserPrefTrigger {
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	private void setProfile(XmlPullParser _parser, Trigger _trigger)
+	private void setProfile(XmlPullParser _parser)
 			throws XmlPullParserException, IOException {
 		_parser.require(XmlPullParser.START_TAG, null, "profile");
 
 		if (_parser.getAttributeValue(null, "name") != null) {
-			_trigger.setProfileName(_parser.getAttributeValue(null, "name"));
-			Log.i("XmlParserTrigger",
+			prefEdit.putString("name", _parser.getAttributeValue(null, "name"));
+			Log.i("XmlParserPrefTrigger",
 					"Profile: " + _parser.getAttributeValue(null, "name"));
 		} else {
-			Log.e("XmlParserTrigger", "Profile: Invalid Argument!");
+			Log.e("XmlParserPrefTrigger", "Profile: Invalid Argument!");
 		}
 		_parser.nextTag();
 	}
@@ -114,71 +121,93 @@ public class XmlParserPrefTrigger {
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	private void setTime(XmlPullParser _parser, Trigger _trigger)
+	private void setTime(XmlPullParser _parser)
 			throws XmlPullParserException, IOException {
 		_parser.require(XmlPullParser.START_TAG, null, "time");
+		
+		int startHours = 0;
+		int startMinutes = 0;
+		int endHours = 0;
+		int endMinutes = 0;
 
 		if (_parser.getAttributeValue(null, "start_hours") != null) {
 			if (Integer.parseInt(_parser.getAttributeValue(null, "start_hours")) >= -1
 					&& Integer.parseInt(_parser
 							.getAttributeValue(null, "start_hours")) <= 23) {
-				_trigger.setStartHours(Integer.parseInt(_parser.getAttributeValue(
-						null, "start_hours")));
-				Log.i("XmlParserTrigger",
+				startHours = Integer.parseInt(_parser.getAttributeValue(
+						null, "start_hours"));
+				Log.i("XmlParserPrefTrigger",
 						"start_hours: " + _parser.getAttributeValue(null, "start_hours"));
 			} else {
-				Log.i("XmlParserTrigger", "start_hours: ignore.");
+				Log.i("XmlParserPrefTrigger", "start_hours: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "start_hours: Invalid Argument!");
+			Log.e("XmlParserPrefTrigger", "start_hours: Invalid Argument!");
 		}
 
 		if (_parser.getAttributeValue(null, "start_minutes") != null) {
 			if (Integer.parseInt(_parser.getAttributeValue(null, "start_minutes")) >= -1
 					&& Integer.parseInt(_parser.getAttributeValue(null,
 							"start_minutes")) <= 59) {
-				_trigger.setStartMinutes(Integer.parseInt(_parser.getAttributeValue(
-						null, "start_minutes")));
-				Log.i("XmlParserTrigger",
+				startMinutes = Integer.parseInt(_parser.getAttributeValue(
+						null, "start_minutes"));
+				Log.i("XmlParserPrefTrigger",
 						"start_minutes: "
 								+ _parser.getAttributeValue(null, "start_minutes"));
 			} else {
-				Log.i("XmlParserTrigger", "start_minutes: ignore.");
+				Log.i("XmlParserPrefTrigger", "start_minutes: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "start_minutes: Invalid Argument!");
+			Log.e("XmlParserPrefTrigger", "start_minutes: Invalid Argument!");
 		}
 		
 		if (_parser.getAttributeValue(null, "end_hours") != null) {
 			if (Integer.parseInt(_parser.getAttributeValue(null, "end_hours")) >= -1
 					&& Integer.parseInt(_parser
 							.getAttributeValue(null, "end_hours")) <= 23) {
-				_trigger.setEndHours(Integer.parseInt(_parser.getAttributeValue(
-						null, "end_hours")));
-				Log.i("XmlParserTrigger",
+				endHours = Integer.parseInt(_parser.getAttributeValue(
+						null, "end_hours"));
+				Log.i("XmlParserPrefTrigger",
 						"end_hours: " + _parser.getAttributeValue(null, "end_hours"));
 			} else {
-				Log.i("XmlParserTrigger", "end_hours: ignore.");
+				Log.i("XmlParserPrefTrigger", "end_hours: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "end_hours: Invalid Argument!");
+			Log.e("XmlParserPrefTrigger", "end_hours: Invalid Argument!");
 		}
 
 		if (_parser.getAttributeValue(null, "end_minutes") != null) {
 			if (Integer.parseInt(_parser.getAttributeValue(null, "end_minutes")) >= -1
 					&& Integer.parseInt(_parser.getAttributeValue(null,
 							"end_minutes")) <= 59) {
-				_trigger.setEndMinutes(Integer.parseInt(_parser.getAttributeValue(
-						null, "end_minutes")));
-				Log.i("XmlParserTrigger",
+				endMinutes = Integer.parseInt(_parser.getAttributeValue(
+						null, "end_minutes"));
+				Log.i("XmlParserPrefTrigger",
 						"end_minutes: "
 								+ _parser.getAttributeValue(null, "end_minutes"));
 			} else {
-				Log.i("XmlParserTrigger", "end_minutes: ignore.");
+				Log.i("XmlParserPrefTrigger", "end_minutes: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "end_minutes: Invalid Argument!");
+			Log.e("XmlParserPrefTrigger", "end_minutes: Invalid Argument!");
 		}
+		
+		String startTime;
+		String endTime;
+		
+		if (startHours != -1 && startMinutes != -1) {
+			startTime = new String(startHours + ":" + startMinutes);
+		} else {
+			startTime = new String("Ignored");
+		}
+		if (endHours != -1 && endMinutes != -1) {
+			endTime = new String(endHours + ":" + endMinutes);
+		} else {
+			endTime = new String("Ignored");
+		}
+		
+		prefEdit.putString("start_time", startTime);
+		prefEdit.putString("end_time", endTime);
 
 		_parser.nextTag();
 	}
@@ -190,7 +219,7 @@ public class XmlParserPrefTrigger {
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	private void setBattery(XmlPullParser _parser, Trigger _trigger)
+	private void setBattery(XmlPullParser _parser)
 			throws XmlPullParserException, IOException {
 		_parser.require(XmlPullParser.START_TAG, null, "battery");
 
@@ -198,30 +227,33 @@ public class XmlParserPrefTrigger {
 			if (Integer.parseInt(_parser.getAttributeValue(null, "level")) >= 0
 					&& Integer.parseInt(_parser
 							.getAttributeValue(null, "level")) <= 100) {
-				_trigger.setBatteryLevel(Integer.parseInt(_parser
+				prefEdit.putInt("battery_level", Integer.parseInt(_parser
 						.getAttributeValue(null, "level")));
-				Log.i("XmlParserTrigger",
+				Log.i("XmlParserPrefTrigger",
 						"BatteryLevel: "
 								+ _parser.getAttributeValue(null, "level"));
 			} else {
-				Log.i("XmlParserTrigger", "BatteryLevel: ignore.");
+				Log.i("XmlParserPrefTrigger", "BatteryLevel: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "BatteryLevel: Invalid Argument!");
+			Log.e("XmlParserPrefTrigger", "BatteryLevel: Invalid Argument!");
 		}
 
 		if (_parser.getAttributeValue(null, "state") != null) {
 			if (_parser.getAttributeValue(null, "state").equals("1")) {
-				_trigger.setBatteryState(Trigger.listen_state.listen_on);
-				Log.i("XmlParserTrigger", "BatteryState listen on.");
+				prefEdit.putString("battery_state", "charging");
+				Log.i("XmlParserPrefTrigger", "BatteryState listen on.");
 			} else if (_parser.getAttributeValue(null, "state").equals("0")) {
-				_trigger.setBatteryState(Trigger.listen_state.listen_off);
-				Log.i("XmlParserTrigger", "BatteryState listen off.");
+				prefEdit.putString("battery_state", "discharging");
+				Log.i("XmlParserPrefTrigger", "BatteryState listen off.");
+			} else if (_parser.getAttributeValue(null, "state").equals("-1")) {
+				prefEdit.putString("battery_state", "ignored");
+				Log.i("XmlParserPrefTrigger", "BatteryState ignored.");
 			} else {
-				Log.i("XmlParserTrigger", "BateryState: ignore.");
+				Log.i("XmlParserPrefTrigger", "BateryState: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "BatteryState: Invalid Argument!");
+			Log.e("XmlParserPrefTrigger", "BatteryState: Invalid Argument!");
 		}
 
 		_parser.nextTag();
@@ -235,22 +267,25 @@ public class XmlParserPrefTrigger {
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	private void setHeadphone(XmlPullParser _parser, Trigger _trigger)
+	private void setHeadphone(XmlPullParser _parser)
 			throws XmlPullParserException, IOException {
 		_parser.require(XmlPullParser.START_TAG, null, "headphone");
 		
 		if (_parser.getAttributeValue(null, "state") != null) {
 			if (_parser.getAttributeValue(null, "state").equals("1")) {
-				_trigger.setHeadphones(Trigger.listen_state.listen_on);
-				Log.i("XmlParserTrigger", "Headphones listen on.");
+				prefEdit.putString("headphone", "plugged_in");
+				Log.i("XmlParserPrefTrigger", "Headphones listen on.");
 			} else if (_parser.getAttributeValue(null, "state").equals("0")) {
-				_trigger.setHeadphones(Trigger.listen_state.listen_off);
-				Log.i("XmlParserTrigger", "Headphones listen off.");
+				prefEdit.putString("headphone", "unplugged");
+				Log.i("XmlParserPrefTrigger", "Headphones listen off.");
+			} else if (_parser.getAttributeValue(null, "state").equals("-1")) {
+				prefEdit.putString("headphone", "ignored");
+				Log.i("XmlParserPrefTrigger", "Headphones ignored.");
 			} else {
-				Log.i("XmlParserTrigger", "Headphones: ignore.");
+				Log.i("XmlParserPrefTrigger", "Headphones: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "Headphones: Invalid Argument!");
+			Log.e("XmlParserPrefTrigger", "Headphones: Invalid Argument!");
 		}
 		
 		_parser.nextTag();
