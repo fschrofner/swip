@@ -195,6 +195,9 @@ OnItemLongClickListener{
 			prefEditor.putInt("display_brightness", -1);
 			prefEditor.putString("display_auto_mode", "unchanged");
 			prefEditor.putString("display_time_out", "-1");
+			prefEditor.putString("lockscreen", "unchanged");
+			prefEditor.putString("nfc", "unchanged");
+			prefEditor.putString("airplane_mode", "unchanged");
 
 			prefEditor.commit();
 
