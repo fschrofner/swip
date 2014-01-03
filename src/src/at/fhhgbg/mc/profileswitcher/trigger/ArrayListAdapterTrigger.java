@@ -80,11 +80,11 @@ public class ArrayListAdapterTrigger extends ArrayAdapter<String> implements
 	 */
 	@Override
 	public void onClick(View v) {
-		XmlParserPrefTrigger xmlParserPref = new XmlParserPrefTrigger(context, v.getTag()
+		XmlParserPrefTrigger xmlParserPrefTrigger = new XmlParserPrefTrigger(context, v.getTag()
 				.toString());
 
 		try {
-			xmlParserPref.initializeXmlParser(context.openFileInput(v.getTag()
+			xmlParserPrefTrigger.initializeXmlParser(context.openFileInput(v.getTag()
 					+ "_trigger.xml"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

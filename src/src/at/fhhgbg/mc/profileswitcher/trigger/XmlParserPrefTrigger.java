@@ -88,6 +88,7 @@ public class XmlParserPrefTrigger {
 				Log.w("XmlParser", "Skip!"); 					// invalid tag, will be skipped
 				_parser.nextTag();
 			}
+			prefEdit.commit();
 		}
 	}
 
@@ -104,9 +105,9 @@ public class XmlParserPrefTrigger {
 		_parser.require(XmlPullParser.START_TAG, null, "profile");
 
 		if (_parser.getAttributeValue(null, "name") != null) {
-			prefEdit.putString("name", _parser.getAttributeValue(null, "name"));
+			prefEdit.putString("profile", _parser.getAttributeValue(null, "name"));
 			Log.i("XmlParserPrefTrigger",
-					"Profile: " + _parser.getAttributeValue(null, "name"));
+					"Profile: " + _parser.getAttributeValue(null, "profile"));
 		} else {
 			Log.e("XmlParserPrefTrigger", "Profile: Invalid Argument!");
 		}
@@ -125,10 +126,10 @@ public class XmlParserPrefTrigger {
 			throws XmlPullParserException, IOException {
 		_parser.require(XmlPullParser.START_TAG, null, "time");
 		
-		int startHours = 0;
-		int startMinutes = 0;
-		int endHours = 0;
-		int endMinutes = 0;
+		int startHours = -1;
+		int startMinutes = -1;
+		int endHours = -1;
+		int endMinutes = -1;
 
 		if (_parser.getAttributeValue(null, "start_hours") != null) {
 			if (Integer.parseInt(_parser.getAttributeValue(null, "start_hours")) >= -1
@@ -196,12 +197,12 @@ public class XmlParserPrefTrigger {
 		String endTime;
 		
 		if (startHours != -1 && startMinutes != -1) {
-			startTime = new String(startHours + ":" + startMinutes);
+			startTime = new String(String.format("%02d", startHours) + ":" + String.format("%02d", startMinutes));
 		} else {
 			startTime = new String("Ignored");
 		}
 		if (endHours != -1 && endMinutes != -1) {
-			endTime = new String(endHours + ":" + endMinutes);
+			endTime = new String(String.format("%02d", endHours) + ":" + String.format("%02d", endMinutes));
 		} else {
 			endTime = new String("Ignored");
 		}
@@ -233,6 +234,7 @@ public class XmlParserPrefTrigger {
 						"BatteryLevel: "
 								+ _parser.getAttributeValue(null, "level"));
 			} else {
+				prefEdit.putInt("battery_level", -1);
 				Log.i("XmlParserPrefTrigger", "BatteryLevel: ignore.");
 			}
 		} else {

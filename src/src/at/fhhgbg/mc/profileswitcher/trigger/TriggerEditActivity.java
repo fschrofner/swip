@@ -245,6 +245,13 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("profile"));
 		bindPreferenceSummaryToValue(findPreference("battery_state"));
 		bindPreferenceSummaryToValue(findPreference("headphone"));
+		
+		
+		if (pref.getString("start_time", "Ignored").equals(
+						"Ignored")) {
+			findPreference("end_time").setEnabled(false);
+			pref.edit().putString("end_time", "Ignored").commit();
+		}
 	}
 
 	/** {@inheritDoc} */
@@ -420,10 +427,18 @@ public class TriggerEditActivity extends PreferenceActivity implements
 	}
 
 	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+	public void onSharedPreferenceChanged(SharedPreferences _pref,
 			String key) {
-		// TODO Auto-generated method stub
-
+		//dis- and enables the endtime if the start time is changed
+		if (key.equals("start_time")
+				&& _pref.getString("start_time", "Ignored").equals("Ignored")) {
+			_pref.edit().putString("end_time", "Ignored").commit();
+			findPreference("end_time").setEnabled(false);
+			findPreference("end_time").setSummary("Ignored");
+		} else if (key.equals("start_time")
+				&& !_pref.getString("start_time", "Ignored").equals("Ignored")){			
+			findPreference("end_time").setEnabled(true);
+		}
 	}
 
 	/**

@@ -50,6 +50,8 @@ public class TriggerFragment extends Fragment implements OnItemLongClickListener
 	public void onCreate(Bundle savedInstanceState) {
 		setHasOptionsMenu(true);
 		super.onCreate(savedInstanceState);
+		Intent intent = new Intent(getActivity(), at.fhhgbg.mc.profileswitcher.trigger.TriggerService.class);
+		getActivity().startService(intent);
 	}
 
 	/**
@@ -173,6 +175,10 @@ public class TriggerFragment extends Fragment implements OnItemLongClickListener
 						+ a.getItemAtPosition(position) + "_trigger.xml");
 				file.delete();
 				refreshListView();
+				//refreshes the triggerlist for the service
+				Intent intent = new Intent();
+				intent.setAction("at.fhhgbg.mc.profileswitcher.trigger.refresh");
+				getActivity().sendBroadcast(intent);
 			}
 				break;
 			}

@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Resources.NotFoundException;
 import android.media.AudioManager;
 import android.os.BatteryManager;
@@ -31,7 +32,7 @@ import at.fhhgbg.mc.profileswitcher.XmlParser;
  * @author Florian Schrofner & Dominik Koeltringer
  * 
  */
-public class TriggerService extends Service {
+public class TriggerService extends Service{
 
 	private TriggerBroadcastReceiver triggerReceiver;
 	private int currentHours;
@@ -163,31 +164,36 @@ public class TriggerService extends Service {
 					Log.i("TriggerService", "trigger matching headphones");
 					if(compareBatteryCharging(trigger)){
 						Log.i("TriggerService", "trigger matching battery state");
-						
-						SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-						
-						if (!trigger.getProfileName().equals(pref.getString("active_profile", "Default"))) {
-							Log.i("TriggerService", "matching trigger found: " + trigger.getName());
+						if(compareBatteryLevel(trigger)){
+							Log.i("TriggerService", "trigger matching battery level");
+							SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 							
-							XmlParser parser = new XmlParser(getApplicationContext());
-							try {
-								// applies the profile.
-								parser.initializeXmlParser(openFileInput(trigger
-										.getProfileName() + "_profile.xml"));
+							if (!trigger.getProfileName().equals(pref.getString("active_profile", "Default"))) {
+								Log.i("TriggerService", "matching trigger found: " + trigger.getName());
 								
-								Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-								pref.edit().putString("active_profile", trigger.getProfileName()).commit();
-							} catch (NotFoundException e) {
-								e.printStackTrace();
-							} catch (XmlPullParserException e) {
-								e.printStackTrace();
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
+								XmlParser parser = new XmlParser(getApplicationContext());
+								try {
+									// applies the profile.
+									parser.initializeXmlParser(openFileInput(trigger
+											.getProfileName() + "_profile.xml"));
+									
+									Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
+									pref.edit().putString("active_profile", trigger.getProfileName()).commit();
+								} catch (NotFoundException e) {
+									e.printStackTrace();
+								} catch (XmlPullParserException e) {
+									e.printStackTrace();
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							} 						
+							else{
+								Log.i("TriggerService", trigger.getProfileName() + " is already applied");
+							}	
 						}
 						else{
-							Log.i("TriggerService", trigger.getName() + " is already applied");
-						}						
+							Log.i("TriggerService", trigger.getName() + " does not match battery level");
+						}					
 					}
 					else{
 						Log.i("TriggerService", trigger.getName() + " does not match battery state");
@@ -203,81 +209,6 @@ public class TriggerService extends Service {
 			
 		}
 	}
-
-//	if (trigger.getHours() == currentHours
-//	&& trigger.getMinutes() == currentMinutes) {
-//Log.i("TriggerService", "matching trigger found");
-//
-//XmlParser parser = new XmlParser(getApplicationContext());
-//try {
-//	// applies the profile.
-//	parser.initializeXmlParser(openFileInput(trigger
-//			.getProfileName() + "_profile.xml"));
-//	Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-//} catch (NotFoundException e) {
-//	e.printStackTrace();
-//} catch (XmlPullParserException e) {
-//	e.printStackTrace();
-//} catch (IOException e) {
-//	e.printStackTrace();
-//}
-//
-//Log.i("TriggerService", "profile applied");
-//}
-//if((trigger.getHeadphones() == Trigger.listen_state.listen_on && headphones) || 
-//	(trigger.getHeadphones() == Trigger.listen_state.listen_off && !headphones)){
-//Log.i("TriggerService", "matching headphone trigger found");
-//
-//XmlParser parser = new XmlParser(getApplicationContext());
-//try {
-//	// applies the profile.
-//	parser.initializeXmlParser(openFileInput(trigger
-//			.getProfileName() + "_profile.xml"));
-//	Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-//} catch (NotFoundException e) {
-//	e.printStackTrace();
-//} catch (XmlPullParserException e) {
-//	e.printStackTrace();
-//} catch (IOException e) {
-//	e.printStackTrace();
-//}
-//}
-//if((trigger.getBatteryState() == Trigger.listen_state.listen_on && batteryCharging) ||
-//	(trigger.getBatteryState() == Trigger.listen_state.listen_off && !batteryCharging)){
-//Log.i("TriggerService", "matching batterystate trigger found");
-//
-//XmlParser parser = new XmlParser(getApplicationContext());
-//try {
-//	// applies the profile.
-//	parser.initializeXmlParser(openFileInput(trigger
-//			.getProfileName() + "_profile.xml"));
-//	Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-//} catch (NotFoundException e) {
-//	e.printStackTrace();
-//} catch (XmlPullParserException e) {
-//	e.printStackTrace();
-//} catch (IOException e) {
-//	e.printStackTrace();
-//}
-//}
-//if(trigger.getBatteryLevel() == batteryLevel){
-//Log.i("TriggerService", "matching batterylevel trigger found");
-//
-//XmlParser parser = new XmlParser(getApplicationContext());
-//try {
-//	// applies the profile.
-//	parser.initializeXmlParser(openFileInput(trigger
-//			.getProfileName() + "_profile.xml"));
-//	Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-//} catch (NotFoundException e) {
-//	e.printStackTrace();
-//} catch (XmlPullParserException e) {
-//	e.printStackTrace();
-//} catch (IOException e) {
-//	e.printStackTrace();
-//}
-//
-//Log.i("TriggerService", "profile applied");
 	
 	private boolean compareTime(Trigger _trigger){
 		Log.i("TriggerService", "compare time called!");
@@ -302,17 +233,34 @@ public class TriggerService extends Service {
 		else if((_trigger.getStartHours() < _trigger.getEndHours()) || 
 				(_trigger.getStartHours() == _trigger.getEndHours() && _trigger.getStartMinutes() < _trigger.getEndMinutes())){
 			Log.i("TriggerService", "time range on same day");
+			
 			//if the hours are inbetween the trigger hours
 			if(currentHours > _trigger.getStartHours() && currentHours < _trigger.getEndHours()){
-				return true;
+					return true;			
 			}
 			//if the start hours are the same as the current hour
 			else if(currentHours == _trigger.getStartHours() && currentMinutes >= _trigger.getStartMinutes()){
-				return true;
+				if(currentHours < _trigger.getEndHours()){
+					return true;
+				}
+				else if(currentHours == _trigger.getEndHours() && currentMinutes <= _trigger.getEndMinutes()){
+					return true;
+				}
+				else {
+					return false;
+				}
 			}
 			//if the end hours are the same as the current hour
 			else if(currentHours == _trigger.getEndHours() && currentMinutes <= _trigger.getEndMinutes()){
-				return true;
+				if(currentHours > _trigger.getStartHours()){
+					return true;
+				}
+				else if(currentHours == _trigger.getStartHours() && currentMinutes > _trigger.getStartMinutes()){
+					return true;
+				}
+				else {
+					return false;
+				}
 			}
 			else{
 				return false;
@@ -374,6 +322,20 @@ public class TriggerService extends Service {
 		else{
 			return true;
 		}
+	}
+	
+	private boolean compareBatteryLevel(Trigger _trigger){
+		if(_trigger.getBatteryStartLevel() == -1 && _trigger.getBatteryEndLevel() == -1){
+			return true;
+		}
+		else if(_trigger.getBatteryEndLevel() == -1 && _trigger.getBatteryStartLevel() == batteryLevel){
+				return true;
+		} 
+		else if(_trigger.getBatteryStartLevel() < batteryLevel && 
+				_trigger.getBatteryEndLevel() > batteryLevel){
+					return true;
+		}
+		return false;
 	}
 	
 	/**
