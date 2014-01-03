@@ -14,7 +14,8 @@ public class Trigger {
 	private int startMinutes;
 	private int endHours;
 	private int endMinutes;
-	private int batteryLevel;
+	private int batteryStartLevel;
+	private int batteryEndLevel;
 	private listen_state headphones;
 	private	listen_state batteryCharging;
 
@@ -25,17 +26,35 @@ public class Trigger {
 		this.startMinutes = -1;
 		this.endHours = -1;
 		this.endMinutes = -1;
-		this.batteryLevel = -1;
+		this.batteryStartLevel = -1;
+		this.batteryEndLevel = -1;
 		this.headphones = listen_state.ignore;
 		this.batteryCharging = listen_state.ignore;
 	}
 
+	public int getBatteryStartLevel() {
+		return batteryStartLevel;
+	}
+
+	public void setBatteryStartLevel(int batteryStartLevel) {
+		this.batteryStartLevel = batteryStartLevel;
+	}
+
+	public int getBatteryEndLevel() {
+		return batteryEndLevel;
+	}
+
+	public void setBatteryEndLevel(int batteryEndLevel) {
+		this.batteryEndLevel = batteryEndLevel;
+	}
+
 	public int getBatteryLevel() {
-		return batteryLevel;
+		return batteryStartLevel;
 	}
 
 	public void setBatteryLevel(int batteryLevel) {
-		this.batteryLevel = batteryLevel;
+		this.batteryStartLevel = batteryLevel;
+		this.batteryEndLevel = -1;
 	}
 
 	public listen_state getBatteryState() {

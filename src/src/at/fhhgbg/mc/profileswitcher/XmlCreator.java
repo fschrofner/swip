@@ -176,8 +176,8 @@ public class XmlCreator {
 
 		// writes display changes
 		if (_profile.getScreenBrightness() >= -1
-				|| _profile.getScreenBrightnessAutoMode() != Profile.state.unchanged
-				|| _profile.getScreenTimeOut() >= -1) {
+				&& _profile.getScreenBrightnessAutoMode() != null
+				&& _profile.getScreenTimeOut() >= -1) {
 			Element displayElement = xmlProfile.createElement("display");
 			
 			if (_profile.getScreenBrightness() >= -1)

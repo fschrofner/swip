@@ -97,7 +97,7 @@ public class XmlCreatorTrigger {
 
 		// writes battery changes
 		if (_trigger.getBatteryLevel() >= -1
-				|| _trigger.getBatteryState() != Trigger.listen_state.ignore) {
+				&& _trigger.getBatteryState() != null) {
 			Element batteryElement = xmlProfile.createElement("battery");
 
 			if (_trigger.getBatteryState() != Trigger.listen_state.ignore) {
@@ -121,7 +121,7 @@ public class XmlCreatorTrigger {
 		}
 
 		// writes headphone changes
-		if (_trigger.getHeadphones() != Trigger.listen_state.ignore) { // TODO sinnvoll?
+		if (_trigger.getHeadphones() != null) {
 			Element headphoneElement = xmlProfile.createElement("headphone");
 
 			if (_trigger.getHeadphones() != Trigger.listen_state.ignore) {

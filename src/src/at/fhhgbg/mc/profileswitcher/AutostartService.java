@@ -62,6 +62,9 @@ public class AutostartService extends Service {
 			NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			notificationManager.notify(123, notification);
 		}
+		
+		Intent triggerIntent = new Intent(getApplicationContext(), at.fhhgbg.mc.profileswitcher.trigger.TriggerService.class);
+		startService(triggerIntent);
 		return super.onStartCommand(intent, flags, startId);
 	}
 
