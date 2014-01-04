@@ -8,6 +8,7 @@
 
     <!-- General settings -->
     <string name="pref_header_name">General</string>
+    <string name="pref_profile_name_default">Insert name</string>
     <string name="pref_title_name">Name</string>
     <string name="pref_default_name">Test</string>
 
