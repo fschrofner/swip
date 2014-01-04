@@ -1,7 +1,9 @@
 package at.fhhgbg.mc.profileswitcher;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -40,8 +42,10 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		OnSharedPreferenceChangeListener {
 
 	private static final boolean ALWAYS_SIMPLE_PREFS = false;
-	private String previousName; 	// saves the previous profile name for the case the profile gets renamed
-									// (so the previous file of this profile can be deleted)
+	private String previousName; // saves the previous profile name for the case
+									// the profile gets renamed
+									// (so the previous file of this profile can
+									// be deleted)
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
@@ -91,15 +95,45 @@ public class ProfileEditActivity extends PreferenceActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
+		SharedPreferences pref = PreferenceManager
+				.getDefaultSharedPreferences(this);
+
 		if (item.getItemId() == R.id.save_profile) {
-			this.saveProfile();
-			this.finish();
+
+			if (pref.getString(
+					"name",
+					getResources()
+							.getString(R.string.pref_profile_name_default))
+					.equals(getResources().getString(
+							R.string.pref_profile_name_default))) {
+				AlertDialog.Builder dialog = new AlertDialog.Builder(this,
+						AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+				dialog.setTitle(getResources().getString(
+						R.string.alert_profile_title));
+				dialog.setMessage(getResources().getString(
+						R.string.alert_profile_text));
+				dialog.setNegativeButton(
+						getResources().getString(R.string.alert_button),
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						});
+
+				dialog.show();
+			} else {
+				this.saveProfile();
+				this.finish();
+			}
 		} else if (item.getItemId() == R.id.cancel_profile) {
 			this.finish();
 		} else if (item.getItemId() == R.id.write_to_tag) {
 			this.saveProfile();
-			SharedPreferences pref = PreferenceManager
-					.getDefaultSharedPreferences(this);
+			// SharedPreferences pref = PreferenceManager
+			// .getDefaultSharedPreferences(this);
 
 			Intent intent = new Intent(this, NfcWriterActivity.class);
 			intent.putExtra("fileName", pref.getString("name", "default"));
@@ -111,6 +145,34 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBackPressed() {
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this,
+				AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+
+		dialog.setTitle(getResources().getString(R.string.alert_discard_title));
+		dialog.setMessage(getResources().getString(R.string.alert_discard_text));
+
+		dialog.setPositiveButton(
+				getResources().getString(R.string.alert_discard_yes),
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				});
+
+		dialog.setNegativeButton(
+				getResources().getString(R.string.alert_discard_no),
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+		dialog.show();
 	}
 
 	/**
@@ -171,50 +233,56 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("display_time_out"));
 		bindPreferenceSummaryToValue(findPreference("lockscreen"));
 
-		
-		//disables the option to set the exact display brightness, when auto-brightness is enabled
+		// disables the option to set the exact display brightness, when
+		// auto-brightness is enabled
 		if (pref.getString("display_auto_mode", "unchanged").equals("enabled")) {
 			findPreference("display_brightness").setEnabled(false);
 		}
 
-		//disables the option to set the ringtone volume, when either vibrate or silent ring mode is selected
+		// disables the option to set the ringtone volume, when either vibrate
+		// or silent ring mode is selected
 		if (pref.getString("ringer_mode", "unchanged").equals("vibrate")
 				|| pref.getString("ringer_mode", "unchanged").equals("silent")) {
 			findPreference("ringtone_volume").setEnabled(false);
 		}
-		
-		//disables all other connectivity settings, when airplane mode is enabled
-		if(pref.getString("airplane_mode", "unchanged").equals("enabled")){
+
+		// disables all other connectivity settings, when airplane mode is
+		// enabled
+		if (pref.getString("airplane_mode", "unchanged").equals("enabled")) {
 			findPreference("gps").setEnabled(false);
 			findPreference("mobile_data").setEnabled(false);
 			findPreference("wifi").setEnabled(false);
 			findPreference("bluetooth").setEnabled(false);
 			findPreference("nfc").setEnabled(false);
 		}
-		
-		if (!pref.getBoolean("root", false)){
+
+		if (!pref.getBoolean("root", false)) {
 			findPreference("gps").setEnabled(true);
 			findPreference("mobile_data").setEnabled(true);
 			findPreference("wifi").setEnabled(true);
 			findPreference("bluetooth").setEnabled(true);
 			findPreference("nfc").setEnabled(true);
 		}
-		
-		//checks if the root access is disabled inside the settings and disables all root settings in this case
+
+		// checks if the root access is disabled inside the settings and
+		// disables all root settings in this case
 		PreferenceScreen screen = getPreferenceScreen();
-		
-		if(!pref.getBoolean("root", false)){
+
+		if (!pref.getBoolean("root", false)) {
 			Preference airplane_mode = findPreference("airplane_mode");
 			Preference lockscreen = findPreference("lockscreen");
 			screen.removePreference(airplane_mode);
 			screen.removePreference(lockscreen);
 		}
-		
-		//if root is enabled, it checks if the app really has root permissions and disables all root settings otherwise
-		else if(pref.getBoolean("root", false)){
-			if(!RootTools.isAccessGiven()){
-				
-				//if no root access is given anymore, airplane mode gets set to unchanged and all other settings that may be block get enabled again.
+
+		// if root is enabled, it checks if the app really has root permissions
+		// and disables all root settings otherwise
+		else if (pref.getBoolean("root", false)) {
+			if (!RootTools.isAccessGiven()) {
+
+				// if no root access is given anymore, airplane mode gets set to
+				// unchanged and all other settings that may be block get
+				// enabled again.
 				Preference airplane_mode = findPreference("airplane_mode");
 				pref.edit().putString("airplane_mode", "unchanged").commit();
 				Preference lockscreen = findPreference("lockscreen");
@@ -228,21 +296,21 @@ public class ProfileEditActivity extends PreferenceActivity implements
 				screen.removePreference(lockscreen);
 			}
 		}
-		
-		//checks if the app is installed as systemapp and if not it removes the options that require it
+
+		// checks if the app is installed as systemapp and if not it removes the
+		// options that require it
 		Setter setter = new Setter();
-		if(!setter.checkSystemapp(this)){
+		if (!setter.checkSystemapp(this)) {
 			pref.edit().putString("nfc", "unchanged");
 			Preference nfc = findPreference("nfc");
 			screen.removePreference(nfc);
-			//gps only works on kitkat if the app is installed as systemapp
-			if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
+			// gps only works on kitkat if the app is installed as systemapp
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
 				pref.edit().putString("gps", "unchanged");
 				Preference gps = findPreference("gps");
 				screen.removePreference(gps);
 			}
 		}
-		
 
 	}
 
@@ -317,7 +385,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		} else {
 			profile.setBluetooth(Profile.state.unchanged);
 		}
-		
+
 		if (pref.getString("nfc", "unchanged").equals("enabled")) {
 			profile.setNfc(Profile.state.enabled);
 		} else if (pref.getString("nfc", "unchanged").equals("disabled")) {
@@ -325,10 +393,11 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		} else {
 			profile.setNfc(Profile.state.unchanged);
 		}
-		
-		if(pref.getString("airplane_mode", "unchanged").equals("enabled")){
+
+		if (pref.getString("airplane_mode", "unchanged").equals("enabled")) {
 			profile.setAirplane_mode(Profile.state.enabled);
-		} else if (pref.getString("airplane_mode", "unchanged").equals("disabled")){
+		} else if (pref.getString("airplane_mode", "unchanged").equals(
+				"disabled")) {
 			profile.setAirplane_mode(Profile.state.disabled);
 		} else {
 			profile.setAirplane_mode(Profile.state.unchanged);
@@ -359,11 +428,11 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		} else {
 			profile.setLockscreen(Profile.state.unchanged);
 		}
-		
+
 		XmlCreator creator = new XmlCreator();
 		try {
-			FileOutputStream output = openFileOutput(
-					profile.getName() + "_profile.xml", Context.MODE_PRIVATE);
+			FileOutputStream output = openFileOutput(profile.getName()
+					+ "_profile.xml", Context.MODE_PRIVATE);
 			output.write(creator.create(profile).getBytes());
 			output.close();
 		} catch (FileNotFoundException e1) {
@@ -428,7 +497,9 @@ public class ProfileEditActivity extends PreferenceActivity implements
 				int index = listPreference.findIndexOfValue(stringValue);
 
 				// Set the summary to reflect the new value.
-				preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
+				preference
+						.setSummary(index >= 0 ? listPreference.getEntries()[index]
+								: null);
 			} else {
 				// For all other preferences, set the summary to the value's
 				// simple string representation.
@@ -458,7 +529,8 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		sBindPreferenceSummaryToValueListener.onPreferenceChange(
 				preference,
 				PreferenceManager.getDefaultSharedPreferences(
-						preference.getContext()).getString(preference.getKey(), ""));
+						preference.getContext()).getString(preference.getKey(),
+						""));
 	}
 
 	/**
@@ -494,18 +566,19 @@ public class ProfileEditActivity extends PreferenceActivity implements
 						"unchanged").equals("unchanged"))) {
 			findPreference("ringtone_volume").setEnabled(true);
 		}
-		
+
 		if (key.equals("airplane_mode")
 				&& (_pref.getString("airplane_mode", "unchanged")
-						.equals("enabled"))){
+						.equals("enabled"))) {
 			findPreference("gps").setEnabled(false);
 			findPreference("mobile_data").setEnabled(false);
 			findPreference("wifi").setEnabled(false);
 			findPreference("bluetooth").setEnabled(false);
 			findPreference("nfc").setEnabled(false);
 		} else if (key.equals("airplane_mode")
-				&& (_pref.getString("airplane_mode", "unchanged")
-						.equals("disabled") || _pref.getString("airplane_mode", "unchanged").equals("unchanged"))){
+				&& (_pref.getString("airplane_mode", "unchanged").equals(
+						"disabled") || _pref.getString("airplane_mode",
+						"unchanged").equals("unchanged"))) {
 			findPreference("gps").setEnabled(true);
 			findPreference("mobile_data").setEnabled(true);
 			findPreference("wifi").setEnabled(true);

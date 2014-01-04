@@ -5,6 +5,7 @@ src/bin/*
 .classpath
 .project
 .settings
+.dropbox
 src/.settings
 src/.classpath
 src/.project
