@@ -32,7 +32,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.MainActivity"
+            android:name="at.fhhgbg.mc.profileswitcher.ui.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,26 +41,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.ListDialogActivity"
+            android:name="at.fhhgbg.mc.profileswitcher.ui.ListDialogActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.Transparent"
             android:title="@string/title_activity_list_dialog" >
         </activity>
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.ProfileEditActivity"
+            android:name="at.fhhgbg.mc.profileswitcher.ui.ProfileEditActivity"
             android:label="@string/title_activity_profile_edit" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="at.fhhgbg.mc.profileswitcher.MainActivity" />
+                android:value="at.fhhgbg.mc.profileswitcher.ui.MainActivity" />
         </activity>
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.SettingsActivity"
+            android:name="at.fhhgbg.mc.profileswitcher.ui.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="at.fhhgbg.mc.profileswitcher.MainActivity" >
+            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="at.fhhgbg.mc.profileswitcher.MainActivity" />
+                android:value="at.fhhgbg.mc.profileswitcher.ui.MainActivity" />
         </activity>
 
         <receiver android:name="at.fhhgbg.mc.profileswitcher.widgets.PopUpWidget" >
@@ -81,7 +81,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_list" />
         </receiver>
-        <receiver android:name="at.fhhgbg.mc.profileswitcher.BootCompletedReceiver" >
+        <receiver android:name="at.fhhgbg.mc.profileswitcher.services.BootCompletedReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -91,7 +91,7 @@
             android:name="at.fhhgbg.mc.profileswitcher.widgets.ListWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" >
         </service>
-        <service android:name="at.fhhgbg.mc.profileswitcher.AutostartService" >
+        <service android:name="at.fhhgbg.mc.profileswitcher.services.AutostartService" >
         </service>
         <service android:name="at.fhhgbg.mc.profileswitcher.trigger.TriggerService" >
         </service>
@@ -104,12 +104,12 @@
             android:title="@string/title_activity_list_dialog" >
         </activity>
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.NfcWriterActivity"
+            android:name="at.fhhgbg.mc.profileswitcher.ui.NfcWriterActivity"
             android:label="@string/title_activity_nfc_writer"
-            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ProfileEditActivity" >
+            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.ProfileEditActivity" >
         </activity>
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.NfcReaderActivity"
+            android:name="at.fhhgbg.mc.profileswitcher.ui.NfcReaderActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_nfc_reader"
             android:launchMode="singleInstance"
@@ -123,36 +123,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.AboutActivity"
+            android:name="at.fhhgbg.mc.profileswitcher.ui.AboutActivity"
             android:label="@string/title_activity_about"
-            android:parentActivityName="at.fhhgbg.mc.profileswitcher.MainActivity" >
+            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="at.fhhgbg.mc.profileswitcher.MainActivity" />
+                android:value="at.fhhgbg.mc.profileswitcher.ui.MainActivity" />
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.ProfileFragment"
-            android:label="@string/title_activity_profile_fragment"
-            android:parentActivityName="Fragment" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="Fragment" />
-        </activity>
-        <activity
-            android:name="at.fhhgbg.mc.profileswitcher.TriggerFragment"
-            android:label="@string/title_activity_trigger_fragment" >
-        </activity>
-		<activity
-            android:name="at.fhhgbg.mc.profileswitcher.trigger.TriggerEditActivity"
+            android:name="at.fhhgbg.mc.profileswitcher.ui.TriggerEditActivity"
             android:label="@string/title_activity_trigger_edit"
-            android:parentActivityName="at.fhhgbg.mc.profileswitcher.MainActivity" >
+            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="at.fhhgbg.mc.profileswitcher.MainActivity" />
+                android:value="at.fhhgbg.mc.profileswitcher.ui.MainActivity" />
         </activity>
     </application>
 

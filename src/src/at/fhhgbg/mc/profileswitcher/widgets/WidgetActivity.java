@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
-import at.fhhgbg.mc.profileswitcher.XmlParser;
+import at.fhhgbg.mc.profileswitcher.profile.XmlParser;
 
 /**
  * Transparent activity used to apply a profile without showing anything.
