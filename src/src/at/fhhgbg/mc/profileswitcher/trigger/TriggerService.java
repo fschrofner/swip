@@ -24,7 +24,7 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
-import at.fhhgbg.mc.profileswitcher.XmlParser;
+import at.fhhgbg.mc.profileswitcher.profile.XmlParser;
 
 /**
  * Service which manages the triggers.

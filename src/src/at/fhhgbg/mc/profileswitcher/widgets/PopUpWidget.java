@@ -6,8 +6,8 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
-import at.fhhgbg.mc.profileswitcher.ListDialogActivity;
 import at.fhhgbg.mc.profileswitcher.R;
+import at.fhhgbg.mc.profileswitcher.ui.ListDialogActivity;
 
 /**
  * WidgetProvider for the Pop-Up Widget.

@@ -8,8 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
-import at.fhhgbg.mc.profileswitcher.MainActivity;
 import at.fhhgbg.mc.profileswitcher.R;
+import at.fhhgbg.mc.profileswitcher.ui.MainActivity;
 
 /**
  * AppWidgetProvider for the ListWidget.

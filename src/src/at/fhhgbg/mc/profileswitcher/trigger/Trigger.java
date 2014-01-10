@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class Trigger {
 
-	protected enum listen_state {
+	public enum listen_state {
 		listen_off, listen_on, ignore;
 	}
 
@@ -72,34 +72,6 @@ public class Trigger {
 	public void setHeadphones(listen_state headphones) {
 		this.headphones = headphones;
 	}
-
-//	public int getHours() {
-//		return startHours;
-//	}
-//
-//	public void setHours(int _hours) {
-//		if (_hours < 24 && _hours >= -1) {
-//			this.startHours = _hours;
-//			this.endHours = -1;
-//			Log.i("Trigger", "set exact hours");
-//		} else {
-//			Log.e("Trigger", "hours not in allowed range!");
-//		}
-//	}
-//
-//	public int getMinutes() {
-//		return startMinutes;
-//	}
-//
-//	public void setMinutes(int _minutes) {
-//		if (_minutes < 60 && _minutes >= -1) {
-//			this.startMinutes = _minutes;
-//			this.endMinutes = -1;
-//			Log.i("Trigger", "set exact minutes");
-//		} else {
-//			Log.e("Trigger", "minutes not in allowed range!");
-//		}
-//	}
 
 	public int getStartHours() {
 		return startHours;
@@ -170,6 +142,4 @@ public class Trigger {
 		this.name = name;
 	}
 	
-	
-
 }
