@@ -96,7 +96,7 @@ public class XmlCreatorTrigger {
 		}
 
 		// writes battery changes
-		if (_trigger.getBatteryLevel() >= -1
+		if (_trigger.getBatteryStartLevel() >= -1 && _trigger.getBatteryEndLevel() >= -1
 				&& _trigger.getBatteryState() != null) {
 			Element batteryElement = xmlProfile.createElement("battery");
 
@@ -107,15 +107,21 @@ public class XmlCreatorTrigger {
 				batteryElement.setAttribute("state", String.format("%d", -1));
 			}
 
-			if (_trigger.getBatteryLevel() >= -1) {
-				batteryElement.setAttribute("level",
-						String.format("%d", _trigger.getBatteryLevel()));
+			if (_trigger.getBatteryStartLevel() >= -1) {
+				batteryElement.setAttribute("start_level",
+						String.format("%d", _trigger.getBatteryStartLevel()));
+			}
+			
+			if (_trigger.getBatteryEndLevel() >= -1) {
+				batteryElement.setAttribute("end_level",
+						String.format("%d", _trigger.getBatteryEndLevel()));
 			}
 
 			Log.i("XMLCreatorTrigger",
 					String.format(
-							"trigger changes were defined as follows: batter_level: %s battery_state: %s",
-							_trigger.getBatteryLevel(),
+							"trigger changes were defined as follows: batter_start_level: %s, batter_end_level: %s, battery_state: %s",
+							_trigger.getBatteryStartLevel(),
+							_trigger.getBatteryEndLevel(),
 							_trigger.getBatteryState()));
 			rootElement.appendChild(batteryElement);
 		}

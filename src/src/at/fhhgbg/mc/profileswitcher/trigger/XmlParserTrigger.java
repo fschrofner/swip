@@ -199,20 +199,36 @@ public class XmlParserTrigger {
 			throws XmlPullParserException, IOException {
 		_parser.require(XmlPullParser.START_TAG, null, "battery");
 
-		if (_parser.getAttributeValue(null, "level") != null) {
-			if (Integer.parseInt(_parser.getAttributeValue(null, "level")) >= 0
+		if (_parser.getAttributeValue(null, "start_level") != null) {
+			if (Integer.parseInt(_parser.getAttributeValue(null, "start_level")) >= 0
 					&& Integer.parseInt(_parser
-							.getAttributeValue(null, "level")) <= 100) {
-				_trigger.setBatteryLevel(Integer.parseInt(_parser
-						.getAttributeValue(null, "level")));
+							.getAttributeValue(null, "start_level")) <= 100) {
+				_trigger.setBatteryStartLevel(Integer.parseInt(_parser
+						.getAttributeValue(null, "start_level")));
 				Log.i("XmlParserTrigger",
-						"BatteryLevel: "
-								+ _parser.getAttributeValue(null, "level"));
+						"BatteryStartLevel: "
+								+ _parser.getAttributeValue(null, "start_level"));
 			} else {
-				Log.i("XmlParserTrigger", "BatteryLevel: ignore.");
+				Log.i("XmlParserTrigger", "BatteryStartLevel: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "BatteryLevel: Invalid Argument!");
+			Log.e("XmlParserTrigger", "BatteryStartLevel: Invalid Argument!");
+		}
+		
+		if (_parser.getAttributeValue(null, "end_level") != null) {
+			if (Integer.parseInt(_parser.getAttributeValue(null, "end_level")) >= 0
+					&& Integer.parseInt(_parser
+							.getAttributeValue(null, "end_level")) <= 100) {
+				_trigger.setBatteryEndLevel(Integer.parseInt(_parser
+						.getAttributeValue(null, "end_level")));
+				Log.i("XmlParserTrigger",
+						"BatteryEndLevel: "
+								+ _parser.getAttributeValue(null, "end_level"));
+			} else {
+				Log.i("XmlParserTrigger", "BatteryEndLevel: ignore.");
+			}
+		} else {
+			Log.e("XmlParserTrigger", "BatteryEndLevel: Invalid Argument!");
 		}
 
 		if (_parser.getAttributeValue(null, "state") != null) {

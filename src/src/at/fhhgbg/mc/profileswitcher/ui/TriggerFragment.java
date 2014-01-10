@@ -80,7 +80,8 @@ public class TriggerFragment extends Fragment implements OnItemLongClickListener
 			prefEditor.putString("start_time", "Ignored");
 			prefEditor.putString("end_time", "Ignored");
 			prefEditor.putString("battery_state", "ignored");
-			prefEditor.putInt("battery_level", -1);
+			prefEditor.putInt("battery_start_level", -1);
+			prefEditor.putInt("battery_end_level", -1);
 			prefEditor.putString("headphone", "ignored");
 			prefEditor.commit();
 
