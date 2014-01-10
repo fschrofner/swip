@@ -113,10 +113,18 @@ public class TriggerEditActivity extends PreferenceActivity implements
 							getResources().getString(
 									R.string.pref_profile_default)).equals(
 							getResources().getString(
-									R.string.pref_profile_default))) {
+									R.string.pref_profile_default))
+					|| pref.getInt("battery_start_level", -1) < pref.getInt(
+							"battery_end_level", -1)) {
 				AlertDialog.Builder dialog = new AlertDialog.Builder(this,
 						AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-				if (pref.getString(
+				if (pref.getInt("battery_start_level", -1) < pref.getInt(
+						"battery_end_level", -1)) {
+					dialog.setTitle(getResources().getString(
+							R.string.alert_battery_title));
+					dialog.setMessage(getResources().getString(
+							R.string.alert_battery_text));
+				} else if (pref.getString(
 						"name_trigger",
 						getResources().getString(
 								R.string.pref_trigger_name_default)).equals(
@@ -142,7 +150,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 								dialog.dismiss();
 							}
 						});
-				
+
 				dialog.show();
 			} else {
 				this.saveTrigger();
@@ -232,7 +240,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		fakeHeader.setTitle(R.string.pref_header_battery);
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_trigger_battery);
-		
+
 		// Add 'Headphone' preferences, and a corresponding header.
 		fakeHeader = new PreferenceCategory(this);
 		fakeHeader.setTitle(R.string.pref_header_headphone);
@@ -248,12 +256,15 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("profile"));
 		bindPreferenceSummaryToValue(findPreference("battery_state"));
 		bindPreferenceSummaryToValue(findPreference("headphone"));
-		
-		
-		if (pref.getString("start_time", "Ignored").equals(
-						"Ignored")) {
+
+		if (pref.getString("start_time", "Ignored").equals("Ignored")) {
 			findPreference("end_time").setEnabled(false);
 			pref.edit().putString("end_time", "Ignored").commit();
+		}
+
+		if (pref.getInt("battery_start_level", -1) == -1) {
+			findPreference("battery_end_level").setEnabled(false);
+			pref.edit().putInt("battery_end_level", -1).commit();
 		}
 	}
 
@@ -281,26 +292,28 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			trigger.setStartHours(-1);
 			trigger.setStartMinutes(-1);
 		} else {
-			trigger.setStartHours(Integer.parseInt(pref.getString("start_time", "00:00")
-					.split(":")[0]));
-			trigger.setStartMinutes(Integer.parseInt(pref.getString("start_time", "00:00")
-					.split(":")[1]));
+			trigger.setStartHours(Integer.parseInt(pref.getString("start_time",
+					"00:00").split(":")[0]));
+			trigger.setStartMinutes(Integer.parseInt(pref.getString(
+					"start_time", "00:00").split(":")[1]));
 		}
-		
+
 		if (pref.getString("end_time", "Ignored").equals("Ignored")) {
 			trigger.setEndHours(-1);
 			trigger.setEndMinutes(-1);
 		} else {
-			trigger.setEndHours(Integer.parseInt(pref.getString("end_time", "00:00")
-					.split(":")[0]));
-			trigger.setEndMinutes(Integer.parseInt(pref.getString("end_time", "00:00")
-					.split(":")[1]));
+			trigger.setEndHours(Integer.parseInt(pref.getString("end_time",
+					"00:00").split(":")[0]));
+			trigger.setEndMinutes(Integer.parseInt(pref.getString("end_time",
+					"00:00").split(":")[1]));
 		}
 
 		trigger.setProfileName(pref.getString("profile", getResources()
 				.getString(R.string.pref_profile_default)));
 
-		trigger.setBatteryLevel(pref.getInt("battery_level", -1));
+		trigger.setBatteryStartLevel(pref.getInt("battery_start_level", -1));
+
+		trigger.setBatteryEndLevel(pref.getInt("battery_end_level", -1));
 
 		if (pref.getString("battery_state", "ignored").equals("charging")) {
 			trigger.setBatteryState(Trigger.listen_state.listen_on);
@@ -310,11 +323,10 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		} else {
 			trigger.setBatteryState(Trigger.listen_state.ignore);
 		}
-		
+
 		if (pref.getString("headphone", "ignored").equals("plugged_in")) {
 			trigger.setHeadphones(Trigger.listen_state.listen_on);
-		} else if (pref.getString("headphone", "ignored").equals(
-				"unplugged")) {
+		} else if (pref.getString("headphone", "ignored").equals("unplugged")) {
 			trigger.setHeadphones(Trigger.listen_state.listen_off);
 		} else {
 			trigger.setHeadphones(Trigger.listen_state.ignore);
@@ -342,7 +354,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			file.delete();
 
 		}
-		
+
 		Intent intent = new Intent();
 		intent.setAction("at.fhhgbg.mc.profileswitcher.trigger.refresh");
 		sendBroadcast(intent);
@@ -430,17 +442,28 @@ public class TriggerEditActivity extends PreferenceActivity implements
 	}
 
 	@Override
-	public void onSharedPreferenceChanged(SharedPreferences _pref,
-			String key) {
-		//dis- and enables the endtime if the start time is changed
+	public void onSharedPreferenceChanged(SharedPreferences _pref, String key) {
+		// dis- and enables the endtime if the start time is changed
 		if (key.equals("start_time")
 				&& _pref.getString("start_time", "Ignored").equals("Ignored")) {
 			_pref.edit().putString("end_time", "Ignored").commit();
 			findPreference("end_time").setEnabled(false);
 			findPreference("end_time").setSummary("Ignored");
 		} else if (key.equals("start_time")
-				&& !_pref.getString("start_time", "Ignored").equals("Ignored")){			
+				&& !_pref.getString("start_time", "Ignored").equals("Ignored")) {
 			findPreference("end_time").setEnabled(true);
+		}
+
+		// dis- and enables the end battery level if the start battery level is
+		// changed
+		if (key.equals("battery_start_level")
+				&& _pref.getInt("battery_start_level", -1) == -1) {
+			_pref.edit().putInt("battery_end_level", -1).commit();
+			findPreference("battery_end_level").setEnabled(false);
+			findPreference("battery_end_level").setSummary("Ignored");
+		} else if (key.equals("battery_start_level")
+				&& _pref.getInt("battery_start_level", -1) != -1) {
+			findPreference("battery_end_level").setEnabled(true);
 		}
 	}
 

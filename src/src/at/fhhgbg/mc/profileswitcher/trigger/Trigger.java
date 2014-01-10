@@ -48,15 +48,6 @@ public class Trigger {
 		this.batteryEndLevel = batteryEndLevel;
 	}
 
-	public int getBatteryLevel() {
-		return batteryStartLevel;
-	}
-
-	public void setBatteryLevel(int batteryLevel) {
-		this.batteryStartLevel = batteryLevel;
-		this.batteryEndLevel = -1;
-	}
-
 	public listen_state getBatteryState() {
 		return batteryCharging;
 	}

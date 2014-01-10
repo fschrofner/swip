@@ -36,7 +36,8 @@
     </string-array>
 
     <!-- Battery Level -->
-    <string name="slider_title_battery_level">Battery Level</string>
+    <string name="slider_title_battery_start_level">Battery Start-Level</string>
+    <string name="slider_title_battery_end_level">Battery End-Level</string>
 
     <string-array name="slider_summaries_battery_level">
         <item>Ignored</item>
@@ -145,7 +146,8 @@
 
     <item name="slider_default_battery_level" format="integer" type="string">0</item>
 
-    <string name="slider_message_battery_level">Check the box and adjust the slider to trigger the battery level.</string>
+    <string name="slider_message_battery_start_level">Check the box and adjust the slider to trigger the battery start-level.</string>
+    <string name="slider_message_battery_end_level">Check the box and adjust the slider to trigger the battery end-level.</string>
     
     
     <!-- Settings for Headphone -->
@@ -167,8 +169,10 @@
     <!-- Strings for Alert Dialog -->
     <string name="alert_name_title">Trigger Name</string>
     <string name="alert_profile_title">Profile Name</string>
+    <string name="alert_battery_title">Battery Level</string>
     <string name="alert_name_text">Please input a valid name for the trigger!</string>
     <string name="alert_profile_text">Please input a valid name for the profile!</string>
+    <string name="alert_battery_text">The battery start level must not be smaller than the battery end level!</string>
     <string name="alert_button">Okay</string>
     <string name="alert_discard_title">Discard Changes?</string>
     <string name="alert_discard_text">Do you want to discard the changes and exit the editor?</string>

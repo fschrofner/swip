@@ -13,10 +13,20 @@
      <net.jayschwa.android.preference.SliderPreference
         maximum_value="100"
         android:defaultValue="@string/slider_default_battery_level"
-        android:dialogMessage="@string/slider_message_battery_level"
-        android:key="battery_level"
+        android:dialogMessage="@string/slider_message_battery_start_level"
+        android:key="battery_start_level"
         android:summary="@array/slider_summaries_battery_level"
-        android:title="@string/slider_title_battery_level" />
+        android:title="@string/slider_title_battery_start_level" />
+     
+     <net.jayschwa.android.preference.SliderPreference
+        maximum_value="100"
+        android:defaultValue="@string/slider_default_battery_level"
+        android:dialogMessage="@string/slider_message_battery_end_level"
+        android:key="battery_end_level"
+        android:summary="@array/slider_summaries_battery_level"
+        android:title="@string/slider_title_battery_end_level" />
+     
+     
     
 
 </PreferenceScreen>

@@ -224,21 +224,38 @@ public class XmlParserPrefTrigger {
 			throws XmlPullParserException, IOException {
 		_parser.require(XmlPullParser.START_TAG, null, "battery");
 
-		if (_parser.getAttributeValue(null, "level") != null) {
-			if (Integer.parseInt(_parser.getAttributeValue(null, "level")) >= 0
+		if (_parser.getAttributeValue(null, "start_level") != null) {
+			if (Integer.parseInt(_parser.getAttributeValue(null, "start_level")) >= 0
 					&& Integer.parseInt(_parser
-							.getAttributeValue(null, "level")) <= 100) {
-				prefEdit.putInt("battery_level", Integer.parseInt(_parser
-						.getAttributeValue(null, "level")));
+							.getAttributeValue(null, "start_level")) <= 100) {
+				prefEdit.putInt("battery_start_level", Integer.parseInt(_parser
+						.getAttributeValue(null, "start_level")));
 				Log.i("XmlParserPrefTrigger",
-						"BatteryLevel: "
-								+ _parser.getAttributeValue(null, "level"));
+						"BatteryStartLevel: "
+								+ _parser.getAttributeValue(null, "start_level"));
 			} else {
-				prefEdit.putInt("battery_level", -1);
-				Log.i("XmlParserPrefTrigger", "BatteryLevel: ignore.");
+				prefEdit.putInt("battery_start_level", -1);
+				Log.i("XmlParserPrefTrigger", "BatteryStartLevel: ignore.");
 			}
 		} else {
-			Log.e("XmlParserPrefTrigger", "BatteryLevel: Invalid Argument!");
+			Log.e("XmlParserPrefTrigger", "BatteryStartLevel: Invalid Argument!");
+		}
+		
+		if (_parser.getAttributeValue(null, "end_level") != null) {
+			if (Integer.parseInt(_parser.getAttributeValue(null, "end_level")) >= 0
+					&& Integer.parseInt(_parser
+							.getAttributeValue(null, "end_level")) <= 100) {
+				prefEdit.putInt("battery_end_level", Integer.parseInt(_parser
+						.getAttributeValue(null, "end_level")));
+				Log.i("XmlParserPrefTrigger",
+						"BatteryEndLevel: "
+								+ _parser.getAttributeValue(null, "end_level"));
+			} else {
+				prefEdit.putInt("battery_end_level", -1);
+				Log.i("XmlParserPrefTrigger", "BatteryEndLevel: ignore.");
+			}
+		} else {
+			Log.e("XmlParserPrefTrigger", "BatteryEndLevel: Invalid Argument!");
 		}
 
 		if (_parser.getAttributeValue(null, "state") != null) {
