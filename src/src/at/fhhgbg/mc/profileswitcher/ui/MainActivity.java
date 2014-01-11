@@ -2,6 +2,8 @@ package at.fhhgbg.mc.profileswitcher.ui;
 
 import java.util.Locale;
 
+import com.google.android.gms.location.Geofence;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -14,6 +16,9 @@ import at.fhhgbg.mc.profileswitcher.R;
 import at.fhhgbg.mc.profileswitcher.R.id;
 import at.fhhgbg.mc.profileswitcher.R.layout;
 import at.fhhgbg.mc.profileswitcher.R.string;
+import at.fhhgbg.mc.profileswitcher.trigger.LocationTrigger;
+import at.fhhgbg.mc.profileswitcher.trigger.SimpleGeofence;
+import at.fhhgbg.mc.profileswitcher.trigger.SimpleGeofenceStore;
 
 /**
  * The main activity managing the two fragments, there is no other work done here.
@@ -76,6 +81,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+        
+        LocationTrigger lt = new LocationTrigger(this);
+        lt.addGeofences();
     }
     
     @Override
