@@ -83,6 +83,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
         
         LocationTrigger lt = new LocationTrigger(this);
+        lt.servicesConnected();
         lt.addGeofences();
     }
     

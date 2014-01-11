@@ -47,8 +47,8 @@ public class LocationTrigger implements ConnectionCallbacks,
 		// Instantiate the current List of geofences
 		geofenceList = new ArrayList<Geofence>();
 		
-		SimpleGeofence sg1 = new SimpleGeofence("1", 48.00, 13.00, 20, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
-		SimpleGeofence sg2 = new SimpleGeofence("2", 32.00, 9.00, 20, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
+		SimpleGeofence sg1 = new SimpleGeofence("1", 48.00, 13.00, 2000, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
+		SimpleGeofence sg2 = new SimpleGeofence("2", 32.00, 9.00, 2000, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
 		
 		geofenceList.add(sg1.toGeofence());
 		geofenceList.add(sg2.toGeofence());
@@ -89,11 +89,12 @@ public class LocationTrigger implements ConnectionCallbacks,
 
 	private PendingIntent getPendingIntent() {
 		// Create an explicit Intent
-		Intent intent = new Intent(context, TriggerService.class);
+		Intent intent = new Intent(context, TriggerBroadcastReceiver.class);
+		intent.setAction("at.fhhgbg.mc.profileswitcher.trigger.location_change");
 		/*
 		 * Return the PendingIntent
 		 */
-		return PendingIntent.getService(context, 0, intent,
+		return PendingIntent.getBroadcast(context, 0, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
@@ -130,8 +131,6 @@ public class LocationTrigger implements ConnectionCallbacks,
 
 	@Override
 	public void onAddGeofencesResult(int arg0, String[] arg1) {
-		// TODO Auto-generated method stub
-
 		inProgress = false;
 		locationClient.disconnect();
 	}
@@ -153,8 +152,6 @@ public class LocationTrigger implements ConnectionCallbacks,
 
 	@Override
 	public void onDisconnected() {
-		// TODO Auto-generated method stub
-
 		// Turn off the request flag
         inProgress = false;
         // Destroy the current location client
