@@ -36,7 +36,7 @@ import at.fhhgbg.mc.profileswitcher.profile.XmlParser;
  * @author Florian Schrofner & Dominik Koeltringer
  * 
  */
-public class TriggerService extends IntentService {
+public class TriggerService extends Service {
 
 	private TriggerBroadcastReceiver triggerReceiver;
 	private int currentHours;
@@ -45,48 +45,52 @@ public class TriggerService extends IntentService {
 	private boolean batteryCharging;
 	private int batteryLevel;
 	private List<Trigger> triggerList = new ArrayList<Trigger>();
-	
-	
-	public TriggerService(String name) {
-		super(name);
-	}
-	
-	public TriggerService() {
-		super("TriggerService");
-	}
 
-	private void setInitialHeadphones(){
-		AudioManager audiomanager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-		if(audiomanager.isWiredHeadsetOn()){
+//	public TriggerService(String name) {
+//		super(name);
+//	}
+//
+//	public TriggerService() {
+//		super("TriggerService");
+//	}
+
+	private void setInitialHeadphones() {
+		AudioManager audiomanager = (AudioManager) getApplicationContext()
+				.getSystemService(Context.AUDIO_SERVICE);
+		if (audiomanager.isWiredHeadsetOn()) {
 			headphones = true;
-			Log.i("TriggerService", "initial headphone value defined as: plugged");
-		} else if (!audiomanager.isWiredHeadsetOn()){
+			Log.i("TriggerService",
+					"initial headphone value defined as: plugged");
+		} else if (!audiomanager.isWiredHeadsetOn()) {
 			headphones = false;
-			Log.i("TriggerService", "initial headphone value defined as: unplugged");
+			Log.i("TriggerService",
+					"initial headphone value defined as: unplugged");
 		}
 		compareTriggers();
 	}
-	
+
 	private void setInitialTime() {
-		int h = Integer.parseInt(String.valueOf(Calendar
-				.getInstance().get(Calendar.HOUR_OF_DAY)));
-		int m = Integer.parseInt(String.valueOf(Calendar
-				.getInstance().get(Calendar.MINUTE)));
+		int h = Integer.parseInt(String.valueOf(Calendar.getInstance().get(
+				Calendar.HOUR_OF_DAY)));
+		int m = Integer.parseInt(String.valueOf(Calendar.getInstance().get(
+				Calendar.MINUTE)));
 		setTime(h, m);
 	}
-	
-	protected void setInitialBatteryState(Intent _intent){
+
+	protected void setInitialBatteryState(Intent _intent) {
 		int status = _intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
 		boolean batteryCharging = (status == BatteryManager.BATTERY_STATUS_CHARGING);
-		Log.i("TriggerService", "initial battery state defined as " + batteryCharging);
+		Log.i("TriggerService", "initial battery state defined as "
+				+ batteryCharging);
 		int level = _intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 		int scale = _intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-		float batteryLevelF = level / (float)scale;
-		batteryLevel = (int)(batteryLevelF * 100);
-		Log.i("TriggerService", "initial battery level defined as " + batteryLevel);
+		float batteryLevelF = level / (float) scale;
+		batteryLevel = (int) (batteryLevelF * 100);
+		Log.i("TriggerService", "initial battery level defined as "
+				+ batteryLevel);
 		compareTriggers();
 	}
-	
+
 	public void setBatteryCharging(boolean batteryCharging) {
 		this.batteryCharging = batteryCharging;
 		Log.i("TriggerService", "batterystate changed to " + batteryCharging);
@@ -98,13 +102,13 @@ public class TriggerService extends IntentService {
 		Log.i("TriggerService", "headphones changed to " + _headphones);
 		compareTriggers();
 	}
-	
+
 	public void setBatteryLevel(int batteryLevel) {
 		this.batteryLevel = batteryLevel;
 		Log.i("TriggerService", "batterylevel changed to " + batteryLevel);
 		compareTriggers();
 	}
-	
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -115,33 +119,33 @@ public class TriggerService extends IntentService {
 
 		Log.i("TriggerService", "TriggerService started");
 
-//		 Trigger test = new Trigger("Test");
-//		 test.setProfileName("Test");
-//		 test.setStartHours(15);
-//		 test.setStartMinutes(26);
-//		 test.setEndHours(15);
-//		 test.setEndMinutes(28);
-//		 test.setHours(19);
-//		 test.setMinutes(10);
-//		 test.setHeadphones(Trigger.listen_state.listen_off);
-//		 test.setBatteryState(Trigger.listen_state.listen_on);
-//		 test.setBatteryLevel(96);
-//		 triggerList.add(test);
-		
-//		 Trigger test2 = new Trigger("Test2");
-//		 test2.setProfileName("Test4");
-//		 test2.setStartHours(19);
-//		 test2.setStartMinutes(22);
-//		 test2.setEndHours(20);
-//		 test2.setEndMinutes(24);
-//		 test2.setProfileName("Test2");
-//		 test2.setHeadphones(Trigger.listen_state.listen_on);
-//		 test2.setBatteryState(Trigger.listen_state.listen_off);
-//		 triggerList.add(test2);
-		 
+		// Trigger test = new Trigger("Test");
+		// test.setProfileName("Test");
+		// test.setStartHours(15);
+		// test.setStartMinutes(26);
+		// test.setEndHours(15);
+		// test.setEndMinutes(28);
+		// test.setHours(19);
+		// test.setMinutes(10);
+		// test.setHeadphones(Trigger.listen_state.listen_off);
+		// test.setBatteryState(Trigger.listen_state.listen_on);
+		// test.setBatteryLevel(96);
+		// triggerList.add(test);
+
+		// Trigger test2 = new Trigger("Test2");
+		// test2.setProfileName("Test4");
+		// test2.setStartHours(19);
+		// test2.setStartMinutes(22);
+		// test2.setEndHours(20);
+		// test2.setEndMinutes(24);
+		// test2.setProfileName("Test2");
+		// test2.setHeadphones(Trigger.listen_state.listen_on);
+		// test2.setBatteryState(Trigger.listen_state.listen_off);
+		// triggerList.add(test2);
+
 		setInitialTime();
 		setInitialHeadphones();
-		
+
 		// Create a broadcast receiver to handle changes
 		triggerReceiver = new TriggerBroadcastReceiver(this);
 		refreshTriggers();
@@ -160,7 +164,8 @@ public class TriggerService extends IntentService {
 	public void setTime(int _currentHours, int _currentMinutes) {
 		currentHours = _currentHours;
 		currentMinutes = _currentMinutes;
-		Log.i("TriggerService", "current time updated: " + currentHours + ":" + currentMinutes);
+		Log.i("TriggerService", "current time updated: " + currentHours + ":"
+				+ currentMinutes);
 		compareTriggers();
 	}
 
@@ -171,27 +176,42 @@ public class TriggerService extends IntentService {
 		Log.i("TriggerService", "compareTriggers called");
 		for (Trigger trigger : triggerList) {
 			Log.i("TriggerService", "compare trigger: " + trigger.getName());
-			if(compareTime(trigger)){
+			if (compareTime(trigger)) {
 				Log.i("TriggerService", "trigger matching time");
-				if(compareHeadphones(trigger)){
+				if (compareHeadphones(trigger)) {
 					Log.i("TriggerService", "trigger matching headphones");
-					if(compareBatteryCharging(trigger)){
-						Log.i("TriggerService", "trigger matching battery state");
-						if(compareBatteryLevel(trigger)){
-							Log.i("TriggerService", "trigger matching battery level");
-							SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-							
-							if (!trigger.getProfileName().equals(pref.getString("active_profile", "Default"))) {
-								Log.i("TriggerService", "matching trigger found: " + trigger.getName());
-								
-								XmlParser parser = new XmlParser(getApplicationContext());
+					if (compareBatteryCharging(trigger)) {
+						Log.i("TriggerService",
+								"trigger matching battery state");
+						if (compareBatteryLevel(trigger)) {
+							Log.i("TriggerService",
+									"trigger matching battery level");
+							SharedPreferences pref = PreferenceManager
+									.getDefaultSharedPreferences(this);
+
+							if (!trigger.getProfileName()
+									.equals(pref.getString("active_profile",
+											"Default"))) {
+								Log.i("TriggerService",
+										"matching trigger found: "
+												+ trigger.getName());
+
+								XmlParser parser = new XmlParser(
+										getApplicationContext());
 								try {
 									// applies the profile.
 									parser.initializeXmlParser(openFileInput(trigger
 											.getProfileName() + "_profile.xml"));
-									
-									Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-									pref.edit().putString("active_profile", trigger.getProfileName()).commit();
+
+									Toast.makeText(
+											getApplicationContext(),
+											trigger.getProfileName()
+													+ " was applied!",
+											Toast.LENGTH_SHORT).show();
+									pref.edit()
+											.putString("active_profile",
+													trigger.getProfileName())
+											.commit();
 								} catch (NotFoundException e) {
 									e.printStackTrace();
 								} catch (XmlPullParserException e) {
@@ -199,158 +219,169 @@ public class TriggerService extends IntentService {
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
-							} 						
-							else{
-								Log.i("TriggerService", trigger.getProfileName() + " is already applied");
-							}	
+							} else {
+								Log.i("TriggerService",
+										trigger.getProfileName()
+												+ " is already applied");
+							}
+						} else {
+							Log.i("TriggerService", trigger.getName()
+									+ " does not match battery level");
 						}
-						else{
-							Log.i("TriggerService", trigger.getName() + " does not match battery level");
-						}					
+					} else {
+						Log.i("TriggerService", trigger.getName()
+								+ " does not match battery state");
 					}
-					else{
-						Log.i("TriggerService", trigger.getName() + " does not match battery state");
-					}
+				} else {
+					Log.i("TriggerService", trigger.getName()
+							+ " does not match headphones");
 				}
-				else{
-					Log.i("TriggerService", trigger.getName() + " does not match headphones");
-				}
+			} else {
+				Log.i("TriggerService", trigger.getName()
+						+ " does not match time " + trigger.getStartHours()
+						+ " " + trigger.getEndHours());
 			}
-			else{
-				Log.i("TriggerService", trigger.getName() + " does not match time " + trigger.getStartHours() + " " + trigger.getEndHours());
-			}
-			
+
 		}
 	}
-	
-	private boolean compareTime(Trigger _trigger){
+
+	private boolean compareTime(Trigger _trigger) {
 		Log.i("TriggerService", "compare time called!");
-		//if no time range is set
-		if (_trigger.getStartHours() == -1 && _trigger.getEndHours() == -1){
+		// if no time range is set
+		if (_trigger.getStartHours() == -1 && _trigger.getEndHours() == -1) {
 			Log.i("TriggerService", "time ignored");
 			return true;
 		}
-		//if the end time is not set (trigger is only activated at a certain time)
-		else if (_trigger.getEndHours() == -1){
-			Log.i("TriggerService", "no end time set, only compared to certain time");
-			//if the current time matches the time set in the trigger
-			if(currentHours == _trigger.getStartHours() && currentMinutes == _trigger.getStartMinutes()){
+		// if the end time is not set (trigger is only activated at a certain
+		// time)
+		else if (_trigger.getEndHours() == -1) {
+			Log.i("TriggerService",
+					"no end time set, only compared to certain time");
+			// if the current time matches the time set in the trigger
+			if (currentHours == _trigger.getStartHours()
+					&& currentMinutes == _trigger.getStartMinutes()) {
 				Log.i("TriggerService", "trigger matches exact current time");
 				return true;
-			}
-			else{
+			} else {
 				return false;
 			}
 		}
-		//if the start and end hours are on the same day
-		else if((_trigger.getStartHours() < _trigger.getEndHours()) || 
-				(_trigger.getStartHours() == _trigger.getEndHours() && _trigger.getStartMinutes() < _trigger.getEndMinutes())){
+		// if the start and end hours are on the same day
+		else if ((_trigger.getStartHours() < _trigger.getEndHours())
+				|| (_trigger.getStartHours() == _trigger.getEndHours() && _trigger
+						.getStartMinutes() < _trigger.getEndMinutes())) {
 			Log.i("TriggerService", "time range on same day");
-			
-			//if the hours are inbetween the trigger hours
-			if(currentHours > _trigger.getStartHours() && currentHours < _trigger.getEndHours()){
-					return true;			
+
+			// if the hours are inbetween the trigger hours
+			if (currentHours > _trigger.getStartHours()
+					&& currentHours < _trigger.getEndHours()) {
+				return true;
 			}
-			//if the start hours are the same as the current hour
-			else if(currentHours == _trigger.getStartHours() && currentMinutes >= _trigger.getStartMinutes()){
-				if(currentHours < _trigger.getEndHours()){
+			// if the start hours are the same as the current hour
+			else if (currentHours == _trigger.getStartHours()
+					&& currentMinutes >= _trigger.getStartMinutes()) {
+				if (currentHours < _trigger.getEndHours()) {
 					return true;
-				}
-				else if(currentHours == _trigger.getEndHours() && currentMinutes <= _trigger.getEndMinutes()){
+				} else if (currentHours == _trigger.getEndHours()
+						&& currentMinutes <= _trigger.getEndMinutes()) {
 					return true;
-				}
-				else {
+				} else {
 					return false;
 				}
 			}
-			//if the end hours are the same as the current hour
-			else if(currentHours == _trigger.getEndHours() && currentMinutes <= _trigger.getEndMinutes()){
-				if(currentHours > _trigger.getStartHours()){
+			// if the end hours are the same as the current hour
+			else if (currentHours == _trigger.getEndHours()
+					&& currentMinutes <= _trigger.getEndMinutes()) {
+				if (currentHours > _trigger.getStartHours()) {
 					return true;
-				}
-				else if(currentHours == _trigger.getStartHours() && currentMinutes > _trigger.getStartMinutes()){
+				} else if (currentHours == _trigger.getStartHours()
+						&& currentMinutes > _trigger.getStartMinutes()) {
 					return true;
-				}
-				else {
+				} else {
 					return false;
 				}
-			}
-			else{
+			} else {
 				return false;
 			}
-		//if the end time is already on the next day
-		} else if (_trigger.getStartHours() > _trigger.getEndHours() || 
-				(_trigger.getStartHours() == _trigger.getEndHours() && _trigger.getStartMinutes() > _trigger.getEndMinutes())){
+			// if the end time is already on the next day
+		} else if (_trigger.getStartHours() > _trigger.getEndHours()
+				|| (_trigger.getStartHours() == _trigger.getEndHours() && _trigger
+						.getStartMinutes() > _trigger.getEndMinutes())) {
 			Log.i("TriggerService", "time range on other day");
-			//if the time is after the start time or before the end time
-			if(currentHours > _trigger.getStartHours() || currentHours < _trigger.getEndHours()){
+			// if the time is after the start time or before the end time
+			if (currentHours > _trigger.getStartHours()
+					|| currentHours < _trigger.getEndHours()) {
 				return true;
 			}
-			//if the hour is the same as the start hour
-			else if(currentHours == _trigger.getStartHours() && currentMinutes >= _trigger.getStartMinutes()){
+			// if the hour is the same as the start hour
+			else if (currentHours == _trigger.getStartHours()
+					&& currentMinutes >= _trigger.getStartMinutes()) {
 				return true;
 			}
-			//if the hour is the same as the end hour
-			else if(currentHours == _trigger.getEndHours() && currentMinutes <= _trigger.getEndMinutes()){
+			// if the hour is the same as the end hour
+			else if (currentHours == _trigger.getEndHours()
+					&& currentMinutes <= _trigger.getEndMinutes()) {
 				return true;
-			}
-			else{
+			} else {
 				return false;
 			}
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
-	
-	private boolean compareHeadphones(Trigger _trigger){
-		if(!_trigger.getHeadphones().equals(Trigger.listen_state.ignore)){
-			if(headphones && _trigger.getHeadphones().equals(Trigger.listen_state.listen_on)){
+
+	private boolean compareHeadphones(Trigger _trigger) {
+		if (!_trigger.getHeadphones().equals(Trigger.listen_state.ignore)) {
+			if (headphones
+					&& _trigger.getHeadphones().equals(
+							Trigger.listen_state.listen_on)) {
 				return true;
 			}
-			if(!headphones && _trigger.getHeadphones().equals(Trigger.listen_state.listen_off)){
+			if (!headphones
+					&& _trigger.getHeadphones().equals(
+							Trigger.listen_state.listen_off)) {
 				return true;
-			}
-			else{
+			} else {
 				return false;
 			}
-		}
-		else {
+		} else {
 			return true;
 		}
 	}
-	
-	private boolean compareBatteryCharging(Trigger _trigger){
-		if(!_trigger.getBatteryState().equals(Trigger.listen_state.ignore)){
-			if(_trigger.getBatteryState().equals(Trigger.listen_state.listen_on) && batteryCharging){
+
+	private boolean compareBatteryCharging(Trigger _trigger) {
+		if (!_trigger.getBatteryState().equals(Trigger.listen_state.ignore)) {
+			if (_trigger.getBatteryState().equals(
+					Trigger.listen_state.listen_on)
+					&& batteryCharging) {
 				return true;
 			}
-			if(_trigger.getBatteryState().equals(Trigger.listen_state.listen_off) && !batteryCharging){
+			if (_trigger.getBatteryState().equals(
+					Trigger.listen_state.listen_off)
+					&& !batteryCharging) {
 				return true;
-			}
-			else{
+			} else {
 				return false;
 			}
-		}
-		else{
+		} else {
 			return true;
 		}
 	}
-	
-	private boolean compareBatteryLevel(Trigger _trigger){
-		if(_trigger.getBatteryStartLevel() == -1 && _trigger.getBatteryEndLevel() == -1){
+
+	private boolean compareBatteryLevel(Trigger _trigger) {
+		if (_trigger.getBatteryStartLevel() == -1
+				&& _trigger.getBatteryEndLevel() == -1) {
 			return true;
-		}
-		else if(_trigger.getBatteryEndLevel() == -1 && _trigger.getBatteryStartLevel() == batteryLevel){
-				return true;
-		} 
-		else if(_trigger.getBatteryStartLevel() < batteryLevel && 
-				_trigger.getBatteryEndLevel() > batteryLevel){
-					return true;
+		} else if (_trigger.getBatteryEndLevel() == -1
+				&& _trigger.getBatteryStartLevel() == batteryLevel) {
+			return true;
+		} else if (_trigger.getBatteryStartLevel() < batteryLevel
+				&& _trigger.getBatteryEndLevel() > batteryLevel) {
+			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Refreshes the list of triggers.
 	 */
@@ -366,7 +397,8 @@ public class TriggerService extends IntentService {
 				if (fileList[i].contains("_trigger")) {
 					Trigger trigger = new Trigger(fileList[i].substring(0,
 							fileList[i].length() - 12));
-					Log.i("TriggerService", "Trigger found: " + trigger.getName());
+					Log.i("TriggerService",
+							"Trigger found: " + trigger.getName());
 					parser.initializeXmlParser(openFileInput(fileList[i]),
 							trigger);
 					triggerList.add(trigger);
@@ -385,59 +417,54 @@ public class TriggerService extends IntentService {
 		Log.i("TriggerService", "triggerList: " + triggerList.size());
 	}
 
-	@Override
-	protected void onHandleIntent(Intent intent) {
-		 // First check for errors
-        if (LocationClient.hasError(intent)) {
-            // Get the error code with a static method
-            int errorCode = LocationClient.getErrorCode(intent);
-            // Log the error
-            Log.e("ReceiveTransitionsIntentService",
-                    "Location Services error: " +
-                    Integer.toString(errorCode));
-            /*
-             * You can also send the error code to an Activity or
-             * Fragment with a broadcast Intent
-             */
-        /*
-         * If there's no error, get the transition type and the IDs
-         * of the geofence or geofences that triggered the transition
-         */
-        } else {
-            // Get the type of transition (entry or exit)
-            int transitionType =
-                    LocationClient.getGeofenceTransition(intent);
-            // Test that a valid transition was reported
-            if (
-                (transitionType == Geofence.GEOFENCE_TRANSITION_ENTER)
-                 ||
-                (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT)
-               ) {
-                List <Geofence> triggerList =
-                        LocationClient.getTriggeringGeofences(intent);
-
-                String[] triggerIds = new String[triggerList.size()];
-                for (int i = 0; i < triggerIds.length; i++) {
-                    // Store the Id of each geofence
-                    triggerIds[i] = triggerList.get(i).getRequestId();
-                }
-                
-                if(triggerList.size() == 1){
-                	Log.i("TriggerService", "one matching geofence found: " + triggerIds[0]);
-                }
-                /*
-                 * At this point, you can store the IDs for further use
-                 * display them, or display the details associated with
-                 * them.
-                 */
-            
-        // An invalid transition was reported
-        } else {
-            Log.e("ReceiveTransitionsIntentService",
-                    "Geofence transition error: " +
-                    Integer.toString(transitionType));
-        }
-	}
-
-}
+//	@Override
+//	protected void onHandleIntent(Intent intent) {
+//		// First check for errors
+//		if (LocationClient.hasError(intent)) {
+//			// Get the error code with a static method
+//			int errorCode = LocationClient.getErrorCode(intent);
+//			// Log the error
+//			Log.e("ReceiveTransitionsIntentService",
+//					"Location Services error: " + Integer.toString(errorCode));
+//			/*
+//			 * You can also send the error code to an Activity or Fragment with
+//			 * a broadcast Intent
+//			 */
+//			/*
+//			 * If there's no error, get the transition type and the IDs of the
+//			 * geofence or geofences that triggered the transition
+//			 */
+//		} else {
+//			// Get the type of transition (entry or exit)
+//			int transitionType = LocationClient.getGeofenceTransition(intent);
+//			// Test that a valid transition was reported
+//			if ((transitionType == Geofence.GEOFENCE_TRANSITION_ENTER)
+//					|| (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT)) {
+//				List<Geofence> triggerList = LocationClient
+//						.getTriggeringGeofences(intent);
+//
+//				String[] triggerIds = new String[triggerList.size()];
+//				for (int i = 0; i < triggerIds.length; i++) {
+//					// Store the Id of each geofence
+//					triggerIds[i] = triggerList.get(i).getRequestId();
+//				}
+//
+//				if (triggerList.size() == 1) {
+//					Log.i("TriggerService", "one matching geofence found: "
+//							+ triggerIds[0]);
+//				}
+//				/*
+//				 * At this point, you can store the IDs for further use display
+//				 * them, or display the details associated with them.
+//				 */
+//
+//				// An invalid transition was reported
+//			} else {
+//				Log.e("ReceiveTransitionsIntentService",
+//						"Geofence transition error: "
+//								+ Integer.toString(transitionType));
+//			}
+//		}
+//
+//	}
 }
