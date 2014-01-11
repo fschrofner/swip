@@ -10,6 +10,10 @@ import javax.xml.transform.TransformerException;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationClient;
+
+import android.app.IntentService;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -32,7 +36,7 @@ import at.fhhgbg.mc.profileswitcher.profile.XmlParser;
  * @author Florian Schrofner & Dominik Koeltringer
  * 
  */
-public class TriggerService extends Service{
+public class TriggerService extends IntentService {
 
 	private TriggerBroadcastReceiver triggerReceiver;
 	private int currentHours;
@@ -41,6 +45,15 @@ public class TriggerService extends Service{
 	private boolean batteryCharging;
 	private int batteryLevel;
 	private List<Trigger> triggerList = new ArrayList<Trigger>();
+	
+	
+	public TriggerService(String name) {
+		super(name);
+	}
+	
+	public TriggerService() {
+		super("TriggerService");
+	}
 
 	private void setInitialHeadphones(){
 		AudioManager audiomanager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
@@ -372,4 +385,59 @@ public class TriggerService extends Service{
 		Log.i("TriggerService", "triggerList: " + triggerList.size());
 	}
 
+	@Override
+	protected void onHandleIntent(Intent intent) {
+		 // First check for errors
+        if (LocationClient.hasError(intent)) {
+            // Get the error code with a static method
+            int errorCode = LocationClient.getErrorCode(intent);
+            // Log the error
+            Log.e("ReceiveTransitionsIntentService",
+                    "Location Services error: " +
+                    Integer.toString(errorCode));
+            /*
+             * You can also send the error code to an Activity or
+             * Fragment with a broadcast Intent
+             */
+        /*
+         * If there's no error, get the transition type and the IDs
+         * of the geofence or geofences that triggered the transition
+         */
+        } else {
+            // Get the type of transition (entry or exit)
+            int transitionType =
+                    LocationClient.getGeofenceTransition(intent);
+            // Test that a valid transition was reported
+            if (
+                (transitionType == Geofence.GEOFENCE_TRANSITION_ENTER)
+                 ||
+                (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT)
+               ) {
+                List <Geofence> triggerList =
+                        LocationClient.getTriggeringGeofences(intent);
+
+                String[] triggerIds = new String[triggerList.size()];
+                for (int i = 0; i < triggerIds.length; i++) {
+                    // Store the Id of each geofence
+                    triggerIds[i] = triggerList.get(i).getRequestId();
+                }
+                
+                if(triggerList.size() == 1){
+                	Log.i("TriggerService", "one matching geofence found: " + triggerIds[0]);
+                }
+                /*
+                 * At this point, you can store the IDs for further use
+                 * display them, or display the details associated with
+                 * them.
+                 */
+            
+        // An invalid transition was reported
+        } else {
+            Log.e("ReceiveTransitionsIntentService",
+                    "Geofence transition error: " +
+                    Integer.toString(transitionType));
+        }
+	}
+
+}
 }
