@@ -22,6 +22,7 @@ import android.support.v4.app.NavUtils;
 import at.fhhgbg.mc.profileswitcher.R;
 import at.fhhgbg.mc.profileswitcher.profile.Profile;
 import at.fhhgbg.mc.profileswitcher.trigger.Trigger;
+import at.fhhgbg.mc.profileswitcher.trigger.TriggerBroadcastReceiver;
 import at.fhhgbg.mc.profileswitcher.trigger.XmlCreatorTrigger;
 import at.fhhgbg.mc.profileswitcher.trigger.Trigger.listen_state;
 

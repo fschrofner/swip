@@ -87,7 +87,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
+    
         <service
             android:name="at.fhhgbg.mc.profileswitcher.widgets.ListWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" >

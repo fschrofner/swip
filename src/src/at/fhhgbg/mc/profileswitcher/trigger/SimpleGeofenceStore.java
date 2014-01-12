@@ -1,8 +1,11 @@
 package at.fhhgbg.mc.profileswitcher.trigger;
 
+import java.util.List;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 public class SimpleGeofenceStore {
 
@@ -130,7 +133,26 @@ public class SimpleGeofenceStore {
                 geofence.getTransitionType());
         // Commit the changes
         editor.commit();
+        Log.i("SimpleGeofenceStorage", "saved simple geofence");
     }
+    
+    /**
+     * Saves a list of simple geofences into the shared preferences.
+     * @param _geofences the list of simple geofences you want to save.
+     */
+    
+    public void setGeofenceList(List<SimpleGeofence> _geofences){
+    	if(_geofences != null){
+    		for(int i=0; i < _geofences.size(); i++){
+    			setGeofence(_geofences.get(i).getId(),_geofences.get(i));
+    		}
+    	}
+    	Log.i("SimpleGeofenceStorage", "saved list of simple geofences");
+    }
+    
+//    public List<SimpleGeofence> getGeofenceList(){
+//    }
+    
     public void clearGeofence(String id) {
         /*
          * Remove a flattened geofence object from storage by

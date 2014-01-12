@@ -47,11 +47,20 @@ public class LocationTrigger implements ConnectionCallbacks,
 		// Instantiate the current List of geofences
 		geofenceList = new ArrayList<Geofence>();
 		
+		List<SimpleGeofence> simpleGeofenceList = new ArrayList<SimpleGeofence>();
 		SimpleGeofence sg1 = new SimpleGeofence("1", 48.00, 13.00, 2000, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
-		SimpleGeofence sg2 = new SimpleGeofence("2", 32.00, 9.00, 2000, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
+		SimpleGeofence sg2 = new SimpleGeofence("2", 48.00, 13.00, 2000, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_EXIT);
+		SimpleGeofence sg3 = new SimpleGeofence("3", 32.00, 9.00, 2000, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
 		
+		simpleGeofenceList.add(sg1);
+		simpleGeofenceList.add(sg2);
+		simpleGeofenceList.add(sg3);
 		geofenceList.add(sg1.toGeofence());
 		geofenceList.add(sg2.toGeofence());
+		geofenceList.add(sg3.toGeofence());
+		
+		geofenceStorage.setGeofenceList(simpleGeofenceList);
+
 	}
 
 	public boolean servicesConnected() {
@@ -88,8 +97,9 @@ public class LocationTrigger implements ConnectionCallbacks,
 	}
 
 	private PendingIntent getPendingIntent() {
+		Log.i("LocationTrigger", "Creating pending intent");
 		// Create an explicit Intent
-		Intent intent = new Intent(context, TriggerBroadcastReceiver.class);
+		Intent intent = new Intent();
 		intent.setAction("at.fhhgbg.mc.profileswitcher.trigger.location_change");
 		/*
 		 * Return the PendingIntent
@@ -105,7 +115,9 @@ public class LocationTrigger implements ConnectionCallbacks,
 		 * Google Play services isn't present, the proper request can be
 		 * restarted.
 		 */
+		Log.i("LocationTrigger", "Started addGeofences");
 		if (!servicesConnected()) {
+			Log.e("LocationTrigger", "Google Play Services not connected");
 			return;
 		}
 		/*
@@ -120,15 +132,21 @@ public class LocationTrigger implements ConnectionCallbacks,
 			inProgress = true;
 			// Request a connection from the client to Location Services
 			locationClient.connect();
+			Log.i("LocationTrigger", "Location Client connected");
 		} else {
 			/*
 			 * A request is already underway. You can handle this situation by
 			 * disconnecting the client, re-setting the flag, and then re-trying
 			 * the request.
 			 */
+			Log.e("LocationTrigger", "There is already a location client connected");
 		}
 	}
 
+//	private List<Geofence> getGeofences(){
+//		
+//	}
+	
 	@Override
 	public void onAddGeofencesResult(int arg0, String[] arg1) {
 		inProgress = false;
@@ -147,7 +165,7 @@ public class LocationTrigger implements ConnectionCallbacks,
 		pendingIntent = getPendingIntent();
 		// Send a request to add the current geofences
 		locationClient.addGeofences(geofenceList, pendingIntent, this);
-
+		Log.i("LocationTrigger", "Geofences added");
 	}
 
 	@Override

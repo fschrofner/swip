@@ -11,8 +11,7 @@ import android.util.Log;
 import android.util.Xml;
 
 /**
- * Class that is used to read an xml input stream and apply the settings in it
- * using the Setter class.
+ * Class that is used to read an xml input stream and load the triggers into the triggerservice to be compared.
  * 
  * @author Florian Schrofner & Dominik Koeltringer
  * 
@@ -82,6 +81,8 @@ public class XmlParserTrigger {
 				setBattery(_parser, _trigger);
 			} else if (name.equals("headphone")) {
 				setHeadphone(_parser, _trigger);
+			} else if (name.equals("geofence")){
+				setGeofence(_parser, _trigger);
 			} else {
 				Log.w("XmlParser", "Skip!"); 					// invalid tag, will be skipped
 				_parser.nextTag();
@@ -272,6 +273,30 @@ public class XmlParserTrigger {
 			}
 		} else {
 			Log.e("XmlParserTrigger", "Headphones: Invalid Argument!");
+		}
+		
+		_parser.nextTag();
+	}
+	
+	/**
+	 * Sets the geofence of the trigger to the geofence specified in the xml.
+	 * @param _parser
+	 * @param _trigger
+	 * @throws IOException 
+	 * @throws XmlPullParserException 
+	 */
+	private void setGeofence(XmlPullParser _parser, Trigger _trigger) throws XmlPullParserException, IOException{
+		_parser.require(XmlPullParser.START_TAG, null, "geofence");
+		if (_parser.getAttributeValue(null, "id") != null) {
+			if(!_parser.getAttributeValue(null, "id").equals("")){
+				_trigger.setGeofence(_parser.getAttributeValue(null, "id"));
+				Log.i("XmlParserTrigger", "Geofence: " + _trigger.getGeofence());
+			} else {
+				_trigger.setGeofence(null);
+				Log.i("XmlParserTrigger", "Geofence: ignore");
+			}
+		} else {
+			Log.e("XmlParserTrigger", "Geofence: Invalid Argument!");
 		}
 		
 		_parser.nextTag();
