@@ -231,7 +231,13 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 		PreferenceCategory fakeHeader = new PreferenceCategory(this);
 
+		// Add 'Location preferences, and a corresponding header.
+		fakeHeader.setTitle(R.string.pref_header_location);
+		getPreferenceScreen().addPreference(fakeHeader);
+		addPreferencesFromResource(R.xml.pref_trigger_location);
+		
 		// Add 'Time' preferences, and a corresponding header.
+		fakeHeader = new PreferenceCategory(this);
 		fakeHeader.setTitle(R.string.pref_header_time);
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_trigger_time);
