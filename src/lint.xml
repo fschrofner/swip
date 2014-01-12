@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="MissingRegistered">
+        <ignore path="res/xml/pref_headers.xml" />
+    </issue>
+    <issue id="MissingTranslation" severity="ignore" />
+</lint>

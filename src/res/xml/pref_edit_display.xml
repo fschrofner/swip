@@ -1,0 +1,40 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ListPreference
+        android:defaultValue="unchanged"
+        android:entries="@array/pref_display_auto_mode_titles"
+        android:entryValues="@array/pref_display_auto_mode_values"
+        android:key="display_auto_mode"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_display_auto_mode" />
+
+    <net.jayschwa.android.preference.SliderPreference
+        maximum_value="255"
+        minimum_value="1"
+        android:defaultValue="@string/slider_default_brightness"
+        android:dependency="display_auto_mode"
+        android:dialogMessage="@string/slider_message_brightness"
+        android:key="display_brightness"
+        android:summary="@array/slider_summaries_brightness"
+        android:title="@string/slider_title_brightness" />
+
+    <ListPreference
+        android:defaultValue="unchanged"
+        android:entries="@array/pref_time_out_titles"
+        android:entryValues="@array/pref_time_out_values"
+        android:key="display_time_out"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_time_out" />
+    
+    <ListPreference
+        android:defaultValue="unchanged"
+        android:entries="@array/pref_lockscreen_titles"
+        android:entryValues="@array/pref_lockscreen_values"
+        android:key="lockscreen"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_lockscreen" />
+
+</PreferenceScreen>

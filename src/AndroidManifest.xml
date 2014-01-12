@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="at.fhhgbg.mc.profileswitcher"
+    android:versionCode="2"
+    android:versionName="0.2" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- <uses-permission android:name="android.permission.DISABLE_KEYGUARD" /> -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
+
+    <!-- make sure to ignore the error message here, so the project can be build -->
+    <!-- to do so in eclipse just change Window -> Preferences -> Android -> Lint Error Checking -> ProtectedPermission to something less severe -->
+    <!-- this permission is needed so that some of the system-app -->
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/profile_switcher_icon_holo"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.ui.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.ui.ListDialogActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.Transparent"
+            android:title="@string/title_activity_list_dialog" >
+        </activity>
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.ui.ProfileEditActivity"
+            android:label="@string/title_activity_profile_edit" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="at.fhhgbg.mc.profileswitcher.ui.MainActivity" />
+        </activity>
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.ui.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="at.fhhgbg.mc.profileswitcher.ui.MainActivity" />
+        </activity>
+
+        <receiver android:name="at.fhhgbg.mc.profileswitcher.widgets.PopUpWidget" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_pop_up" />
+        </receiver>
+        <receiver android:name="at.fhhgbg.mc.profileswitcher.widgets.ListWidget" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_list" />
+        </receiver>
+        <receiver android:name="at.fhhgbg.mc.profileswitcher.services.BootCompletedReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+    
+        <service
+            android:name="at.fhhgbg.mc.profileswitcher.widgets.ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" >
+        </service>
+        <service android:name="at.fhhgbg.mc.profileswitcher.services.AutostartService" >
+        </service>
+        <service android:name="at.fhhgbg.mc.profileswitcher.trigger.TriggerService" >
+        </service>
+
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.widgets.WidgetActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.Transparent"
+            android:title="@string/title_activity_list_dialog" >
+        </activity>
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.ui.NfcWriterActivity"
+            android:label="@string/title_activity_nfc_writer"
+            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.ProfileEditActivity" >
+        </activity>
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.ui.NfcReaderActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/title_activity_nfc_reader"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.Transparent" >
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
+                <data android:mimeType="application/at.fhhgbg.mc.profileswitcher" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.ui.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="at.fhhgbg.mc.profileswitcher.ui.MainActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.ui.TriggerEditActivity"
+            android:label="@string/title_activity_trigger_edit"
+            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="at.fhhgbg.mc.profileswitcher.ui.MainActivity" />
+        </activity>
+    </application>
+
+</manifest>
