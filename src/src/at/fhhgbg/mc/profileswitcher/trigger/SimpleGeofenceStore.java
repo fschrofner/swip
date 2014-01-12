@@ -34,7 +34,7 @@ public class SimpleGeofenceStore {
     private final SharedPreferences mPrefs;
     // The name of the SharedPreferences
     private static final String SHARED_PREFERENCES =
-            "Geofences";
+            "geofences";
     // Create the SharedPreferences storage with private access only
     public SimpleGeofenceStore(Context context) {
         mPrefs =
@@ -153,6 +153,15 @@ public class SimpleGeofenceStore {
 //    public List<SimpleGeofence> getGeofenceList(){
 //    }
     
+    public void clearGeofenceList(String[] _ids){
+    	if(_ids != null){
+    		for(int i=0; i<_ids.length; i++){
+    			clearGeofence(_ids[i]);
+    		}
+    	}
+    	Log.i("SimpleGeofenceStorage", "cleared list of simple geofences");
+    }
+    
     public void clearGeofence(String id) {
         /*
          * Remove a flattened geofence object from storage by
@@ -166,6 +175,7 @@ public class SimpleGeofenceStore {
                 KEY_EXPIRATION_DURATION));
         editor.remove(getGeofenceFieldKey(id, KEY_TRANSITION_TYPE));
         editor.commit();
+        Log.i("SimpleGeofenceStorage", "cleared simple geofence");
     }
     /**
      * Given a Geofence object's ID and the name of a field

@@ -20,9 +20,10 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationClient.OnAddGeofencesResultListener;
+import com.google.android.gms.location.LocationClient.OnRemoveGeofencesResultListener;
 
 public class LocationTrigger implements ConnectionCallbacks,
-		OnConnectionFailedListener, OnAddGeofencesResultListener {
+		OnConnectionFailedListener, OnAddGeofencesResultListener, OnRemoveGeofencesResultListener {
 
 	private Context context;
 	private PendingIntent pendingIntent;
@@ -35,9 +36,11 @@ public class LocationTrigger implements ConnectionCallbacks,
 	private boolean inProgress;
 	// Internal List of Geofence objects
 	List<Geofence> geofenceList;
+	List<String> removeList;
 	// Persistent storage for geofences
 	private SimpleGeofenceStore geofenceStorage;
 
+	
 	public LocationTrigger(Context _context) {
 		this.context = _context;
 
@@ -47,19 +50,7 @@ public class LocationTrigger implements ConnectionCallbacks,
 		// Instantiate the current List of geofences
 		geofenceList = new ArrayList<Geofence>();
 		
-		List<SimpleGeofence> simpleGeofenceList = new ArrayList<SimpleGeofence>();
-		SimpleGeofence sg1 = new SimpleGeofence("1", 48.00, 13.00, 2000, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
-		SimpleGeofence sg2 = new SimpleGeofence("2", 48.00, 13.00, 2000, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_EXIT);
-		SimpleGeofence sg3 = new SimpleGeofence("3", 32.00, 9.00, 2000, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
-		
-		simpleGeofenceList.add(sg1);
-		simpleGeofenceList.add(sg2);
-		simpleGeofenceList.add(sg3);
-		geofenceList.add(sg1.toGeofence());
-		geofenceList.add(sg2.toGeofence());
-		geofenceList.add(sg3.toGeofence());
-		
-		geofenceStorage.setGeofenceList(simpleGeofenceList);
+		locationClient = new LocationClient(context, this, this);
 
 	}
 
@@ -108,7 +99,23 @@ public class LocationTrigger implements ConnectionCallbacks,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
-	public void addGeofences() {
+	public void registerGeofence(SimpleGeofence _geofence){
+		Log.i("LocationTrigger", "Started registerGeofence");
+		geofenceList.add(_geofence.toGeofence());
+		geofenceStorage.setGeofence(_geofence.getId(), _geofence);
+		refreshGeofences();
+	}
+	
+	public void unregisterGeofence(String _id){
+		Log.i("LocationTrigger", "Started unregisterGeofence");
+//		locationClient = new LocationClient(context, this, this);
+		ArrayList<String> ids = new ArrayList<String>();
+		ids.add(_id);
+		removeList = ids;
+		refreshGeofences();
+	}
+	
+	private void refreshGeofences() {
 		// Start a request to add geofences
 		/*
 		 * Test for Google Play services after setting the request type. If
@@ -125,7 +132,7 @@ public class LocationTrigger implements ConnectionCallbacks,
 		 * implements ConnectionCallbacks and OnConnectionFailedListener, pass
 		 * the current activity object as the listener for both parameters
 		 */
-		locationClient = new LocationClient(context, this, this);
+//		locationClient = new LocationClient(context, this, this);
 		// If a request is not already underway
 		if (!inProgress) {
 			// Indicate that a request is underway
@@ -142,10 +149,6 @@ public class LocationTrigger implements ConnectionCallbacks,
 			Log.e("LocationTrigger", "There is already a location client connected");
 		}
 	}
-
-//	private List<Geofence> getGeofences(){
-//		
-//	}
 	
 	@Override
 	public void onAddGeofencesResult(int arg0, String[] arg1) {
@@ -164,8 +167,17 @@ public class LocationTrigger implements ConnectionCallbacks,
 		// Get the PendingIntent for the request
 		pendingIntent = getPendingIntent();
 		// Send a request to add the current geofences
-		locationClient.addGeofences(geofenceList, pendingIntent, this);
-		Log.i("LocationTrigger", "Geofences added");
+		if(geofenceList != null && geofenceList.size() > 0){
+			locationClient.addGeofences(geofenceList, pendingIntent, this);
+			Log.i("LocationTrigger", "Geofences added");
+			geofenceList = new ArrayList<Geofence>();
+		}
+		else if(removeList != null && removeList.size() > 0){
+			locationClient.removeGeofences(removeList, this);
+			Log.i("LocationTrigger", "Geofences removed");
+			removeList = new ArrayList<String>();
+		}
+
 	}
 
 	@Override
@@ -174,6 +186,17 @@ public class LocationTrigger implements ConnectionCallbacks,
         inProgress = false;
         // Destroy the current location client
         locationClient = null;
+	}
+
+	@Override
+	public void onRemoveGeofencesByPendingIntentResult(int arg0,
+			PendingIntent arg1) {
+		// TODO Auto-generated method stub	
+	}
+
+	@Override
+	public void onRemoveGeofencesByRequestIdsResult(int arg0, String[] _ids) {
+		geofenceStorage.clearGeofenceList(_ids);
 	}
 
 }

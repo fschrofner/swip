@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import at.fhhgbg.mc.profileswitcher.R;
 import at.fhhgbg.mc.profileswitcher.R.id;
 import at.fhhgbg.mc.profileswitcher.R.layout;
@@ -84,9 +85,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setTabListener(this));
         }
         
-        LocationTrigger lt = new LocationTrigger(this);
-        lt.servicesConnected();
-        lt.addGeofences();
+//        LocationTrigger lt = new LocationTrigger(this);
+//        SimpleGeofence sg1 = new SimpleGeofence("1", 48.00, 13.00, 2000, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
+//        
+//        if(lt.servicesConnected()){
+//        	lt.registerGeofence(sg1);
+//        }
+
     }
     
     @Override
