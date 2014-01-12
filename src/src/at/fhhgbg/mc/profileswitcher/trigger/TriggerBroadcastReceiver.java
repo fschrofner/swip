@@ -32,11 +32,15 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 		_service.registerReceiver(this, filter);
 		filter = new IntentFilter("at.fhhgbg.mc.profileswitcher.trigger.refresh");
 		_service.registerReceiver(this, filter);
+    	filter = new IntentFilter("at.fhhgbg.mc.profileswitcher.trigger.location_change");
+		_service.registerReceiver(this, filter);
 	}
 
 	@Override
 	public void onReceive(Context _context, Intent _intent) {
-		// TODO Auto-generated method stub
+		
+		Log.i("TriggerBroadcastReceiver", "Broadcast received: " + _intent.getAction());
+		
 		if (_intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
 			
 			int h = Integer.parseInt(String.valueOf(Calendar
@@ -76,7 +80,7 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 			triggerservice.refreshTriggers();
 		}
 		if(_intent.getAction().equals("at.fhhgbg.mc.profileswitcher.trigger.location_change")){
-			Log.i("TriggerBroadcastReceiver", "Location change detected");
+			Log.i("TriggerBroadcastReceiver", "Location change detected - action");
 			// First check for errors
 			if (LocationClient.hasError(_intent)) {
 				// Get the error code with a static method
@@ -84,14 +88,10 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 				// Log the error
 				Log.e("ReceiveTransitionsIntentService",
 						"Location Services error: " + Integer.toString(errorCode));
-				/*
-				 * You can also send the error code to an Activity or Fragment with
-				 * a broadcast Intent
-				 */
-				/*
-				 * If there's no error, get the transition type and the IDs of the
-				 * geofence or geofences that triggered the transition
-				 */
+				
+				 // if there's no error, get the transition type and the IDs of the
+				 // geofence or geofences that triggered the transition
+				
 			} else {
 				// Get the type of transition (entry or exit)
 				int transitionType = LocationClient.getGeofenceTransition(_intent);
@@ -105,16 +105,12 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 					for (int i = 0; i < triggerIds.length; i++) {
 						// Store the Id of each geofence
 						triggerIds[i] = triggerList.get(i).getRequestId();
+						Log.i("TriggerBroadcastReceiver", "matching geofence: " + triggerIds[i]);
 					}
+					
+					triggerservice.setGeofences(triggerIds);
 
-						Log.i("TriggerBroadcastReceiver", "matching geofence found: "
-								+ triggerIds[0]);
-					/*
-					 * At this point, you can store the IDs for further use display
-					 * them, or display the details associated with them.
-					 */
-
-					// An invalid transition was reported
+				// An invalid transition was reported
 				} else {
 					Log.e("ReceiveTransitionsIntentService",
 							"Geofence transition error: "

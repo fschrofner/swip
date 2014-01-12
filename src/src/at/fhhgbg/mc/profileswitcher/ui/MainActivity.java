@@ -6,6 +6,7 @@ import com.google.android.gms.location.Geofence;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -19,6 +20,7 @@ import at.fhhgbg.mc.profileswitcher.R.string;
 import at.fhhgbg.mc.profileswitcher.trigger.LocationTrigger;
 import at.fhhgbg.mc.profileswitcher.trigger.SimpleGeofence;
 import at.fhhgbg.mc.profileswitcher.trigger.SimpleGeofenceStore;
+import at.fhhgbg.mc.profileswitcher.trigger.TriggerBroadcastReceiver;
 
 /**
  * The main activity managing the two fragments, there is no other work done here.

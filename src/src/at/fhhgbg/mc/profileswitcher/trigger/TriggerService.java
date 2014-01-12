@@ -45,6 +45,7 @@ public class TriggerService extends Service {
 	private boolean batteryCharging;
 	private int batteryLevel;
 	private List<Trigger> triggerList = new ArrayList<Trigger>();
+	private String[] geofences;
 
 //	public TriggerService(String name) {
 //		super(name);
@@ -91,9 +92,9 @@ public class TriggerService extends Service {
 		compareTriggers();
 	}
 
-	public void setBatteryCharging(boolean batteryCharging) {
-		this.batteryCharging = batteryCharging;
-		Log.i("TriggerService", "batterystate changed to " + batteryCharging);
+	public void setBatteryCharging(boolean _batteryCharging) {
+		this.batteryCharging = _batteryCharging;
+		Log.i("TriggerService", "batterystate changed to " + _batteryCharging);
 		compareTriggers();
 	}
 
@@ -103,9 +104,14 @@ public class TriggerService extends Service {
 		compareTriggers();
 	}
 
-	public void setBatteryLevel(int batteryLevel) {
-		this.batteryLevel = batteryLevel;
-		Log.i("TriggerService", "batterylevel changed to " + batteryLevel);
+	public void setBatteryLevel(int _batteryLevel) {
+		this.batteryLevel = _batteryLevel;
+		Log.i("TriggerService", "batterylevel changed to " + _batteryLevel);
+		compareTriggers();
+	}
+	
+	public void setGeofences(String[] _geofences) {
+		this.geofences = _geofences;
 		compareTriggers();
 	}
 
@@ -186,43 +192,50 @@ public class TriggerService extends Service {
 						if (compareBatteryLevel(trigger)) {
 							Log.i("TriggerService",
 									"trigger matching battery level");
-							SharedPreferences pref = PreferenceManager
-									.getDefaultSharedPreferences(this);
-
-							if (!trigger.getProfileName()
-									.equals(pref.getString("active_profile",
-											"Default"))) {
+							if(compareGeofence(trigger)){
 								Log.i("TriggerService",
-										"matching trigger found: "
-												+ trigger.getName());
-
-								XmlParser parser = new XmlParser(
-										getApplicationContext());
-								try {
-									// applies the profile.
-									parser.initializeXmlParser(openFileInput(trigger
-											.getProfileName() + "_profile.xml"));
-
-									Toast.makeText(
-											getApplicationContext(),
-											trigger.getProfileName()
-													+ " was applied!",
-											Toast.LENGTH_SHORT).show();
-									pref.edit()
-											.putString("active_profile",
-													trigger.getProfileName())
-											.commit();
-								} catch (NotFoundException e) {
-									e.printStackTrace();
-								} catch (XmlPullParserException e) {
-									e.printStackTrace();
-								} catch (IOException e) {
-									e.printStackTrace();
-								}
-							} else {
+										"trigger matching geofence");
+								SharedPreferences pref = PreferenceManager
+										.getDefaultSharedPreferences(this);
+	
+								if (!trigger.getProfileName()
+										.equals(pref.getString("active_profile",
+												"Default"))) {
+									Log.i("TriggerService",
+											"matching trigger found: "
+													+ trigger.getName());
+	
+									XmlParser parser = new XmlParser(
+											getApplicationContext());
+									try {
+										// applies the profile.
+										parser.initializeXmlParser(openFileInput(trigger
+												.getProfileName() + "_profile.xml"));
+	
+										Toast.makeText(
+												getApplicationContext(),
+												trigger.getProfileName()
+														+ " was applied!",
+												Toast.LENGTH_SHORT).show();
+										pref.edit()
+												.putString("active_profile",
+														trigger.getProfileName())
+												.commit();
+									} catch (NotFoundException e) {
+										e.printStackTrace();
+									} catch (XmlPullParserException e) {
+										e.printStackTrace();
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+								}  else {
 								Log.i("TriggerService",
 										trigger.getProfileName()
 												+ " is already applied");
+								}
+							} else {
+								Log.i("TriggerService", trigger.getName()
+										+ " does not match geofence");
 							}
 						} else {
 							Log.i("TriggerService", trigger.getName()
@@ -379,6 +392,23 @@ public class TriggerService extends Service {
 				&& _trigger.getBatteryEndLevel() > batteryLevel) {
 			return true;
 		}
+		return false;
+	}
+	
+	private boolean compareGeofence(Trigger _trigger){
+		//if there is no geofence set for the trigger
+		if(_trigger.getGeofence() == null){
+			return true;
+		}
+		if(geofences != null){
+			for(int i = 0; i < geofences.length; i++){
+				//if the geofence set for the trigger is found inside the triggered geofences
+				if(geofences[i].equals(_trigger.getGeofence())){
+					return true;
+				}
+			}
+		}
+
 		return false;
 	}
 
