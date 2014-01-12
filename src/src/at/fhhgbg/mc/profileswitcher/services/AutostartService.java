@@ -12,8 +12,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import at.fhhgbg.mc.profileswitcher.R;
-import at.fhhgbg.mc.profileswitcher.R.drawable;
-import at.fhhgbg.mc.profileswitcher.R.string;
 import at.fhhgbg.mc.profileswitcher.ui.ListDialogActivity;
 
 /**

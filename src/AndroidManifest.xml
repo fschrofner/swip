@@ -8,19 +8,26 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <!-- <uses-permission android:name="android.permission.DISABLE_KEYGUARD" /> -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <!-- make sure to ignore the error message here, so the project can be build -->
     <!-- to do so in eclipse just change Window -> Preferences -> Android -> Lint Error Checking -> ProtectedPermission to something less severe -->
@@ -87,7 +94,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-    
+
         <service
             android:name="at.fhhgbg.mc.profileswitcher.widgets.ListWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" >
@@ -142,6 +149,19 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="at.fhhgbg.mc.profileswitcher.ui.MainActivity" />
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyA59N7o_dVmogji2q7AunJxX2tfk1EighI" />
+
+        <activity
+            android:name="at.fhhgbg.mc.profileswitcher.ui.MapViewActivity"
+            android:label="@string/title_activity_map_view"
+            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.TriggerEditActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="at.fhhgbg.mc.profileswitcher.ui.TriggerEditActivity" />
         </activity>
     </application>
 
