@@ -21,6 +21,8 @@ import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import at.fhhgbg.mc.profileswitcher.R;
 import at.fhhgbg.mc.profileswitcher.profile.Profile;
+import at.fhhgbg.mc.profileswitcher.trigger.LocationTrigger;
+import at.fhhgbg.mc.profileswitcher.trigger.SimpleGeofence;
 import at.fhhgbg.mc.profileswitcher.trigger.Trigger;
 import at.fhhgbg.mc.profileswitcher.trigger.TriggerBroadcastReceiver;
 import at.fhhgbg.mc.profileswitcher.trigger.XmlCreatorTrigger;
@@ -35,6 +37,8 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+
+import com.google.android.gms.location.Geofence;
 
 /**
  * Activity used to edit the different settings of a trigger.
@@ -110,6 +114,11 @@ public class TriggerEditActivity extends PreferenceActivity implements
 					.equals(getResources().getString(
 							R.string.pref_trigger_name_default))
 					|| pref.getString(
+							"name_trigger",
+							getResources().getString(
+									R.string.pref_trigger_name_default))
+							.equals("")
+					|| pref.getString(
 							"profile",
 							getResources().getString(
 									R.string.pref_profile_default)).equals(
@@ -131,6 +140,14 @@ public class TriggerEditActivity extends PreferenceActivity implements
 								R.string.pref_trigger_name_default)).equals(
 						getResources().getString(
 								R.string.pref_trigger_name_default))) {
+					dialog.setTitle(getResources().getString(
+							R.string.alert_name_title));
+					dialog.setMessage(getResources().getString(
+							R.string.alert_name_text));
+				} else if (pref.getString(
+						"name_trigger",
+						getResources().getString(
+								R.string.pref_trigger_name_default)).equals("")) {
 					dialog.setTitle(getResources().getString(
 							R.string.alert_name_title));
 					dialog.setMessage(getResources().getString(
@@ -235,7 +252,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		fakeHeader.setTitle(R.string.pref_header_location);
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_trigger_location);
-		
+
 		// Add 'Time' preferences, and a corresponding header.
 		fakeHeader = new PreferenceCategory(this);
 		fakeHeader.setTitle(R.string.pref_header_time);
@@ -264,6 +281,18 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("battery_state"));
 		bindPreferenceSummaryToValue(findPreference("headphone"));
 
+		// binds the summary to the location-preference
+		if (pref.getFloat("geofence_lat", -1F) > -1
+				&& pref.getFloat("geofence_lng", -1F) > -1
+				&& pref.getInt("geofence_radius", 50) > 0) {
+			findPreference("location").setSummary(
+					"N: " + pref.getFloat("geofence_lat", -1F) + ", E: "
+							+ pref.getFloat("geofence_lng", -1F) + ", Radius: "
+							+ pref.getInt("geofence_radius", 50));
+		} else {
+			findPreference("location").setSummary(R.string.ignored);
+		}
+
 		if (pref.getString("start_time", "Ignored").equals("Ignored")) {
 			findPreference("end_time").setEnabled(false);
 			pref.edit().putString("end_time", "Ignored").commit();
@@ -289,6 +318,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
+		LocationTrigger locTrig = new LocationTrigger(this);
 
 		String name = pref.getString("name_trigger",
 				getResources().getString(R.string.pref_trigger_name_default));
@@ -339,6 +369,21 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			trigger.setHeadphones(Trigger.listen_state.ignore);
 		}
 
+		if (pref.getFloat("geofence_lat", -1) > -1
+				&& pref.getFloat("geofence_lng", -1) > -1
+				&& pref.getInt("geofence_radius", 50) > 0) {
+			SimpleGeofence simple = new SimpleGeofence(name, pref.getFloat(
+					"geofence_lat", -1F), pref.getFloat("geofence_lng", -1F),
+					pref.getInt("geofence_radius", 0), Geofence.NEVER_EXPIRE,
+					Geofence.GEOFENCE_TRANSITION_ENTER);
+			locTrig.registerGeofence(simple);
+			trigger.setGeofence(name);
+		} else {
+			locTrig.unregisterGeofence(name);
+			trigger.setGeofence(null);
+		}
+
+		// Creates the xml
 		XmlCreatorTrigger creator = new XmlCreatorTrigger();
 		try {
 			FileOutputStream output = openFileOutput(trigger.getName()
@@ -471,6 +516,26 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		} else if (key.equals("battery_start_level")
 				&& _pref.getInt("battery_start_level", -1) != -1) {
 			findPreference("battery_end_level").setEnabled(true);
+		}
+
+		// Binds the summary of the location
+		if (key.equals("geofence_lat") || key.equals("geofence_lng")
+				|| key.equals("geofence_radius")) {
+
+			SharedPreferences pref = PreferenceManager
+					.getDefaultSharedPreferences(this);
+
+			if (pref.getFloat("geofence_lat", -1F) > -1
+					&& pref.getFloat("geofence_lng", -1F) > -1
+					&& pref.getInt("geofence_radius", 50) > 0) {
+				findPreference("location").setSummary(
+						"N: " + pref.getFloat("geofence_lat", -1F) + ", E: "
+								+ pref.getFloat("geofence_lng", -1F)
+								+ ", Radius: "
+								+ pref.getInt("geofence_radius", 50));
+			} else {
+				findPreference("location").setSummary(R.string.ignored);
+			}
 		}
 	}
 

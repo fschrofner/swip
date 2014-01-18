@@ -84,6 +84,8 @@ public class XmlParserPrefTrigger {
 				setBattery(_parser);
 			} else if (name.equals("headphone")) {
 				setHeadphone(_parser);
+			} else if (name.equals("geofence")) {
+				setGeofence(_parser);
 			} else {
 				Log.w("XmlParser", "Skip!"); 					// invalid tag, will be skipped
 				_parser.nextTag();
@@ -305,6 +307,38 @@ public class XmlParserPrefTrigger {
 			}
 		} else {
 			Log.e("XmlParserPrefTrigger", "Headphones: Invalid Argument!");
+		}
+		
+		_parser.nextTag();
+	}
+	
+	/**
+	 * Applies the Location settings.
+	 * 
+	 * @param _parser
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
+	private void setGeofence(XmlPullParser _parser)
+			throws XmlPullParserException, IOException {
+		_parser.require(XmlPullParser.START_TAG, null, "geofence");
+		
+		if (_parser.getAttributeValue(null, "id") != null) {
+			if(!_parser.getAttributeValue(null, "id").equals("")){
+				SimpleGeofenceStore store = new SimpleGeofenceStore(context);
+				SimpleGeofence simple = store.getGeofence(_parser.getAttributeValue(null, "id"));
+				prefEdit.putFloat("geofence_lat", (float) simple.getLatitude());
+				prefEdit.putFloat("geofence_lng", (float) simple.getLongitude());
+				prefEdit.putInt("geofence_radius", (int) simple.getRadius());
+				Log.i("XmlParserTrigger", "Geofence loaded");
+			} else {
+				prefEdit.putFloat("geofence_lat", -1F);
+				prefEdit.putFloat("geofence_lng", -1F);
+				prefEdit.putInt("geofence_radius", -1);
+				Log.i("XmlParserTrigger", "Geofence: ignore");
+			}
+		} else {
+			Log.e("XmlParserTrigger", "Geofence: Invalid Argument!");
 		}
 		
 		_parser.nextTag();

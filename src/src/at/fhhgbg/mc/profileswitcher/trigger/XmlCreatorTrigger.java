@@ -96,7 +96,8 @@ public class XmlCreatorTrigger {
 		}
 
 		// writes battery changes
-		if (_trigger.getBatteryStartLevel() >= -1 && _trigger.getBatteryEndLevel() >= -1
+		if (_trigger.getBatteryStartLevel() >= -1
+				&& _trigger.getBatteryEndLevel() >= -1
 				&& _trigger.getBatteryState() != null) {
 			Element batteryElement = xmlProfile.createElement("battery");
 
@@ -111,7 +112,7 @@ public class XmlCreatorTrigger {
 				batteryElement.setAttribute("start_level",
 						String.format("%d", _trigger.getBatteryStartLevel()));
 			}
-			
+
 			if (_trigger.getBatteryEndLevel() >= -1) {
 				batteryElement.setAttribute("end_level",
 						String.format("%d", _trigger.getBatteryEndLevel()));
@@ -143,6 +144,25 @@ public class XmlCreatorTrigger {
 							"trigger changes were defined as follows: headphone_state: %s",
 							_trigger.getHeadphones()));
 			rootElement.appendChild(headphoneElement);
+		}
+
+		// writes geofence changes
+		if (_trigger.getGeofence() != null) {
+			Element geofenceElement = xmlProfile.createElement("geofence");
+
+			if (_trigger.getGeofence() != null) {
+				geofenceElement
+						.setAttribute("id", _trigger
+								.getGeofence());
+			} else {
+				geofenceElement.setAttribute("id", "");
+			}
+
+			Log.i("XMLCreatorTrigger",
+					String.format(
+							"trigger changes were defined as follows: trigger_name: %s",
+							_trigger.getGeofence()));
+			rootElement.appendChild(geofenceElement);
 		}
 
 		// writes the complete xml file

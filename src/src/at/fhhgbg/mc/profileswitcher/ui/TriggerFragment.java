@@ -83,6 +83,9 @@ public class TriggerFragment extends Fragment implements OnItemLongClickListener
 			prefEditor.putInt("battery_start_level", -1);
 			prefEditor.putInt("battery_end_level", -1);
 			prefEditor.putString("headphone", "ignored");
+			prefEditor.putFloat("geofence_lat", -1F);
+			prefEditor.putFloat("geofence_lng", -1F);
+			prefEditor.putInt("geofence_radius", 0);
 			prefEditor.commit();
 
 			Intent i = new Intent(getActivity(), TriggerEditActivity.class);
