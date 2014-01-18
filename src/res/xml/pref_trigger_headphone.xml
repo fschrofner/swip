@@ -1,0 +1,13 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+   <ListPreference
+       	android:defaultValue="ignored"
+        android:entries="@array/pref_headphone_titles"
+        android:entryValues="@array/pref_headphone_values"
+        android:key="headphone"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_headphone" />
+
+
+</PreferenceScreen>
