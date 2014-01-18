@@ -29,13 +29,28 @@
             android:id="@+id/editTextRadius"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:ems="10"
+            android:layout_weight="1"
+            android:ems="5"
+            android:hint="50"
             android:inputType="number"
-            android:hint="@string/mapRadiusHint" >
+            android:selectAllOnFocus="false"
+            android:text="50"
+            android:maxLength="9" >
 
             <requestFocus />
         </EditText>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/buttonClearMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/clearMap" />
 
     </LinearLayout>
 

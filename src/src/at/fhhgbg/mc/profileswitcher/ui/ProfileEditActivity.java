@@ -132,6 +132,30 @@ public class ProfileEditActivity extends PreferenceActivity implements
 						});
 
 				dialog.show();
+			}
+				else if (pref.getString(
+						"name",
+						getResources()
+								.getString(R.string.pref_profile_name_default))
+						.equals("")) {
+					AlertDialog.Builder dialog = new AlertDialog.Builder(this,
+							AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+					dialog.setTitle(getResources().getString(
+							R.string.alert_profile_title));
+					dialog.setMessage(getResources().getString(
+							R.string.alert_profile_text));
+					dialog.setNegativeButton(
+							getResources().getString(R.string.alert_button),
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									dialog.dismiss();
+								}
+							});
+
+					dialog.show();
 			} else {
 				this.saveProfile();
 				this.finish();
