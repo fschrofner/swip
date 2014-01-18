@@ -50,6 +50,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 	 * shown on tablets.
 	 */
 	private static final boolean ALWAYS_SIMPLE_PREFS = false;
+	private boolean preferencesChanged = false;
 	private CharSequence[] profileArray;
 	private String previousName; // saves the previous profile name for the case
 									// the profile gets renamed
@@ -168,30 +169,37 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 	@Override
 	public void onBackPressed() {
-		AlertDialog.Builder dialog = new AlertDialog.Builder(this,
-				AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+		
+		if (preferencesChanged) {
+			AlertDialog.Builder dialog = new AlertDialog.Builder(this,
+					AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 
-		dialog.setTitle(getResources().getString(R.string.alert_discard_title));
-		dialog.setMessage(getResources().getString(R.string.alert_discard_text));
+			dialog.setTitle(getResources().getString(
+					R.string.alert_discard_title));
+			dialog.setMessage(getResources().getString(
+					R.string.alert_discard_text));
 
-		dialog.setPositiveButton(
-				getResources().getString(R.string.alert_discard_yes),
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						finish();
-					}
-				});
+			dialog.setPositiveButton(
+					getResources().getString(R.string.alert_discard_yes),
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							finish();
+						}
+					});
 
-		dialog.setNegativeButton(
-				getResources().getString(R.string.alert_discard_no),
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
-		dialog.show();
+			dialog.setNegativeButton(
+					getResources().getString(R.string.alert_discard_no),
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+			dialog.show();
+		} else {
+			finish();
+		}
 	}
 
 	@Override
@@ -465,6 +473,8 @@ public class TriggerEditActivity extends PreferenceActivity implements
 				&& _pref.getInt("battery_start_level", -1) != -1) {
 			findPreference("battery_end_level").setEnabled(true);
 		}
+
+		preferencesChanged = true;
 	}
 
 	/**

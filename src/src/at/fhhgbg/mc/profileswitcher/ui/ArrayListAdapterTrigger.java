@@ -73,7 +73,7 @@ public class ArrayListAdapterTrigger extends ArrayAdapter<String> implements
 			b = (ImageButton) convertView.findViewById(R.id.buttonEdit);
 			b.setFocusable(false);
 			b.setOnClickListener(this);
-			b.setTag(this.element);
+			b.setTag(sb.toString());
 			
 			if (element.contains("_tri_dis")) {
 				v.setTextColor(Color.GRAY);
