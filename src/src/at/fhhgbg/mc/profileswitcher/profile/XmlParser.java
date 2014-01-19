@@ -332,39 +332,11 @@ public class XmlParser {
 			throws XmlPullParserException, IOException {
 		_parser.require(XmlPullParser.START_TAG, null, "mobile_data");
 		if (_parser.getAttributeValue(null, "enabled") != null) {
-			if (_parser.getAttributeValue(null, "enabled").equals("1")) {
-				try {
+			if (_parser.getAttributeValue(null, "enabled").equals("1")) {			
 					setter.setMobileData(context, true);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (NoSuchFieldException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				}
 				Log.i("XmlParser", "MobileData on.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("0")) {
-				try {
 					setter.setMobileData(context, false);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (NoSuchFieldException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				}
 				Log.i("XmlParser", "MobileData off.");
 			} else {
 				Log.i("XmlParser", "MobileData: No change.");

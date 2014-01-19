@@ -482,13 +482,12 @@ public class Setter {
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
 	 */
-	public void setMobileData(Context _context, boolean _enable)
-			throws ClassNotFoundException, NoSuchFieldException,
-			IllegalArgumentException, IllegalAccessException,
-			NoSuchMethodException, InvocationTargetException {
+	public void setMobileData(Context _context, boolean _enable){
 		final ConnectivityManager conman = (ConnectivityManager) _context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		final Class conmanClass = Class.forName(conman.getClass().getName());
+		Class conmanClass;
+		try {
+			conmanClass = Class.forName(conman.getClass().getName());
 		final Field iConnectivityManagerField = conmanClass
 				.getDeclaredField("mService");
 		iConnectivityManagerField.setAccessible(true);
@@ -501,6 +500,20 @@ public class Setter {
 		setMobileDataEnabledMethod.setAccessible(true);
 
 		setMobileDataEnabledMethod.invoke(iConnectivityManager, _enable);
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

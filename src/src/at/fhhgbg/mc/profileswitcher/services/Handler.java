@@ -21,8 +21,11 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 import at.fhhgbg.mc.profileswitcher.R;
 import at.fhhgbg.mc.profileswitcher.profile.Profile;
+import at.fhhgbg.mc.profileswitcher.profile.Setter;
 import at.fhhgbg.mc.profileswitcher.profile.XmlCreator;
 import at.fhhgbg.mc.profileswitcher.profile.XmlParser;
+import at.fhhgbg.mc.profileswitcher.profile.Profile.mode;
+import at.fhhgbg.mc.profileswitcher.profile.Profile.state;
 import at.fhhgbg.mc.profileswitcher.ui.ListDialogActivity;
 
 public class Handler {
@@ -57,6 +60,106 @@ public class Handler {
 		}
 
 		Toast toast = Toast.makeText(context, _name + " was applied!",
+				Toast.LENGTH_SHORT);
+		toast.show();
+	}
+	
+	public void applyProfile(Profile _profile){
+		
+		Setter setter = new Setter();
+		
+		setter.setRingerMode(context, _profile.getRingerMode());
+		
+		//alarm volume
+		if(_profile.getAlarmVolume() != -1){
+			setter.setAlarmVolume(context, _profile.getAlarmVolume());
+		}
+		
+		//media volume
+		if(_profile.getMediaVolume() != -1){
+			setter.setMediaVolume(context,_profile.getMediaVolume());
+		}
+		
+		//ringtone volume
+		if(_profile.getRingtoneVolume() != -1){
+			setter.setRingtoneVolume(context, _profile.getRingtoneVolume());
+		}
+			
+		//nfc
+		if(_profile.getNfc() == Profile.state.enabled){
+			setter.setNfc(context,true);
+		}
+		else if(_profile.getNfc() == Profile.state.disabled){
+			setter.setNfc(context,false);
+		}
+		
+		//bluetooth
+		if(_profile.getBluetooth() == Profile.state.enabled){
+			setter.setBluetooth(context,true);
+		}
+		else if(_profile.getBluetooth() == Profile.state.disabled){
+			setter.setBluetooth(context,false);
+		}
+		
+		//wifi
+		if(_profile.getWifi() == Profile.state.enabled){
+			setter.setWifi(context,true);
+		}
+		else if(_profile.getWifi() == Profile.state.disabled){
+			setter.setWifi(context,false);
+		}
+		
+		//mobile data
+		if(_profile.getMobileData() == Profile.state.enabled){
+			setter.setMobileData(context,true);
+		}
+		else if(_profile.getMobileData() == Profile.state.disabled){
+			setter.setMobileData(context,false);
+		}
+		
+		//gps
+		if(_profile.getGps() == Profile.state.enabled){
+			setter.setGps(context,true);
+		}
+		else if(_profile.getGps() == Profile.state.disabled){
+			setter.setGps(context, false);
+		}
+		
+		//airplane mode
+		if(_profile.getAirplane_mode() == Profile.state.enabled){
+			setter.setAirplaneMode(context,true);
+		}
+		else if(_profile.getAirplane_mode() == Profile.state.disabled){
+			setter.setAirplaneMode(context,false);
+		}
+		
+		//lockscreen
+		if(_profile.getLockscreen() == Profile.state.enabled){
+			setter.setLockscreen(context,true);
+		}
+		else if(_profile.getLockscreen() == Profile.state.disabled){
+			setter.setLockscreen(context,false);
+		}
+		
+		//screen brightness
+		if(_profile.getScreenBrightness() != -1){
+			setter.setScreenBrightness(context, _profile.getScreenBrightness());
+		}
+		
+		//screen brightness automode
+		if(_profile.getScreenBrightnessAutoMode() == Profile.state.enabled){
+			setter.setScreenBrightnessMode(context,true);
+		}
+		else if(_profile.getScreenBrightnessAutoMode() == Profile.state.disabled){
+			setter.setScreenBrightnessMode(context,false);
+		}
+		
+		//screen timeout
+		if(_profile.getScreenTimeOut() != -1){
+			setter.setScreenTimeout(context,_profile.getScreenTimeOut());
+		}
+		
+		Toast toast = Toast.makeText(context, _profile.getName() + " was applied!",
 				Toast.LENGTH_SHORT);
 		toast.show();
 	}
