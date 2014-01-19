@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+import at.fhhgbg.mc.profileswitcher.profile.Profile;
 import at.fhhgbg.mc.profileswitcher.profile.XmlParser;
+import at.fhhgbg.mc.profileswitcher.services.Handler;
 
 /**
  * Transparent activity used to apply a profile without showing anything.
@@ -31,24 +33,28 @@ public class WidgetActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		String fileName = getIntent().getStringExtra("fileName");
 
-		XmlParser parser = new XmlParser(this);
-		try {
-			parser.initializeXmlParser(openFileInput(fileName + "_profile.xml"));
-		} catch (NotFoundException e) {
-			e.printStackTrace();
-		} catch (XmlPullParserException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		XmlParser parser = new XmlParser(this);
+//		try {
+//			parser.initializeXmlParser(openFileInput(fileName + "_profile.xml"));
+//		} catch (NotFoundException e) {
+//			e.printStackTrace();
+//		} catch (XmlPullParserException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		//saves the active profile into the shared preferences
+//		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+//		pref.edit().putString("active_profile", fileName).commit();
+//
+//		Toast toast = Toast.makeText(this, fileName + " was applied!",
+//				Toast.LENGTH_SHORT);
+//		toast.show();
 		
-		//saves the active profile into the shared preferences
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-		pref.edit().putString("active_profile", fileName).commit();
-
-		Toast toast = Toast.makeText(this, fileName + " was applied!",
-				Toast.LENGTH_SHORT);
-		toast.show();
+		Handler handler = new Handler(this);
+		handler.applyProfile(fileName);
+		
 		Log.i("widget", fileName);
 		this.finish();
 	}
