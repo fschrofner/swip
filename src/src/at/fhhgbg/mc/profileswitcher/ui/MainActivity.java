@@ -2,18 +2,26 @@ package at.fhhgbg.mc.profileswitcher.ui;
 
 import java.util.Locale;
 
+import com.google.android.gms.location.Geofence;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import at.fhhgbg.mc.profileswitcher.R;
 import at.fhhgbg.mc.profileswitcher.R.id;
 import at.fhhgbg.mc.profileswitcher.R.layout;
 import at.fhhgbg.mc.profileswitcher.R.string;
+import at.fhhgbg.mc.profileswitcher.trigger.LocationTrigger;
+import at.fhhgbg.mc.profileswitcher.trigger.SimpleGeofence;
+import at.fhhgbg.mc.profileswitcher.trigger.SimpleGeofenceStore;
+import at.fhhgbg.mc.profileswitcher.trigger.TriggerBroadcastReceiver;
 
 /**
  * The main activity managing the two fragments, there is no other work done here.
@@ -76,6 +84,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+        
+//        LocationTrigger lt = new LocationTrigger(this);
+//        SimpleGeofence sg1 = new SimpleGeofence("1", 48.00, 13.00, 2000, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
+//        
+//        if(lt.servicesConnected()){
+//        	lt.registerGeofence(sg1);
+//        }
+
     }
     
     @Override
