@@ -8,6 +8,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -61,15 +62,24 @@ public class ArrayListAdapterTrigger extends ArrayAdapter<String> implements
 		if (element != null) {
 			// adds the profiles
 			TextView v = null;
+			StringBuilder sb = new StringBuilder();
+			sb.append(element);
+			sb.delete(sb.length() - 12, sb.length());
 			v = (TextView) convertView.findViewById(R.id.textViewProfileName);
-			v.setText(element);
+			v.setText(sb.toString());
 
 			// adds the edit buttons
 			ImageButton b = null;
 			b = (ImageButton) convertView.findViewById(R.id.buttonEdit);
 			b.setFocusable(false);
 			b.setOnClickListener(this);
-			b.setTag(this.element);
+			b.setTag(sb.toString());
+			
+			if (element.contains("_tri_dis")) {
+				v.setTextColor(Color.GRAY);
+				b.setEnabled(false);
+				b.setImageDrawable(null);
+			}
 		}
 		return convertView;
 	}
@@ -81,12 +91,12 @@ public class ArrayListAdapterTrigger extends ArrayAdapter<String> implements
 	 */
 	@Override
 	public void onClick(View v) {
-		XmlParserPrefTrigger xmlParserPrefTrigger = new XmlParserPrefTrigger(context, v.getTag()
-				.toString());
+		XmlParserPrefTrigger xmlParserPrefTrigger = new XmlParserPrefTrigger(
+				context, v.getTag().toString());
 
 		try {
-			xmlParserPrefTrigger.initializeXmlParser(context.openFileInput(v.getTag()
-					+ "_trigger.xml"));
+			xmlParserPrefTrigger.initializeXmlParser(context.openFileInput(v
+					.getTag() + "_trigger.xml"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (XmlPullParserException e) {

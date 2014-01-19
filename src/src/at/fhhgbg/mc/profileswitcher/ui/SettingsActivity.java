@@ -34,6 +34,7 @@ import at.fhhgbg.mc.profileswitcher.R.drawable;
 import at.fhhgbg.mc.profileswitcher.R.string;
 import at.fhhgbg.mc.profileswitcher.R.xml;
 import at.fhhgbg.mc.profileswitcher.profile.Setter;
+import at.fhhgbg.mc.profileswitcher.services.Handler;
 
 import java.io.IOException;
 import java.util.List;
@@ -249,26 +250,28 @@ public class SettingsActivity extends PreferenceActivity implements
 	public void onSharedPreferenceChanged(SharedPreferences _pref, String _key) {
 
 		if (_pref.getBoolean("notification", false)) {
-			Intent resultIntent = new Intent(this, ListDialogActivity.class);
-			PendingIntent resultPendingIntent = PendingIntent.getActivity(this,
-					0, resultIntent, 0);
-
-			NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(
-					this);
-			nBuilder.setSmallIcon(R.drawable.profile_switcher_notification_icon);
-			nBuilder.setContentText(getResources().getString(
-					R.string.textNotificationContentText));
-			nBuilder.setContentTitle(getResources().getString(
-					R.string.textNotificationTitle) + " " + _pref.getString("active_profile", getResources().getString(
-							R.string.textNotificationNoProfile)));
-			nBuilder.setContentIntent(resultPendingIntent);
-			nBuilder.setOngoing(true);
-			nBuilder.setWhen(0);
-			nBuilder.setPriority(1);
-
-			Notification notification = nBuilder.build();
-			NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			notificationManager.notify(123, notification);
+//			Intent resultIntent = new Intent(this, ListDialogActivity.class);
+//			PendingIntent resultPendingIntent = PendingIntent.getActivity(this,
+//					0, resultIntent, 0);
+//
+//			NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(
+//					this);
+//			nBuilder.setSmallIcon(R.drawable.profile_switcher_notification_icon);
+//			nBuilder.setContentText(getResources().getString(
+//					R.string.textNotificationContentText));
+//			nBuilder.setContentTitle(getResources().getString(
+//					R.string.textNotificationTitle) + " " + _pref.getString("active_profile", getResources().getString(
+//							R.string.textNotificationNoProfile)));
+//			nBuilder.setContentIntent(resultPendingIntent);
+//			nBuilder.setOngoing(true);
+//			nBuilder.setWhen(0);
+//			nBuilder.setPriority(1);
+//
+//			Notification notification = nBuilder.build();
+//			NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//			notificationManager.notify(123, notification);
+			Handler handler = new Handler (this);
+			handler.updateNotification();
 		} else {
 			NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			notificationManager.cancel(123);
