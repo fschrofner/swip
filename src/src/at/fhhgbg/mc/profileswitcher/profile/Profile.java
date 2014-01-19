@@ -1,5 +1,23 @@
 package at.fhhgbg.mc.profileswitcher.profile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources.NotFoundException;
+import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
+import android.widget.Toast;
+import at.fhhgbg.mc.profileswitcher.R;
+import at.fhhgbg.mc.profileswitcher.ui.ListDialogActivity;
+
 /**
  * Container class used to transfer the settings between activities and methods.
  * 
@@ -7,7 +25,7 @@ package at.fhhgbg.mc.profileswitcher.profile;
  * 
  */
 public class Profile {
-	
+
 	// IMPORTANT:
 	// do not change the position of dis- and enabled!
 	public enum state {
@@ -32,7 +50,14 @@ public class Profile {
 	private state mobileData = state.unchanged;
 	private state gps = state.unchanged;
 	private state airplane_mode = state.unchanged;
-	private state lockscreen =  state.unchanged;
+	private state lockscreen = state.unchanged;
+	private int screenBrightness = -1;
+	private state screenBrightnessAutoMode = state.unchanged;
+	private int screenTimeOut = -1;
+
+	public Profile(String name) {
+		this.name = name;
+	}
 	
 	public state getNfc() {
 		return nfc;
@@ -42,7 +67,6 @@ public class Profile {
 		this.nfc = nfc;
 	}
 
-	
 	public state getLockscreen() {
 		return lockscreen;
 	}
@@ -58,10 +82,6 @@ public class Profile {
 	public void setAirplane_mode(state airplane_mode) {
 		this.airplane_mode = airplane_mode;
 	}
-
-	private int screenBrightness = -1;
-	private state screenBrightnessAutoMode = state.unchanged;
-	private int screenTimeOut = -1;
 
 	public int getScreenTimeOut() {
 		return screenTimeOut;
@@ -149,10 +169,6 @@ public class Profile {
 
 	public void setGps(state gps) {
 		this.gps = gps;
-	}
-
-	public Profile(String name) {
-		this.name = name;
 	}
 
 	public String getName() {

@@ -1,6 +1,10 @@
 package at.fhhgbg.mc.profileswitcher.trigger;
 
 import java.util.Calendar;
+import java.util.List;
+
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationClient;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,11 +32,15 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 		_service.registerReceiver(this, filter);
 		filter = new IntentFilter("at.fhhgbg.mc.profileswitcher.trigger.refresh");
 		_service.registerReceiver(this, filter);
+    	filter = new IntentFilter("at.fhhgbg.mc.profileswitcher.trigger.location_change");
+		_service.registerReceiver(this, filter);
 	}
 
 	@Override
 	public void onReceive(Context _context, Intent _intent) {
-		// TODO Auto-generated method stub
+		
+		Log.i("TriggerBroadcastReceiver", "Broadcast received: " + _intent.getAction());
+		
 		if (_intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
 			
 			int h = Integer.parseInt(String.valueOf(Calendar
@@ -71,5 +79,44 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 		if(_intent.getAction().equals("at.fhhgbg.mc.profileswitcher.trigger.refresh")){
 			triggerservice.refreshTriggers();
 		}
+		if(_intent.getAction().equals("at.fhhgbg.mc.profileswitcher.trigger.location_change")){
+			Log.i("TriggerBroadcastReceiver", "Location change detected - action");
+			// First check for errors
+			if (LocationClient.hasError(_intent)) {
+				// Get the error code with a static method
+				int errorCode = LocationClient.getErrorCode(_intent);
+				// Log the error
+				Log.e("ReceiveTransitionsIntentService",
+						"Location Services error: " + Integer.toString(errorCode));
+				
+				 // if there's no error, get the transition type and the IDs of the
+				 // geofence or geofences that triggered the transition
+				
+			} else {
+				// Get the type of transition (entry or exit)
+				int transitionType = LocationClient.getGeofenceTransition(_intent);
+				// Test that a valid transition was reported
+				if ((transitionType == Geofence.GEOFENCE_TRANSITION_ENTER)
+						|| (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT)) {
+					List<Geofence> triggerList = LocationClient
+							.getTriggeringGeofences(_intent);
+
+					String[] triggerIds = new String[triggerList.size()];
+					for (int i = 0; i < triggerIds.length; i++) {
+						// Store the Id of each geofence
+						triggerIds[i] = triggerList.get(i).getRequestId();
+						Log.i("TriggerBroadcastReceiver", "matching geofence: " + triggerIds[i]);
+					}
+					
+					triggerservice.setGeofences(triggerIds);
+
+				// An invalid transition was reported
+				} else {
+					Log.e("ReceiveTransitionsIntentService",
+							"Geofence transition error: "
+									+ Integer.toString(transitionType));
+				}
+			}
 		}
 	}
+}

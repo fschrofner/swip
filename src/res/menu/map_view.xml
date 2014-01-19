@@ -1,21 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-<!--     <item
-        android:id="@+id/write_to_tag"
-        android:icon="@drawable/collections_labels"
-        android:showAsAction="ifRoom"
-        android:title="Write to NFC tag"
-        android:visible="true">
-    </item> -->
     <item
-        android:id="@+id/save_profile"
+        android:id="@+id/save_location"
         android:icon="@drawable/navigation_accept"
         android:showAsAction="always"
         android:title="@string/save"
         android:visible="true">
     </item>
     <item
-        android:id="@+id/cancel_profile"
+        android:id="@+id/cancel_location"
         android:icon="@drawable/navigation_cancel"
         android:showAsAction="always"
         android:title="@string/cancel"

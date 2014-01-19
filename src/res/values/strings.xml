@@ -44,6 +44,15 @@
     <string name="title_activity_profile_fragment">ProfileFragment</string>
     <string name="title_activity_trigger_fragment">TriggerFragment</string>
     <string name="title_activity_main">MainActivity</string>
-	<string name="set">Set</string>
-	<string name="cancel">Cancel</string>
+    <string name="set">Set</string>
+    <string name="cancel">Cancel</string>
+    <string name="title_activity_map_view">Geofence</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="mapRadius">Radius (in Meters):</string>
+    <string name="mapRadiusHint">Input the radius (Standard is 50)</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="ignored">Ignored</string>
+    <string name="clearMap">Clear</string>
+
 </resources>

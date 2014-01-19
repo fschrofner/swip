@@ -52,11 +52,12 @@ import at.fhhgbg.mc.profileswitcher.R.xml;
 import at.fhhgbg.mc.profileswitcher.profile.Profile;
 import at.fhhgbg.mc.profileswitcher.profile.XmlCreator;
 import at.fhhgbg.mc.profileswitcher.profile.XmlParser;
+import at.fhhgbg.mc.profileswitcher.services.Handler;
 import at.fhhgbg.mc.profileswitcher.widgets.ListWidget;
 
 public class ProfileFragment extends Fragment implements OnItemClickListener,
-OnItemLongClickListener{
-	
+		OnItemLongClickListener {
+
 	List<String> profileList = new ArrayList<String>();
 	
 	@Override
@@ -76,63 +77,69 @@ OnItemLongClickListener{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		boolean mboolean = false;
+		boolean firstRun = false;
 		setHasOptionsMenu(true);
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		mboolean = pref.getBoolean("FIRST_RUN", false);
+		SharedPreferences pref = PreferenceManager
+				.getDefaultSharedPreferences(getActivity());
+		firstRun = pref.getBoolean("FIRST_RUN", false);
 
 		// if the application is run for the first time
-		if (!mboolean) {
-			Profile pDefault = new Profile("Default");
-			pDefault.setRingerMode(Profile.mode.normal);
-			pDefault.setGps(Profile.state.disabled);
-			pDefault.setMobileData(Profile.state.enabled);
-			pDefault.setWifi(Profile.state.disabled);
-			pDefault.setBluetooth(Profile.state.disabled);
-			pDefault.setScreenBrightnessAutoMode(Profile.state.enabled);
+		if (!firstRun) {
+//			Profile pDefault = new Profile("Default");
+//			pDefault.setRingerMode(Profile.mode.normal);
+//			pDefault.setGps(Profile.state.disabled);
+//			pDefault.setMobileData(Profile.state.enabled);
+//			pDefault.setWifi(Profile.state.disabled);
+//			pDefault.setBluetooth(Profile.state.disabled);
+//			pDefault.setScreenBrightnessAutoMode(Profile.state.enabled);
+//
+//			Profile pHome = new Profile("Home");
+//			pHome.setRingerMode(Profile.mode.normal);
+//			pHome.setGps(Profile.state.disabled);
+//			pHome.setMobileData(Profile.state.disabled);
+//			pHome.setWifi(Profile.state.enabled);
+//			pHome.setBluetooth(Profile.state.disabled);
+//			pHome.setScreenBrightnessAutoMode(Profile.state.enabled);
+//
+//			Profile pMeeting = new Profile("Meeting");
+//			pMeeting.setRingerMode(Profile.mode.vibrate);
+//			pMeeting.setGps(Profile.state.disabled);
+//			pMeeting.setMobileData(Profile.state.enabled);
+//			pMeeting.setWifi(Profile.state.disabled);
+//			pMeeting.setBluetooth(Profile.state.disabled);
+//			pMeeting.setScreenBrightnessAutoMode(Profile.state.enabled);
+//
+//			XmlCreator creator = new XmlCreator();
+//			FileOutputStream output;
+//			try {
+//				output = getActivity().openFileOutput(
+//						pDefault.getName() + "_profile.xml",
+//						Context.MODE_PRIVATE);
+//				output.write(creator.create(pDefault).getBytes());
+//				output.close();
+//
+//				output = getActivity().openFileOutput(
+//						pHome.getName() + "_profile.xml", Context.MODE_PRIVATE);
+//				output.write(creator.create(pHome).getBytes());
+//				output.close();
+//
+//				output = getActivity().openFileOutput(
+//						pMeeting.getName() + "_profile.xml",
+//						Context.MODE_PRIVATE);
+//				output.write(creator.create(pMeeting).getBytes());
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			} catch (ParserConfigurationException e) {
+//				e.printStackTrace();
+//			} catch (TransformerException e) {
+//				e.printStackTrace();
+//			}
 
-			Profile pHome = new Profile("Home");
-			pHome.setRingerMode(Profile.mode.normal);
-			pHome.setGps(Profile.state.disabled);
-			pHome.setMobileData(Profile.state.disabled);
-			pHome.setWifi(Profile.state.enabled);
-			pHome.setBluetooth(Profile.state.disabled);
-			pHome.setScreenBrightnessAutoMode(Profile.state.enabled);
-
-			Profile pMeeting = new Profile("Meeting");
-			pMeeting.setRingerMode(Profile.mode.vibrate);
-			pMeeting.setGps(Profile.state.disabled);
-			pMeeting.setMobileData(Profile.state.enabled);
-			pMeeting.setWifi(Profile.state.disabled);
-			pMeeting.setBluetooth(Profile.state.disabled);
-			pMeeting.setScreenBrightnessAutoMode(Profile.state.enabled);
-
-			XmlCreator creator = new XmlCreator();
-			FileOutputStream output;
-			try {
-				output = getActivity().openFileOutput(pDefault.getName() + "_profile.xml",
-						Context.MODE_PRIVATE);
-				output.write(creator.create(pDefault).getBytes());
-				output.close();
-
-				output = getActivity().openFileOutput(pHome.getName() + "_profile.xml",
-						Context.MODE_PRIVATE);
-				output.write(creator.create(pHome).getBytes());
-				output.close();
-
-				output = getActivity().openFileOutput(pMeeting.getName() + "_profile.xml",
-						Context.MODE_PRIVATE);
-				output.write(creator.create(pMeeting).getBytes());
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ParserConfigurationException e) {
-				e.printStackTrace();
-			} catch (TransformerException e) {
-				e.printStackTrace();
-			}
-
+			Handler handler = new Handler(getActivity());
+			handler.createStandardProfiles();
+			
 			SharedPreferences.Editor editor = pref.edit();
 			editor.putBoolean("FIRST_RUN", true);
 			editor.commit();
@@ -140,28 +147,37 @@ OnItemLongClickListener{
 
 		// starts the permanent notification if it is activated
 		if (pref.getBoolean("notification", false)) {
-			Intent resultIntent = new Intent(getActivity(), ListDialogActivity.class);
-			PendingIntent resultPendingIntent = PendingIntent.getActivity(getActivity(),
-					0, resultIntent, 0);
+//			Intent resultIntent = new Intent(getActivity(),
+//					ListDialogActivity.class);
+//			PendingIntent resultPendingIntent = PendingIntent.getActivity(
+//					getActivity(), 0, resultIntent, 0);
+//
+//			NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(
+//					getActivity());
+//			nBuilder.setSmallIcon(R.drawable.profile_switcher_notification_icon);
+//			nBuilder.setContentText(getResources().getString(
+//					R.string.textNotificationContentText));
+//			nBuilder.setContentTitle(getResources().getString(
+//					R.string.textNotificationTitle)
+//					+ " "
+//					+ pref.getString("active_profile", getResources()
+//							.getString(R.string.textNotificationNoProfile)));
+//			nBuilder.setContentIntent(resultPendingIntent);
+//			nBuilder.setOngoing(true);
+//			nBuilder.setWhen(0);
+//			nBuilder.setPriority(1);
+//
+//			Notification notification = nBuilder.build();
+//			NotificationManager notificationManager = (NotificationManager) getActivity()
+//					.getSystemService(Context.NOTIFICATION_SERVICE);
+//			notificationManager.notify(123, notification);
 			
-			NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(getActivity());
-			nBuilder.setSmallIcon(R.drawable.profile_switcher_notification_icon);
-			nBuilder.setContentText(getResources().getString(
-					R.string.textNotificationContentText));
-			nBuilder.setContentTitle(getResources().getString(
-					R.string.textNotificationTitle) + " " + pref.getString("active_profile", getResources().getString(
-							R.string.textNotificationNoProfile)));
-			nBuilder.setContentIntent(resultPendingIntent);
-			nBuilder.setOngoing(true);
-			nBuilder.setWhen(0);
-			nBuilder.setPriority(1);
-
-			Notification notification = nBuilder.build();
-			NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-			notificationManager.notify(123, notification);
+			Handler handler = new Handler(getActivity());
+			handler.updateNotification();
 		} else {
 			// deactivates the notification otherwise
-			NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = (NotificationManager) getActivity()
+					.getSystemService(Context.NOTIFICATION_SERVICE);
 			notificationManager.cancel(123);
 		}
 	}
@@ -296,26 +312,35 @@ OnItemLongClickListener{
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> _a, View v, int _position, long arg3) {
-		XmlParser parser = new XmlParser(getActivity());
-		try {
-			// applies the profile.
-			parser.initializeXmlParser(getActivity().openFileInput(_a
-					.getItemAtPosition(_position) + "_profile.xml"));
-		} catch (NotFoundException e) {
-			e.printStackTrace();
-		} catch (XmlPullParserException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// XmlParser parser = new XmlParser(getActivity());
+		// try {
+		// // applies the profile.
+		// parser.initializeXmlParser(getActivity().openFileInput(_a
+		// .getItemAtPosition(_position) + "_profile.xml"));
+		// } catch (NotFoundException e) {
+		// e.printStackTrace();
+		// } catch (XmlPullParserException e) {
+		// e.printStackTrace();
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
+		//
+		// //saves the active profile into the shared preferences
+		// SharedPreferences pref =
+		// PreferenceManager.getDefaultSharedPreferences(getActivity());
+		// pref.edit().putString("active_profile",
+		// (String)_a.getItemAtPosition(_position)).commit();
+		//
+		// SwipNotification noti = new SwipNotification(getActivity());
+		// noti.setNotification();
+		//
+		// Toast toast = Toast.makeText(getActivity(),
+		// _a.getItemAtPosition(_position)
+		// + " was applied!", Toast.LENGTH_SHORT);
+		// toast.show();
 
-		//saves the active profile into the shared preferences
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		pref.edit().putString("active_profile", (String)_a.getItemAtPosition(_position)).commit();
-		
-		Toast toast = Toast.makeText(getActivity(), _a.getItemAtPosition(_position)
-				+ " was applied!", Toast.LENGTH_SHORT);
-		toast.show();
+		Handler handler = new Handler(getActivity());
+		handler.applyProfile((String) _a.getItemAtPosition(_position));
 	}
 
 	/**

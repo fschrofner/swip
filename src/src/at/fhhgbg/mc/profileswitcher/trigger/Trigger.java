@@ -18,6 +18,7 @@ public class Trigger {
 	private int batteryEndLevel;
 	private listen_state headphones;
 	private	listen_state batteryCharging;
+	private String geofence;
 
 	public Trigger(String _name) {
 		this.name = _name;
@@ -30,6 +31,15 @@ public class Trigger {
 		this.batteryEndLevel = -1;
 		this.headphones = listen_state.ignore;
 		this.batteryCharging = listen_state.ignore;
+		this.geofence = null;
+	}
+
+	public String getGeofence() {
+		return geofence;
+	}
+
+	public void setGeofence(String geofence) {
+		this.geofence = geofence;
 	}
 
 	public int getBatteryStartLevel() {

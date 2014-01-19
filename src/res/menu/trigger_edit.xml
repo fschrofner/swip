@@ -4,14 +4,14 @@
         android:id="@+id/save_trigger"
         android:icon="@drawable/navigation_accept"
         android:showAsAction="always"
-        android:title="Save"
+        android:title="@string/save"
         android:visible="true">
     </item>
     <item
         android:id="@+id/cancel_trigger"
         android:icon="@drawable/navigation_cancel"
         android:showAsAction="always"
-        android:title="Cancel"
+        android:title="@string/cancel"
         android:visible="true">
     </item>
 
