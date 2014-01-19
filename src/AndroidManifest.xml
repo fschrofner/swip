@@ -150,18 +150,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="at.fhhgbg.mc.profileswitcher.ui.MainActivity" />
         </activity>
-
-<!--        Dominik Koeltringer -->
-          <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyA59N7o_dVmogji2q7AunJxX2tfk1EighI" /> 
-            
-<!-- 		Florian Schrofner -->
-<!--          <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyChsOIkMcczpav5C7yMsgXwwWvW3G4e0Zo" /> -->
-
-        <activity
+		<activity
             android:name="at.fhhgbg.mc.profileswitcher.ui.MapViewActivity"
             android:label="@string/title_activity_map_view"
             android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.TriggerEditActivity" >
@@ -172,6 +161,16 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+<!--        Dominik Koeltringer -->
+          <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyA59N7o_dVmogji2q7AunJxX2tfk1EighI" /> 
+            
+<!-- 		Florian Schrofner -->
+<!--          <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyChsOIkMcczpav5C7yMsgXwwWvW3G4e0Zo" /> -->
+
     </application>
 
 </manifest>
