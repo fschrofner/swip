@@ -24,7 +24,9 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+import at.fhhgbg.mc.profileswitcher.profile.Profile;
 import at.fhhgbg.mc.profileswitcher.profile.XmlParser;
+import at.fhhgbg.mc.profileswitcher.services.Handler;
 
 /**
  * Service which manages the triggers.
@@ -171,21 +173,24 @@ public class TriggerService extends Service{
 							if (!trigger.getProfileName().equals(pref.getString("active_profile", "Default"))) {
 								Log.i("TriggerService", "matching trigger found: " + trigger.getName());
 								
-								XmlParser parser = new XmlParser(getApplicationContext());
-								try {
-									// applies the profile.
-									parser.initializeXmlParser(openFileInput(trigger
-											.getProfileName() + "_profile.xml"));
-									
-									Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-									pref.edit().putString("active_profile", trigger.getProfileName()).commit();
-								} catch (NotFoundException e) {
-									e.printStackTrace();
-								} catch (XmlPullParserException e) {
-									e.printStackTrace();
-								} catch (IOException e) {
-									e.printStackTrace();
-								}
+//								XmlParser parser = new XmlParser(getApplicationContext());
+//								try {
+//									// applies the profile.
+//									parser.initializeXmlParser(openFileInput(trigger
+//											.getProfileName() + "_profile.xml"));
+//									
+//									Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
+//									pref.edit().putString("active_profile", trigger.getProfileName()).commit();
+//								} catch (NotFoundException e) {
+//									e.printStackTrace();
+//								} catch (XmlPullParserException e) {
+//									e.printStackTrace();
+//								} catch (IOException e) {
+//									e.printStackTrace();
+//								}
+								
+								Handler handler = new Handler(getApplicationContext());
+								handler.applyProfile(trigger.getProfileName());
 							} 						
 							else{
 								Log.i("TriggerService", trigger.getProfileName() + " is already applied");
