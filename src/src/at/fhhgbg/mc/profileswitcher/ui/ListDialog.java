@@ -18,7 +18,9 @@ import android.widget.Toast;
 import at.fhhgbg.mc.profileswitcher.R;
 import at.fhhgbg.mc.profileswitcher.R.drawable;
 import at.fhhgbg.mc.profileswitcher.R.string;
+import at.fhhgbg.mc.profileswitcher.profile.Profile;
 import at.fhhgbg.mc.profileswitcher.profile.XmlParser;
+import at.fhhgbg.mc.profileswitcher.services.Handler;
 
 /**
  * Implements the pop-up dialog with a list of profiles(handed over as argument)
@@ -74,25 +76,28 @@ public class ListDialog extends DialogFragment implements OnClickListener {
 
 		// applies the selected profile(which indicates the position inside the
 		// list)
-		XmlParser parser = new XmlParser(getActivity());
-		try {
-			parser.initializeXmlParser(getActivity().openFileInput(
-					list[which] + "_profile.xml"));
-		} catch (NotFoundException e) {
-			e.printStackTrace();
-		} catch (XmlPullParserException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		//saves the active profile into the shared preferences
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		pref.edit().putString("active_profile", list[which]).commit();
+//		XmlParser parser = new XmlParser(getActivity());
+//		try {
+//			parser.initializeXmlParser(getActivity().openFileInput(
+//					list[which] + "_profile.xml"));
+//		} catch (NotFoundException e) {
+//			e.printStackTrace();
+//		} catch (XmlPullParserException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//		//saves the active profile into the shared preferences
+//		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//		pref.edit().putString("active_profile", list[which]).commit();
+//		
+//		Toast toast = Toast.makeText(getActivity(), list[which]
+//				+ " was applied!", Toast.LENGTH_SHORT);
+//		toast.show();
 		
-		Toast toast = Toast.makeText(getActivity(), list[which]
-				+ " was applied!", Toast.LENGTH_SHORT);
-		toast.show();
+		Handler handler = new Handler(getActivity());
+		handler.applyProfile(list[which]);
 
 		this.getActivity().finish();
 	}
