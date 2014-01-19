@@ -6,8 +6,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.SharedPreferences;
+import at.fhhgbg.mc.profileswitcher.services.Handler;
 
 /**
  * Transparent(defined in manifest) activity used to show the pop-up list
@@ -28,6 +31,20 @@ public class ListDialogActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Boolean firstRun = false;
+		SharedPreferences pref = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		firstRun = pref.getBoolean("FIRST_RUN", false);
+		
+		if (!firstRun) {
+			Handler handler = new Handler(this);
+			handler.createStandardProfiles();
+			
+			SharedPreferences.Editor editor = pref.edit();
+			editor.putBoolean("FIRST_RUN", true);
+			editor.commit();
+		}
 
 		// refreshes the profile list
 		profileList.clear();

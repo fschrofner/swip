@@ -77,66 +77,69 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		boolean mboolean = false;
+		boolean firstRun = false;
 		setHasOptionsMenu(true);
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(getActivity());
-		mboolean = pref.getBoolean("FIRST_RUN", false);
+		firstRun = pref.getBoolean("FIRST_RUN", false);
 
 		// if the application is run for the first time
-		if (!mboolean) {
-			Profile pDefault = new Profile("Default");
-			pDefault.setRingerMode(Profile.mode.normal);
-			pDefault.setGps(Profile.state.disabled);
-			pDefault.setMobileData(Profile.state.enabled);
-			pDefault.setWifi(Profile.state.disabled);
-			pDefault.setBluetooth(Profile.state.disabled);
-			pDefault.setScreenBrightnessAutoMode(Profile.state.enabled);
+		if (!firstRun) {
+//			Profile pDefault = new Profile("Default");
+//			pDefault.setRingerMode(Profile.mode.normal);
+//			pDefault.setGps(Profile.state.disabled);
+//			pDefault.setMobileData(Profile.state.enabled);
+//			pDefault.setWifi(Profile.state.disabled);
+//			pDefault.setBluetooth(Profile.state.disabled);
+//			pDefault.setScreenBrightnessAutoMode(Profile.state.enabled);
+//
+//			Profile pHome = new Profile("Home");
+//			pHome.setRingerMode(Profile.mode.normal);
+//			pHome.setGps(Profile.state.disabled);
+//			pHome.setMobileData(Profile.state.disabled);
+//			pHome.setWifi(Profile.state.enabled);
+//			pHome.setBluetooth(Profile.state.disabled);
+//			pHome.setScreenBrightnessAutoMode(Profile.state.enabled);
+//
+//			Profile pMeeting = new Profile("Meeting");
+//			pMeeting.setRingerMode(Profile.mode.vibrate);
+//			pMeeting.setGps(Profile.state.disabled);
+//			pMeeting.setMobileData(Profile.state.enabled);
+//			pMeeting.setWifi(Profile.state.disabled);
+//			pMeeting.setBluetooth(Profile.state.disabled);
+//			pMeeting.setScreenBrightnessAutoMode(Profile.state.enabled);
+//
+//			XmlCreator creator = new XmlCreator();
+//			FileOutputStream output;
+//			try {
+//				output = getActivity().openFileOutput(
+//						pDefault.getName() + "_profile.xml",
+//						Context.MODE_PRIVATE);
+//				output.write(creator.create(pDefault).getBytes());
+//				output.close();
+//
+//				output = getActivity().openFileOutput(
+//						pHome.getName() + "_profile.xml", Context.MODE_PRIVATE);
+//				output.write(creator.create(pHome).getBytes());
+//				output.close();
+//
+//				output = getActivity().openFileOutput(
+//						pMeeting.getName() + "_profile.xml",
+//						Context.MODE_PRIVATE);
+//				output.write(creator.create(pMeeting).getBytes());
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			} catch (ParserConfigurationException e) {
+//				e.printStackTrace();
+//			} catch (TransformerException e) {
+//				e.printStackTrace();
+//			}
 
-			Profile pHome = new Profile("Home");
-			pHome.setRingerMode(Profile.mode.normal);
-			pHome.setGps(Profile.state.disabled);
-			pHome.setMobileData(Profile.state.disabled);
-			pHome.setWifi(Profile.state.enabled);
-			pHome.setBluetooth(Profile.state.disabled);
-			pHome.setScreenBrightnessAutoMode(Profile.state.enabled);
-
-			Profile pMeeting = new Profile("Meeting");
-			pMeeting.setRingerMode(Profile.mode.vibrate);
-			pMeeting.setGps(Profile.state.disabled);
-			pMeeting.setMobileData(Profile.state.enabled);
-			pMeeting.setWifi(Profile.state.disabled);
-			pMeeting.setBluetooth(Profile.state.disabled);
-			pMeeting.setScreenBrightnessAutoMode(Profile.state.enabled);
-
-			XmlCreator creator = new XmlCreator();
-			FileOutputStream output;
-			try {
-				output = getActivity().openFileOutput(
-						pDefault.getName() + "_profile.xml",
-						Context.MODE_PRIVATE);
-				output.write(creator.create(pDefault).getBytes());
-				output.close();
-
-				output = getActivity().openFileOutput(
-						pHome.getName() + "_profile.xml", Context.MODE_PRIVATE);
-				output.write(creator.create(pHome).getBytes());
-				output.close();
-
-				output = getActivity().openFileOutput(
-						pMeeting.getName() + "_profile.xml",
-						Context.MODE_PRIVATE);
-				output.write(creator.create(pMeeting).getBytes());
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ParserConfigurationException e) {
-				e.printStackTrace();
-			} catch (TransformerException e) {
-				e.printStackTrace();
-			}
-
+			Handler handler = new Handler(getActivity());
+			handler.createStandardProfiles();
+			
 			SharedPreferences.Editor editor = pref.edit();
 			editor.putBoolean("FIRST_RUN", true);
 			editor.commit();
