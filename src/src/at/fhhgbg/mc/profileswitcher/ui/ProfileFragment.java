@@ -327,7 +327,7 @@ OnItemLongClickListener{
 	@Override
 	public boolean onItemLongClick(AdapterView<?> _a, View _v, int _position,
 			long arg3) {
-		String[] options = new String[] { "delete" };
+		String[] options = new String[] { "write on nfc-tag" , "delete"};
 
 		// used to notify the user of the longpress.
 		Vibrator vibrator = (Vibrator) getActivity().getSystemService(getActivity().VIBRATOR_SERVICE);
@@ -364,6 +364,13 @@ OnItemLongClickListener{
 		public void onClick(DialogInterface dialog, int which) {
 			switch (which) {
 			case 0: {
+				Intent intent = new Intent(getActivity(), NfcWriterActivity.class);
+				intent.putExtra("fileName", a.getItemAtPosition(position).toString());
+				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+				startActivity(intent);
+				break;
+			}
+			case 1: {
 				File file = new File(String.valueOf(getActivity().getFilesDir()) + "/"
 						+ a.getItemAtPosition(position) + "_profile.xml");
 				file.delete();

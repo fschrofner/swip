@@ -138,15 +138,15 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			}
 		} else if (item.getItemId() == R.id.cancel_profile) {
 			this.finish();
-		} else if (item.getItemId() == R.id.write_to_tag) {
-			this.saveProfile();
-			// SharedPreferences pref = PreferenceManager
-			// .getDefaultSharedPreferences(this);
-
-			Intent intent = new Intent(this, NfcWriterActivity.class);
-			intent.putExtra("fileName", pref.getString("name", "default"));
-			intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-			startActivity(intent);
+//		} else if (item.getItemId() == R.id.write_to_tag) {
+//			this.saveProfile();
+//			// SharedPreferences pref = PreferenceManager
+//			// .getDefaultSharedPreferences(this);
+//
+//			Intent intent = new Intent(this, NfcWriterActivity.class);
+//			intent.putExtra("fileName", pref.getString("name", "default"));
+//			intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//			startActivity(intent);
 		} else if (item.getItemId() == android.R.id.home) {
 			NavUtils.navigateUpFromSameTask(this);
 			return true;

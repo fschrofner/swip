@@ -21,10 +21,11 @@
     <string name="ReadOnly">Read-only Tag!</string>
     <string name="NotEnoughSpace">Tag doesn\'t seem to have enough free space!</string>
     <string name="DialogNotEnoughSpaceTitle">Tag too small!</string>
-    <string name="DialogNotEnoughSpaceMessage1">Only write the profile name?</string>
-    <string name="DialogNotEnoughSpaceMessage2">The profile needs to be present on the target phone.</string>
+    <string name="DialogNotEnoughSpaceMessage1">The tag doesn\'t seem to have enough space!</string>
+    <string name="DialogNotEnoughSpaceMessage2">Please get hold of a larger tag</string>
     <string name="DialogPositive">Write</string>
     <string name="DialogNegative">Cancel</string>
+    <string name="DialogNeutral">OK</string>
     <string name="TagNotEnoughSpace">Tag doesn\'t have enough free space.</string>
     <string name="TagSuccessful">Tag written successfully.</string>
     <string name="NfcWrite">Touch tag to write</string>

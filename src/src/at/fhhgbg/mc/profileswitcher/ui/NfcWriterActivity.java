@@ -46,8 +46,8 @@ import at.fhhgbg.mc.profileswitcher.profile.XmlParserPref;
 public class NfcWriterActivity extends Activity implements
 		DialogInterface.OnClickListener {
 
-	public static final byte[] NFC_REVISION = {(byte) 00000000}; //our revision of the nfc data format, used for compatibility
-	public static final int NFC_SIZE = 6;		//the number of bytes our nfc data uses
+	public static final byte NFC_REVISION = 0; //our revision of the nfc data format, used for compatibility
+	public static final int NFC_SIZE = 7;		//the number of bytes our nfc data uses
 	
 	boolean inWriteMode;	// if true the activity is ready to write
 	boolean writeNameOnly; 	// if true not the whole profile will be written, but the name instead
@@ -72,10 +72,8 @@ public class NfcWriterActivity extends Activity implements
 		setupActionBar();
 
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
-		filePath = new String(getFilesDir() + "/"
-				+ getIntent().getStringExtra("fileName") + "_profile.xml");
 		adapter = NfcAdapter.getDefaultAdapter(this);
-		createByteArray(getIntent().getStringExtra("fileName"));
+		fileName = getIntent().getStringExtra("fileName");
 	}
 
 	/**
@@ -144,130 +142,15 @@ public class NfcWriterActivity extends Activity implements
 		if (inWriteMode) {
 			inWriteMode = false;
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-			if (!writeNameOnly)
-				writeTag(tag);
-			if (writeNameOnly)
-				writeName(tag);
+			writeTag(tag);
 		}
 	}
 
-	/**
-	 * Writes the complete profile containing the name and the file on a NFC
-	 * tag.
-	 * 
-	 * @param tag
-	 *            the discovered NFC tag
-	 * @return true if the operation was successful, false otherwise
-	 */
-//	private boolean writeTag(Tag tag) {
-//		try {
-//
-//			StringBuffer buffer = new StringBuffer(filePath);
-//			int index = buffer.lastIndexOf("/", buffer.length() - 1);	// gets the last slash
-//			buffer.delete(0, index + 1); 								// removes all characters before the slash
-//			fileName = buffer.toString();								// saves the remaining string as file name
-//
-//			fileInput = new FileInputStream(filePath);
-//			byte[] payload = new byte[(int) new File(filePath).length()];
-//			fileInput.read(payload); 									// saves the file into a byte array
-//			fileInput.close();
-//			String application = "application/at.fhhgbg.mc.profileswitcher";
-//			byte[] mimeBytes = application
-//					.getBytes(Charset.forName("US-ASCII"));
-//			NdefRecord cardFile = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-//					mimeBytes, new byte[0], payload);
-//			NdefRecord cardName = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-//					mimeBytes, new byte[0], fileName.getBytes());
-//			NdefMessage message = new NdefMessage(new NdefRecord[] { cardFile,
-//					cardName });
-//			Ndef ndef = Ndef.get(tag);
-//
-//			if (ndef != null) {
-//				ndef.connect();
-//
-//				// checks if the tag is writeable
-//				if (!ndef.isWritable()) {
-//					Toast.makeText(this,
-//							getResources().getString(R.string.ReadOnly),
-//							Toast.LENGTH_SHORT).show();
-//					return false;
-//				}
-//
-//				// work out how much space we need for the data
-//				int size = message.toByteArray().length;
-//
-//				// if there is not enough space you can choose to write the name only
-//				if (ndef.getMaxSize() < size) {
-//					AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-//					dialog.setTitle(getResources().getString(
-//							R.string.DialogNotEnoughSpaceTitle));
-//					dialog.setMessage(getResources().getString(
-//							R.string.DialogNotEnoughSpaceMessage1)
-//							+ "\n" + getResources().getString(
-//							R.string.DialogNotEnoughSpaceMessage2));
-//					dialog.setIcon(R.drawable.alerts_and_states_warning);
-//					dialog.setPositiveButton(
-//							getResources().getString(R.string.DialogPositive),
-//							this);
-//					dialog.setNegativeButton(
-//							getResources().getString(R.string.DialogNegative),
-//							this);
-//					dialog.show();
-//					return false;
-//				}
-//
-//				ndef.writeNdefMessage(message);
-//				Toast.makeText(this,
-//						getResources().getString(R.string.TagSuccessful),
-//						Toast.LENGTH_SHORT).show();
-//
-//				this.finish();
-//				return true;
-//			} else { // if tag is completely empty, it will be formatted
-//				NdefFormatable format = NdefFormatable.get(tag);
-//				if (format != null) {
-//
-//					try {
-//						format.connect();
-//						format.format(message);
-//						Toast.makeText(this, getResources()
-//								.getString(R.string.TagSuccessful),
-//								Toast.LENGTH_SHORT).show();
-//						this.finish();
-//						return true;
-//					} catch (IOException e) {
-//						Toast.makeText(this, getResources()
-//								.getString(R.string.NotFormatable),
-//								Toast.LENGTH_SHORT).show();
-//						return false;
-//					} catch (FormatException e) {
-//						e.printStackTrace();
-//					}
-//
-//				} else {
-//					Toast.makeText(this,
-//							getResources().getString(R.string.NotSupported),
-//							Toast.LENGTH_SHORT).show();
-//					return false;
-//				}
-//			}
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} catch (FormatException e) {
-//			e.printStackTrace();
-//		}
-//		return false;
-//	}
 	
 	public boolean writeTag(Tag tag){
 		try {
-			StringBuffer buffer = new StringBuffer(filePath);
-			int index = buffer.lastIndexOf("/", buffer.length() - 1);	// gets the last slash
-			buffer.delete(0, index + 1); 								// removes all characters before the slash
-			fileName = buffer.toString();								// saves the remaining string as file name
 			
+			//loads the selected profile into shared preferences and converts them to a binary presentation
 			byte[] payload =  createByteArray(fileName);
 			
 			String application = "application/at.fhhgbg.mc.profileswitcher";
@@ -275,10 +158,7 @@ public class NfcWriterActivity extends Activity implements
 					.getBytes(Charset.forName("US-ASCII"));
 			NdefRecord cardFile = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
 					mimeBytes, new byte[0], payload);
-			NdefRecord cardName = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-					mimeBytes, new byte[0], fileName.getBytes());
-			NdefMessage message = new NdefMessage(new NdefRecord[] { cardFile,
-					cardName });
+			NdefMessage message = new NdefMessage(new NdefRecord[] {cardFile});
 			Ndef ndef = Ndef.get(tag);
 
 			if (ndef != null) {
@@ -295,9 +175,9 @@ public class NfcWriterActivity extends Activity implements
 				// work out how much space we need for the data
 				int size = message.toByteArray().length;
 
-				// if there is not enough space you can choose to write the name only
+				// if there is not enough space a dialog is displayed
 				if (ndef.getMaxSize() < size) {
-					AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+					AlertDialog.Builder dialog = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 					dialog.setTitle(getResources().getString(
 							R.string.DialogNotEnoughSpaceTitle));
 					dialog.setMessage(getResources().getString(
@@ -305,12 +185,7 @@ public class NfcWriterActivity extends Activity implements
 							+ "\n" + getResources().getString(
 							R.string.DialogNotEnoughSpaceMessage2));
 					dialog.setIcon(R.drawable.alerts_and_states_warning);
-					dialog.setPositiveButton(
-							getResources().getString(R.string.DialogPositive),
-							this);
-					dialog.setNegativeButton(
-							getResources().getString(R.string.DialogNegative),
-							this);
+					dialog.setNeutralButton(getResources().getString(R.string.DialogNeutral), this);
 					dialog.show();
 					return false;
 				}
@@ -367,19 +242,20 @@ public class NfcWriterActivity extends Activity implements
 		} catch (XmlPullParserException e1) {
 			e1.printStackTrace();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		byte[] payload =  new byte[NFC_SIZE];
 		
-		createFirstByte();
-		createSecondByte();
-		createThirdByte();
+		payload[0] = NFC_REVISION;
+		payload[1] = (byte)createFirstByte();
+		payload[2] = (byte)createSecondByte();
+		payload[3] = (byte)createThirdByte();
+		payload[4] = (byte)createFourthByte();
+		payload[5] = (byte)createFifthByte();
+		payload[6] = (byte)createSixthByte();
 		
 		return payload;
 	}
@@ -389,7 +265,6 @@ public class NfcWriterActivity extends Activity implements
 	 * Contains the settings for ringtone volume and alarm volume.
 	 * Ringtone Volume: 4 Bits
 	 * Alarm Volume: 4 Bits
-	 * @param _pref the shared preferences of which to read the settings
 	 * @return a short(byte containing 8 bit), which represents the settings
 	 */
 	private short createFirstByte(){
@@ -432,7 +307,6 @@ public class NfcWriterActivity extends Activity implements
 	 * Contains the settings for media volume and display timeout.
 	 * Media Volume: 5 Bits
 	 * Display Timeout: 3 Bits
-	 * @param _pref the shared preferences of which to read the settings
 	 * @return a short(byte containing 8 bit), which represents the settings
 	 */
 	private short createSecondByte(){
@@ -478,7 +352,6 @@ public class NfcWriterActivity extends Activity implements
 	 * Mobile Data: 2 Bits.
 	 * Wifi: 2 Bits.
 	 * Bluetooth: 2 Bits.
-	 * @param _pref the shared preferences of which to read the settings
 	 * @return a short(byte containing 8 bit), which represents the settings
 	 */
 	private short createThirdByte(){
@@ -510,7 +383,7 @@ public class NfcWriterActivity extends Activity implements
 		}
 		
 		//mobile data
-		if(!pref.getString("mobile_data", "unchanged").equals("unchanged")){
+		if(!pref.getString("mobile_data", "unchanged").equals("unchanged") && !pref.getString("airplane_mode", "unchanged").equals("enabled")){
 			if(pref.getString("mobile_data", "unchanged").equals("enabled")){
 				//00
 				mobile_data = (short) 0;
@@ -527,7 +400,7 @@ public class NfcWriterActivity extends Activity implements
 		}
 		
 		//wifi
-		if(!pref.getString("wifi", "unchanged").equals("unchanged")){
+		if(!pref.getString("wifi", "unchanged").equals("unchanged") && !pref.getString("airplane_mode", "unchanged").equals("enabled")){
 			if(pref.getString("wifi", "unchanged").equals("enabled")){
 				//00
 				wifi = (short) 0;
@@ -544,7 +417,7 @@ public class NfcWriterActivity extends Activity implements
 		}
 		
 		//bluetooth
-		if(!pref.getString("bluetooth", "unchanged").equals("unchanged")){
+		if(!pref.getString("bluetooth", "unchanged").equals("unchanged") && !pref.getString("airplane_mode", "unchanged").equals("enabled")){
 			if(pref.getString("bluetooth", "unchanged").equals("enabled")){
 				//00
 				bluetooth = (short) 0;
@@ -572,91 +445,171 @@ public class NfcWriterActivity extends Activity implements
 		
 		return byteThree;
 	}
+	
 	/**
-	 * Only writes the name of the profile on the tag, if the file is too big to
-	 * be saved directly. Does basically the same as the method above, but with
-	 * the name only.
-	 * 
-	 * @param tag
-	 *            the discovered NFC tag
-	 * @return true if the operation was successful, false otherwise
+	 * Returns the fourth byte to be written on a nfc-tag.
+	 * Contains the settings for autobrightness and the first bit for brightness.
+	 * Brightness: 1 Bit.
+	 * Auto Brightness: 2 Bits.
+	 * @return a short(byte containing 8 bit), which represents the settings
 	 */
-	public boolean writeName(Tag tag) {
-		try {
-			String application = "application/at.fhhgbg.mc.profileswitcher";
-			byte[] mimeBytes = application
-					.getBytes(Charset.forName("US-ASCII"));
-			byte[] payload = pref.getString("name", "default").getBytes();
-			NdefRecord cardRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-					mimeBytes, new byte[0], payload);
-			NdefMessage message = new NdefMessage(
-					new NdefRecord[] { cardRecord });
+	private short createFourthByte(){
+		//TODO there's still some space left (5 bit)
+		short byteFour;
+		short brightnessOne = -1;
+		short autoBrightness = -1;
 
-			Ndef ndef = Ndef.get(tag);
-
-			if (ndef != null) {
-				ndef.connect();
-
-				if (!ndef.isWritable()) {
-					Toast.makeText(this,
-							getResources().getString(R.string.ReadOnly),
-							Toast.LENGTH_SHORT).show();
-					return false;
-				}
-
-				// work out how much space we need for the data
-				int size = message.toByteArray().length;
-
-				if (ndef.getMaxSize() < size) {
-					Toast.makeText(this,
-							getResources().getString(R.string.NotEnoughSpace),
-							Toast.LENGTH_SHORT).show();
-					return false;
-				}
-
-				ndef.writeNdefMessage(message);
-				Toast.makeText(this,
-						getResources().getString(R.string.TagSuccessful),
-						Toast.LENGTH_SHORT).show();
-				this.finish();
-				return true;
-			} else {
-				// attempt to format tag
-				NdefFormatable format = NdefFormatable.get(tag);
-
-				if (format != null) {
-					try {
-						format.connect();
-						format.format(message);
-						Toast.makeText(this, getResources()
-								.getString(R.string.TagSuccessful),
-								Toast.LENGTH_SHORT).show();
-						this.finish();
-						return true;
-					} catch (IOException e) {
-						Toast.makeText(this, getResources()
-								.getString(R.string.NotFormatable),
-								Toast.LENGTH_SHORT).show();
-						return false;
-					} catch (FormatException e) {
-						e.printStackTrace();
-					}
-				} else {
-					Toast.makeText(this,
-							getResources().getString(R.string.NotSupported),
-							Toast.LENGTH_SHORT).show();
-					return false;
-				}
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (FormatException e) {
-			e.printStackTrace();
+		//display brightness
+		if(pref.getInt("display_brightness",-1) != -1){
+			brightnessOne = (short) 0;
+			Log.i("NfcWriterActivity", "displaybrightness changed!");
+		} else {
+			brightnessOne = (short) 1;
+			Log.i("NfcWriterActivity", "displaybrightness unchanged!");
 		}
-		return false;
+		
+		//automatic brightness
+		if(!pref.getString("display_auto_mode", "unchanged").equals("unchanged")){
+			if(pref.getString("display_auto_mode", "unchanged").equals("enabled")){
+				//00
+				autoBrightness = 0;
+			}
+			if(pref.getString("display_auto_mode", "unchanged").equals("disabled")){
+				//01
+				autoBrightness = 1;
+			}
+		} else {
+			//11
+			autoBrightness = 3;
+		}
+		
+		//moves the values to the left
+		brightnessOne <<= 7;
+		autoBrightness <<= 5;
+		
+		//concatenates the values
+		byteFour = (short)(brightnessOne | autoBrightness);
+		
+		Log.i("NfcWriterActivity", "fourth byte defined as: " + byteFour + "(" + Integer.toBinaryString(byteFour) + ")");
+		
+		return byteFour;
 	}
+	
+	
+	/**
+	 * Returns the fifth byte to be written on a nfc-tag.
+	 * Contains the value for display brightness.
+	 * Brightness: 8 Bits.
+	 * @return a short(byte containing 8 bit), which represents the settings
+	 */
+	public short createFifthByte(){
+		short byteFive;
+		
+		if(pref.getInt("display_brightness",-1) != -1){
+			byteFive = (short) pref.getInt("display_brightness", -1);
+		} else {
+			//00000000
+			byteFive = 0;
+		}
+		Log.i("NfcWriterActivity", "fifth byte defined as: " + byteFive + "(" + Integer.toBinaryString(byteFive) + ")");
+		return byteFive;
+	}
+	
+	
+	/**
+	 * Returns the sixth byte to be written on a nfc-tag.
+	 * Contains the values for gps, nfc, lockscreen & airplane mode.
+	 * GPS: 2 Bits.
+	 * NFC: 2 Bits.
+	 * Lockscreen: 2 Bits.
+	 * Airplane Mode: 2 Bits.
+	 * @return a short(byte containing 8 bit), which represents the settings
+	 */
+	public short createSixthByte(){
+		short byteSix;
+		short gps = -1;
+		short nfc = -1;
+		short lockscreen = -1;
+		short airplane_mode = -1;
+		
+		//gps
+		if(!pref.getString("gps", "unchanged").equals("unchanged") && !pref.getString("airplane_mode", "unchanged").equals("enabled")){
+			if(pref.getString("gps", "unchanged").equals("enabled")){
+				//00
+				gps = 0;
+			}
+			if(pref.getString("gps", "unchanged").equals("disabled")){
+				//01
+				gps = 1;
+			}
+			Log.i("NfcWriterActivity", "gps: " + gps);
+		} else {
+			//11
+			gps = 3;
+			Log.i("NfcWriterActivity", "gps unchanged!");
+		}
+		
+		//nfc
+		if(!pref.getString("nfc", "unchanged").equals("unchanged") && !pref.getString("airplane_mode", "unchanged").equals("enabled")){
+			if(pref.getString("nfc", "unchanged").equals("enabled")){
+				//00
+				nfc = 0;
+			}
+			if(pref.getString("nfc", "unchanged").equals("disabled")){
+				//01
+				nfc = 1;
+			}
+			Log.i("NfcWriterActivity", "nfc: " + nfc);
+		} else {
+			//11
+			nfc = 3;
+			Log.i("NfcWriterActivity", "nfc unchanged");
+		}
+		
+		//lockscreen
+		if(!pref.getString("lockscreen", "unchanged").equals("unchanged")){
+			if(pref.getString("lockscreen", "unchanged").equals("enabled")){
+				//00
+				lockscreen = 0;
+			}
+			if(pref.getString("lockscreen", "unchanged").equals("disabled")){
+				//01
+				lockscreen = 1;
+			}
+			Log.i("NfcWriterActivity", "lockscreen: " + lockscreen);
+		} else {
+			//11
+			lockscreen = 3;
+			Log.i("NfcWriterActivity", "lockscreen unchanged!");
+		}
+		
+		//airplane
+		if(!pref.getString("airplane_mode", "unchanged").equals("unchanged")){
+			if(pref.getString("airplane_mode", "unchanged").equals("enabled")){
+				//00
+				airplane_mode = 0;
+			}
+			if(pref.getString("airplane_mode", "unchanged").equals("disabled")){
+				//01
+				airplane_mode = 1;
+			}
+			Log.i("NfcWriterActivity", "airplane mode: " + airplane_mode);
+		} else {
+			//11
+			airplane_mode = 3;
+			Log.i("NfcWriterActivity", "airplane mode unchanged!");
+		}
+		
+		gps <<= 6;
+		nfc <<= 4;
+		lockscreen <<= 2;
+	
+		byteSix = (short) (gps | nfc | lockscreen | airplane_mode);
+		Log.i("NfcWriterActivity", "sixth byte defined as: " + byteSix + "(" + Integer.toBinaryString(byteSix) + ")");
+		
+		return byteSix;
+	}
+	
 
 	/**
 	 * If the user agrees to write the profile name only, writeNameOnly will be
@@ -667,11 +620,6 @@ public class NfcWriterActivity extends Activity implements
 	 */
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-
-		if (which == DialogInterface.BUTTON_POSITIVE) {
-			writeNameOnly = true;
-		}
-
 		dialog.dismiss();
 	}
 
