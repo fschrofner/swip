@@ -178,32 +178,23 @@ public class TriggerService extends Service{
 						if(compareBatteryLevel(trigger)){
 							Log.i("TriggerService", "trigger matching battery level");
 							SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-							
-							if (!trigger.getProfileName().equals(pref.getString("active_profile", "Default"))) {
-								Log.i("TriggerService", "matching trigger found: " + trigger.getName());
-								
-//								XmlParser parser = new XmlParser(getApplicationContext());
-//								try {
-//									// applies the profile.
-//									parser.initializeXmlParser(openFileInput(trigger
-//											.getProfileName() + "_profile.xml"));
-//									
-//									Toast.makeText(getApplicationContext(), trigger.getProfileName() + " was applied!", Toast.LENGTH_SHORT).show();
-//									pref.edit().putString("active_profile", trigger.getProfileName()).commit();
-//								} catch (NotFoundException e) {
-//									e.printStackTrace();
-//								} catch (XmlPullParserException e) {
-//									e.printStackTrace();
-//								} catch (IOException e) {
-//									e.printStackTrace();
-//								}
-								
-								Handler handler = new Handler(getApplicationContext());
-								handler.applyProfile(trigger.getProfileName());
-							} 						
-							else{
-								Log.i("TriggerService", trigger.getProfileName() + " is already applied");
-							}	
+							if(compareGeofence(trigger)){
+								Log.i("TriggerService",
+										"trigger matching geofence");
+								if (!trigger.getProfileName().equals(pref.getString("active_profile", "Default"))) {
+									Log.i("TriggerService", "matching trigger found: " + trigger.getName());
+									
+									Handler handler = new Handler(getApplicationContext());
+									handler.applyProfile(trigger.getProfileName());
+								} 						
+								else{
+									Log.i("TriggerService", trigger.getProfileName() + " is already applied");
+								}	
+							} 
+							else {
+								Log.i("TriggerService", trigger.getName()
+										+ " does not match geofence");
+							}
 						}
 						else{
 							Log.i("TriggerService", trigger.getName() + " does not match battery level");
