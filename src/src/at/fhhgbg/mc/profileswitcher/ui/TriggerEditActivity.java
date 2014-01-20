@@ -124,16 +124,23 @@ public class TriggerEditActivity extends PreferenceActivity implements
 									R.string.pref_profile_default)).equals(
 							getResources().getString(
 									R.string.pref_profile_default))
-					|| pref.getInt("battery_start_level", -1) < pref.getInt(
+					|| pref.getInt("battery_start_level", -1) >= pref.getInt(
 							"battery_end_level", -1)) {
 				AlertDialog.Builder dialog = new AlertDialog.Builder(this,
 						AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-				if (pref.getInt("battery_start_level", -1) < pref.getInt(
+				dialog.setIcon(R.drawable.alerts_and_states_warning);
+				if (pref.getInt("battery_start_level", -1) > pref.getInt(
 						"battery_end_level", -1)) {
 					dialog.setTitle(getResources().getString(
 							R.string.alert_battery_title));
 					dialog.setMessage(getResources().getString(
 							R.string.alert_battery_text));
+				} else if (pref.getInt("battery_start_level", -1) == pref.getInt(
+							"battery_end_level", -1)) {
+						dialog.setTitle(getResources().getString(
+								R.string.alert_battery_title));
+						dialog.setMessage(getResources().getString(
+								R.string.alert_battery_exact_text));
 				} else if (pref.getString(
 						"name_trigger",
 						getResources().getString(
@@ -186,7 +193,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 	@Override
 	public void onBackPressed() {
-		
+
 		if (preferencesChanged) {
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this,
 					AlertDialog.THEME_DEVICE_DEFAULT_DARK);
@@ -195,6 +202,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 					R.string.alert_discard_title));
 			dialog.setMessage(getResources().getString(
 					R.string.alert_discard_text));
+			dialog.setIcon(R.drawable.alerts_and_states_warning);
 
 			dialog.setPositiveButton(
 					getResources().getString(R.string.alert_discard_yes),
