@@ -1,11 +1,7 @@
 package at.fhhgbg.mc.profileswitcher.ui;
 
-import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
-import com.google.android.gms.maps.GoogleMapOptions;
-import com.google.android.gms.maps.UiSettings;
 
 import android.location.Criteria;
 import android.location.Location;
@@ -17,18 +13,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 import at.fhhgbg.mc.profileswitcher.R;
 
@@ -42,9 +36,9 @@ public class MapViewActivity extends Activity implements
 		GoogleMap.OnMapLongClickListener, OnClickListener {
 
 	private GoogleMap mMap;
-	private LatLng currentPos;
 	private LatLng point;
 	private int radius;
+	private boolean preferencesChanged = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +96,8 @@ public class MapViewActivity extends Activity implements
 								.center(point).fillColor(0x5533B5E5)
 								.strokeColor(0xEE33B5E5).strokeWidth(2));
 					}
+					
+					preferencesChanged = true;
 
 				}
 			});
@@ -112,6 +108,7 @@ public class MapViewActivity extends Activity implements
 				point = new LatLng(pref.getFloat("geofence_lat", 0),
 						pref.getFloat("geofence_lng", 0));
 				radius = pref.getInt("geofence_radius", 50);
+				editRadius.setText(String.valueOf(radius));
 
 				mMap.clear();
 				mMap.addMarker(new MarkerOptions().position(point));
@@ -126,7 +123,8 @@ public class MapViewActivity extends Activity implements
 						new LatLng(point.latitude, point.longitude), 15));
 
 				CameraPosition cameraPosition = new CameraPosition.Builder()
-						.target(new LatLng(point.latitude, point.longitude)).zoom(15).build();
+						.target(new LatLng(point.latitude, point.longitude))
+						.zoom(15).build();
 				mMap.animateCamera(CameraUpdateFactory
 						.newCameraPosition(cameraPosition));
 			} else { // a new geofence is created
@@ -220,6 +218,8 @@ public class MapViewActivity extends Activity implements
 						.strokeWidth(2));
 			}
 		}
+		
+		preferencesChanged = true;
 	}
 
 	@Override
@@ -231,35 +231,45 @@ public class MapViewActivity extends Activity implements
 			radius = -1;
 
 			Log.i("MapViewActivity", "Cleared map.");
+			
+			preferencesChanged = true;
 		}
 	}
 
 	@Override
 	public void onBackPressed() {
-		AlertDialog.Builder dialog = new AlertDialog.Builder(this,
-				AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+		if (preferencesChanged) {
+			AlertDialog.Builder dialog = new AlertDialog.Builder(this,
+					AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 
-		dialog.setTitle(getResources().getString(R.string.alert_discard_title));
-		dialog.setMessage(getResources().getString(R.string.alert_discard_text));
+			dialog.setTitle(getResources().getString(
+					R.string.alert_discard_title));
+			dialog.setMessage(getResources().getString(
+					R.string.alert_discard_text));
+			dialog.setIcon(R.drawable.alerts_and_states_warning);
 
-		dialog.setPositiveButton(
-				getResources().getString(R.string.alert_discard_yes),
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						finish();
-					}
-				});
+			dialog.setPositiveButton(
+					getResources().getString(R.string.alert_discard_yes),
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							finish();
+						}
+					});
 
-		dialog.setNegativeButton(
-				getResources().getString(R.string.alert_discard_no),
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
-		dialog.show();
+			dialog.setNegativeButton(
+					getResources().getString(R.string.alert_discard_no),
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+			dialog.show();
+		} else {
+			finish();
+		}
+
 	}
 
 }

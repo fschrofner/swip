@@ -121,6 +121,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 						R.string.alert_profile_title));
 				dialog.setMessage(getResources().getString(
 						R.string.alert_profile_text));
+				dialog.setIcon(R.drawable.alerts_and_states_warning);
 				dialog.setNegativeButton(
 						getResources().getString(R.string.alert_button),
 						new DialogInterface.OnClickListener() {
@@ -145,6 +146,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 							R.string.alert_profile_title));
 					dialog.setMessage(getResources().getString(
 							R.string.alert_profile_text));
+					dialog.setIcon(R.drawable.alerts_and_states_warning);
 					dialog.setNegativeButton(
 							getResources().getString(R.string.alert_button),
 							new DialogInterface.OnClickListener() {
@@ -191,6 +193,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 					R.string.alert_discard_title));
 			dialog.setMessage(getResources().getString(
 					R.string.alert_discard_text));
+			dialog.setIcon(R.drawable.alerts_and_states_warning);
 
 			dialog.setPositiveButton(
 					getResources().getString(R.string.alert_discard_yes),
