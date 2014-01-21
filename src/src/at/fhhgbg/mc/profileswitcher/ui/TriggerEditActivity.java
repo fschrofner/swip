@@ -379,14 +379,26 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		if (pref.getFloat("geofence_lat", -1) > -1
 				&& pref.getFloat("geofence_lng", -1) > -1
 				&& pref.getInt("geofence_radius", 50) > 0) {
+			
+			//geofence that registers if you enter the area
 			SimpleGeofence simple = new SimpleGeofence(name, pref.getFloat(
 					"geofence_lat", -1F), pref.getFloat("geofence_lng", -1F),
 					pref.getInt("geofence_radius", 0), Geofence.NEVER_EXPIRE,
 					Geofence.GEOFENCE_TRANSITION_ENTER);
 			locTrig.registerGeofence(simple);
+			
+			//geofence that registers if you leave the area
+			simple = new SimpleGeofence(name + "_exit", pref.getFloat(
+					"geofence_lat", -1F), pref.getFloat("geofence_lng", -1F),
+					pref.getInt("geofence_radius", 0), Geofence.NEVER_EXPIRE,
+					Geofence.GEOFENCE_TRANSITION_EXIT);
+			locTrig.registerGeofence(simple);
+			
+			//sets the geofence of the trigger to the enter event
 			trigger.setGeofence(name);
 		} else {
 			locTrig.unregisterGeofence(name);
+			locTrig.unregisterGeofence(name + "_exit");
 			trigger.setGeofence(null);
 		}
 
