@@ -106,6 +106,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 
+		// Show dialogs if the user wants to save and something is wrong
 		if (item.getItemId() == R.id.save_trigger) {
 			if (pref.getString(
 					"name_trigger",
@@ -124,29 +125,35 @@ public class TriggerEditActivity extends PreferenceActivity implements
 									R.string.pref_profile_default)).equals(
 							getResources().getString(
 									R.string.pref_profile_default))
-					|| pref.getInt("battery_start_level", -1) >= pref.getInt(
-							"battery_end_level", -1)) {
+					|| (pref.getInt("battery_start_level", -1) >= pref.getInt(
+							"battery_end_level", -1) && pref.getInt(
+							"battery_end_level", -1) != -1)) {
 				AlertDialog.Builder dialog = new AlertDialog.Builder(this,
 						AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 				dialog.setIcon(R.drawable.alerts_and_states_warning);
 				if (pref.getInt("battery_start_level", -1) > pref.getInt(
-						"battery_end_level", -1)) {
+						"battery_end_level", -1)
+						&& pref.getInt("battery_end_level", -1) != -1) {
+					// Battery low-level is smaller than battery high-level
 					dialog.setTitle(getResources().getString(
 							R.string.alert_battery_title));
 					dialog.setMessage(getResources().getString(
 							R.string.alert_battery_text));
-				} else if (pref.getInt("battery_start_level", -1) == pref.getInt(
-							"battery_end_level", -1)) {
-						dialog.setTitle(getResources().getString(
-								R.string.alert_battery_title));
-						dialog.setMessage(getResources().getString(
-								R.string.alert_battery_exact_text));
+				} else if (pref.getInt("battery_start_level", -1) == pref
+						.getInt("battery_end_level", -1)
+						&& pref.getInt("battery_end_level", -1) != -1) {
+					// Battery low-level == battery high-level
+					dialog.setTitle(getResources().getString(
+							R.string.alert_battery_title));
+					dialog.setMessage(getResources().getString(
+							R.string.alert_battery_exact_text));
 				} else if (pref.getString(
 						"name_trigger",
 						getResources().getString(
 								R.string.pref_trigger_name_default)).equals(
 						getResources().getString(
 								R.string.pref_trigger_name_default))) {
+					// The name is the default name
 					dialog.setTitle(getResources().getString(
 							R.string.alert_name_title));
 					dialog.setMessage(getResources().getString(
@@ -155,11 +162,19 @@ public class TriggerEditActivity extends PreferenceActivity implements
 						"name_trigger",
 						getResources().getString(
 								R.string.pref_trigger_name_default)).equals("")) {
+					// the name is empty
 					dialog.setTitle(getResources().getString(
 							R.string.alert_name_title));
 					dialog.setMessage(getResources().getString(
 							R.string.alert_name_text));
-				} else {
+				} else if (pref
+						.getString(
+								"profile",
+								getResources().getString(
+										R.string.pref_profile_default)).equals(
+								getResources().getString(
+										R.string.pref_profile_default))) {
+					// no profile is set
 					dialog.setTitle(getResources().getString(
 							R.string.alert_profile_title));
 					dialog.setMessage(getResources().getString(
@@ -387,22 +402,22 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		if (pref.getFloat("geofence_lat", -1) > -1
 				&& pref.getFloat("geofence_lng", -1) > -1
 				&& pref.getInt("geofence_radius", 50) > 0) {
-			
-			//geofence that registers if you enter the area
+
+			// geofence that registers if you enter the area
 			SimpleGeofence simple = new SimpleGeofence(name, pref.getFloat(
 					"geofence_lat", -1F), pref.getFloat("geofence_lng", -1F),
 					pref.getInt("geofence_radius", 0), Geofence.NEVER_EXPIRE,
 					Geofence.GEOFENCE_TRANSITION_ENTER);
 			locTrig.registerGeofence(simple);
-			
-			//geofence that registers if you leave the area
+
+			// geofence that registers if you leave the area
 			simple = new SimpleGeofence(name + "_exit", pref.getFloat(
 					"geofence_lat", -1F), pref.getFloat("geofence_lng", -1F),
 					pref.getInt("geofence_radius", 0), Geofence.NEVER_EXPIRE,
 					Geofence.GEOFENCE_TRANSITION_EXIT);
 			locTrig.registerGeofence(simple);
-			
-			//sets the geofence of the trigger to the enter event
+
+			// sets the geofence of the trigger to the enter event
 			trigger.setGeofence(name);
 		} else {
 			locTrig.unregisterGeofence(name);
