@@ -167,9 +167,9 @@
             android:value="AIzaSyA59N7o_dVmogji2q7AunJxX2tfk1EighI" /> 
             
 <!-- 		Florian Schrofner -->
-          <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyChsOIkMcczpav5C7yMsgXwwWvW3G4e0Zo" />
+<!--           <meta-data -->
+<!--             android:name="com.google.android.maps.v2.API_KEY" -->
+<!--             android:value="AIzaSyChsOIkMcczpav5C7yMsgXwwWvW3G4e0Zo" /> -->
 
     </application>
 

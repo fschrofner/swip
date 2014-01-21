@@ -36,8 +36,8 @@
     </string-array>
 
     <!-- Battery Level -->
-    <string name="slider_title_battery_start_level">Battery Start-Level</string>
-    <string name="slider_title_battery_end_level">Battery End-Level</string>
+    <string name="slider_title_battery_start_level">Battery Low-Level</string>
+    <string name="slider_title_battery_end_level">Battery High-Level</string>
 
     <string-array name="slider_summaries_battery_level">
         <item>Ignored</item>
@@ -175,7 +175,8 @@
     <string name="alert_battery_title">Battery Level</string>
     <string name="alert_name_text">Please input a valid name for the trigger!</string>
     <string name="alert_profile_text">Please input a valid name for the profile!</string>
-    <string name="alert_battery_text">The battery start level must not be smaller than the battery end level!</string>
+    <string name="alert_battery_text">The battery low-level must not be bigger than the battery high-level!</string>
+    <string name="alert_battery_exact_text">If you want an exact value, please only define the battery low-level!</string>
     <string name="alert_button">Okay</string>
     <string name="alert_discard_title">Discard Changes?</string>
     <string name="alert_discard_text">Do you want to discard the changes and exit the editor?</string>
