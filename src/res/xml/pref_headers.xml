@@ -4,38 +4,38 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="at.fhhgbg.mc.profileswitcher.ProfileEditActivity$GeneralPreferenceFragment"
+        android:fragment="at.fhhgb.mc.swip.ProfileEditActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_name" />
     <header
-        android:fragment="at.fhhgbg.mc.profileswitcher.ProfileEditActivity$SoundPreferenceFragment"
+        android:fragment="at.fhhgb.mc.swip.ProfileEditActivity$SoundPreferenceFragment"
         android:title="@string/pref_header_sound" />
     <header
-        android:fragment="at.fhhgbg.mc.profileswitcher.ProfileEditActivity$ConnectivityPreferenceFragment"
+        android:fragment="at.fhhgb.mc.swip.ProfileEditActivity$ConnectivityPreferenceFragment"
         android:title="@string/pref_header_connectivity" />
     <header
-        android:fragment="at.fhhgbg.mc.profileswitcher.ProfileEditActivity$DisplayPreferenceFragment"
+        android:fragment="at.fhhgb.mc.swip.ProfileEditActivity$DisplayPreferenceFragment"
         android:title="@string/pref_header_display" />
 
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="at.fhhgbg.mc.profileswitcher.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="at.fhhgb.mc.swip.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
 
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$GeneralPreferenceFragment"
+        android:fragment="at.fhhgb.mc.swip.TriggerEditActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
     <header
-        android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$TimePreferenceFragment"
+        android:fragment="at.fhhgb.mc.swip.TriggerEditActivity$TimePreferenceFragment"
         android:title="@string/pref_header_time" />
     <header
-        android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$BatteryPreferenceFragment"
+        android:fragment="at.fhhgb.mc.swip.TriggerEditActivity$BatteryPreferenceFragment"
         android:title="@string/pref_header_battery" />
     
     <header
-        android:fragment="at.fhhgbg.mc.profileswitcher.TriggerEditActivity$HeadphonePreferenceFragment"
+        android:fragment="at.fhhgb.mc.swip.TriggerEditActivity$HeadphonePreferenceFragment"
         android:title="@string/pref_header_headphone" />
 
 </preference-headers>

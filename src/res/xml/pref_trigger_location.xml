@@ -5,8 +5,8 @@
         android:title="@string/pref_title_location" >
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="at.fhhgbg.mc.profileswitcher.ui.MapViewActivity"
-            android:targetPackage="at.fhhgbg.mc.profileswitcher" />
+            android:targetClass="at.fhhgb.mc.swip.ui.MapViewActivity"
+            android:targetPackage="at.fhhgb.mc.swip" />
     </Preference>
 
 </PreferenceScreen>
