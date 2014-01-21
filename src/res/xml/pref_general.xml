@@ -26,8 +26,8 @@
         android:title="@string/title_activity_about" >
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="at.fhhgbg.mc.profileswitcher.ui.AboutActivity"
-            android:targetPackage="at.fhhgbg.mc.profileswitcher" />
+            android:targetClass="at.fhhgb.mc.swip.ui.AboutActivity"
+            android:targetPackage="at.fhhgb.mc.swip" />
     </Preference>
 
 </PreferenceScreen>

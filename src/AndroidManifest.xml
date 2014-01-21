@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="at.fhhgbg.mc.profileswitcher"
+    package="at.fhhgb.mc.swip"
     android:versionCode="2"
     android:versionName="0.2" >
 
@@ -40,7 +40,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.ui.MainActivity"
+            android:name="at.fhhgb.mc.swip.ui.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,29 +49,29 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.ui.ListDialogActivity"
+            android:name="at.fhhgb.mc.swip.ui.ListDialogActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.Transparent"
             android:title="@string/title_activity_list_dialog" >
         </activity>
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.ui.ProfileEditActivity"
+            android:name="at.fhhgb.mc.swip.ui.ProfileEditActivity"
             android:label="@string/title_activity_profile_edit" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="at.fhhgbg.mc.profileswitcher.ui.MainActivity" />
+                android:value="at.fhhgb.mc.swip.ui.MainActivity" />
         </activity>
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.ui.SettingsActivity"
+            android:name="at.fhhgb.mc.swip.ui.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.MainActivity" >
+            android:parentActivityName="at.fhhgb.mc.swip.ui.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="at.fhhgbg.mc.profileswitcher.ui.MainActivity" />
+                android:value="at.fhhgb.mc.swip.ui.MainActivity" />
         </activity>
 
-        <receiver android:name="at.fhhgbg.mc.profileswitcher.widgets.PopUpWidget" >
+        <receiver android:name="at.fhhgb.mc.swip.widgets.PopUpWidget" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -80,7 +80,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_pop_up" />
         </receiver>
-        <receiver android:name="at.fhhgbg.mc.profileswitcher.widgets.ListWidget" >
+        <receiver android:name="at.fhhgb.mc.swip.widgets.ListWidget" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -89,35 +89,35 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_list" />
         </receiver>
-        <receiver android:name="at.fhhgbg.mc.profileswitcher.services.BootCompletedReceiver" >
+        <receiver android:name="at.fhhgb.mc.swip.services.BootCompletedReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name="at.fhhgbg.mc.profileswitcher.widgets.ListWidgetService"
+            android:name="at.fhhgb.mc.swip.widgets.ListWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" >
         </service>
-        <service android:name="at.fhhgbg.mc.profileswitcher.services.AutostartService" >
+        <service android:name="at.fhhgb.mc.swip.services.AutostartService" >
         </service>
-        <service android:name="at.fhhgbg.mc.profileswitcher.trigger.TriggerService" >
+        <service android:name="at.fhhgb.mc.swip.trigger.TriggerService" >
         </service>
 
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.widgets.WidgetActivity"
+            android:name="at.fhhgb.mc.swip.widgets.WidgetActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.Transparent"
             android:title="@string/title_activity_list_dialog" >
         </activity>
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.ui.NfcWriterActivity"
+            android:name="at.fhhgb.mc.swip.ui.NfcWriterActivity"
             android:label="@string/title_activity_nfc_writer"
-            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.ProfileEditActivity" >
+            android:parentActivityName="at.fhhgb.mc.swip.ui.ProfileEditActivity" >
         </activity>
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.ui.NfcReaderActivity"
+            android:name="at.fhhgb.mc.swip.ui.NfcReaderActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_nfc_reader"
             android:launchMode="singleInstance"
@@ -125,38 +125,38 @@
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
-                <data android:mimeType="application/at.fhhgbg.mc.profileswitcher" />
+                <data android:mimeType="application/at.fhhgb.mc.swip" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.ui.AboutActivity"
+            android:name="at.fhhgb.mc.swip.ui.AboutActivity"
             android:label="@string/title_activity_about"
-            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.MainActivity" >
+            android:parentActivityName="at.fhhgb.mc.swip.ui.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="at.fhhgbg.mc.profileswitcher.ui.MainActivity" />
+                android:value="at.fhhgb.mc.swip.ui.MainActivity" />
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
         <activity
-            android:name="at.fhhgbg.mc.profileswitcher.ui.TriggerEditActivity"
+            android:name="at.fhhgb.mc.swip.ui.TriggerEditActivity"
             android:label="@string/title_activity_trigger_edit"
-            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.MainActivity" >
+            android:parentActivityName="at.fhhgb.mc.swip.ui.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="at.fhhgbg.mc.profileswitcher.ui.MainActivity" />
+                android:value="at.fhhgb.mc.swip.ui.MainActivity" />
         </activity>
 		<activity
-            android:name="at.fhhgbg.mc.profileswitcher.ui.MapViewActivity"
+            android:name="at.fhhgb.mc.swip.ui.MapViewActivity"
             android:label="@string/title_activity_map_view"
-            android:parentActivityName="at.fhhgbg.mc.profileswitcher.ui.TriggerEditActivity" >
+            android:parentActivityName="at.fhhgb.mc.swip.ui.TriggerEditActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="at.fhhgbg.mc.profileswitcher.ui.TriggerEditActivity" />
+                android:value="at.fhhgb.mc.swip.ui.TriggerEditActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
@@ -164,7 +164,7 @@
 <!--        Dominik Koeltringer -->
           <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyA59N7o_dVmogji2q7AunJxX2tfk1EighI" /> 
+            android:value="AIzaSyBmWgxJ6fK05OT0pzOKUef0IiJ1kf2TMMU" /> 
             
 <!-- 		Florian Schrofner -->
 <!--           <meta-data -->
