@@ -26,6 +26,9 @@
     <string name="DialogPositive">Write</string>
     <string name="DialogNegative">Cancel</string>
     <string name="DialogNeutral">OK</string>
+    <string name="nfcNotEnabledTitle">NFC not enabled!</string>
+    <string name="nfcNotEnabledDialog1">Your device seems to support NFC, but it\'s disabled.</string>
+    <string name="nfcNotEnabledDialog2">Please enable it and try again.</string>
     <string name="TagNotEnoughSpace">Tag doesn\'t have enough free space.</string>
     <string name="TagSuccessful">Tag written successfully.</string>
     <string name="NfcWrite">Touch tag to write</string>

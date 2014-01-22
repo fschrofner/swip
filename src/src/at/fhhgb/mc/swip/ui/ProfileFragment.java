@@ -14,6 +14,8 @@ import javax.xml.transform.TransformerException;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.nfc.NfcAdapter;
+import android.nfc.NfcManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
@@ -346,7 +348,18 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 	@Override
 	public boolean onItemLongClick(AdapterView<?> _a, View _v, int _position,
 			long arg3) {
-		String[] options = new String[] { "write on nfc-tag" , "delete"};
+		
+		
+		String[] options;
+		
+		//if nfc is available
+		if (checkNfc()) {
+			options = new String[] { "write on nfc-tag" , "delete"};
+		}
+		else {
+			options = new String[] {"delete"};
+		}
+		
 
 		// used to notify the user of the longpress.
 		Vibrator vibrator = (Vibrator) getActivity().getSystemService(getActivity().VIBRATOR_SERVICE);
@@ -356,6 +369,21 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 		builder.setItems(options, new LongPressMenuListener(_a, _position));
 		builder.show();
 		return false;
+	}
+	
+	
+	/**
+	 * Checks if a nfc adapter is available
+	 * @return true = nfc adapter is available, false = no nfc adapter available
+	 */
+	private boolean checkNfc(){
+		NfcManager manager = (NfcManager) getActivity().getSystemService(Context.NFC_SERVICE);
+		NfcAdapter adapter = manager.getDefaultAdapter();
+		if(adapter != null){
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -381,22 +409,56 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 		 */
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			switch (which) {
-			case 0: {
-				Intent intent = new Intent(getActivity(), NfcWriterActivity.class);
-				intent.putExtra("fileName", a.getItemAtPosition(position).toString());
-				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-				startActivity(intent);
-				break;
+			//nfc available
+			if(checkNfc()){
+				switch (which) {
+				case 0: {
+					NfcManager manager = (NfcManager) getActivity().getSystemService(Context.NFC_SERVICE);
+					NfcAdapter adapter = manager.getDefaultAdapter();
+					
+					//checks if nfc is enabled
+					if(adapter.isEnabled()){
+						Intent intent = new Intent(getActivity(), NfcWriterActivity.class);
+						intent.putExtra("fileName", a.getItemAtPosition(position).toString());
+						intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+						startActivity(intent);
+					} else {
+						AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity(),
+								AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+						alertDialog.setIcon(R.drawable.alerts_and_states_warning);
+						alertDialog.setTitle(getResources().getString(R.string.nfcNotEnabledTitle));
+						alertDialog.setMessage(getResources().getString(R.string.nfcNotEnabledDialog1) + 
+								"\n" + getResources().getString(R.string.nfcNotEnabledDialog2));
+						alertDialog.setNeutralButton(getResources().getString(R.string.DialogNeutral), new OnClickListener(){
+
+							@Override
+							public void onClick(DialogInterface _dialog, int arg1) {
+								_dialog.dismiss();
+							}
+							
+						});
+						alertDialog.show();
+					}
+
+					break;
+				}
+				case 1: {
+					File file = new File(String.valueOf(getActivity().getFilesDir()) + "/"
+							+ a.getItemAtPosition(position) + "_profile.xml");
+					file.delete();
+					refreshListView();
+				}
+					break;
+				}
 			}
-			case 1: {
+			//no nfc available
+			else {
 				File file = new File(String.valueOf(getActivity().getFilesDir()) + "/"
 						+ a.getItemAtPosition(position) + "_profile.xml");
 				file.delete();
 				refreshListView();
 			}
-				break;
-			}
+
 		}
 	}
 
