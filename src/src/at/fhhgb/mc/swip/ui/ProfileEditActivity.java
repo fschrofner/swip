@@ -609,20 +609,37 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		if (key.equals("airplane_mode")
 				&& (_pref.getString("airplane_mode", "unchanged")
 						.equals("enabled"))) {
-			findPreference("gps").setEnabled(false);
+			
+			//if the option to disable gps is available (android below kitkat or installed as systemapp)
+			//it should be disabled
+			Setter setter = new Setter();
+			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 || setter.checkSystemapp(this)) {
+				findPreference("gps").setEnabled(false);
+				
+				//nfc is only available if the app is installed as systemapp
+				if(setter.checkSystemapp(this)){
+					findPreference("nfc").setEnabled(false);
+				}				
+			}
+			
 			findPreference("mobile_data").setEnabled(false);
 			findPreference("wifi").setEnabled(false);
 			findPreference("bluetooth").setEnabled(false);
-			findPreference("nfc").setEnabled(false);
 		} else if (key.equals("airplane_mode")
 				&& (_pref.getString("airplane_mode", "unchanged").equals(
 						"disabled") || _pref.getString("airplane_mode",
 						"unchanged").equals("unchanged"))) {
-			findPreference("gps").setEnabled(true);
+			
+			Setter setter = new Setter();
+			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 || setter.checkSystemapp(this)) {
+				findPreference("gps").setEnabled(true);
+				if(setter.checkSystemapp(this)){
+					findPreference("nfc").setEnabled(true);
+				}			
+			}
 			findPreference("mobile_data").setEnabled(true);
 			findPreference("wifi").setEnabled(true);
 			findPreference("bluetooth").setEnabled(true);
-			findPreference("nfc").setEnabled(true);
 		}
 
 		preferencesChanged = true;

@@ -36,7 +36,7 @@ These rules can be freely combined (e.g. at a certain location AND a certain tim
 The app is currently in an alpha stage (all important features are implemented and should basically work, but are not tested on a widerange of devices).  
 
 ##License
-SwiP: an open source intelligent profile switcher for Android
+SwiP: an open source intelligent profile switcher for Android  
 Copyright (C) 2014  Dominik Koeltringer, Florian Schrofner
 
 This program is free software: you can redistribute it and/or modify
