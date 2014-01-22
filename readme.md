@@ -33,7 +33,7 @@ A trigger can contain the following rules:
 - Headphone State
 
 These rules can be freely combined (e.g. at a certain location AND a certain time).  
-The app is currently in an alpha stage (all important features are implemented and should basically work, but are not tested on a widerange of devices).  
+The app is currently in an alpha stage (all important features are implemented and should basically work, but are not tested on a wide range of devices).  
 
 ##License
 SwiP: an open source intelligent profile switcher for Android  

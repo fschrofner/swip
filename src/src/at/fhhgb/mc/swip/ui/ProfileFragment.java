@@ -354,10 +354,10 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 		
 		//if nfc is available
 		if (checkNfc()) {
-			options = new String[] { "write on nfc-tag" , "delete"};
+			options = new String[] { "Write on NFC-Tag" , "Delete"};
 		}
 		else {
-			options = new String[] {"delete"};
+			options = new String[] {"Delete"};
 		}
 		
 

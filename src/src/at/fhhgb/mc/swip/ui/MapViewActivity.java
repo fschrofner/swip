@@ -127,6 +127,7 @@ public class MapViewActivity extends Activity implements
 						.zoom(15).build();
 				mMap.animateCamera(CameraUpdateFactory
 						.newCameraPosition(cameraPosition));
+				preferencesChanged = false;
 			} else { // a new geofence is created
 				LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 				Criteria criteria = new Criteria();
