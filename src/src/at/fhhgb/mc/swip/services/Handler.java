@@ -159,6 +159,13 @@ public class Handler {
 			setter.setScreenTimeout(context,_profile.getScreenTimeOut());
 		}
 		
+		// saves the active profile into the shared preferences
+		pref.edit().putString("active_profile", _profile.getName()).commit();
+		
+		if (pref.getBoolean("notification", false)) {
+			updateNotification();
+		}
+		
 		Toast toast = Toast.makeText(context, _profile.getName() + " was applied!",
 				Toast.LENGTH_SHORT);
 		toast.show();
