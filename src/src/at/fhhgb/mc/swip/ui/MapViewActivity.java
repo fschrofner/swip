@@ -39,6 +39,7 @@ public class MapViewActivity extends Activity implements
 	private LatLng point;
 	private int radius;
 	private boolean preferencesChanged = false;
+	private boolean satView = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class MapViewActivity extends Activity implements
 			SharedPreferences pref = PreferenceManager
 					.getDefaultSharedPreferences(this);
 
+//			mMap.setPadding(0, 50, 0, 0);
 			mMap.setMyLocationEnabled(true);
 			mMap.setOnMapLongClickListener(this);
 			Button clear = (Button) findViewById(R.id.buttonClearMap);
@@ -96,7 +98,7 @@ public class MapViewActivity extends Activity implements
 								.center(point).fillColor(0x5533B5E5)
 								.strokeColor(0xEE33B5E5).strokeWidth(2));
 					}
-					
+
 					preferencesChanged = true;
 
 				}
@@ -151,6 +153,22 @@ public class MapViewActivity extends Activity implements
 		}
 	}
 
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem itemSat = menu.findItem(R.id.change_map_sat);
+		MenuItem itemNormal = menu.findItem(R.id.change_map_normal);
+
+		if (satView) {
+			itemSat.setVisible(false);
+			itemNormal.setVisible(true);
+		} else {
+			itemSat.setVisible(true);
+			itemNormal.setVisible(false);
+		}
+
+		return super.onPrepareOptionsMenu(menu);
+	}
+
 	/**
 	 * Set up the {@link android.app.ActionBar}.
 	 */
@@ -190,6 +208,12 @@ public class MapViewActivity extends Activity implements
 			this.finish();
 		} else if (item.getItemId() == R.id.cancel_location) {
 			this.finish();
+		} else if (item.getItemId() == R.id.change_map_sat) {
+			mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+			satView = true;
+		} else if (item.getItemId() == R.id.change_map_normal) {
+			mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+			satView = false;
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -219,7 +243,7 @@ public class MapViewActivity extends Activity implements
 						.strokeWidth(2));
 			}
 		}
-		
+
 		preferencesChanged = true;
 	}
 
@@ -232,7 +256,7 @@ public class MapViewActivity extends Activity implements
 			radius = -1;
 
 			Log.i("MapViewActivity", "Cleared map.");
-			
+
 			preferencesChanged = true;
 		}
 	}
