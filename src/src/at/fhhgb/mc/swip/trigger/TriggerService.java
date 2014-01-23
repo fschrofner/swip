@@ -380,7 +380,7 @@ public class TriggerService extends Service{
 							trigger);
 					triggerList.add(trigger);
 				} else {
-					Log.i("TriggerService", "no Trigger found");
+					Log.i("TriggerService", "Not a trigger file");
 				}
 			}
 		} catch (NotFoundException e) {
@@ -391,7 +391,25 @@ public class TriggerService extends Service{
 			e.printStackTrace();
 		}
 
+		registerExistingGeofences();
 		Log.i("TriggerService", "triggerList: " + triggerList.size());
+	}
+	
+	/**
+	 * Registers all the geofences already stored in a trigger.
+	 */
+	public void registerExistingGeofences(){
+		SimpleGeofenceStore store = new SimpleGeofenceStore(getApplicationContext());
+		LocationTrigger trigger = new LocationTrigger(getApplicationContext());
+		SimpleGeofence geofence;
+		
+		for(int i=0; i < triggerList.size(); i++){
+			if(triggerList.get(i).getGeofence() != null){
+				geofence = store.getGeofence(triggerList.get(i).getGeofence());
+				trigger.registerGeofence(geofence);
+				Log.i("TriggerService", "Registered existing geofence: " + geofence.getId());
+			}
+		}
 	}
 
 }
