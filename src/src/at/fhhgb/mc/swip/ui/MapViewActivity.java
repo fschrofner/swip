@@ -62,7 +62,7 @@ public class MapViewActivity extends Activity implements
 			SharedPreferences pref = PreferenceManager
 					.getDefaultSharedPreferences(this);
 
-//			mMap.setPadding(0, 50, 0, 0);
+			mMap.setPadding(0, 100, 0, 0);
 			mMap.setMyLocationEnabled(true);
 			mMap.setOnMapLongClickListener(this);
 			Button clear = (Button) findViewById(R.id.buttonClearMap);
