@@ -1,8 +1,8 @@
 #SwiP - Switch profiles intelligently
 
 SwiP is an intelligent profile app for Android.  
-It's meant to be an open source alternative to well-known apps like LLama and Trigger(though in a much smaller scale at the moment), which still offers some unique features.
-<br/>
+It's meant to be an open source alternative to well-known apps like LLama and Trigger(though in a much smaller scale at the moment), which still offers some unique features.  
+
 ###Profiles
 SwiP allows you to create, manage and apply profiles which can contain the following settings:  
 
@@ -23,8 +23,8 @@ SwiP allows you to create, manage and apply profiles which can contain the follo
 - Brightness
 - Display Time Out  
 
-There are also some features which are unfortunately only available for rooted phones like NFC, Airplane Mode and Lockscreen.
-<br/>
+There are also some features which are unfortunately only available for rooted phones like NFC, Airplane Mode and Lockscreen.  
+
 ###Triggers
 Furthermore the app offers trigger-management. A trigger basically defines a rule for the automatic application of selected profiles.  
 The user is able to create said triggers and to use them for his daily workflow.  
