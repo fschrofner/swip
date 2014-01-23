@@ -54,8 +54,9 @@
     <string name="mapRadius">Radius (in Meters):</string>
     <string name="mapRadiusHint">Input the radius (Standard is 50)</string>
     <string name="save">Save</string>
-    <string name="cancel">Cancel</string>
     <string name="ignored">Ignored</string>
     <string name="clearMap">Clear</string>
+    <string name="changeMapSat">Change view to satellite</string>
+    <string name="changeMapNormal">Change view to normal</string>
 
 </resources>

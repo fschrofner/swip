@@ -150,27 +150,28 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="at.fhhgb.mc.swip.ui.MainActivity" />
         </activity>
-		<activity
+        <activity
             android:name="at.fhhgb.mc.swip.ui.MapViewActivity"
             android:label="@string/title_activity_map_view"
             android:parentActivityName="at.fhhgb.mc.swip.ui.TriggerEditActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="at.fhhgb.mc.swip.ui.TriggerEditActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-<!--        Dominik Koeltringer -->
-          <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBmWgxJ6fK05OT0pzOKUef0IiJ1kf2TMMU" /> 
-            
-<!-- 		Florian Schrofner -->
-          <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyChsOIkMcczpav5C7yMsgXwwWvW3G4e0Zo" />
 
+        <!-- Dominik Koeltringer -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAtTPt4AzNvtQDo6SFic1n9LgoroOi3-9Q" />
+
+        <!-- Florian Schrofner -->
+       <!--  <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyChsOIkMcczpav5C7yMsgXwwWvW3G4e0Zo" /> -->
     </application>
 
 </manifest>
