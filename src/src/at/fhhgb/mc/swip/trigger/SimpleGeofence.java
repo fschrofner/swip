@@ -2,6 +2,12 @@ package at.fhhgb.mc.swip.trigger;
 
 import com.google.android.gms.location.Geofence;
 
+/**
+ * Container class for a simple geofence
+ * 
+ * @author Florian Schrofner & Dominik Koeltringer
+ *
+ */
 public class SimpleGeofence {
 	// Instance variables
 	private final String mId;

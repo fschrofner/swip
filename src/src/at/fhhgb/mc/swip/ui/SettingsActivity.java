@@ -2,13 +2,9 @@ package at.fhhgb.mc.swip.ui;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -16,7 +12,6 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
@@ -26,9 +21,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 import android.support.v4.app.NavUtils;
-import android.support.v4.app.NotificationCompat;
 import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.Setter;
 import at.fhhgb.mc.swip.services.Handler;
@@ -42,7 +35,6 @@ import com.stericson.RootTools.exceptions.RootDeniedException;
 import com.stericson.RootTools.execution.CommandCapture;
 
 /**
- * 
  * Activity that shows the possible general settings for the application.
  * 
  * @author Florian Schrofner & Dominik Koeltringer
@@ -247,26 +239,6 @@ public class SettingsActivity extends PreferenceActivity implements
 	public void onSharedPreferenceChanged(SharedPreferences _pref, String _key) {
 
 		if (_pref.getBoolean("notification", false)) {
-//			Intent resultIntent = new Intent(this, ListDialogActivity.class);
-//			PendingIntent resultPendingIntent = PendingIntent.getActivity(this,
-//					0, resultIntent, 0);
-//
-//			NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(
-//					this);
-//			nBuilder.setSmallIcon(R.drawable.profile_switcher_notification_icon);
-//			nBuilder.setContentText(getResources().getString(
-//					R.string.textNotificationContentText));
-//			nBuilder.setContentTitle(getResources().getString(
-//					R.string.textNotificationTitle) + " " + _pref.getString("active_profile", getResources().getString(
-//							R.string.textNotificationNoProfile)));
-//			nBuilder.setContentIntent(resultPendingIntent);
-//			nBuilder.setOngoing(true);
-//			nBuilder.setWhen(0);
-//			nBuilder.setPriority(1);
-//
-//			Notification notification = nBuilder.build();
-//			NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//			notificationManager.notify(123, notification);
 			Handler handler = new Handler (this);
 			handler.updateNotification();
 		} else {
@@ -374,13 +346,10 @@ public class SettingsActivity extends PreferenceActivity implements
 					SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
 					pref.edit().putBoolean("systemapp", true).commit();								//saves the fact that it can use system-app possibilities now (there still will be a real check before using the system-app functionality)
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (TimeoutException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (RootDeniedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -396,7 +365,6 @@ public class SettingsActivity extends PreferenceActivity implements
 					
 				});
 				dialog.show();
-
 				
 			}
 			else{
@@ -451,13 +419,10 @@ public class SettingsActivity extends PreferenceActivity implements
 					SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
 					pref.edit().putBoolean("systemapp", false).commit();							//saves that the app is not a systemapp anymore
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (TimeoutException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (RootDeniedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				

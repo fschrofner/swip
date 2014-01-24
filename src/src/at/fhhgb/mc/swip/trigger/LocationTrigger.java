@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,16 +21,25 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationClient.OnAddGeofencesResultListener;
 import com.google.android.gms.location.LocationClient.OnRemoveGeofencesResultListener;
 
+/**
+ * Connects to the Google Location API and subserves the geofences.
+ * 
+ * @author Florian Schrofner & Dominik Koeltringer
+ * 
+ */
+/**
+ * @author dkoeltringer
+ * 
+ */
 public class LocationTrigger implements ConnectionCallbacks,
-		OnConnectionFailedListener, OnAddGeofencesResultListener, OnRemoveGeofencesResultListener {
+		OnConnectionFailedListener, OnAddGeofencesResultListener,
+		OnRemoveGeofencesResultListener {
 
 	private Context context;
 	private PendingIntent pendingIntent;
 
 	// Holds the location client
 	private LocationClient locationClient;
-	// Stores the PendingIntent used to request geofence monitoring
-	private PendingIntent geofenceRequestIntent;
 	// Flag that indicates if a request is underway.
 	private boolean inProgress;
 	// Internal List of Geofence objects
@@ -40,7 +48,6 @@ public class LocationTrigger implements ConnectionCallbacks,
 	// Persistent storage for geofences
 	private SimpleGeofenceStore geofenceStorage;
 
-	
 	public LocationTrigger(Context _context) {
 		this.context = _context;
 
@@ -49,11 +56,16 @@ public class LocationTrigger implements ConnectionCallbacks,
 
 		// Instantiate the current List of geofences
 		geofenceList = new ArrayList<Geofence>();
-		
+
 		locationClient = new LocationClient(context, this, this);
 
 	}
 
+	/**
+	 * Verify that Google Play services is available before making a request.
+	 * 
+	 * @return true if Google Play services is available, otherwise false
+	 */
 	public boolean servicesConnected() {
 		// Check that Google Play services is available
 		int resultCode = GooglePlayServicesUtil
@@ -87,52 +99,62 @@ public class LocationTrigger implements ConnectionCallbacks,
 		}
 	}
 
+	/**
+	 * Creates a pending intent for location changes.
+	 * 
+	 * @return The pending intent.
+	 */
 	private PendingIntent getPendingIntent() {
 		Log.i("LocationTrigger", "Creating pending intent");
 		// Create an explicit Intent
 		Intent intent = new Intent();
 		intent.setAction("at.fhhgb.mc.swip.trigger.location_change");
-		/*
-		 * Return the PendingIntent
-		 */
+
 		return PendingIntent.getBroadcast(context, 0, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
-	public void registerGeofence(SimpleGeofence _geofence){
+	/**
+	 * Registers a geofence in the system and saves it in the store.
+	 * 
+	 * @param _geofence
+	 *            The geofence, which should be registered.
+	 */
+	public void registerGeofence(SimpleGeofence _geofence) {
 		Log.i("LocationTrigger", "Started registerGeofence");
 		geofenceList.add(_geofence.toGeofence());
 		geofenceStorage.setGeofence(_geofence.getId(), _geofence);
 		refreshGeofences();
 	}
-	
-	public void unregisterGeofence(String _id){
+
+	/**
+	 * Unregisters a geofence
+	 * 
+	 * @param _id
+	 *            The id of the geofence, which should be unregistered.
+	 */
+	public void unregisterGeofence(String _id) {
 		Log.i("LocationTrigger", "Started unregisterGeofence");
-//		locationClient = new LocationClient(context, this, this);
+		// locationClient = new LocationClient(context, this, this);
 		ArrayList<String> ids = new ArrayList<String>();
 		ids.add(_id);
 		removeList = ids;
 		refreshGeofences();
 	}
-	
+
+	/**
+	 * Test for Google Play services after setting the request type. If Google
+	 * Play services isn't present, the proper request can be restarted.
+	 */
 	private void refreshGeofences() {
 		// Start a request to add geofences
-		/*
-		 * Test for Google Play services after setting the request type. If
-		 * Google Play services isn't present, the proper request can be
-		 * restarted.
-		 */
+
 		Log.i("LocationTrigger", "Started addGeofences");
 		if (!servicesConnected()) {
 			Log.e("LocationTrigger", "Google Play Services not connected");
 			return;
 		}
-		/*
-		 * Create a new location client object. Since the current activity class
-		 * implements ConnectionCallbacks and OnConnectionFailedListener, pass
-		 * the current activity object as the listener for both parameters
-		 */
-//		locationClient = new LocationClient(context, this, this);
+
 		// If a request is not already underway
 		if (!inProgress) {
 			// Indicate that a request is underway
@@ -141,15 +163,11 @@ public class LocationTrigger implements ConnectionCallbacks,
 			locationClient.connect();
 			Log.i("LocationTrigger", "Location Client connected");
 		} else {
-			/*
-			 * A request is already underway. You can handle this situation by
-			 * disconnecting the client, re-setting the flag, and then re-trying
-			 * the request.
-			 */
-			Log.e("LocationTrigger", "There is already a location client connected");
+			Log.e("LocationTrigger",
+					"There is already a location client connected");
 		}
 	}
-	
+
 	@Override
 	public void onAddGeofencesResult(int arg0, String[] arg1) {
 		inProgress = false;
@@ -158,7 +176,6 @@ public class LocationTrigger implements ConnectionCallbacks,
 
 	@Override
 	public void onConnectionFailed(ConnectionResult arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -167,12 +184,11 @@ public class LocationTrigger implements ConnectionCallbacks,
 		// Get the PendingIntent for the request
 		pendingIntent = getPendingIntent();
 		// Send a request to add the current geofences
-		if(geofenceList != null && geofenceList.size() > 0){
+		if (geofenceList != null && geofenceList.size() > 0) {
 			locationClient.addGeofences(geofenceList, pendingIntent, this);
 			Log.i("LocationTrigger", "Geofences added");
 			geofenceList = new ArrayList<Geofence>();
-		}
-		else if(removeList != null && removeList.size() > 0){
+		} else if (removeList != null && removeList.size() > 0) {
 			locationClient.removeGeofences(removeList, this);
 			Log.i("LocationTrigger", "Geofences removed");
 			removeList = new ArrayList<String>();
@@ -183,15 +199,14 @@ public class LocationTrigger implements ConnectionCallbacks,
 	@Override
 	public void onDisconnected() {
 		// Turn off the request flag
-        inProgress = false;
-        // Destroy the current location client
-        locationClient = null;
+		inProgress = false;
+		// Destroy the current location client
+		locationClient = null;
 	}
 
 	@Override
 	public void onRemoveGeofencesByPendingIntentResult(int arg0,
 			PendingIntent arg1) {
-		// TODO Auto-generated method stub	
 	}
 
 	@Override

@@ -5,30 +5,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.LocationClient;
-
-import android.app.IntentService;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Resources.NotFoundException;
 import android.media.AudioManager;
 import android.os.BatteryManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
-import at.fhhgb.mc.swip.profile.XmlParser;
 import at.fhhgb.mc.swip.services.Handler;
 
 /**
@@ -48,6 +36,9 @@ public class TriggerService extends Service{
 	private List<Trigger> triggerList = new ArrayList<Trigger>();
 	private String[] geofences;
 
+	/**
+	 * Set the status of the headphones on initialization and compares the triggers.
+	 */
 	private void setInitialHeadphones(){
 		AudioManager audiomanager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
 		if(audiomanager.isWiredHeadsetOn()){
@@ -60,14 +51,23 @@ public class TriggerService extends Service{
 		compareTriggers();
 	}
 	
+	
+	/**
+	 * Set the time on initialization and compares the triggers.
+	 */
 	private void setInitialTime() {
 		int h = Integer.parseInt(String.valueOf(Calendar
 				.getInstance().get(Calendar.HOUR_OF_DAY)));
 		int m = Integer.parseInt(String.valueOf(Calendar
 				.getInstance().get(Calendar.MINUTE)));
 		setTime(h, m);
+		
+		compareTriggers();
 	}
 	
+	/**
+	 * Set the battery state on initialization and compares the triggers.
+	 */
 	protected void setInitialBatteryState(Intent _intent){
 		int status = _intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
 		boolean batteryCharging = (status == BatteryManager.BATTERY_STATUS_CHARGING);
@@ -113,30 +113,6 @@ public class TriggerService extends Service{
 
 		Log.i("TriggerService", "TriggerService started");
 
-//		 Trigger test = new Trigger("Test");
-//		 test.setProfileName("Test");
-//		 test.setStartHours(15);
-//		 test.setStartMinutes(26);
-//		 test.setEndHours(15);
-//		 test.setEndMinutes(28);
-//		 test.setHours(19);
-//		 test.setMinutes(10);
-//		 test.setHeadphones(Trigger.listen_state.listen_off);
-//		 test.setBatteryState(Trigger.listen_state.listen_on);
-//		 test.setBatteryLevel(96);
-//		 triggerList.add(test);
-		
-//		 Trigger test2 = new Trigger("Test2");
-//		 test2.setProfileName("Test4");
-//		 test2.setStartHours(19);
-//		 test2.setStartMinutes(22);
-//		 test2.setEndHours(20);
-//		 test2.setEndMinutes(24);
-//		 test2.setProfileName("Test2");
-//		 test2.setHeadphones(Trigger.listen_state.listen_on);
-//		 test2.setBatteryState(Trigger.listen_state.listen_off);
-//		 triggerList.add(test2);
-		 
 		setInitialTime();
 		setInitialHeadphones();
 		

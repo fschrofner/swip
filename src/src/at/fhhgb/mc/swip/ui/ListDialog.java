@@ -1,27 +1,17 @@
 package at.fhhgb.mc.swip.ui;
 
-import java.io.IOException;
-
-import org.xmlpull.v1.XmlPullParserException;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.widget.Toast;
 import at.fhhgb.mc.swip.R;
-import at.fhhgb.mc.swip.profile.Profile;
-import at.fhhgb.mc.swip.profile.XmlParser;
 import at.fhhgb.mc.swip.services.Handler;
 
 /**
- * Implements the pop-up dialog with a list of profiles(handed over as argument)
+ * Implements the pop-up dialog with a list of profiles (handed over as argument)
  * and a settings button.
  * 
  * @author Florian Schrofner & Dominik Koeltringer
@@ -74,25 +64,6 @@ public class ListDialog extends DialogFragment implements OnClickListener {
 
 		// applies the selected profile(which indicates the position inside the
 		// list)
-//		XmlParser parser = new XmlParser(getActivity());
-//		try {
-//			parser.initializeXmlParser(getActivity().openFileInput(
-//					list[which] + "_profile.xml"));
-//		} catch (NotFoundException e) {
-//			e.printStackTrace();
-//		} catch (XmlPullParserException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//		//saves the active profile into the shared preferences
-//		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//		pref.edit().putString("active_profile", list[which]).commit();
-//		
-//		Toast toast = Toast.makeText(getActivity(), list[which]
-//				+ " was applied!", Toast.LENGTH_SHORT);
-//		toast.show();
 		
 		Handler handler = new Handler(getActivity());
 		handler.applyProfile(list[which]);

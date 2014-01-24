@@ -24,20 +24,29 @@ import at.fhhgb.mc.swip.profile.Profile;
 import at.fhhgb.mc.swip.profile.Setter;
 import at.fhhgb.mc.swip.profile.XmlCreator;
 import at.fhhgb.mc.swip.profile.XmlParser;
-import at.fhhgb.mc.swip.profile.Profile.mode;
-import at.fhhgb.mc.swip.profile.Profile.state;
 import at.fhhgb.mc.swip.ui.ListDialogActivity;
 
+/**
+ * Provides often used methods.
+ * 
+ * @author Florian Schrofner & Dominik Koeltringer
+ * 
+ */
 public class Handler {
 	private Context context;
 	SharedPreferences pref;
-	
+
 	public Handler(Context _context) {
 		context = _context;
-		pref = PreferenceManager
-				.getDefaultSharedPreferences(context);
+		pref = PreferenceManager.getDefaultSharedPreferences(context);
 	}
-	
+
+	/**
+	 * Applies a profile, updates the notification and shows a toast.
+	 * 
+	 * @param _name
+	 *            The name of the profile
+	 */
 	public void applyProfile(String _name) {
 		XmlParser parser = new XmlParser(context);
 		try {
@@ -55,122 +64,125 @@ public class Handler {
 		// saves the active profile into the shared preferences
 		pref.edit().putString("active_profile", _name).commit();
 
+		// updates the notification
 		if (pref.getBoolean("notification", false)) {
 			updateNotification();
 		}
 
+		// shows the toast
 		Toast toast = Toast.makeText(context, _name + " was applied!",
 				Toast.LENGTH_SHORT);
 		toast.show();
 	}
-	
-	public void applyProfile(Profile _profile){
-		
+
+	/**
+	 * Applies a profile-object directly
+	 * 
+	 * @param _profile
+	 *            The profile-object.
+	 */
+	public void applyProfile(Profile _profile) {
+
 		Setter setter = new Setter();
-		
+
 		setter.setRingerMode(context, _profile.getRingerMode());
-		
-		//alarm volume
-		if(_profile.getAlarmVolume() != -1){
+
+		// alarm volume
+		if (_profile.getAlarmVolume() != -1) {
 			setter.setAlarmVolume(context, _profile.getAlarmVolume());
 		}
-		
-		//media volume
-		if(_profile.getMediaVolume() != -1){
-			setter.setMediaVolume(context,_profile.getMediaVolume());
+
+		// media volume
+		if (_profile.getMediaVolume() != -1) {
+			setter.setMediaVolume(context, _profile.getMediaVolume());
 		}
-		
-		//ringtone volume
-		if(_profile.getRingtoneVolume() != -1){
+
+		// ringtone volume
+		if (_profile.getRingtoneVolume() != -1) {
 			setter.setRingtoneVolume(context, _profile.getRingtoneVolume());
 		}
-			
-		//nfc
-		if(_profile.getNfc() == Profile.state.enabled){
-			setter.setNfc(context,true);
+
+		// nfc
+		if (_profile.getNfc() == Profile.state.enabled) {
+			setter.setNfc(context, true);
+		} else if (_profile.getNfc() == Profile.state.disabled) {
+			setter.setNfc(context, false);
 		}
-		else if(_profile.getNfc() == Profile.state.disabled){
-			setter.setNfc(context,false);
+
+		// bluetooth
+		if (_profile.getBluetooth() == Profile.state.enabled) {
+			setter.setBluetooth(context, true);
+		} else if (_profile.getBluetooth() == Profile.state.disabled) {
+			setter.setBluetooth(context, false);
 		}
-		
-		//bluetooth
-		if(_profile.getBluetooth() == Profile.state.enabled){
-			setter.setBluetooth(context,true);
+
+		// wifi
+		if (_profile.getWifi() == Profile.state.enabled) {
+			setter.setWifi(context, true);
+		} else if (_profile.getWifi() == Profile.state.disabled) {
+			setter.setWifi(context, false);
 		}
-		else if(_profile.getBluetooth() == Profile.state.disabled){
-			setter.setBluetooth(context,false);
+
+		// mobile data
+		if (_profile.getMobileData() == Profile.state.enabled) {
+			setter.setMobileData(context, true);
+		} else if (_profile.getMobileData() == Profile.state.disabled) {
+			setter.setMobileData(context, false);
 		}
-		
-		//wifi
-		if(_profile.getWifi() == Profile.state.enabled){
-			setter.setWifi(context,true);
-		}
-		else if(_profile.getWifi() == Profile.state.disabled){
-			setter.setWifi(context,false);
-		}
-		
-		//mobile data
-		if(_profile.getMobileData() == Profile.state.enabled){
-			setter.setMobileData(context,true);
-		}
-		else if(_profile.getMobileData() == Profile.state.disabled){
-			setter.setMobileData(context,false);
-		}
-		
-		//gps
-		if(_profile.getGps() == Profile.state.enabled){
-			setter.setGps(context,true);
-		}
-		else if(_profile.getGps() == Profile.state.disabled){
+
+		// gps
+		if (_profile.getGps() == Profile.state.enabled) {
+			setter.setGps(context, true);
+		} else if (_profile.getGps() == Profile.state.disabled) {
 			setter.setGps(context, false);
 		}
-		
-		//airplane mode
-		if(_profile.getAirplane_mode() == Profile.state.enabled){
-			setter.setAirplaneMode(context,true);
+
+		// airplane mode
+		if (_profile.getAirplane_mode() == Profile.state.enabled) {
+			setter.setAirplaneMode(context, true);
+		} else if (_profile.getAirplane_mode() == Profile.state.disabled) {
+			setter.setAirplaneMode(context, false);
 		}
-		else if(_profile.getAirplane_mode() == Profile.state.disabled){
-			setter.setAirplaneMode(context,false);
+
+		// lockscreen
+		if (_profile.getLockscreen() == Profile.state.enabled) {
+			setter.setLockscreen(context, true);
+		} else if (_profile.getLockscreen() == Profile.state.disabled) {
+			setter.setLockscreen(context, false);
 		}
-		
-		//lockscreen
-		if(_profile.getLockscreen() == Profile.state.enabled){
-			setter.setLockscreen(context,true);
-		}
-		else if(_profile.getLockscreen() == Profile.state.disabled){
-			setter.setLockscreen(context,false);
-		}
-		
-		//screen brightness
-		if(_profile.getScreenBrightness() != -1){
+
+		// screen brightness
+		if (_profile.getScreenBrightness() != -1) {
 			setter.setScreenBrightness(context, _profile.getScreenBrightness());
 		}
-		
-		//screen brightness automode
-		if(_profile.getScreenBrightnessAutoMode() == Profile.state.enabled){
-			setter.setScreenBrightnessMode(context,true);
+
+		// screen brightness automode
+		if (_profile.getScreenBrightnessAutoMode() == Profile.state.enabled) {
+			setter.setScreenBrightnessMode(context, true);
+		} else if (_profile.getScreenBrightnessAutoMode() == Profile.state.disabled) {
+			setter.setScreenBrightnessMode(context, false);
 		}
-		else if(_profile.getScreenBrightnessAutoMode() == Profile.state.disabled){
-			setter.setScreenBrightnessMode(context,false);
+
+		// screen timeout
+		if (_profile.getScreenTimeOut() != -1) {
+			setter.setScreenTimeout(context, _profile.getScreenTimeOut());
 		}
-		
-		//screen timeout
-		if(_profile.getScreenTimeOut() != -1){
-			setter.setScreenTimeout(context,_profile.getScreenTimeOut());
-		}
-		
+
 		// saves the active profile into the shared preferences
 		pref.edit().putString("active_profile", _profile.getName()).commit();
-		
+
 		if (pref.getBoolean("notification", false)) {
 			updateNotification();
 		}
-		
-		Toast toast = Toast.makeText(context, _profile.getName() + " was applied!",
-				Toast.LENGTH_SHORT);
+
+		Toast toast = Toast.makeText(context, _profile.getName()
+				+ " was applied!", Toast.LENGTH_SHORT);
 		toast.show();
 	}
 
+	/**
+	 * Updates the notification
+	 */
 	public void updateNotification() {
 		Intent resultIntent = new Intent(context, ListDialogActivity.class);
 		PendingIntent resultPendingIntent = PendingIntent.getActivity(context,
@@ -196,7 +208,10 @@ public class Handler {
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManager.notify(123, notification);
 	}
-	
+
+	/**
+	 * Creates the standard profiles
+	 */
 	public void createStandardProfiles() {
 		Profile pDefault = new Profile("Default");
 		pDefault.setRingerMode(Profile.mode.normal);
@@ -226,19 +241,17 @@ public class Handler {
 		FileOutputStream output;
 		try {
 			output = context.openFileOutput(
-					pDefault.getName() + "_profile.xml",
-					Context.MODE_PRIVATE);
+					pDefault.getName() + "_profile.xml", Context.MODE_PRIVATE);
 			output.write(creator.create(pDefault).getBytes());
 			output.close();
 
-			output = context.openFileOutput(
-					pHome.getName() + "_profile.xml", Context.MODE_PRIVATE);
+			output = context.openFileOutput(pHome.getName() + "_profile.xml",
+					Context.MODE_PRIVATE);
 			output.write(creator.create(pHome).getBytes());
 			output.close();
 
 			output = context.openFileOutput(
-					pMeeting.getName() + "_profile.xml",
-					Context.MODE_PRIVATE);
+					pMeeting.getName() + "_profile.xml", Context.MODE_PRIVATE);
 			output.write(creator.create(pMeeting).getBytes());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

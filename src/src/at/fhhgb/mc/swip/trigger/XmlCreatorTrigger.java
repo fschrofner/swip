@@ -21,7 +21,7 @@ import org.w3c.dom.Element;
 import android.util.Log;
 
 /**
- * Class used to convert a profile into a string containing a xml, that is
+ * Class used to convert a trigger into a string containing a xml, that is
  * correspondent to the guidelines of this app.
  * 
  * @author Florian Schrofner & Dominik Koeltringer
@@ -35,10 +35,10 @@ public class XmlCreatorTrigger {
 
 	/**
 	 * Creates and returns a string containing all the options specified in the
-	 * given profile object as xml.
+	 * given trigger object as xml.
 	 * 
-	 * @param _profile
-	 *            the profile of which you want to create the xml
+	 * @param _trigger
+	 *            the trigger of which you want to create the xml
 	 * @throws ParserConfigurationException
 	 * @throws TransformerException
 	 * @throws IOException
@@ -60,7 +60,7 @@ public class XmlCreatorTrigger {
 		outputProperties.setProperty(OutputKeys.VERSION, "1.0");
 		outputProperties.setProperty(OutputKeys.ENCODING, "UTF-8");
 
-		// writes the selected profile
+		// writes the name of the selected profile
 		Element profile = xmlProfile.createElement("profile");
 		profile.setAttribute("name",
 				String.format("%s", _trigger.getProfileName()));

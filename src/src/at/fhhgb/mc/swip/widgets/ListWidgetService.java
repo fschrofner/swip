@@ -10,7 +10,6 @@ import android.widget.RemoteViewsService;
  * @author Florian Schrofner & Dominik Koeltringer
  * 
  */
-
 public class ListWidgetService extends RemoteViewsService {
 
 	@Override

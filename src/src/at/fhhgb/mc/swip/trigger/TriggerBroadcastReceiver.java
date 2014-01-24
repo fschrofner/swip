@@ -10,10 +10,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.AudioManager;
 import android.os.BatteryManager;
 import android.util.Log;
 
+/**
+ * Receives several broadcasts and sends the info to the trigger service.
+ * 
+ * @author Florian Schrofner & Dominik Koeltringer
+ *
+ */
 public class TriggerBroadcastReceiver extends BroadcastReceiver{
 	TriggerService triggerservice;
 	
@@ -36,6 +41,9 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 		_service.registerReceiver(this, filter);
 	}
 
+	/**
+	 * @see android.content.BroadcastReceiver#onReceive(android.content.Context, android.content.Intent)
+	 */
 	@Override
 	public void onReceive(Context _context, Intent _intent) {
 		

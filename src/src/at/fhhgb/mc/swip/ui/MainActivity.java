@@ -2,23 +2,15 @@ package at.fhhgb.mc.swip.ui;
 
 import java.util.Locale;
 
-import com.google.android.gms.location.Geofence;
-
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import at.fhhgb.mc.swip.R;
-import at.fhhgb.mc.swip.trigger.LocationTrigger;
-import at.fhhgb.mc.swip.trigger.SimpleGeofence;
-import at.fhhgb.mc.swip.trigger.SimpleGeofenceStore;
-import at.fhhgb.mc.swip.trigger.TriggerBroadcastReceiver;
 
 /**
  * The main activity managing the two fragments, there is no other work done here.
