@@ -20,12 +20,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import at.fhhgb.mc.swip.R;
-import at.fhhgb.mc.swip.profile.Profile;
 import at.fhhgb.mc.swip.trigger.LocationTrigger;
 import at.fhhgb.mc.swip.trigger.SimpleGeofence;
 import at.fhhgb.mc.swip.trigger.Trigger;
 import at.fhhgb.mc.swip.trigger.XmlCreatorTrigger;
-import at.fhhgb.mc.swip.trigger.Trigger.listen_state;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -54,12 +52,14 @@ public class TriggerEditActivity extends PreferenceActivity implements
 	 * shown on tablets.
 	 */
 	private static final boolean ALWAYS_SIMPLE_PREFS = false;
+
+	// Indicates if there are unsaved changes in the preferences.
 	private boolean preferencesChanged = false;
 	private CharSequence[] profileArray;
-	private String previousName; // saves the previous profile name for the case
-									// the profile gets renamed
-									// (so the previous file of this profile can
-									// be deleted)
+
+	// saves the previous trigger name for the case the trigger gets renamed (so
+	// the previous file of this trigger can be deleted)
+	private String previousName;
 
 	/**
 	 * Sets up the actionbar.
@@ -206,6 +206,12 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Implemented a Dialog, if the user presses back and there were changes
+	 * made.
+	 * 
+	 * @see android.app.Activity#onBackPressed()
+	 */
 	@Override
 	public void onBackPressed() {
 
@@ -242,6 +248,9 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		}
 	}
 
+	/**
+	 * @see android.app.Activity#onPostCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);

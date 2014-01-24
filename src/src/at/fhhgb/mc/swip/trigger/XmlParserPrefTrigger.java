@@ -12,6 +12,13 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Xml;
 
+/**
+ * Class used to put the values saved in a xml file into the shared preferences
+ * (to load them into the trigger edit activity).
+ * 
+ * @author Florian Schrofner & Dominik Koeltringer
+ *
+ */
 public class XmlParserPrefTrigger {
 	
 	Context context;

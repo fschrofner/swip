@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -12,6 +11,12 @@ import android.widget.TimePicker;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import at.fhhgb.mc.swip.R;
 
+/**
+ * A preference object, which contains a time picker.
+ * 
+ * @author Florian Schrofner & Dominik Koeltringer
+ *
+ */
 public class TimePickerPreference extends DialogPreference implements
 OnCheckedChangeListener {
 	
@@ -42,6 +47,9 @@ OnCheckedChangeListener {
 		setNegativeButtonText(R.string.cancel);
 	}
 
+	/**
+	 * @see android.preference.DialogPreference#onCreateDialogView()
+	 */
 	@Override
 	protected View onCreateDialogView() {
 		View view = super.onCreateDialogView();
@@ -63,6 +71,9 @@ OnCheckedChangeListener {
 		return view;
 	}
 
+	/**
+	 * @see android.preference.DialogPreference#onBindDialogView(android.view.View)
+	 */
 	@Override
 	protected void onBindDialogView(View v) {
 		super.onBindDialogView(v);
@@ -71,6 +82,9 @@ OnCheckedChangeListener {
 		picker.setCurrentMinute(lastMinute);
 	}
 
+	/**
+	 * @see android.preference.DialogPreference#onDialogClosed(boolean)
+	 */
 	@Override
 	protected void onDialogClosed(boolean positiveResult) {
 		super.onDialogClosed(positiveResult);
@@ -94,11 +108,17 @@ OnCheckedChangeListener {
 		}
 	}
 
+	/**
+	 * @see android.preference.Preference#onGetDefaultValue(android.content.res.TypedArray, int)
+	 */
 	@Override
 	protected Object onGetDefaultValue(TypedArray a, int index) {
 		return (a.getString(index));
 	}
 
+	/**
+	 * @see android.preference.Preference#onSetInitialValue(boolean, java.lang.Object)
+	 */
 	@Override
 	protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
 		String time = null;
@@ -107,14 +127,12 @@ OnCheckedChangeListener {
 			if (defaultValue == null) {
 				time = getPersistedString("Ignored");
 			} else  if (getPersistedString("Ignored").contains(":")){
-				Log.i("TimePreference", "contains :");
 				time = getPersistedString(defaultValue.toString());
 				checkbox.setChecked(true);
 				picker.setEnabled(true);
 				lastHour = getHour(time);
 				lastMinute = getMinute(time);
 			} else {
-				Log.i("TimePreference", "else");
 				time = getPersistedString(defaultValue.toString());
 				checkbox.setChecked(false);
 				picker.setEnabled(false);
@@ -124,6 +142,9 @@ OnCheckedChangeListener {
 		}
 	}
 
+	/**
+	 * @see android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged(android.widget.CompoundButton, boolean)
+	 */
 	@Override
 	public void onCheckedChanged(CompoundButton arg0, boolean _isChecked) {
 		if (_isChecked) {

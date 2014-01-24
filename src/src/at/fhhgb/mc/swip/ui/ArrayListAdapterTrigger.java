@@ -17,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import at.fhhgb.mc.swip.R;
-import at.fhhgb.mc.swip.profile.XmlParserPref;
 import at.fhhgb.mc.swip.trigger.XmlParserPrefTrigger;
 
 /**

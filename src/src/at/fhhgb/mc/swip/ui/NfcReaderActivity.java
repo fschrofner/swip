@@ -1,11 +1,5 @@
 package at.fhhgb.mc.swip.ui;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
@@ -14,9 +8,7 @@ import android.os.Parcelable;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 import at.fhhgb.mc.swip.profile.Profile;
-import at.fhhgb.mc.swip.profile.XmlParser;
 import at.fhhgb.mc.swip.services.Handler;
 
 /**
@@ -30,7 +22,6 @@ import at.fhhgb.mc.swip.services.Handler;
  */
 public class NfcReaderActivity extends Activity {
 
-	private boolean screenBrightnessUnchanged = false;
 	/**
 	 * Reads the tag object that is handed over from the intent and applies the
 	 * profile which is saved on it.
@@ -219,7 +210,6 @@ public class NfcReaderActivity extends Activity {
 		
 		brightnessOne = (short)(byteFour & 255);
 		brightnessOne >>= 7;
-//		brightnessOne = (short) (brightnessOne & 1);
 		Log.i("NfcReaderActivity", "BrightnessOne defined as: " + brightnessOne);
 		
 		autoBrightness = byteFour;

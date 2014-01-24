@@ -2,6 +2,12 @@ package at.fhhgb.mc.swip.trigger;
 
 import android.util.Log;
 
+/**
+ * Container class used to transfer the settings between activities and methods.
+ * 
+ * @author Florian Schrofner & Dominik Koeltringer
+ *
+ */
 public class Trigger {
 
 	public enum listen_state {

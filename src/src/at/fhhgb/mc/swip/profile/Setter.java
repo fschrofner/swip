@@ -73,19 +73,14 @@ public class Setter {
 					enableNfc.setAccessible(true);
 					enableNfc.invoke(nfcAdapter);
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -99,19 +94,14 @@ public class Setter {
 					disableNfc.setAccessible(true);
 					disableNfc.invoke(nfcAdapter);
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -289,20 +279,15 @@ public class Setter {
 			}
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (TimeoutException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (RootDeniedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			//the root shell needs to be closed
 			try {
 				RootTools.closeAllShells();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -636,13 +621,10 @@ public class Setter {
 			try {
 				RootTools.getShell(true).add(command);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (TimeoutException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (RootDeniedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else if (pref.getBoolean("root", false) && !_enable &&  RootTools.isAccessGiven()){				//if you want to disable the lockscreen (and root is checked)
@@ -650,13 +632,10 @@ public class Setter {
 			try {
 				RootTools.getShell(true).add(command);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (TimeoutException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (RootDeniedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

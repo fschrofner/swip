@@ -13,7 +13,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -32,6 +31,12 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * This Activity shows the map view
+ * 
+ * @author Florian Schrofner & Dominik Koeltringer
+ * 
+ */
 public class MapViewActivity extends Activity implements
 		GoogleMap.OnMapLongClickListener, OnClickListener {
 
@@ -41,6 +46,9 @@ public class MapViewActivity extends Activity implements
 	private boolean preferencesChanged = false;
 	private boolean satView = false;
 
+	/**
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,6 +87,12 @@ public class MapViewActivity extends Activity implements
 						int count, int after) {
 				}
 
+				/**
+				 * The Radius is changed.
+				 * 
+				 * @see android.text.TextWatcher#onTextChanged(java.lang.CharSequence,
+				 *      int, int, int)
+				 */
 				@Override
 				public void onTextChanged(CharSequence s, int start,
 						int before, int count) {
@@ -111,6 +125,7 @@ public class MapViewActivity extends Activity implements
 						pref.getFloat("geofence_lng", 0));
 				radius = pref.getInt("geofence_radius", 50);
 				editRadius.setText(String.valueOf(radius));
+				preferencesChanged = false;
 
 				mMap.clear();
 				mMap.addMarker(new MarkerOptions().position(point));
@@ -129,7 +144,6 @@ public class MapViewActivity extends Activity implements
 						.zoom(15).build();
 				mMap.animateCamera(CameraUpdateFactory
 						.newCameraPosition(cameraPosition));
-				preferencesChanged = false;
 			} else { // a new geofence is created
 				LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 				Criteria criteria = new Criteria();
@@ -153,15 +167,20 @@ public class MapViewActivity extends Activity implements
 		}
 	}
 
+	/**
+	 * @see android.app.Activity#onPrepareOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		MenuItem itemSat = menu.findItem(R.id.change_map_sat);
 		MenuItem itemNormal = menu.findItem(R.id.change_map_normal);
 
+		// The current view is the satellite view
 		if (satView) {
 			itemSat.setVisible(false);
 			itemNormal.setVisible(true);
 		} else {
+			// The current view is the normal view
 			itemSat.setVisible(true);
 			itemNormal.setVisible(false);
 		}
@@ -177,6 +196,9 @@ public class MapViewActivity extends Activity implements
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
+	/**
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -184,20 +206,28 @@ public class MapViewActivity extends Activity implements
 		return true;
 	}
 
+	/**
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		if (item.getItemId() == android.R.id.home) {
 			NavUtils.navigateUpFromSameTask(this);
 		} else if (item.getItemId() == R.id.save_location) {
+			// Saving
+
 			SharedPreferences pref = PreferenceManager
 					.getDefaultSharedPreferences(this);
 
+			// No geofence defined
 			if (point == null) {
 				pref.edit().putFloat("geofence_lat", -1F).commit();
 				pref.edit().putFloat("geofence_lng", -1F).commit();
 				pref.edit().putInt("geofence_radius", -1).commit();
 			} else {
+				// new geofence defined
+
 				pref.edit().putFloat("geofence_lat", (float) point.latitude)
 						.commit();
 				pref.edit().putFloat("geofence_lng", (float) point.longitude)
@@ -219,6 +249,9 @@ public class MapViewActivity extends Activity implements
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * @see com.google.android.gms.maps.GoogleMap.OnMapLongClickListener#onMapLongClick(com.google.android.gms.maps.model.LatLng)
+	 */
 	@Override
 	public void onMapLongClick(LatLng _point) {
 		Log.i("MapViewActivity", "Longpress");
@@ -235,8 +268,10 @@ public class MapViewActivity extends Activity implements
 		if (mMap != null) {
 			mMap.clear();
 
+			// draw the marker
 			mMap.addMarker(new MarkerOptions().position(point));
 
+			// draw the radius
 			if (radius > 0) {
 				mMap.addCircle(new CircleOptions().radius(radius).center(point)
 						.fillColor(0x5533B5E5).strokeColor(0xEE33B5E5)
@@ -247,9 +282,13 @@ public class MapViewActivity extends Activity implements
 		preferencesChanged = true;
 	}
 
+	/**
+	 * @see android.view.View.OnClickListener#onClick(android.view.View)
+	 */
 	@Override
 	public void onClick(View v) {
 
+		// clears the map
 		if (v.equals(findViewById(R.id.buttonClearMap))) {
 			mMap.clear();
 			point = null;
@@ -261,6 +300,12 @@ public class MapViewActivity extends Activity implements
 		}
 	}
 
+	/**
+	 * Implemented a Dialog, if the user presses back and there were changes
+	 * made.
+	 * 
+	 * @see android.app.Activity#onBackPressed()
+	 */
 	@Override
 	public void onBackPressed() {
 		if (preferencesChanged) {

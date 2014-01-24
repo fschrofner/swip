@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,9 +25,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Toast;
 import at.fhhgb.mc.swip.R;
 
+/**
+ * Fragment, where the triggers are listed.
+ * 
+ * @author Florian Schrofner & Dominik Koeltringer
+ *
+ */
 public class TriggerFragment extends Fragment implements
 		OnItemLongClickListener {
 
@@ -115,18 +119,6 @@ public class TriggerFragment extends Fragment implements
 		StringBuffer sb = new StringBuffer();
 
 		for (String file : fileList) {
-			// if (file.contains("_trigger")) {
-			// sb.append(file);
-			// sb.delete(sb.length() - 12, sb.length());
-			// triggerList.add(sb.toString());
-			// sb.delete(0, sb.length());
-			// }
-			// if (file.contains("_tri_dis")) {
-			// sb.append(file);
-			// sb.delete(sb.length() - 12, sb.length());
-			// triggerList.add(sb.toString());
-			// sb.delete(0, sb.length());
-			// }
 			if (file.contains("_tri_dis") || file.contains("_trigger")) {
 				triggerList.add(file);
 			}
