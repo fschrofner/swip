@@ -314,6 +314,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		// their values. When their values change, their summaries are updated
 		// to reflect the new value, per the Android Design guidelines.
 		bindPreferenceSummaryToValue(findPreference("name_trigger"));
+		bindPreferenceSummaryToValue(findPreference("priority"));
 		bindPreferenceSummaryToValue(findPreference("start_time"));
 		bindPreferenceSummaryToValue(findPreference("end_time"));
 		bindPreferenceSummaryToValue(findPreference("profile"));
@@ -363,6 +364,8 @@ public class TriggerEditActivity extends PreferenceActivity implements
 				getResources().getString(R.string.pref_trigger_name_default));
 
 		Trigger trigger = new Trigger(name);
+		
+		trigger.setPriority(Integer.parseInt(pref.getString("priority", "0")));
 
 		if (pref.getString("start_time", "Ignored").equals("Ignored")) {
 			trigger.setStartHours(-1);

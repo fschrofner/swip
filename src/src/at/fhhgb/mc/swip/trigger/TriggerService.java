@@ -34,6 +34,7 @@ public class TriggerService extends Service{
 	private boolean batteryCharging;
 	private int batteryLevel;
 	private List<Trigger> triggerList = new ArrayList<Trigger>();
+	private List<Trigger> triggerPriorityList = new ArrayList<Trigger>();
 	private String[] geofences;
 
 	/**
@@ -142,6 +143,8 @@ public class TriggerService extends Service{
 	 * Compares the triggers with the actual state.
 	 */
 	private void compareTriggers() {
+		triggerPriorityList.clear();
+		
 		Log.i("TriggerService", "compareTriggers called");
 		for (Trigger trigger : triggerList) {
 			Log.i("TriggerService", "compare trigger: " + trigger.getName());
@@ -153,19 +156,14 @@ public class TriggerService extends Service{
 						Log.i("TriggerService", "trigger matching battery state");
 						if(compareBatteryLevel(trigger)){
 							Log.i("TriggerService", "trigger matching battery level");
-							SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 							if(compareGeofence(trigger)){
 								Log.i("TriggerService",
 										"trigger matching geofence");
-								if (!trigger.getProfileName().equals(pref.getString("active_profile", "Default"))) {
-									Log.i("TriggerService", "matching trigger found: " + trigger.getName());
+								Log.i("TriggerService", "adding trigger to triggerPriorityList: " + trigger.getName());
 									
-									Handler handler = new Handler(getApplicationContext());
-									handler.applyProfile(trigger.getProfileName());
-								} 						
-								else{
-									Log.i("TriggerService", trigger.getProfileName() + " is already applied");
-								}	
+									
+								triggerPriorityList.add(trigger);
+								Log.i("TriggerService", "highestPriority add: " + trigger.getName());
 							} 
 							else {
 								Log.i("TriggerService", trigger.getName()
@@ -189,6 +187,7 @@ public class TriggerService extends Service{
 			}
 			
 		}
+		comparePriorities();
 	}
 	
 	private boolean compareTime(Trigger _trigger){
@@ -386,6 +385,38 @@ public class TriggerService extends Service{
 				Log.i("TriggerService", "Registered existing geofence: " + geofence.getId());
 			}
 		}
+	}
+	
+	private void comparePriorities() {
+		int highestPriority = -1;
+		Trigger highestTrigger = null;
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		Log.i("TriggerService", "comparePriorities called");
+		
+		if (triggerPriorityList.size() > 1) {
+			Log.i("TriggerService", "triggerPriorityList: " + triggerPriorityList.size());
+			
+			for(Trigger trigger : triggerPriorityList) {
+				
+				if (trigger.getPriority() > highestPriority) {
+					highestTrigger = trigger;
+					highestPriority = trigger.getPriority();
+				}
+			}
+			
+			if (highestTrigger != null && !highestTrigger.getProfileName().equals(pref.getString("active_profile", "Default"))) {
+				Handler handler = new Handler(getApplicationContext());
+				handler.applyProfile(highestTrigger.getProfileName());
+				Log.i("TriggerService", "matching trigger found: " + highestTrigger.getName());
+			}
+			
+		} else if (triggerPriorityList.size() == 1 && !triggerPriorityList.get(0).getProfileName().equals(pref.getString("active_profile", "Default"))) {
+			Handler handler = new Handler(getApplicationContext());
+			handler.applyProfile(triggerPriorityList.get(0).getProfileName());
+			Log.i("TriggerService", "matching trigger found: " + triggerPriorityList.get(0).getName());
+		}		
+		
 	}
 
 }

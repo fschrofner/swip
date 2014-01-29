@@ -11,7 +11,8 @@ import android.util.Log;
 import android.util.Xml;
 
 /**
- * Class that is used to read an xml input stream and load the triggers into the triggerservice to be compared.
+ * Class that is used to read an xml input stream and load the triggers into the
+ * triggerservice to be compared.
  * 
  * @author Florian Schrofner & Dominik Koeltringer
  * 
@@ -48,7 +49,7 @@ public class XmlParserTrigger {
 			parser.nextTag();
 			readAndApplyTags(parser, _trigger);
 		} finally {
-			_in.close(); 										// closes the inputstream in the end
+			_in.close(); // closes the inputstream in the end
 		}
 	}
 
@@ -64,14 +65,16 @@ public class XmlParserTrigger {
 			throws XmlPullParserException, IOException {
 		_parser.require(XmlPullParser.START_TAG, null, "trigger");
 
-		while (_parser.next() != XmlPullParser.END_TAG) { 		// while the tag is not the closing tag
+		while (_parser.next() != XmlPullParser.END_TAG) { // while the tag is
+															// not the closing
+															// tag
 
 			if (_parser.getEventType() != XmlPullParser.START_TAG) {
-				continue; 										// skips this turn if the tag is not a start tag
+				continue; // skips this turn if the tag is not a start tag
 			}
 
 			String name = _parser.getName();
-			
+
 			// Starts by looking for the entry tag
 			if (name.equals("profile")) {
 				setProfile(_parser, _trigger);
@@ -81,10 +84,12 @@ public class XmlParserTrigger {
 				setBattery(_parser, _trigger);
 			} else if (name.equals("headphone")) {
 				setHeadphone(_parser, _trigger);
-			} else if (name.equals("geofence")){
+			} else if (name.equals("geofence")) {
 				setGeofence(_parser, _trigger);
+			} else if (name.equals("priority")) {
+				setPriority(_parser, _trigger);
 			} else {
-				Log.w("XmlParser", "Skip!"); 					// invalid tag, will be skipped
+				Log.w("XmlParser", "Skip!"); // invalid tag, will be skipped
 				_parser.nextTag();
 			}
 		}
@@ -125,13 +130,16 @@ public class XmlParserTrigger {
 		_parser.require(XmlPullParser.START_TAG, null, "time");
 
 		if (_parser.getAttributeValue(null, "start_hours") != null) {
-			if (Integer.parseInt(_parser.getAttributeValue(null, "start_hours")) >= -1
-					&& Integer.parseInt(_parser
-							.getAttributeValue(null, "start_hours")) <= 23) {
-				_trigger.setStartHours(Integer.parseInt(_parser.getAttributeValue(
-						null, "start_hours")));
+			if (Integer
+					.parseInt(_parser.getAttributeValue(null, "start_hours")) >= -1
+					&& Integer.parseInt(_parser.getAttributeValue(null,
+							"start_hours")) <= 23) {
+				_trigger.setStartHours(Integer.parseInt(_parser
+						.getAttributeValue(null, "start_hours")));
 				Log.i("XmlParserTrigger",
-						"start_hours: " + _parser.getAttributeValue(null, "start_hours"));
+						"start_hours: "
+								+ _parser
+										.getAttributeValue(null, "start_hours"));
 			} else {
 				Log.i("XmlParserTrigger", "start_hours: ignore.");
 			}
@@ -140,29 +148,32 @@ public class XmlParserTrigger {
 		}
 
 		if (_parser.getAttributeValue(null, "start_minutes") != null) {
-			if (Integer.parseInt(_parser.getAttributeValue(null, "start_minutes")) >= -1
+			if (Integer.parseInt(_parser.getAttributeValue(null,
+					"start_minutes")) >= -1
 					&& Integer.parseInt(_parser.getAttributeValue(null,
 							"start_minutes")) <= 59) {
-				_trigger.setStartMinutes(Integer.parseInt(_parser.getAttributeValue(
-						null, "start_minutes")));
+				_trigger.setStartMinutes(Integer.parseInt(_parser
+						.getAttributeValue(null, "start_minutes")));
 				Log.i("XmlParserTrigger",
 						"start_minutes: "
-								+ _parser.getAttributeValue(null, "start_minutes"));
+								+ _parser.getAttributeValue(null,
+										"start_minutes"));
 			} else {
 				Log.i("XmlParserTrigger", "start_minutes: ignore.");
 			}
 		} else {
 			Log.e("XmlParserTrigger", "start_minutes: Invalid Argument!");
 		}
-		
+
 		if (_parser.getAttributeValue(null, "end_hours") != null) {
 			if (Integer.parseInt(_parser.getAttributeValue(null, "end_hours")) >= -1
-					&& Integer.parseInt(_parser
-							.getAttributeValue(null, "end_hours")) <= 23) {
-				_trigger.setEndHours(Integer.parseInt(_parser.getAttributeValue(
-						null, "end_hours")));
+					&& Integer.parseInt(_parser.getAttributeValue(null,
+							"end_hours")) <= 23) {
+				_trigger.setEndHours(Integer.parseInt(_parser
+						.getAttributeValue(null, "end_hours")));
 				Log.i("XmlParserTrigger",
-						"end_hours: " + _parser.getAttributeValue(null, "end_hours"));
+						"end_hours: "
+								+ _parser.getAttributeValue(null, "end_hours"));
 			} else {
 				Log.i("XmlParserTrigger", "end_hours: ignore.");
 			}
@@ -171,14 +182,16 @@ public class XmlParserTrigger {
 		}
 
 		if (_parser.getAttributeValue(null, "end_minutes") != null) {
-			if (Integer.parseInt(_parser.getAttributeValue(null, "end_minutes")) >= -1
+			if (Integer
+					.parseInt(_parser.getAttributeValue(null, "end_minutes")) >= -1
 					&& Integer.parseInt(_parser.getAttributeValue(null,
 							"end_minutes")) <= 59) {
-				_trigger.setEndMinutes(Integer.parseInt(_parser.getAttributeValue(
-						null, "end_minutes")));
+				_trigger.setEndMinutes(Integer.parseInt(_parser
+						.getAttributeValue(null, "end_minutes")));
 				Log.i("XmlParserTrigger",
 						"end_minutes: "
-								+ _parser.getAttributeValue(null, "end_minutes"));
+								+ _parser
+										.getAttributeValue(null, "end_minutes"));
 			} else {
 				Log.i("XmlParserTrigger", "end_minutes: ignore.");
 			}
@@ -201,25 +214,27 @@ public class XmlParserTrigger {
 		_parser.require(XmlPullParser.START_TAG, null, "battery");
 
 		if (_parser.getAttributeValue(null, "start_level") != null) {
-			if (Integer.parseInt(_parser.getAttributeValue(null, "start_level")) >= 0
-					&& Integer.parseInt(_parser
-							.getAttributeValue(null, "start_level")) <= 100) {
+			if (Integer
+					.parseInt(_parser.getAttributeValue(null, "start_level")) >= 0
+					&& Integer.parseInt(_parser.getAttributeValue(null,
+							"start_level")) <= 100) {
 				_trigger.setBatteryStartLevel(Integer.parseInt(_parser
 						.getAttributeValue(null, "start_level")));
 				Log.i("XmlParserTrigger",
 						"BatteryStartLevel: "
-								+ _parser.getAttributeValue(null, "start_level"));
+								+ _parser
+										.getAttributeValue(null, "start_level"));
 			} else {
 				Log.i("XmlParserTrigger", "BatteryStartLevel: ignore.");
 			}
 		} else {
 			Log.e("XmlParserTrigger", "BatteryStartLevel: Invalid Argument!");
 		}
-		
+
 		if (_parser.getAttributeValue(null, "end_level") != null) {
 			if (Integer.parseInt(_parser.getAttributeValue(null, "end_level")) >= 0
-					&& Integer.parseInt(_parser
-							.getAttributeValue(null, "end_level")) <= 100) {
+					&& Integer.parseInt(_parser.getAttributeValue(null,
+							"end_level")) <= 100) {
 				_trigger.setBatteryEndLevel(Integer.parseInt(_parser
 						.getAttributeValue(null, "end_level")));
 				Log.i("XmlParserTrigger",
@@ -248,8 +263,7 @@ public class XmlParserTrigger {
 
 		_parser.nextTag();
 	}
-	
-	
+
 	/**
 	 * Applies the Headphone settings.
 	 * 
@@ -260,7 +274,7 @@ public class XmlParserTrigger {
 	private void setHeadphone(XmlPullParser _parser, Trigger _trigger)
 			throws XmlPullParserException, IOException {
 		_parser.require(XmlPullParser.START_TAG, null, "headphone");
-		
+
 		if (_parser.getAttributeValue(null, "state") != null) {
 			if (_parser.getAttributeValue(null, "state").equals("1")) {
 				_trigger.setHeadphones(Trigger.listen_state.listen_on);
@@ -274,21 +288,23 @@ public class XmlParserTrigger {
 		} else {
 			Log.e("XmlParserTrigger", "Headphones: Invalid Argument!");
 		}
-		
+
 		_parser.nextTag();
 	}
-	
+
 	/**
 	 * Sets the geofence of the trigger to the geofence specified in the xml.
+	 * 
 	 * @param _parser
 	 * @param _trigger
-	 * @throws IOException 
-	 * @throws XmlPullParserException 
+	 * @throws IOException
+	 * @throws XmlPullParserException
 	 */
-	private void setGeofence(XmlPullParser _parser, Trigger _trigger) throws XmlPullParserException, IOException{
+	private void setGeofence(XmlPullParser _parser, Trigger _trigger)
+			throws XmlPullParserException, IOException {
 		_parser.require(XmlPullParser.START_TAG, null, "geofence");
 		if (_parser.getAttributeValue(null, "id") != null) {
-			if(!_parser.getAttributeValue(null, "id").equals("")){
+			if (!_parser.getAttributeValue(null, "id").equals("")) {
 				_trigger.setGeofence(_parser.getAttributeValue(null, "id"));
 				Log.i("XmlParserTrigger", "Geofence: " + _trigger.getGeofence());
 			} else {
@@ -298,7 +314,36 @@ public class XmlParserTrigger {
 		} else {
 			Log.e("XmlParserTrigger", "Geofence: Invalid Argument!");
 		}
-		
+
+		_parser.nextTag();
+	}
+
+	/**
+	 * Sets the priority of the trigger to the priority specified in the xml.
+	 * 
+	 * @param _parser
+	 * @param _trigger
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
+	private void setPriority(XmlPullParser _parser, Trigger _trigger)
+			throws XmlPullParserException, IOException {
+		_parser.require(XmlPullParser.START_TAG, null, "priority");
+		if (_parser.getAttributeValue(null, "value") != null) {
+			if (Integer.parseInt(_parser.getAttributeValue(null, "value")) >= 0
+					&& Integer.parseInt(_parser
+							.getAttributeValue(null, "value")) <= 99) {
+				_trigger.setPriority(Integer.parseInt(_parser
+						.getAttributeValue(null, "value")));
+				Log.i("XmlParserTrigger",
+						"priority: " + _parser.getAttributeValue(null, "value"));
+			} else {
+				Log.i("XmlParserTrigger", "priority: ignore.");
+			}
+		} else {
+			Log.e("XmlParserTrigger", "priority: Invalid Argument!");
+		}
+
 		_parser.nextTag();
 	}
 }

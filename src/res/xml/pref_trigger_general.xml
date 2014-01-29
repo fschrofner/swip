@@ -16,5 +16,15 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_title_profile" />
+    
+    <EditTextPreference
+        android:defaultValue="0"
+        android:key="priority"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:inputType="number"
+        android:maxLength="2"
+        android:title="@string/pref_title_priority" />
 
 </PreferenceScreen>
