@@ -69,6 +69,14 @@ public class XmlCreatorTrigger {
 				String.format("Profile was selected: %s",
 						_trigger.getProfileName()));
 
+		// writes the priority
+		Element priority = xmlProfile.createElement("priority");
+		priority.setAttribute("value", String.valueOf(_trigger.getPriority()));
+		rootElement.appendChild(priority);
+		Log.i("XMLCreatorTrigger",
+				String.format("Priority was selected: %s",
+						_trigger.getPriority()));
+
 		// writes time changes
 		if (_trigger.getStartMinutes() >= -1 && _trigger.getStartHours() >= -1) {
 			Element timeElement = xmlProfile.createElement("time");
@@ -151,9 +159,7 @@ public class XmlCreatorTrigger {
 			Element geofenceElement = xmlProfile.createElement("geofence");
 
 			if (_trigger.getGeofence() != null) {
-				geofenceElement
-						.setAttribute("id", _trigger
-								.getGeofence());
+				geofenceElement.setAttribute("id", _trigger.getGeofence());
 			} else {
 				geofenceElement.setAttribute("id", "");
 			}

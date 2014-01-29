@@ -25,6 +25,7 @@ public class Trigger {
 	private listen_state headphones;
 	private	listen_state batteryCharging;
 	private String geofence;
+	private int priority;
 
 	public Trigger(String _name) {
 		this.name = _name;
@@ -38,6 +39,15 @@ public class Trigger {
 		this.headphones = listen_state.ignore;
 		this.batteryCharging = listen_state.ignore;
 		this.geofence = null;
+		this.priority = 0;
+	}
+
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 
 	public String getGeofence() {
