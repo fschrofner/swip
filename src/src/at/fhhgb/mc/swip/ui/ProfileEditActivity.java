@@ -107,9 +107,9 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			if (pref.getString(
 					"name",
 					getResources()
-							.getString(R.string.pref_profile_name_default))
+							.getString(R.string.pref_default_name))
 					.equals(getResources().getString(
-							R.string.pref_profile_name_default))) {
+							R.string.pref_default_name))) {
 				AlertDialog.Builder dialog = new AlertDialog.Builder(this,
 						AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 				dialog.setTitle(getResources().getString(
@@ -133,7 +133,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 				else if (pref.getString(
 						"name",
 						getResources()
-								.getString(R.string.pref_profile_name_default))
+								.getString(R.string.pref_default_name))
 						.equals("")) {
 					AlertDialog.Builder dialog = new AlertDialog.Builder(this,
 							AlertDialog.THEME_DEVICE_DEFAULT_DARK);
@@ -168,6 +168,9 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Checks if there were any unsaved changes made and displays a dialog if so.
+	 */
 	@Override
 	public void onBackPressed() {
 

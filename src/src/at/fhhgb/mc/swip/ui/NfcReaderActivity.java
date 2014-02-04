@@ -64,6 +64,12 @@ public class NfcReaderActivity extends Activity {
 	}
 
 
+	/**
+	 * Reads the first byte and sets the values in the handed over profile.
+	 * The first byte contains ringtone & alarm volume.
+	 * @param _profile the profile where to set the values read
+	 * @param byteOne the byte from which to read the values
+	 */
 	private void readFirstByte(Profile _profile, short byteOne){
 		short ringtone_volume;
 		short alarm_volume;
@@ -93,6 +99,12 @@ public class NfcReaderActivity extends Activity {
 		return;
 	}
 	
+	/**
+	 * Reads the second byte and sets the values in the handed over profile.
+	 * The second byte contains media volume and display timeout.
+	 * @param _profile the profile where to set the values read
+	 * @param byteTwo the byte from which to read the values
+	 */
 	private void readSecondByte(Profile _profile, short byteTwo){
 		short media_volume;
 		short display_timeout;
@@ -121,6 +133,12 @@ public class NfcReaderActivity extends Activity {
 		return;	
 	}
 	
+	/**
+	 * Reads the third byte and sets the values in the handed over profile.
+	 * The third byte contains ringermode, mobile data, wifi and bluetooth.
+	 * @param _profile the profile where to set the values read
+	 * @param byteThree the byte from which to read the values
+	 */
 	private void readThirdByte(Profile _profile, short byteThree){
 		short ringermode;
 		short mobile_data;
@@ -235,6 +253,12 @@ public class NfcReaderActivity extends Activity {
 		return true;
 	}
 	
+	/**
+	 * Reads the fifth byte and sets the value in the handed over profile.
+	 * The fifth byte contains the second part for the brightness (the actual value).
+	 * @param _profile the profile where to set the values read
+	 * @param byteFive the byte from which to read the values
+	 */
 	private void readFifthByte(Profile _profile, short byteFive, boolean setBrightness){
 		short brightnessTwo = (short)(byteFive & 255);
 		Log.i("NfcReaderActivity","brightnessTwo: " +  brightnessTwo);
@@ -244,6 +268,12 @@ public class NfcReaderActivity extends Activity {
 		return;
 	}
 	
+	/**
+	 * Reads the sixth byte and sets the values in the handed over profile.
+	 * The sixth byte contains gps, nfc, lockscreen and the airplane mode.
+	 * @param _profile the profile where to set the values read
+	 * @param byteSix the byte from which to read the values
+	 */
 	private void readSixthByte(Profile _profile, short byteSix){
 		short gps;
 		short nfc;

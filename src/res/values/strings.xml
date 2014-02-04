@@ -7,9 +7,9 @@
     <string name="tab_trigger_title">Triggers</string>
     <string name="menu_new_profile">New Profile</string>
     <string name="menu_new_trigger">New Trigger</string>
+	<string name="pref_default_name">Insert name</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_profile_edit">Edit</string>
-    <string name="title_activity_refresh_screen">RefreshScreen</string>
+    <string name="ignore">Ignored</string>
     <string name="textNotificationContentText">Touch to change profile</string>
     <string name="textNotificationTitle">SwiP - </string>
     <string name="textNotificationNoProfile">None</string>
@@ -19,7 +19,6 @@
     <string name="NotFormatable">Unable to format tag to NDEF</string>
     <string name="NotSupported">Tag doesn\'t seem to support NDEF format</string>
     <string name="ReadOnly">Read-only Tag!</string>
-    <string name="NotEnoughSpace">Tag doesn\'t seem to have enough free space!</string>
     <string name="DialogNotEnoughSpaceTitle">Tag too small!</string>
     <string name="DialogNotEnoughSpaceMessage1">The tag doesn\'t seem to have enough space!</string>
     <string name="DialogNotEnoughSpaceMessage2">Please get hold of a larger tag</string>
@@ -29,7 +28,6 @@
     <string name="nfcNotEnabledTitle">NFC not enabled!</string>
     <string name="nfcNotEnabledDialog1">Your device seems to support NFC, but it\'s disabled.</string>
     <string name="nfcNotEnabledDialog2">Please enable it and try again.</string>
-    <string name="TagNotEnoughSpace">Tag doesn\'t have enough free space.</string>
     <string name="TagSuccessful">Tag written successfully.</string>
     <string name="NfcWrite">Touch tag to write</string>
     <string name="title_activity_nfc_writer">Write To NFC Tag</string>
@@ -43,16 +41,15 @@
     <string name="credits3">They are licensed under:</string>
     <string name="credits4"><u>MIT-License</u></string>
     <string name="credits5">We thank him for a solid basis to work on</string>
-    <string name="ourLicense">This app is licensed under GPLv3</string>
+    <string name="ourLicense">This app is licensed under</string>
+    <string name="ourLicense2"> <u>GPLv3</u></string>
     <string name="title_activity_profile_fragment">ProfileFragment</string>
     <string name="title_activity_trigger_fragment">TriggerFragment</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="set">Set</string>
     <string name="cancel">Cancel</string>
     <string name="title_activity_map_view">Geofence</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="mapRadius">Radius (in Meters):</string>
-    <string name="mapRadiusHint">Input the radius (Standard is 50)</string>
+    <string name="mapRadius">Radius (in meters):</string>
     <string name="save">Save</string>
     <string name="ignored">Ignored</string>
     <string name="clearMap">Clear</string>

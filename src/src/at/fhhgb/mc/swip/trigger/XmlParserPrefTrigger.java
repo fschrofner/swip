@@ -61,7 +61,7 @@ public class XmlParserPrefTrigger {
 	}
 
 	/**
-	 * Reads the given input stream.
+	 * Reads the given input stream and saves the read values.
 	 * 
 	 * @param _parser
 	 *            the parser which should read the tags
@@ -75,9 +75,8 @@ public class XmlParserPrefTrigger {
 
 		_parser.require(XmlPullParser.START_TAG, null, "trigger");
 
-		while (_parser.next() != XmlPullParser.END_TAG) { // while the tag is
-															// not the closing
-															// tag
+		while (_parser.next() != XmlPullParser.END_TAG) { 
+			// while the tag is not the closing tag
 
 			if (_parser.getEventType() != XmlPullParser.START_TAG) {
 				continue; // skips this turn if the tag is not a start tag
@@ -133,7 +132,7 @@ public class XmlParserPrefTrigger {
 	 * Sets the time according to the tags inside the given xml parser.
 	 * 
 	 * @param _parser
-	 *            the parser of which you want to apply settings.
+	 *            the parser of which you want to set settings.
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
@@ -239,10 +238,10 @@ public class XmlParserPrefTrigger {
 	}
 
 	/**
-	 * Applies the Battery settings.
+	 * Sets the according battery settings.
 	 * 
 	 * @param _parser
-	 *            the parser of which you want to apply settings.
+	 *            the parser of which you want to read the settings.
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
@@ -308,10 +307,10 @@ public class XmlParserPrefTrigger {
 	}
 
 	/**
-	 * Applies the Headphone settings.
+	 * Sets the headphone settings.
 	 * 
 	 * @param _parser
-	 *            the parser of which you want to apply settings.
+	 *            the parser of which you want to read the settings.
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
@@ -340,10 +339,10 @@ public class XmlParserPrefTrigger {
 	}
 
 	/**
-	 * Applies the Location settings.
+	 * Sets the location settings.
 	 * 
 	 * @param _parser
-	 *            the parser of which you want to apply settings.
+	 *            the parser of which you want to read the settings.
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
@@ -374,10 +373,10 @@ public class XmlParserPrefTrigger {
 	}
 
 	/**
-	 * Applies the Priority settings.
+	 * Sets the priority settings.
 	 * 
 	 * @param _parser
-	 *            the parser of which you want to apply settings.
+	 *            the parser of which you want to read the settings.
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */

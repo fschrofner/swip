@@ -19,7 +19,8 @@ import at.fhhgb.mc.swip.services.Handler;
  */
 public class ListDialog extends DialogFragment implements OnClickListener {
 
-	private String[] list; // contains the profiles handed over as argument
+	// contains the profiles handed over as argument
+	private String[] list;
 
 	/**
 	 * Sets up the profile pop-up.

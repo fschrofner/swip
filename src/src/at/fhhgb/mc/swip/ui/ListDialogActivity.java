@@ -39,7 +39,7 @@ public class ListDialogActivity extends Activity {
 		
 		if (!firstRun) {
 			Handler handler = new Handler(this);
-			handler.createStandardProfiles();
+			handler.createDefaultProfiles();
 			
 			SharedPreferences.Editor editor = pref.edit();
 			editor.putBoolean("FIRST_RUN", true);

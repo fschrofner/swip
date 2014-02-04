@@ -34,6 +34,7 @@ import at.fhhgb.mc.swip.profile.XmlParserPref;
 
 /**
  * Activity used to write a profile on a NFC tag.
+ * It encodes the selected profile into a binary representation.
  * 
  * @author Florian Schrofner & Dominik Koeltringer
  * 
@@ -42,7 +43,7 @@ import at.fhhgb.mc.swip.profile.XmlParserPref;
 public class NfcWriterActivity extends Activity implements
 		DialogInterface.OnClickListener {
 
-	public static final byte NFC_REVISION = 0; //our revision of the nfc data format, used for compatibility
+	public static final byte NFC_REVISION = 0;  //our revision of the nfc data format, used for compatibility
 	public static final int NFC_SIZE = 7;		//the number of bytes our nfc data uses
 	
 	boolean inWriteMode;	// if true the activity is ready to write
@@ -143,10 +144,15 @@ public class NfcWriterActivity extends Activity implements
 	}
 
 	
+	/**
+	 * Writes the profile from the file fileName onto the handed over nfc tag.
+	 * @param tag the tag onto which the profile will be written.
+	 * @return true = operation successfull, false = there was an error
+	 */
 	public boolean writeTag(Tag tag){
 		try {
 			
-			//loads the selected profile into shared preferences and converts them to a binary presentation
+			//loads the selected profile into shared preferences and converts them to a binary representation
 			byte[] payload =  createByteArray(fileName);
 			
 			String application = "application/at.fhhgb.mc.swip";
@@ -231,6 +237,11 @@ public class NfcWriterActivity extends Activity implements
 		return false;
 	}
 
+	/**
+	 * Creates a byte array in our defined format from the handed over profile.
+	 * @param _profileName the name of the profile of which you want to create a byte array.
+	 * @return returns the byte array of the given profile.
+	 */
 	public byte[] createByteArray(String _profileName){
 		XmlParserPref parser = new XmlParserPref(this, "");
 		try {

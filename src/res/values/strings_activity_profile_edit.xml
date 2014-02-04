@@ -1,6 +1,6 @@
 <resources>
 
-    <!-- <string name="title_activity_profile_edit">Edit</string> -->
+    <string name="title_activity_profile_edit">Edit Profile</string>
 
 
     <!-- Strings related to Settings -->
@@ -10,7 +10,6 @@
     <string name="pref_header_name">General</string>
     <string name="pref_profile_name_default">Insert name</string>
     <string name="pref_title_name">Name</string>
-    <string name="pref_default_name">Test</string>
 
     <!-- Settings for Volume -->
     <string name="pref_header_sound">Sound</string>
@@ -466,7 +465,6 @@
         <item>255/255</item>
     </string-array>
     
-    <string name="slider_brightness_disabled">Dectivate the Display Auto mode to change the brightness.</string>
 
     <item name="slider_default_brightness" format="integer" type="string">0</item>
 

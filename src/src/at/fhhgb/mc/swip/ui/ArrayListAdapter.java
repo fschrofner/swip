@@ -19,7 +19,7 @@ import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.XmlParserPref;
 
 /**
- * Class used to fill the main activity with profiles.
+ * Class used to fill the profile fragment with profiles.
  * 
  * @author Florian Schrofner & Dominik Koeltringer
  * 

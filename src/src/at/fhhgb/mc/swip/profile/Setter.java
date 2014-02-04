@@ -427,31 +427,6 @@ public class Setter {
 		}
 	}
 
-//	/**
-//	 * Sets the notification-volume to the given value. Please note that the
-//	 * given value will not be checked for validity here, because it will be
-//	 * already checked inside the xmlParser.
-//	 * 
-//	 * @param _context
-//	 *            your activity context.
-//	 * @param _notificationVolume
-//	 *            the value you want to set the notification volume to.
-//	 */
-//	public void setNotificationVolume(Context _context, int _notificationVolume) {
-//		AudioManager audioManager = (AudioManager) _context
-//				.getSystemService(Context.AUDIO_SERVICE);
-//
-//		if (_notificationVolume != audioManager
-//				.getStreamVolume(AudioManager.STREAM_NOTIFICATION)) {
-//			// if the notification volume is already set to the given value
-//			audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION,
-//					_notificationVolume, 0);
-//			Log.i("Setter", "NotificationVolume: "
-//					+ audioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION));
-//		} else {
-//			Log.i("Setter", "NotificationVolume not changed."); // for log messages only
-//		}
-//	}
 
 	/**
 	 * Sets mobile data to the given state.

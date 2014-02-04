@@ -14,7 +14,7 @@ import android.os.BatteryManager;
 import android.util.Log;
 
 /**
- * Receives several broadcasts and sends the info to the trigger service.
+ * Receives several broadcasts and sets the according variables in the trigger service.
  * 
  * @author Florian Schrofner & Dominik Koeltringer
  *
@@ -42,6 +42,8 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 	}
 
 	/**
+	 * Receives the broadcasts registered in the constructor and sets the information
+	 * in the triggerservice.
 	 * @see android.content.BroadcastReceiver#onReceive(android.content.Context, android.content.Intent)
 	 */
 	@Override
@@ -49,7 +51,7 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 		
 		Log.i("TriggerBroadcastReceiver", "Broadcast received: " + _intent.getAction());
 		
-		if (_intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
+		if (_intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
 			
 			int h = Integer.parseInt(String.valueOf(Calendar
 					.getInstance().get(Calendar.HOUR_OF_DAY)));

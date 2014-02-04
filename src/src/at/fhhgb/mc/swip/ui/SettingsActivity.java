@@ -51,7 +51,7 @@ public class SettingsActivity extends PreferenceActivity implements
 	private static final boolean ALWAYS_SIMPLE_PREFS = true;
 
 	/**
-	 * Sets up the actionbar.
+	 * Sets up the actionbar and removes the tick for root, if no root access is actually given.
 	 * 
 	 * @see android.preference.PreferenceActivity#onCreate(android.os.Bundle)
 	 */
@@ -235,6 +235,10 @@ public class SettingsActivity extends PreferenceActivity implements
 						""));
 	}
 
+	/**
+	 * Applies the selected settings: launches the notification if activated or destroys it otherwise.
+	 * Also checks if root is available, when the user ticks the root option.
+	 */
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences _pref, String _key) {
 
@@ -271,6 +275,7 @@ public class SettingsActivity extends PreferenceActivity implements
 
 	/**
 	 * This code will be executed, when the install as system app preference is clicked.
+	 * Displays some information about the installation.
 	 */
 	@Override
 	public boolean onPreferenceClick(Preference _preference) {
@@ -322,6 +327,10 @@ public class SettingsActivity extends PreferenceActivity implements
 			context = _context;
 		}
 
+		/**
+		 * Copies the apk file to the system app directory of the installed Android version
+		 * and displays a dialog.
+		 */
 		@Override
 		public void onClick(DialogInterface _dialog, int _which) {
 			if(RootTools.isAccessGiven()){
@@ -330,8 +339,8 @@ public class SettingsActivity extends PreferenceActivity implements
 				//in kitkat the systemapps were moved to the /system/priv-app folder
 				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
 					command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
-							"cp /data/app/at.fhhgb.mc.swip-[12].apk /system/priv-app/",		//copies the apk of the app to the system-apps folder
-							"chmod 644 /system/priv-app/at.fhhgb.mc.swip-[12].apk",				//fixes the permissions
+							"cp /data/app/at.fhhgb.mc.swip-[12].apk /system/priv-app/",					//copies the apk of the app to the system-apps folder
+							"chmod 644 /system/priv-app/at.fhhgb.mc.swip-[12].apk",						//fixes the permissions
 							"mount -o remount,r /system");												//mounts the system partition to be read-only again
 				} else{
 					command = new CommandCapture(1,"mount -o remount,rw /system", 						
@@ -398,6 +407,9 @@ public class SettingsActivity extends PreferenceActivity implements
 			context = _context;
 		}
 
+		/**
+		 * Removes the copied apk from the system app directory and displays a dialog.
+		 */
 		@Override
 		public void onClick(DialogInterface _dialog, int _which) {
 			if(RootTools.isAccessGiven()){

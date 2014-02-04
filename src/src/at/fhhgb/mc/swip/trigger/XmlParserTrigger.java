@@ -203,9 +203,10 @@ public class XmlParserTrigger {
 	}
 
 	/**
-	 * Applies the Battery settings.
+	 * Sets the battery according to the tags inside the given xml parser.
 	 * 
 	 * @param _parser
+	 *            the parser of which you want to apply settings.
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
@@ -265,9 +266,10 @@ public class XmlParserTrigger {
 	}
 
 	/**
-	 * Applies the Headphone settings.
+	 * Sets the headphone state according to the tags inside the given xml parser.
 	 * 
 	 * @param _parser
+	 *            the parser of which you want to apply settings.
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */

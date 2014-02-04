@@ -53,6 +53,10 @@ public class TriggerFragment extends Fragment implements
 		return convertView;
 	}
 
+	
+	/**
+	 * Starts the trigger service on creation.
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		setHasOptionsMenu(true);
@@ -82,8 +86,8 @@ public class TriggerFragment extends Fragment implements
 			Editor prefEditor = preferences.edit();
 
 			// loads the default values for a new trigger
-			prefEditor.putString("name_trigger", "Insert name");
-			prefEditor.putString("profile", "Choose a profile");
+			prefEditor.putString("name_trigger", getString(R.string.pref_default_name));
+			prefEditor.putString("profile", getString(R.string.pref_profile_default));
 			prefEditor.putString("priority", "0");
 			prefEditor.putString("start_time", "Ignored");
 			prefEditor.putString("end_time", "Ignored");
@@ -144,6 +148,9 @@ public class TriggerFragment extends Fragment implements
 		v.setOnItemLongClickListener(this);
 	}
 
+	/**
+	 * Shows a context menu which allows you to disable or delete the trigger.
+	 */
 	@Override
 	public boolean onItemLongClick(AdapterView<?> _a, View _v, int _position,
 			long arg3) {

@@ -74,12 +74,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setTabListener(this));
         }
         
-//        LocationTrigger lt = new LocationTrigger(this);
-//        SimpleGeofence sg1 = new SimpleGeofence("1", 48.00, 13.00, 2000, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
-//        
-//        if(lt.servicesConnected()){
-//        	lt.registerGeofence(sg1);
-//        }
 
     }
     
