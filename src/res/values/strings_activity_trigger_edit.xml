@@ -10,14 +10,15 @@
     <string name="pref_trigger_name_default">Insert name</string>
     <string name="pref_title_profile">Profile</string>
     <string name="pref_profile_default">Choose a profile</string>
-    <string name="pref_title_priority">Select priority</string>
+    <string name="pref_title_priority">Priority</string>
+    <string name="pref_message_priority">Select a priority between 0 and 99, triggers with higher priority will be preferred.</string>
 
     <!-- Settings for Time -->
     <string name="pref_header_time">Time</string>
     <string name="picker_title_start_time">Start-Time</string>
-    <string name="picker_start_message">Check the box and adjust the picker to trigger the start-time.</string>
+    <string name="picker_start_message">Check the box and adjust the time-picker to select the start-time.</string>
     <string name="picker_title_end_time">End-Time</string>
-    <string name="picker_end_message">Check the box and adjust the picker to trigger the end-time.</string>
+    <string name="picker_end_message">Check the box and adjust the time-picker to select the end-time.</string>
 
     <!-- Settings for Battery -->
     <string name="pref_header_battery">Battery</string>
@@ -147,8 +148,8 @@
 
     <item name="slider_default_battery_level" format="integer" type="string">0</item>
 
-    <string name="slider_message_battery_start_level">Check the box and adjust the slider to trigger the battery start-level.</string>
-    <string name="slider_message_battery_end_level">Check the box and adjust the slider to trigger the battery end-level.</string>
+    <string name="slider_message_battery_start_level">Check the box and adjust the slider to select the lower battery level.</string>
+    <string name="slider_message_battery_end_level">Check the box and adjust the slider to select the higher battery level.</string>
     
     
     <!-- Settings for Headphone -->
@@ -176,7 +177,7 @@
     <string name="alert_battery_title">Battery Level</string>
     <string name="alert_name_text">Please input a valid name for the trigger!</string>
     <string name="alert_profile_text">Please input a valid name for the profile!</string>
-    <string name="alert_battery_text">The battery low-level must not be bigger than the battery high-level!</string>
+    <string name="alert_battery_text">The battery low-level must not be higher than the battery high-level!</string>
     <string name="alert_battery_exact_text">If you want an exact value, please only define the battery low-level!</string>
     <string name="alert_button">Okay</string>
     <string name="alert_discard_title">Discard Changes?</string>

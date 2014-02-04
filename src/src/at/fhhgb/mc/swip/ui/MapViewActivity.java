@@ -32,7 +32,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
- * This Activity shows the map view
+ * Activity used to show the map and allow the user to set a geofence.
  * 
  * @author Florian Schrofner & Dominik Koeltringer
  * 
@@ -250,6 +250,7 @@ public class MapViewActivity extends Activity implements
 	}
 
 	/**
+	 * Marks the spot pressed as destination for our geofence, using the radius in the text edit field.
 	 * @see com.google.android.gms.maps.GoogleMap.OnMapLongClickListener#onMapLongClick(com.google.android.gms.maps.model.LatLng)
 	 */
 	@Override
@@ -283,6 +284,7 @@ public class MapViewActivity extends Activity implements
 	}
 
 	/**
+	 * Clears the geofence already set.
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
 	@Override

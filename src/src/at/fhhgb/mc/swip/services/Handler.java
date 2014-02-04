@@ -210,9 +210,9 @@ public class Handler {
 	}
 
 	/**
-	 * Creates the standard profiles
+	 * Creates the default profiles
 	 */
-	public void createStandardProfiles() {
+	public void createDefaultProfiles() {
 		Profile pDefault = new Profile("Default");
 		pDefault.setRingerMode(Profile.mode.normal);
 		pDefault.setGps(Profile.state.disabled);

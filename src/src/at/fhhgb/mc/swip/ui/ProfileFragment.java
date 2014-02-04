@@ -73,7 +73,7 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 		if (!firstRun) {
 
 			Handler handler = new Handler(getActivity());
-			handler.createStandardProfiles();
+			handler.createDefaultProfiles();
 			
 			SharedPreferences.Editor editor = pref.edit();
 			editor.putBoolean("FIRST_RUN", true);

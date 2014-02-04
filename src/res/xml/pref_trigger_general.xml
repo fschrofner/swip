@@ -25,6 +25,7 @@
         android:singleLine="true"
         android:inputType="number"
         android:maxLength="2"
+        android:dialogMessage="@string/pref_message_priority"
         android:title="@string/pref_title_priority" />
 
 </PreferenceScreen>

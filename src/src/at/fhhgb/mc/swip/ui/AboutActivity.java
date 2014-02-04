@@ -32,7 +32,9 @@ public class AboutActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_about);
 		setupActionBar();
 		
-		TextView text = (TextView) findViewById(R.id.license);
+		TextView text = (TextView) findViewById(R.id.license_mit);
+		text.setOnClickListener(this);
+		text = (TextView) findViewById(R.id.license_gpl);
 		text.setOnClickListener(this);
 	}
 
@@ -54,15 +56,22 @@ public class AboutActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * To include the MIT-License we used a weblink.
+	 * To include the licenses we use weblinks.
 	 * 
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
 	@Override
-	public void onClick(View arg0) {
-		Intent intent = new Intent(Intent.ACTION_VIEW,
-				Uri.parse("http://opensource.org/licenses/mit-license.php"));
-		startActivity(intent);
+	public void onClick(View _view) {
+		if(_view.getId() == R.id.license_mit){
+			Intent intent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("http://opensource.org/licenses/mit-license.php"));
+			startActivity(intent);
+		} else if(_view.getId() == R.id.license_gpl){
+			Intent intent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("http://www.gnu.org/licenses/gpl-3.0.html"));
+			startActivity(intent);
+		}
+
 	}
 
 }

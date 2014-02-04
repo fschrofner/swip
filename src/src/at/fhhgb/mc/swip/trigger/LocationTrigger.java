@@ -22,13 +22,8 @@ import com.google.android.gms.location.LocationClient.OnAddGeofencesResultListen
 import com.google.android.gms.location.LocationClient.OnRemoveGeofencesResultListener;
 
 /**
- * Connects to the Google Location API and subserves the geofences.
- * 
+ * Connects to the Google Location API and is used for geofence handling.
  * @author Florian Schrofner & Dominik Koeltringer
- * 
- */
-/**
- * @author dkoeltringer
  * 
  */
 public class LocationTrigger implements ConnectionCallbacks,
@@ -62,7 +57,8 @@ public class LocationTrigger implements ConnectionCallbacks,
 	}
 
 	/**
-	 * Verify that Google Play services is available before making a request.
+	 * Verifies that Google Play services is available before making a request and
+	 * displays a dialog if not.
 	 * 
 	 * @return true if Google Play services is available, otherwise false
 	 */
@@ -115,7 +111,7 @@ public class LocationTrigger implements ConnectionCallbacks,
 	}
 
 	/**
-	 * Registers a geofence in the system and saves it in the store.
+	 * Registers a geofence at the system and saves it in the store.
 	 * 
 	 * @param _geofence
 	 *            The geofence, which should be registered.
@@ -168,6 +164,11 @@ public class LocationTrigger implements ConnectionCallbacks,
 		}
 	}
 
+
+	/**
+	 * Gets called when the geofences where added, sets inProgress to false
+	 * (so other requests can be made) and disconnects the locationclient.
+	 */
 	@Override
 	public void onAddGeofencesResult(int arg0, String[] arg1) {
 		inProgress = false;
@@ -179,6 +180,10 @@ public class LocationTrigger implements ConnectionCallbacks,
 
 	}
 
+	/**
+	 * When the LocationClient is connected the geofences in the geofenceList
+	 * get added and the geofences in the removeList are removed.
+	 */
 	@Override
 	public void onConnected(Bundle arg0) {
 		// Get the PendingIntent for the request
@@ -196,6 +201,10 @@ public class LocationTrigger implements ConnectionCallbacks,
 
 	}
 
+	/**
+	 * When the locationClient is disconnected inProgress is set to false and
+	 * the locationClient get set to null.
+	 */
 	@Override
 	public void onDisconnected() {
 		// Turn off the request flag
@@ -209,6 +218,9 @@ public class LocationTrigger implements ConnectionCallbacks,
 			PendingIntent arg1) {
 	}
 
+	/**
+	 * Clears the geofences from the storage, when they are removed from the system.
+	 */
 	@Override
 	public void onRemoveGeofencesByRequestIdsResult(int arg0, String[] _ids) {
 		geofenceStorage.clearGeofenceList(_ids);

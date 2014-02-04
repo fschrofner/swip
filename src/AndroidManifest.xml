@@ -53,7 +53,8 @@
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.Transparent"
-            android:title="@string/title_activity_list_dialog" >
+            android:title="@string/title_activity_list_dialog" 
+            android:exported="true">
         </activity>
         <activity
             android:name="at.fhhgb.mc.swip.ui.ProfileEditActivity"

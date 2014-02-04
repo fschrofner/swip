@@ -8,7 +8,7 @@ import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
 /**
- * Stores geofences
+ * Stores geofences in the shared preferences.
  * 
  * @author Florian Schrofner & Dominik Koeltringer
  * 
@@ -97,7 +97,7 @@ public class SimpleGeofenceStore {
 	}
 
 	/**
-	 * Save a geofence.
+	 * Saves the handed over geofence in the shared preferences.
 	 * 
 	 * @param geofence
 	 *            The SimpleGeofence containing the values you want to save in

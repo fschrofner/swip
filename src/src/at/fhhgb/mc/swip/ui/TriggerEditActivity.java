@@ -111,13 +111,13 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			if (pref.getString(
 					"name_trigger",
 					getResources()
-							.getString(R.string.pref_trigger_name_default))
+							.getString(R.string.pref_default_name))
 					.equals(getResources().getString(
-							R.string.pref_trigger_name_default))
+							R.string.pref_default_name))
 					|| pref.getString(
 							"name_trigger",
 							getResources().getString(
-									R.string.pref_trigger_name_default))
+									R.string.pref_default_name))
 							.equals("")
 					|| pref.getString(
 							"profile",
@@ -150,9 +150,9 @@ public class TriggerEditActivity extends PreferenceActivity implements
 				} else if (pref.getString(
 						"name_trigger",
 						getResources().getString(
-								R.string.pref_trigger_name_default)).equals(
+								R.string.pref_default_name)).equals(
 						getResources().getString(
-								R.string.pref_trigger_name_default))) {
+								R.string.pref_default_name))) {
 					// The name is the default name
 					dialog.setTitle(getResources().getString(
 							R.string.alert_name_title));
@@ -161,7 +161,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 				} else if (pref.getString(
 						"name_trigger",
 						getResources().getString(
-								R.string.pref_trigger_name_default)).equals("")) {
+								R.string.pref_default_name)).equals("")) {
 					// the name is empty
 					dialog.setTitle(getResources().getString(
 							R.string.alert_name_title));
@@ -361,7 +361,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		LocationTrigger locTrig = new LocationTrigger(this);
 
 		String name = pref.getString("name_trigger",
-				getResources().getString(R.string.pref_trigger_name_default));
+				getResources().getString(R.string.pref_default_name));
 
 		Trigger trigger = new Trigger(name);
 		

@@ -27,6 +27,7 @@ import at.fhhgb.mc.swip.services.Handler;
  */
 public class TriggerService extends Service{
 
+	//triggerreceiver, so the broadcastreceiver can register itself dynamically in the constructor
 	private TriggerBroadcastReceiver triggerReceiver;
 	private int currentHours;
 	private int currentMinutes;
@@ -109,6 +110,10 @@ public class TriggerService extends Service{
 		return null;
 	}
 
+	/**
+	 * Sets the initial values, initialises the broadcastreceiver and loads the
+	 * already existent triggers.
+	 */
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -190,6 +195,11 @@ public class TriggerService extends Service{
 		comparePriorities();
 	}
 	
+	/**
+	 * Compares the time saved inside the variables of the trigger with the current time received by the broadcast receiver.
+	 * @param _trigger the trigger to compare to
+	 * @return true = time matches, false = time does not match
+	 */
 	private boolean compareTime(Trigger _trigger){
 		Log.i("TriggerService", "compare time called!");
 		//if no time range is set
@@ -270,6 +280,11 @@ public class TriggerService extends Service{
 		}
 	}
 	
+	/**
+	 * Compares the headphone state saved inside the variables of the trigger with the current headphone state received by the broadcast receiver.
+	 * @param _trigger the trigger to compare to
+	 * @return true = trigger matches headphone state, false = trigger does not match
+	 */
 	private boolean compareHeadphones(Trigger _trigger){
 		if(!_trigger.getHeadphones().equals(Trigger.listen_state.ignore)){
 			if(headphones && _trigger.getHeadphones().equals(Trigger.listen_state.listen_on)){
@@ -287,6 +302,11 @@ public class TriggerService extends Service{
 		}
 	}
 	
+	/**
+	 * Compares the battery state saved inside the variables of the trigger with the current battery state received by the broadcast receiver.
+	 * @param _trigger the trigger to compare to
+	 * @return true = trigger matches battery state, false = trigger does not match
+	 */
 	private boolean compareBatteryCharging(Trigger _trigger){
 		if(!_trigger.getBatteryState().equals(Trigger.listen_state.ignore)){
 			if(_trigger.getBatteryState().equals(Trigger.listen_state.listen_on) && batteryCharging){
@@ -304,6 +324,12 @@ public class TriggerService extends Service{
 		}
 	}
 	
+	/**
+	 * Compares the battery level saved inside the variables of the trigger with the current battery level received by the broadcast receiver.
+	 * If the trigger has only the battery start level defined, it needs to match the value exactly.
+	 * @param _trigger the trigger to compare to
+	 * @return true = trigger matches battery level, false = trigger does not match
+	 */
 	private boolean compareBatteryLevel(Trigger _trigger){
 		if(_trigger.getBatteryStartLevel() == -1 && _trigger.getBatteryEndLevel() == -1){
 			return true;
@@ -318,6 +344,11 @@ public class TriggerService extends Service{
 		return false;
 	}
 
+	/**
+	 * Compares the geofence saved inside the variables of the trigger with the current geofence received by the broadcast receiver.
+	 * @param _trigger the trigger to compare to
+	 * @return true = trigger matches geofence, false = trigger does not match
+	 */
 	private boolean compareGeofence(Trigger _trigger){
 		//if there is no geofence set for the trigger
 		if(_trigger.getGeofence() == null){
@@ -387,6 +418,9 @@ public class TriggerService extends Service{
 		}
 	}
 	
+	/**
+	 * Compares the priorities of triggers, if two or more are matching the current phone state.
+	 */
 	private void comparePriorities() {
 		int highestPriority = -1;
 		Trigger highestTrigger = null;

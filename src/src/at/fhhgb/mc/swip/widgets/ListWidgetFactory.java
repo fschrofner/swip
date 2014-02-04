@@ -51,7 +51,7 @@ public class ListWidgetFactory implements RemoteViewsService.RemoteViewsFactory 
 		
 		if (!firstRun) {
 			Handler handler = new Handler(context);
-			handler.createStandardProfiles();
+			handler.createDefaultProfiles();
 			
 			SharedPreferences.Editor editor = pref.edit();
 			editor.putBoolean("FIRST_RUN", true);
