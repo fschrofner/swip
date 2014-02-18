@@ -11,6 +11,7 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Xml;
+import at.fhhgb.mc.swip.R;
 
 /**
  * Class used to put the values saved in a xml file into the shared preferences
@@ -222,13 +223,13 @@ public class XmlParserPrefTrigger {
 			startTime = new String(String.format("%02d", startHours) + ":"
 					+ String.format("%02d", startMinutes));
 		} else {
-			startTime = new String("Ignored");
+			startTime = new String(context.getString(R.string.ignored));
 		}
 		if (endHours != -1 && endMinutes != -1) {
 			endTime = new String(String.format("%02d", endHours) + ":"
 					+ String.format("%02d", endMinutes));
 		} else {
-			endTime = new String("Ignored");
+			endTime = new String(context.getString(R.string.ignored));
 		}
 
 		prefEdit.putString("start_time", startTime);

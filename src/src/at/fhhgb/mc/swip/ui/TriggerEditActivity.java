@@ -333,9 +333,9 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			findPreference("location").setSummary(R.string.ignored);
 		}
 
-		if (pref.getString("start_time", "Ignored").equals("Ignored")) {
+		if (pref.getString("start_time", getString(R.string.ignored)).equals(getString(R.string.ignored))) {
 			findPreference("end_time").setEnabled(false);
-			pref.edit().putString("end_time", "Ignored").commit();
+			pref.edit().putString("end_time", getString(R.string.ignored)).commit();
 		}
 
 		if (pref.getInt("battery_start_level", -1) == -1) {
@@ -367,7 +367,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		
 		trigger.setPriority(Integer.parseInt(pref.getString("priority", "0")));
 
-		if (pref.getString("start_time", "Ignored").equals("Ignored")) {
+		if (pref.getString("start_time", getString(R.string.ignored)).equals(getString(R.string.ignored))) {
 			trigger.setStartHours(-1);
 			trigger.setStartMinutes(-1);
 		} else {
@@ -377,7 +377,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 					"start_time", "00:00").split(":")[1]));
 		}
 
-		if (pref.getString("end_time", "Ignored").equals("Ignored")) {
+		if (pref.getString("end_time", getString(R.string.ignored)).equals(getString(R.string.ignored))) {
 			trigger.setEndHours(-1);
 			trigger.setEndMinutes(-1);
 		} else {
@@ -551,12 +551,12 @@ public class TriggerEditActivity extends PreferenceActivity implements
 	public void onSharedPreferenceChanged(SharedPreferences _pref, String key) {
 		// dis- and enables the endtime if the start time is changed
 		if (key.equals("start_time")
-				&& _pref.getString("start_time", "Ignored").equals("Ignored")) {
-			_pref.edit().putString("end_time", "Ignored").commit();
+				&& _pref.getString("start_time", getString(R.string.ignored)).equals(getString(R.string.ignored))) {
+			_pref.edit().putString("end_time", getString(R.string.ignored)).commit();
 			findPreference("end_time").setEnabled(false);
-			findPreference("end_time").setSummary("Ignored");
+			findPreference("end_time").setSummary(getString(R.string.ignored));
 		} else if (key.equals("start_time")
-				&& !_pref.getString("start_time", "Ignored").equals("Ignored")) {
+				&& !_pref.getString("start_time", getString(R.string.ignored)).equals(getString(R.string.ignored))) {
 			findPreference("end_time").setEnabled(true);
 		}
 
@@ -566,7 +566,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 				&& _pref.getInt("battery_start_level", -1) == -1) {
 			_pref.edit().putInt("battery_end_level", -1).commit();
 			findPreference("battery_end_level").setEnabled(false);
-			findPreference("battery_end_level").setSummary("Ignored");
+			findPreference("battery_end_level").setSummary(getString(R.string.ignored));
 		} else if (key.equals("battery_start_level")
 				&& _pref.getInt("battery_start_level", -1) != -1) {
 			findPreference("battery_end_level").setEnabled(true);

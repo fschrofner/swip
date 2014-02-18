@@ -89,8 +89,8 @@ public class TriggerFragment extends Fragment implements
 			prefEditor.putString("name_trigger", getString(R.string.pref_default_name));
 			prefEditor.putString("profile", getString(R.string.pref_profile_default));
 			prefEditor.putString("priority", "0");
-			prefEditor.putString("start_time", "Ignored");
-			prefEditor.putString("end_time", "Ignored");
+			prefEditor.putString("start_time", getString(R.string.ignored));
+			prefEditor.putString("end_time", getString(R.string.ignored));
 			prefEditor.putString("battery_state", "ignored");
 			prefEditor.putInt("battery_start_level", -1);
 			prefEditor.putInt("battery_end_level", -1);
