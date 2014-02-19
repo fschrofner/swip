@@ -64,48 +64,51 @@ public class Setter {
 			Class<?> NfcClass;
 			NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(_context);
 			
-			//if nfc is disabled and you want to enable it
-			if(_enable && !nfcAdapter.isEnabled()){
-				try {
-					Method enableNfc;
-					NfcClass = Class.forName(nfcAdapter.getClass().getName());
-					enableNfc   = NfcClass.getDeclaredMethod("enable");
-					enableNfc.setAccessible(true);
-					enableNfc.invoke(nfcAdapter);
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
+			//to make sure a nfc adapter is available
+			if(nfcAdapter != null){
+				
+				//if nfc is disabled and you want to enable it
+				if(_enable && !nfcAdapter.isEnabled()){
+					try {
+						Method enableNfc;
+						NfcClass = Class.forName(nfcAdapter.getClass().getName());
+						enableNfc   = NfcClass.getDeclaredMethod("enable");
+						enableNfc.setAccessible(true);
+						enableNfc.invoke(nfcAdapter);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					}
 				}
-			}
-			
-			//if nfc is enabled and you want to disable it
-			if(!_enable && nfcAdapter.isEnabled()){
-				try {
-					Method disableNfc;
-					NfcClass = Class.forName(nfcAdapter.getClass().getName());
-					disableNfc   = NfcClass.getDeclaredMethod("disable");
-					disableNfc.setAccessible(true);
-					disableNfc.invoke(nfcAdapter);
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
+				
+				//if nfc is enabled and you want to disable it
+				if(!_enable && nfcAdapter.isEnabled()){
+					try {
+						Method disableNfc;
+						NfcClass = Class.forName(nfcAdapter.getClass().getName());
+						disableNfc   = NfcClass.getDeclaredMethod("disable");
+						disableNfc.setAccessible(true);
+						disableNfc.invoke(nfcAdapter);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					}
 				}
-			}
-			
+			}		
 		}
 	}
 	

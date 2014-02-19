@@ -66,6 +66,17 @@ public class SettingsActivity extends PreferenceActivity implements
 			editor.commit();
 		}
 	}
+	
+	@Override
+	protected boolean isValidFragment(String fragmentName) {
+		if(fragmentName.equals("at.fhhgb.mc.swip.SettingsActivity$GeneralPreferenceFragment")){
+			Log.i("SettingsActivity", "valid fragment started");
+			return true;
+		} else {
+			Log.i("SettingsActivity", "invalid fragment started");
+			return false;
+		}
+	}
 
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.

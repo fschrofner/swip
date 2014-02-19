@@ -17,6 +17,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import at.fhhgb.mc.swip.R;
@@ -44,6 +45,7 @@ import com.stericson.RootTools.RootTools;
 public class ProfileEditActivity extends PreferenceActivity implements
 		OnSharedPreferenceChangeListener {
 
+
 	private static final boolean ALWAYS_SIMPLE_PREFS = false;
 	private boolean preferencesChanged = false;
 	private String previousName; // saves the previous profile name for the case
@@ -56,6 +58,18 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		super.onPostCreate(savedInstanceState);
 		setupSimplePreferencesScreen();
 	}
+	
+	@Override
+	protected boolean isValidFragment(String fragmentName) {
+		if(fragmentName.equals("at.fhhgb.mc.swip.ProfileEditActivity$GeneralPreferenceFragment")){
+			Log.i("ProfilerEditActivity", "valid fragment started");
+			return true;
+		} else {
+			Log.i("ProfilerEditActivity", "invalid fragment started");
+			return false;
+		}
+	}
+	
 
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.

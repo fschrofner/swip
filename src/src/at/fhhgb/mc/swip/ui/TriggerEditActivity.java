@@ -16,6 +16,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
@@ -72,6 +73,17 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		setupActionBar();
 	}
 
+	@Override
+	protected boolean isValidFragment(String fragmentName) {
+		if(fragmentName.equals("at.fhhgb.mc.swip.TriggerEditActivity$GeneralPreferenceFragment")){
+			Log.i("TriggerEditActivity", "valid fragment started");
+			return true;
+		} else {
+			Log.i("TriggerEditActivity", "invalid fragment started");
+			return false;
+		}
+	}
+	
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */
