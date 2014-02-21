@@ -213,7 +213,7 @@ public class Handler {
 	 * Creates the default profiles
 	 */
 	public void createDefaultProfiles() {
-		Profile pDefault = new Profile("Default");
+		Profile pDefault = new Profile(context.getResources().getString(R.string.default_profile_default));
 		pDefault.setRingerMode(Profile.mode.normal);
 		pDefault.setGps(Profile.state.disabled);
 		pDefault.setMobileData(Profile.state.enabled);
@@ -221,7 +221,7 @@ public class Handler {
 		pDefault.setBluetooth(Profile.state.disabled);
 		pDefault.setScreenBrightnessAutoMode(Profile.state.enabled);
 
-		Profile pHome = new Profile("Home");
+		Profile pHome = new Profile(context.getResources().getString(R.string.default_profile_home));
 		pHome.setRingerMode(Profile.mode.normal);
 		pHome.setGps(Profile.state.disabled);
 		pHome.setMobileData(Profile.state.disabled);
@@ -229,7 +229,7 @@ public class Handler {
 		pHome.setBluetooth(Profile.state.disabled);
 		pHome.setScreenBrightnessAutoMode(Profile.state.enabled);
 
-		Profile pMeeting = new Profile("Meeting");
+		Profile pMeeting = new Profile(context.getResources().getString(R.string.default_profile_meeting));
 		pMeeting.setRingerMode(Profile.mode.vibrate);
 		pMeeting.setGps(Profile.state.disabled);
 		pMeeting.setMobileData(Profile.state.enabled);
