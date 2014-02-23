@@ -119,7 +119,7 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 			Editor prefEditor = preferences.edit();
 
 			// loads the default values into the shared preferences
-			prefEditor.putString("name", "Insert name");
+			prefEditor.putString("name", getResources().getString(R.string.pref_default_name));
 			prefEditor.putString("ringer_mode", "unchanged");
 			prefEditor.putInt("alarm_volume", -1);
 			prefEditor.putInt("media_volume", -1);
@@ -240,10 +240,10 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 		
 		//if nfc is available
 		if (checkNfc()) {
-			options = new String[] { "Write on NFC-Tag" , "Delete"};
+			options = new String[] { getResources().getString(R.string.long_press_nfc) , getResources().getString(R.string.delete)};
 		}
 		else {
-			options = new String[] {"Delete"};
+			options = new String[] {getResources().getString(R.string.delete)};
 		}
 		
 		// used to notify the user of the longpress.

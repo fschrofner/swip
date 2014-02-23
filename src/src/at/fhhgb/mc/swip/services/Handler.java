@@ -70,7 +70,7 @@ public class Handler {
 		}
 
 		// shows the toast
-		Toast toast = Toast.makeText(context, _name + " was applied!",
+		Toast toast = Toast.makeText(context, _name + " " + context.getResources().getString(R.string.profileApplied),
 				Toast.LENGTH_SHORT);
 		toast.show();
 	}

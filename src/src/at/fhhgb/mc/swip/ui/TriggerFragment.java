@@ -159,9 +159,9 @@ public class TriggerFragment extends Fragment implements
 		String[] options;
 
 		if (filename.contains("_trigger")) {
-			options = new String[] { "Disable", "Delete" };
+			options = new String[] { getResources().getString(R.string.long_press_disable), getResources().getString(R.string.delete) };
 		} else {
-			options = new String[] { "Enable", "Delete" };
+			options = new String[] { getResources().getString(R.string.long_press_enable), getResources().getString(R.string.delete) };
 		}
 		// used to notify the user of the longpress.
 		Vibrator vibrator = (Vibrator) getActivity().getSystemService(

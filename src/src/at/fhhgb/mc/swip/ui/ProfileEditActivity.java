@@ -44,14 +44,15 @@ import com.stericson.RootTools.RootTools;
  */
 public class ProfileEditActivity extends PreferenceActivity implements
 		OnSharedPreferenceChangeListener {
-
+	
 
 	private static final boolean ALWAYS_SIMPLE_PREFS = false;
 	private boolean preferencesChanged = false;
-	private String previousName; // saves the previous profile name for the case
-									// the profile gets renamed
-									// (so the previous file of this profile can
-									// be deleted)
+	// saves the previous profile name for the case
+	// the profile gets renamed
+	// (so the previous file of this profile can
+	// be deleted)
+	private String previousName; 
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
@@ -376,7 +377,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 
-		String name = pref.getString("name", "Insert name");
+		String name = pref.getString("name", getResources().getString(R.string.pref_default_name));
 
 		Profile profile = new Profile(name);
 

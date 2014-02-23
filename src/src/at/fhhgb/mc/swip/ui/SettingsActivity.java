@@ -49,7 +49,7 @@ public class SettingsActivity extends PreferenceActivity implements
 	 * shown on tablets.
 	 */
 	private static final boolean ALWAYS_SIMPLE_PREFS = true;
-
+	
 	/**
 	 * Sets up the actionbar and removes the tick for root, if no root access is actually given.
 	 * 
@@ -266,7 +266,7 @@ public class SettingsActivity extends PreferenceActivity implements
 				AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 				dialog.setTitle(getResources().getString(R.string.pref_title_noRoot));
 				dialog.setMessage(getResources().getString(R.string.pref_text_noRoot));
-				dialog.setNeutralButton("Dismiss", new DialogInterface.OnClickListener(){
+				dialog.setNeutralButton(getResources().getString(R.string.pref_neutral_button), new DialogInterface.OnClickListener(){
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {

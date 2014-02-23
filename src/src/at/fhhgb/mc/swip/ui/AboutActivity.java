@@ -36,6 +36,8 @@ public class AboutActivity extends Activity implements OnClickListener {
 		text.setOnClickListener(this);
 		text = (TextView) findViewById(R.id.license_gpl);
 		text.setOnClickListener(this);
+		text = (TextView) findViewById(R.id.license_apache);
+		text.setOnClickListener(this);
 	}
 
 	/**
@@ -69,6 +71,10 @@ public class AboutActivity extends Activity implements OnClickListener {
 		} else if(_view.getId() == R.id.license_gpl){
 			Intent intent = new Intent(Intent.ACTION_VIEW,
 					Uri.parse("http://www.gnu.org/licenses/gpl-3.0.html"));
+			startActivity(intent);
+		} else if(_view.getId() == R.id.license_apache){
+			Intent intent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("http://www.apache.org/licenses/LICENSE-2.0"));
 			startActivity(intent);
 		}
 

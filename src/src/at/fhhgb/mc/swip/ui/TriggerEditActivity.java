@@ -61,7 +61,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 	// saves the previous trigger name for the case the trigger gets renamed (so
 	// the previous file of this trigger can be deleted)
 	private String previousName;
-
+	
 	/**
 	 * Sets up the actionbar.
 	 * 
