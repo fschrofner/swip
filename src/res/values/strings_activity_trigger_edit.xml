@@ -170,6 +170,9 @@
     <!-- Settings for Location -->
     <string name="pref_header_location">Location</string>
     <string name="pref_title_location">Location</string>
+    <string name="pref_location_lat">Latitude</string>
+    <string name="pref_location_lng">Longitude</string>
+    <string name="pref_location_radius">Radius</string>
 
     <!-- Strings for Alert Dialog -->
     <string name="alert_name_title">Trigger Name</string>

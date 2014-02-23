@@ -75,7 +75,8 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 	@Override
 	protected boolean isValidFragment(String fragmentName) {
-		if(fragmentName.equals("at.fhhgb.mc.swip.TriggerEditActivity$GeneralPreferenceFragment")){
+		if (fragmentName
+				.equals("at.fhhgb.mc.swip.TriggerEditActivity$GeneralPreferenceFragment")) {
 			Log.i("TriggerEditActivity", "valid fragment started");
 			return true;
 		} else {
@@ -83,7 +84,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */
@@ -120,16 +121,14 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 		// Show dialogs if the user wants to save and something is wrong
 		if (item.getItemId() == R.id.save_trigger) {
-			if (pref.getString(
-					"name_trigger",
-					getResources()
+			if (pref.getString("name_trigger",
+					getResources().getString(R.string.pref_default_name))
+					.equals(getResources()
 							.getString(R.string.pref_default_name))
-					.equals(getResources().getString(
-							R.string.pref_default_name))
 					|| pref.getString(
 							"name_trigger",
-							getResources().getString(
-									R.string.pref_default_name))
+							getResources()
+									.getString(R.string.pref_default_name))
 							.equals("")
 					|| pref.getString(
 							"profile",
@@ -159,21 +158,18 @@ public class TriggerEditActivity extends PreferenceActivity implements
 							R.string.alert_battery_title));
 					dialog.setMessage(getResources().getString(
 							R.string.alert_battery_exact_text));
-				} else if (pref.getString(
-						"name_trigger",
-						getResources().getString(
-								R.string.pref_default_name)).equals(
-						getResources().getString(
+				} else if (pref.getString("name_trigger",
+						getResources().getString(R.string.pref_default_name))
+						.equals(getResources().getString(
 								R.string.pref_default_name))) {
 					// The name is the default name
 					dialog.setTitle(getResources().getString(
 							R.string.alert_name_title));
 					dialog.setMessage(getResources().getString(
 							R.string.alert_name_text));
-				} else if (pref.getString(
-						"name_trigger",
-						getResources().getString(
-								R.string.pref_default_name)).equals("")) {
+				} else if (pref.getString("name_trigger",
+						getResources().getString(R.string.pref_default_name))
+						.equals("")) {
 					// the name is empty
 					dialog.setTitle(getResources().getString(
 							R.string.alert_name_title));
@@ -334,20 +330,23 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("headphone"));
 
 		// binds the summary to the location-preference
-		if (pref.getFloat("geofence_lat", -1F) > -1
-				&& pref.getFloat("geofence_lng", -1F) > -1
-				&& pref.getInt("geofence_radius", 50) > 0) {
+		if (pref.getInt("geofence_radius", 50) > 0) {
 			findPreference("location").setSummary(
-					"N: " + pref.getFloat("geofence_lat", -1F) + ", E: "
-							+ pref.getFloat("geofence_lng", -1F) + ", Radius: "
-							+ pref.getInt("geofence_radius", 50));
+					getString(R.string.pref_location_lat) + ": "
+							+ pref.getFloat("geofence_lat", 0F) + "°, "
+							+ getString(R.string.pref_location_lng) + ": "
+							+ pref.getFloat("geofence_lng", 0F) + "°, "
+							+ getString(R.string.pref_location_radius) + ": "
+							+ pref.getInt("geofence_radius", 50) + "m");
 		} else {
 			findPreference("location").setSummary(R.string.ignored);
 		}
 
-		if (pref.getString("start_time", getString(R.string.ignored)).equals(getString(R.string.ignored))) {
+		if (pref.getString("start_time", getString(R.string.ignored)).equals(
+				getString(R.string.ignored))) {
 			findPreference("end_time").setEnabled(false);
-			pref.edit().putString("end_time", getString(R.string.ignored)).commit();
+			pref.edit().putString("end_time", getString(R.string.ignored))
+					.commit();
 		}
 
 		if (pref.getInt("battery_start_level", -1) == -1) {
@@ -376,10 +375,11 @@ public class TriggerEditActivity extends PreferenceActivity implements
 				getResources().getString(R.string.pref_default_name));
 
 		Trigger trigger = new Trigger(name);
-		
+
 		trigger.setPriority(Integer.parseInt(pref.getString("priority", "0")));
 
-		if (pref.getString("start_time", getString(R.string.ignored)).equals(getString(R.string.ignored))) {
+		if (pref.getString("start_time", getString(R.string.ignored)).equals(
+				getString(R.string.ignored))) {
 			trigger.setStartHours(-1);
 			trigger.setStartMinutes(-1);
 		} else {
@@ -389,7 +389,8 @@ public class TriggerEditActivity extends PreferenceActivity implements
 					"start_time", "00:00").split(":")[1]));
 		}
 
-		if (pref.getString("end_time", getString(R.string.ignored)).equals(getString(R.string.ignored))) {
+		if (pref.getString("end_time", getString(R.string.ignored)).equals(
+				getString(R.string.ignored))) {
 			trigger.setEndHours(-1);
 			trigger.setEndMinutes(-1);
 		} else {
@@ -423,20 +424,18 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			trigger.setHeadphones(Trigger.listen_state.ignore);
 		}
 
-		if (pref.getFloat("geofence_lat", -1) > -1
-				&& pref.getFloat("geofence_lng", -1) > -1
-				&& pref.getInt("geofence_radius", 50) > 0) {
+		if (pref.getInt("geofence_radius", 50) > 0) {
 
 			// geofence that registers if you enter the area
 			SimpleGeofence simple = new SimpleGeofence(name, pref.getFloat(
-					"geofence_lat", -1F), pref.getFloat("geofence_lng", -1F),
+					"geofence_lat", 0F), pref.getFloat("geofence_lng", 0F),
 					pref.getInt("geofence_radius", 0), Geofence.NEVER_EXPIRE,
 					Geofence.GEOFENCE_TRANSITION_ENTER);
 			locTrig.registerGeofence(simple);
 
 			// geofence that registers if you leave the area
 			simple = new SimpleGeofence(name + "_exit", pref.getFloat(
-					"geofence_lat", -1F), pref.getFloat("geofence_lng", -1F),
+					"geofence_lat", 0F), pref.getFloat("geofence_lng", 0F),
 					pref.getInt("geofence_radius", 0), Geofence.NEVER_EXPIRE,
 					Geofence.GEOFENCE_TRANSITION_EXIT);
 			locTrig.registerGeofence(simple);
@@ -563,12 +562,15 @@ public class TriggerEditActivity extends PreferenceActivity implements
 	public void onSharedPreferenceChanged(SharedPreferences _pref, String key) {
 		// dis- and enables the endtime if the start time is changed
 		if (key.equals("start_time")
-				&& _pref.getString("start_time", getString(R.string.ignored)).equals(getString(R.string.ignored))) {
-			_pref.edit().putString("end_time", getString(R.string.ignored)).commit();
+				&& _pref.getString("start_time", getString(R.string.ignored))
+						.equals(getString(R.string.ignored))) {
+			_pref.edit().putString("end_time", getString(R.string.ignored))
+					.commit();
 			findPreference("end_time").setEnabled(false);
 			findPreference("end_time").setSummary(getString(R.string.ignored));
 		} else if (key.equals("start_time")
-				&& !_pref.getString("start_time", getString(R.string.ignored)).equals(getString(R.string.ignored))) {
+				&& !_pref.getString("start_time", getString(R.string.ignored))
+						.equals(getString(R.string.ignored))) {
 			findPreference("end_time").setEnabled(true);
 		}
 
@@ -578,7 +580,8 @@ public class TriggerEditActivity extends PreferenceActivity implements
 				&& _pref.getInt("battery_start_level", -1) == -1) {
 			_pref.edit().putInt("battery_end_level", -1).commit();
 			findPreference("battery_end_level").setEnabled(false);
-			findPreference("battery_end_level").setSummary(getString(R.string.ignored));
+			findPreference("battery_end_level").setSummary(
+					getString(R.string.ignored));
 		} else if (key.equals("battery_start_level")
 				&& _pref.getInt("battery_start_level", -1) != -1) {
 			findPreference("battery_end_level").setEnabled(true);
@@ -591,12 +594,11 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			SharedPreferences pref = PreferenceManager
 					.getDefaultSharedPreferences(this);
 
-			if (pref.getFloat("geofence_lat", -1F) > -1
-					&& pref.getFloat("geofence_lng", -1F) > -1
-					&& pref.getInt("geofence_radius", 50) > 0) {
+			if (pref.getInt("geofence_radius", 50) > 0) {
 				findPreference("location").setSummary(
-						"N: " + pref.getFloat("geofence_lat", -1F) + ", E: "
-								+ pref.getFloat("geofence_lng", -1F)
+						"Latitude: " + pref.getFloat("geofence_lat", 0F)
+								+ ", Longitude: "
+								+ pref.getFloat("geofence_lng", 0F)
 								+ ", Radius: "
 								+ pref.getInt("geofence_radius", 50));
 			} else {
