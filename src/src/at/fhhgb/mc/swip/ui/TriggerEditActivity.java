@@ -334,12 +334,10 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("headphone"));
 
 		// binds the summary to the location-preference
-		if (pref.getFloat("geofence_lat", -1F) > -1
-				&& pref.getFloat("geofence_lng", -1F) > -1
-				&& pref.getInt("geofence_radius", 50) > 0) {
+		if (pref.getInt("geofence_radius", 50) > 0) {
 			findPreference("location").setSummary(
-					"N: " + pref.getFloat("geofence_lat", -1F) + ", E: "
-							+ pref.getFloat("geofence_lng", -1F) + ", Radius: "
+					"Latitude: " + pref.getFloat("geofence_lat", 0F) + ", Longitude: "
+							+ pref.getFloat("geofence_lng", 0F) + ", Radius: "
 							+ pref.getInt("geofence_radius", 50));
 		} else {
 			findPreference("location").setSummary(R.string.ignored);
@@ -423,20 +421,18 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			trigger.setHeadphones(Trigger.listen_state.ignore);
 		}
 
-		if (pref.getFloat("geofence_lat", -1) > -1
-				&& pref.getFloat("geofence_lng", -1) > -1
-				&& pref.getInt("geofence_radius", 50) > 0) {
+		if (pref.getInt("geofence_radius", 50) > 0) {
 
 			// geofence that registers if you enter the area
 			SimpleGeofence simple = new SimpleGeofence(name, pref.getFloat(
-					"geofence_lat", -1F), pref.getFloat("geofence_lng", -1F),
+					"geofence_lat", 0F), pref.getFloat("geofence_lng", 0F),
 					pref.getInt("geofence_radius", 0), Geofence.NEVER_EXPIRE,
 					Geofence.GEOFENCE_TRANSITION_ENTER);
 			locTrig.registerGeofence(simple);
 
 			// geofence that registers if you leave the area
 			simple = new SimpleGeofence(name + "_exit", pref.getFloat(
-					"geofence_lat", -1F), pref.getFloat("geofence_lng", -1F),
+					"geofence_lat", 0F), pref.getFloat("geofence_lng", 0F),
 					pref.getInt("geofence_radius", 0), Geofence.NEVER_EXPIRE,
 					Geofence.GEOFENCE_TRANSITION_EXIT);
 			locTrig.registerGeofence(simple);
@@ -591,12 +587,10 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			SharedPreferences pref = PreferenceManager
 					.getDefaultSharedPreferences(this);
 
-			if (pref.getFloat("geofence_lat", -1F) > -1
-					&& pref.getFloat("geofence_lng", -1F) > -1
-					&& pref.getInt("geofence_radius", 50) > 0) {
+			if (pref.getInt("geofence_radius", 50) > 0) {
 				findPreference("location").setSummary(
-						"N: " + pref.getFloat("geofence_lat", -1F) + ", E: "
-								+ pref.getFloat("geofence_lng", -1F)
+						"Latitude: " + pref.getFloat("geofence_lat", 0F) + ", Longitude: "
+								+ pref.getFloat("geofence_lng", 0F)
 								+ ", Radius: "
 								+ pref.getInt("geofence_radius", 50));
 			} else {
