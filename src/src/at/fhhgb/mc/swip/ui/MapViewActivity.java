@@ -219,11 +219,13 @@ public class MapViewActivity extends Activity implements
 
 			SharedPreferences pref = PreferenceManager
 					.getDefaultSharedPreferences(this);
+			
+			Log.i("MapViewActivity", "Saved geofence: lat: " + point.latitude + ", lng: " + point.longitude);
 
 			// No geofence defined
 			if (point == null) {
-				pref.edit().putFloat("geofence_lat", -1F).commit();
-				pref.edit().putFloat("geofence_lng", -1F).commit();
+				pref.edit().putFloat("geofence_lat", 0F).commit();
+				pref.edit().putFloat("geofence_lng", 0F).commit();
 				pref.edit().putInt("geofence_radius", -1).commit();
 			} else {
 				// new geofence defined
