@@ -1,0 +1,14 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <at.fhhgb.mc.swip.trigger.TimePickerPreference
+        android:key="start_time"
+        android:title="@string/picker_title_start_time"
+        android:dialogMessage="@string/picker_start_message" />
+    
+    <at.fhhgb.mc.swip.trigger.TimePickerPreference
+        android:key="end_time"
+        android:title="@string/picker_title_end_time"
+        android:dialogMessage="@string/picker_end_message" />
+
+
+</PreferenceScreen>
