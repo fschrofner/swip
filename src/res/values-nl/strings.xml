@@ -51,6 +51,7 @@
   <string name="credits8">Wij danken hen voor een solide werkbasis</string>
   <string name="translators">Vertalers</string>
   <string name="translators_dutch">Dutch - Antonius Augustus</string>
+  <string name="translators_spanish">Spanish - Alejandro Caral Ferro</string>
   <string name="ourLicense">Deze app is gelicentieerd onder</string>
   <string name="ourLicense2"> <u>GPLv3</u></string>
   <string name="title_activity_profile_fragment">ProfileFragment</string>

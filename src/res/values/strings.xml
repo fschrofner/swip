@@ -50,8 +50,9 @@
     <string name="credits8">We thank them for a solid basis to work on</string>
     <string name="translators">Translators</string>
     <string name="translators_dutch">Dutch - Antonius Augustus</string>
+    <string name="translators_spanish">Spanish - Alejandro Caral Ferro</string>
     <string name="ourLicense">This app is licensed under</string>
-    <string name="ourLicense2"> <u>GPLv3</u></string>
+    <string name="ourLicense2"><u>GPLv3</u></string>
     <string name="title_activity_profile_fragment">ProfileFragment</string>
     <string name="title_activity_trigger_fragment">TriggerFragment</string>
     <string name="title_activity_main">MainActivity</string>
