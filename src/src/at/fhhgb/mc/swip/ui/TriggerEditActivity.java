@@ -605,11 +605,12 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 			if (pref.getInt("geofence_radius", 50) > 0) {
 				findPreference("location").setSummary(
-						"Latitude: " + pref.getFloat("geofence_lat", 0F)
-								+ ", Longitude: "
-								+ pref.getFloat("geofence_lng", 0F)
-								+ ", Radius: "
-								+ pref.getInt("geofence_radius", 50));
+						getString(R.string.pref_location_lat) + ": "
+								+ pref.getFloat("geofence_lat", 0F) + "°, "
+								+ getString(R.string.pref_location_lng) + ": "
+								+ pref.getFloat("geofence_lng", 0F) + "°, "
+								+ getString(R.string.pref_location_radius) + ": "
+								+ pref.getInt("geofence_radius", 50) + "m");
 			} else {
 				findPreference("location").setSummary(R.string.ignored);
 			}
