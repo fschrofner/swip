@@ -424,8 +424,14 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			trigger.setHeadphones(Trigger.listen_state.ignore);
 		}
 
-		//unregisters the old geofence
+		//unregisters the old geofences from the system
 		locTrig.unregisterGeofence(name);
+		locTrig.unregisterGeofence(name + "_exit");
+		
+		//deletes the list of currently triggered geofences from the service
+		Intent intent = new Intent();
+		intent.setAction("at.fhhgb.mc.swip.trigger.clearGeofences");
+		sendBroadcast(intent);
 		
 		if (pref.getInt("geofence_radius", 50) > 0) {
 
@@ -475,7 +481,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 		}
 
-		Intent intent = new Intent();
+		intent = new Intent();
 		intent.setAction("at.fhhgb.mc.swip.trigger.refresh");
 		sendBroadcast(intent);
 	}
