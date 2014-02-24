@@ -424,6 +424,9 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			trigger.setHeadphones(Trigger.listen_state.ignore);
 		}
 
+		//unregisters the old geofence
+		locTrig.unregisterGeofence(name);
+		
 		if (pref.getInt("geofence_radius", 50) > 0) {
 
 			// geofence that registers if you enter the area

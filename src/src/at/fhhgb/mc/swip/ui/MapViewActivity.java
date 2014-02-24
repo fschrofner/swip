@@ -119,8 +119,7 @@ public class MapViewActivity extends Activity implements
 			});
 
 			// A geofence is already defined
-			if (pref.getFloat("geofence_lat", -1F) > -1
-					&& pref.getFloat("geofence_lng", -1F) > -1) {
+			if (pref.getInt("geofence_radius", -1) > 0) {
 				point = new LatLng(pref.getFloat("geofence_lat", 0),
 						pref.getFloat("geofence_lng", 0));
 				radius = pref.getInt("geofence_radius", 50);
@@ -219,8 +218,7 @@ public class MapViewActivity extends Activity implements
 
 			SharedPreferences pref = PreferenceManager
 					.getDefaultSharedPreferences(this);
-			
-			Log.i("MapViewActivity", "Saved geofence: lat: " + point.latitude + ", lng: " + point.longitude);
+
 
 			// No geofence defined
 			if (point == null) {
@@ -229,7 +227,7 @@ public class MapViewActivity extends Activity implements
 				pref.edit().putInt("geofence_radius", -1).commit();
 			} else {
 				// new geofence defined
-
+				Log.i("MapViewActivity", "Saved geofence: lat: " + point.latitude + ", lng: " + point.longitude);
 				pref.edit().putFloat("geofence_lat", (float) point.latitude)
 						.commit();
 				pref.edit().putFloat("geofence_lng", (float) point.longitude)
@@ -297,7 +295,8 @@ public class MapViewActivity extends Activity implements
 			mMap.clear();
 			point = null;
 			radius = -1;
-
+			EditText editRadius = (EditText) findViewById(R.id.editTextRadius);
+			editRadius.setText("50");
 			Log.i("MapViewActivity", "Cleared map.");
 
 			preferencesChanged = true;
