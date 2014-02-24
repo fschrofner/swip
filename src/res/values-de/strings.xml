@@ -51,8 +51,9 @@
   <string name="credits8">Wir danken ihnen für eine solide Basis</string>
   <string name="translators">Übersetzer</string>
   <string name="translators_dutch">Dutch - Antonius Augustus</string>
+  <string name="translators_spanish">Spanish - Alejandro Caral Ferro</string>
   <string name="ourLicense">Diese App ist lizenziert unter</string>
-  <string name="ourLicense2"> <u>GPLv3</u></string>
+  <string name="ourLicense2"><u>GPLv3</u></string>
   <string name="title_activity_profile_fragment">ProfileFragment</string>
   <string name="title_activity_trigger_fragment">TriggerFragment</string>
   <string name="title_activity_main">MainActivity</string>
