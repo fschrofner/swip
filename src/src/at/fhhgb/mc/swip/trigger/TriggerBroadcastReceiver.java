@@ -39,6 +39,8 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 		_service.registerReceiver(this, filter);
     	filter = new IntentFilter("at.fhhgb.mc.swip.trigger.location_change");
 		_service.registerReceiver(this, filter);
+		filter = new IntentFilter("at.fhhgb.mc.swip.trigger.clearGeofences");
+		_service.registerReceiver(this, filter);
 	}
 
 	/**
@@ -88,6 +90,9 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 		}
 		if(_intent.getAction().equals("at.fhhgb.mc.swip.trigger.refresh")){
 			triggerservice.refreshTriggers();
+		}
+		if(_intent.getAction().equals("at.fhhgb.mc.swip.trigger.clearGeofences")){
+			triggerservice.clearGeofences();
 		}
 		if(_intent.getAction().equals("at.fhhgb.mc.swip.trigger.location_change")){
 			Log.i("TriggerBroadcastReceiver", "Location change detected - action");

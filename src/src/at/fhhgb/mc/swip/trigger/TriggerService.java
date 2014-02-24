@@ -68,6 +68,15 @@ public class TriggerService extends Service{
 	}
 	
 	/**
+	 * Clears the list of currently triggered geofences
+	 */
+	public void clearGeofences(){
+		//should be null, the new list will be initiated by the system
+		geofences = null;
+		Log.i("TriggerService", "all geofences cleared!");
+	}
+	
+	/**
 	 * Set the battery state on initialization and compares the triggers.
 	 */
 	protected void setInitialBatteryState(Intent _intent){
