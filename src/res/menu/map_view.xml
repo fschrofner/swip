@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/save_location"
+        android:icon="@drawable/navigation_accept"
+        android:showAsAction="ifRoom"
+        android:title="@string/save"
+        android:visible="true">
+    </item>
+    <item
+        android:id="@+id/cancel_location"
+        android:icon="@drawable/navigation_cancel"
+        android:showAsAction="always"
+        android:title="@string/cancel"
+        android:visible="true">
+    </item>
+    <item android:id="@+id/change_map_sat" android:visible="true" android:title="@string/changeMapSat" android:showAsAction="never"></item>
+    <item android:id="@+id/change_map_normal" android:visible="true" android:showAsAction="never" android:title="@string/changeMapNormal"></item>
+
+</menu>
