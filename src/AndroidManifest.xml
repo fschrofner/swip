@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="at.fhhgb.mc.swip"
-    android:versionCode="4"
-    android:versionName="0.2.3" >
+    android:versionCode="5"
+    android:versionName="0.2.4" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -33,22 +33,6 @@
     <!-- to do so in eclipse just change Window -> Preferences -> Android -> Lint Error Checking -> ProtectedPermission to something less severe -->
     <!-- this permission is needed so that some of the system-app -->
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
-
-    <compatible-screens>
-	    <!-- small size screens -->
-	    <screen android:screenSize="small" android:screenDensity="ldpi" />
-	    <screen android:screenSize="small" android:screenDensity="mdpi" />
-	    <screen android:screenSize="small" android:screenDensity="hdpi" />
-	    <screen android:screenSize="small" android:screenDensity="xhdpi" />
-	    <!-- all normal size screens -->
-	    <screen android:screenSize="normal" android:screenDensity="ldpi" />
-	    <screen android:screenSize="normal" android:screenDensity="mdpi" />
-	    <screen android:screenSize="normal" android:screenDensity="hdpi" />
-	    <screen android:screenSize="normal" android:screenDensity="xhdpi" />      
-	    <!-- large screens -->
-	    <screen android:screenSize="large" android:screenDensity="hdpi" />
-	    <screen android:screenSize="large" android:screenDensity="xhdpi" />
-	</compatible-screens>
 
     <application
         android:allowBackup="true"

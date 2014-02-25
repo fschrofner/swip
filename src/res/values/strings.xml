@@ -51,6 +51,9 @@
     <string name="translators">Translators</string>
     <string name="translators_dutch">Dutch - Antonius Augustus</string>
     <string name="translators_spanish">Spanish - Alejandro Caral Ferro</string>
+    <string name="translators_chinese">Chinese - Contactfront</string>
+    <string name="translators_russian1">Russian -\u0020</string>
+    <string name="translators_russian2">Dm. Chernogaev</string>
     <string name="ourLicense">This app is licensed under</string>
     <string name="ourLicense2"><u>GPLv3</u></string>
     <string name="title_activity_profile_fragment">ProfileFragment</string>
