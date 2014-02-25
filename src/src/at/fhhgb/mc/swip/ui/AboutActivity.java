@@ -38,6 +38,8 @@ public class AboutActivity extends Activity implements OnClickListener {
 		text.setOnClickListener(this);
 		text = (TextView) findViewById(R.id.license_apache);
 		text.setOnClickListener(this);
+		text = (TextView) findViewById(R.id.textViewTranslatorRussian2);
+		text.setOnClickListener(this);
 	}
 
 	/**
@@ -75,6 +77,10 @@ public class AboutActivity extends Activity implements OnClickListener {
 		} else if(_view.getId() == R.id.license_apache){
 			Intent intent = new Intent(Intent.ACTION_VIEW,
 					Uri.parse("http://www.apache.org/licenses/LICENSE-2.0"));
+			startActivity(intent);
+		} else if(_view.getId() == R.id.textViewTranslatorRussian2){
+			Intent intent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("https://plus.google.com/+DmitryGaich"));
 			startActivity(intent);
 		}
 
