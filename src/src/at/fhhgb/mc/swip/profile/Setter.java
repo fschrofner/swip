@@ -29,6 +29,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
+import at.fhhgb.mc.swip.services.Handler;
 
 /**
  * Class that provides methods to apply different settings.
@@ -38,18 +39,6 @@ import android.view.WindowManager;
  */
 public class Setter {
 
-	/**
-	 * Checks if the app is installed as systemapp.
-	 * It does so by checking for the write to secure settings permission.
-	 * @param _context the context of your activity
-	 * @return true = app is installed as systemapp, false = it is not
-	 */
-	public boolean checkSystemapp(Context _context)
-	{
-	    String permission = "android.permission.WRITE_SECURE_SETTINGS";
-	    int res = _context.checkCallingOrSelfPermission(permission);
-	    return (res == PackageManager.PERMISSION_GRANTED);            
-	}
 	
 	/**
 	 * Sets nfc to the given state. If it is aleady in the desired state nothing will be changed.
@@ -60,7 +49,8 @@ public class Setter {
 	 * @param _enable the state you want the nfc adapter to be in. true = enabled, false = disabled.
 	 */
 	public void setNfc(Context _context, boolean _enable) {
-		if(checkSystemapp(_context)){
+		Handler handler = new Handler(_context);
+		if(handler.checkSystemapp()){
 			Class<?> NfcClass;
 			NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(_context);
 			
@@ -191,9 +181,9 @@ public class Setter {
 				_context.getContentResolver(),
 				Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_context);
-		
+		Handler handler = new Handler (_context);
 		//if the app is not installed as system-app
-		if(!checkSystemapp(_context)){
+		if(!handler.checkSystemapp()){
 			
 			// if gps is disabled and you want to enable it or the other way round
 			if ((_enable && !provider.contains("gps"))
@@ -210,7 +200,7 @@ public class Setter {
 			}
 			
 		//this method will be used if the app is installed as system-app
-		} else if(checkSystemapp(_context)){
+		} else if(handler.checkSystemapp()){
 			String newProviders = new String();
 			
 			// if gps is disabled and you want to enable it

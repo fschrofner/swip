@@ -24,6 +24,7 @@ import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.Profile;
 import at.fhhgb.mc.swip.profile.Setter;
 import at.fhhgb.mc.swip.profile.XmlCreator;
+import at.fhhgb.mc.swip.services.Handler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -346,8 +347,8 @@ public class ProfileEditActivity extends PreferenceActivity implements
 
 		// checks if the app is installed as systemapp and if not it removes the
 		// options that require it
-		Setter setter = new Setter();
-		if (!setter.checkSystemapp(this)) {
+		Handler handler = new Handler(this);
+		if (!handler.checkSystemapp()) {
 			pref.edit().putString("nfc", "unchanged");
 			Preference nfc = findPreference("nfc");
 			screen.removePreference(nfc);
@@ -620,12 +621,12 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			
 			//if the option to disable gps is available (android below kitkat or installed as systemapp)
 			//it should be disabled
-			Setter setter = new Setter();
-			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 || setter.checkSystemapp(this)) {
+			Handler handler = new Handler(this);
+			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 || handler.checkSystemapp()) {
 				findPreference("gps").setEnabled(false);
 				
 				//nfc is only available if the app is installed as systemapp
-				if(setter.checkSystemapp(this)){
+				if(handler.checkSystemapp()){
 					findPreference("nfc").setEnabled(false);
 				}				
 			}
@@ -638,10 +639,10 @@ public class ProfileEditActivity extends PreferenceActivity implements
 						"disabled") || _pref.getString("airplane_mode",
 						"unchanged").equals("unchanged"))) {
 			
-			Setter setter = new Setter();
-			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 || setter.checkSystemapp(this)) {
+			Handler handler = new Handler(this);
+			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 || handler.checkSystemapp()) {
 				findPreference("gps").setEnabled(true);
-				if(setter.checkSystemapp(this)){
+				if(handler.checkSystemapp()){
 					findPreference("nfc").setEnabled(true);
 				}			
 			}
