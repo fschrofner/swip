@@ -3,11 +3,14 @@ package at.fhhgb.mc.swip.ui;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -135,9 +138,9 @@ public class SettingsActivity extends PreferenceActivity implements
 		addPreferencesFromResource(R.xml.pref_general);
 
 		PreferenceScreen screen = getPreferenceScreen();
-		Setter setter = new Setter();
+		Handler handler = new Handler(this);
 		
-		if (pref.getBoolean("systemapp", false) || setter.checkSystemapp(this)) {
+		if (pref.getBoolean("systemapp", false) || handler.checkSystemapp()) {
 			Preference install = findPreference("systemapp");
 			screen.removePreference(install);
 			Preference removeSystemappPreference = (Preference) super.findPreference("removeSystemapp");
@@ -364,7 +367,21 @@ public class SettingsActivity extends PreferenceActivity implements
 					RootTools.getShell(true).add(command);
 					RootTools.closeAllShells();
 					SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-					pref.edit().putBoolean("systemapp", true).commit();								//saves the fact that it can use system-app possibilities now (there still will be a real check before using the system-app functionality)
+					
+					Handler handler = new Handler(getApplicationContext());
+					
+
+					//saves the fact that it can use system-app possibilities now (there still will be a real check before using the system-app functionality)
+					pref.edit().putBoolean("systemapp", true).commit();							
+					try {
+						ComponentName comp = new ComponentName(context, context.getClass());
+						PackageInfo pinfo = context.getPackageManager().getPackageInfo(comp.getPackageName(), 0);
+						//puts the versionname of the app into shared preferences for update reasons
+						pref.edit().putString("versionname", pinfo.versionName).commit();
+					} catch (NameNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (TimeoutException e) {

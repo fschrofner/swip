@@ -3,21 +3,32 @@ package at.fhhgb.mc.swip.services;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.exceptions.RootDeniedException;
+import com.stericson.RootTools.execution.CommandCapture;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources.NotFoundException;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.Toast;
 import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.Profile;
@@ -209,6 +220,64 @@ public class Handler {
 		notificationManager.notify(123, notification);
 	}
 
+	/**
+	 * Checks if the app is installed as systemapp.
+	 * It does so by checking for the write to secure settings permission.
+	 * @param _context the context of your activity
+	 * @return true = app is installed as systemapp, false = it is not
+	 */
+	public boolean checkSystemapp(){
+	    String permission = "android.permission.WRITE_SECURE_SETTINGS";
+	    int res = context.checkCallingOrSelfPermission(permission);
+	    return (res == PackageManager.PERMISSION_GRANTED);            
+	}
+	
+	/**
+	 * If the app is installed as system app and an upgrade took place, the systemapp will be upgraded here
+	 */
+	public void updateSystemApp(){
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+		if(pref.getBoolean("systemapp", false) && checkSystemapp()){
+		    try {
+				ComponentName comp = new ComponentName(context, context.getClass());
+				PackageInfo pinfo = context.getPackageManager().getPackageInfo(comp.getPackageName(), 0);
+				if(!pinfo.versionName.equals(pref.getString("versionname", ""))){
+					CommandCapture command;
+					if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+						command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
+								"cp /data/app/at.fhhgb.mc.swip-[12].apk /system/priv-app/",					//copies the apk of the app to the system-apps folder
+								"chmod 644 /system/priv-app/at.fhhgb.mc.swip-[12].apk",						//fixes the permissions
+								"mount -o remount,r /system");												//mounts the system partition to be read-only again
+					} else{
+						command = new CommandCapture(1,"mount -o remount,rw /system", 						
+								"cp /data/app/at.fhhgb.mc.swip-[12].apk /system/app/",
+								"chmod 644 /system/app/at.fhhgb.mc.swip-[12].apk",		
+								"mount -o remount,r /system");									
+					}
+					
+					try {
+						RootTools.getShell(true).add(command);
+						RootTools.closeAllShells();
+						pref.edit().putString("versionname", pinfo.versionName).commit();
+						Log.i("Handler", "updated systemapp!");
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (TimeoutException e) {
+						e.printStackTrace();
+					} catch (RootDeniedException e) {
+						e.printStackTrace();
+					}
+				} else {
+					Log.i("Handler", "systemapp up to date!");
+				}
+			} catch (NameNotFoundException e) {
+				e.printStackTrace();
+			}
+		} else {
+			Log.i("Handler", "app not installed as systemapp");
+		}
+	}
+	
 	/**
 	 * Creates the default profiles
 	 */

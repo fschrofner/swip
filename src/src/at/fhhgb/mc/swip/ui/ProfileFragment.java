@@ -79,10 +79,13 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 			editor.putBoolean("FIRST_RUN", true);
 			editor.commit();
 		}
-
+		
+		//updates the systemapp if there has been an update
+		Handler handler = new Handler(getActivity());
+		handler.updateSystemApp();
+		
 		// starts the permanent notification if it is activated
 		if (pref.getBoolean("notification", false)) {
-			Handler handler = new Handler(getActivity());
 			handler.updateNotification();
 		} else {
 			// deactivates the notification otherwise
