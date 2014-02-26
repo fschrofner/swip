@@ -223,7 +223,6 @@ public class Handler {
 	/**
 	 * Checks if the app is installed as systemapp.
 	 * It does so by checking for the write to secure settings permission.
-	 * @param _context the context of your activity
 	 * @return true = app is installed as systemapp, false = it is not
 	 */
 	public boolean checkSystemapp(){
