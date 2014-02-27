@@ -244,11 +244,13 @@ public class Handler {
 					CommandCapture command;
 					if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
 						command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
+								"rm /system/priv-app/at.fhhgb.mc.swip-[12].apk",							//removes the old systemapp
 								"cp /data/app/at.fhhgb.mc.swip-[12].apk /system/priv-app/",					//copies the apk of the app to the system-apps folder
 								"chmod 644 /system/priv-app/at.fhhgb.mc.swip-[12].apk",						//fixes the permissions
 								"mount -o remount,r /system");												//mounts the system partition to be read-only again
 					} else{
-						command = new CommandCapture(1,"mount -o remount,rw /system", 						
+						command = new CommandCapture(1,"mount -o remount,rw /system", 
+								"rm /system/app/at.fhhgb.mc.swip-[12].apk",
 								"cp /data/app/at.fhhgb.mc.swip-[12].apk /system/app/",
 								"chmod 644 /system/app/at.fhhgb.mc.swip-[12].apk",		
 								"mount -o remount,r /system");									
