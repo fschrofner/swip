@@ -155,21 +155,19 @@ public class XmlCreatorTrigger {
 		}
 
 		// writes geofence changes
+		Element geofenceElement = xmlProfile.createElement("geofence");
+
 		if (_trigger.getGeofence() != null) {
-			Element geofenceElement = xmlProfile.createElement("geofence");
-
-			if (_trigger.getGeofence() != null) {
-				geofenceElement.setAttribute("id", _trigger.getGeofence());
-			} else {
-				geofenceElement.setAttribute("id", "");
-			}
-
-			Log.i("XMLCreatorTrigger",
-					String.format(
-							"trigger changes were defined as follows: trigger_name: %s",
-							_trigger.getGeofence()));
-			rootElement.appendChild(geofenceElement);
+			geofenceElement.setAttribute("id", _trigger.getGeofence());
+		} else {
+			geofenceElement.setAttribute("id", "");
 		}
+
+		Log.i("XMLCreatorTrigger",
+				String.format(
+						"trigger changes were defined as follows: trigger_name: %s",
+						_trigger.getGeofence()));
+		rootElement.appendChild(geofenceElement);
 
 		// writes the complete xml file
 		transformer = transFactory.newTransformer();
