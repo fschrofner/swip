@@ -256,7 +256,7 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setItems(options, new LongPressMenuListener(_a, _position));
 		builder.show();
-		return false;
+		return true;
 	}
 	
 	
