@@ -163,11 +163,64 @@ public class XmlCreatorTrigger {
 			geofenceElement.setAttribute("id", "");
 		}
 
-		Log.i("XMLCreatorTrigger",
-				String.format(
-						"trigger changes were defined as follows: trigger_name: %s",
-						_trigger.getGeofence()));
+		Log.i("XMLCreatorTrigger", String.format(
+				"trigger changes were defined as follows: trigger_name: %s",
+				_trigger.getGeofence()));
 		rootElement.appendChild(geofenceElement);
+
+		// writes weekday changes
+		if (_trigger.getWeekdays() != null) {
+			Element weekdayElement = xmlProfile.createElement("weekdays");
+
+			if (_trigger.getWeekdays().contains("monday")) {
+				weekdayElement
+						.setAttribute("monday", "true");
+			} else {
+				weekdayElement.setAttribute("monday", "false");
+			}
+			if (_trigger.getWeekdays().contains("tuesday")) {
+				weekdayElement
+						.setAttribute("tuesday", "true");
+			} else {
+				weekdayElement.setAttribute("tuesday", "false");
+			}
+			if (_trigger.getWeekdays().contains("wednesday")) {
+				weekdayElement
+						.setAttribute("wednesday", "true");
+			} else {
+				weekdayElement.setAttribute("wednesday", "false");
+			}
+			if (_trigger.getWeekdays().contains("thursday")) {
+				weekdayElement
+						.setAttribute("thursday", "true");
+			} else {
+				weekdayElement.setAttribute("thursday", "false");
+			}
+			if (_trigger.getWeekdays().contains("friday")) {
+				weekdayElement
+						.setAttribute("friday", "true");
+			} else {
+				weekdayElement.setAttribute("friday", "false");
+			}
+			if (_trigger.getWeekdays().contains("saturday")) {
+				weekdayElement
+						.setAttribute("saturday", "true");
+			} else {
+				weekdayElement.setAttribute("saturday", "false");
+			}
+			if (_trigger.getWeekdays().contains("sunday")) {
+				weekdayElement
+						.setAttribute("sunday", "true");
+			} else {
+				weekdayElement.setAttribute("sunday", "false");
+			}
+
+			Log.i("XMLCreatorTrigger",
+					String.format(
+							"trigger changes were defined as follows: weekday number: %s",
+							_trigger.getWeekdays().size()));
+			rootElement.appendChild(weekdayElement);
+		}
 
 		// writes the complete xml file
 		transformer = transFactory.newTransformer();

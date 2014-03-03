@@ -19,6 +19,27 @@
     <string name="picker_start_message">Check the box and adjust the time-picker to select the start-time.</string>
     <string name="picker_title_end_time">End-Time</string>
     <string name="picker_end_message">Check the box and adjust the time-picker to select the end-time.</string>
+    <string name="pref_weekday_title">Weekday</string>
+    <string name="pref_weekday_summary">Click to choose one or more weekdays</string>
+    
+    <string-array name="pref_weekday_entries">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+    <string-array name="pref_weekday_entry_values">
+        <item>monday</item>
+        <item>tuesday</item>
+        <item>wednesday</item>
+        <item>thursday</item>
+        <item>friday</item>
+        <item>saturday</item>
+        <item>sunday</item>
+    </string-array>
 
     <!-- Settings for Battery -->
     <string name="pref_header_battery">Battery</string>

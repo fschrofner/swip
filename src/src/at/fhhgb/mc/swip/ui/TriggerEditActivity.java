@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -399,6 +400,8 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			trigger.setEndMinutes(Integer.parseInt(pref.getString("end_time",
 					"00:00").split(":")[1]));
 		}
+		
+		trigger.setWeekdays(pref.getStringSet("weekdays", null));
 
 		trigger.setProfileName(pref.getString("profile", getResources()
 				.getString(R.string.pref_profile_default)));

@@ -1,5 +1,7 @@
 package at.fhhgb.mc.swip.trigger;
 
+import java.util.Set;
+
 import android.util.Log;
 
 /**
@@ -26,6 +28,15 @@ public class Trigger {
 	private	listen_state batteryCharging;
 	private String geofence;
 	private int priority;
+	private Set<String> weekdays;
+
+	public Set<String> getWeekdays() {
+		return weekdays;
+	}
+
+	public void setWeekdays(Set<String> weekdays) {
+		this.weekdays = weekdays;
+	}
 
 	public Trigger(String _name) {
 		this.name = _name;
