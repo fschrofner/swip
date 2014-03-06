@@ -40,6 +40,16 @@
         <item>saturday</item>
         <item>sunday</item>
     </string-array>
+    
+    <string name="pref_weekday_none">No weekday selected!</string>
+    <string name="pref_weekday_all">Every weekday selected!</string>
+    <string name="pref_mon">Mon</string>
+    <string name="pref_tue">Tue</string>
+    <string name="pref_wed">Wed</string>
+    <string name="pref_thur">Thur</string>
+    <string name="pref_fri">Fri</string>
+    <string name="pref_sat">Sat</string>
+    <string name="pref_sun">Sun</string>
 
     <!-- Settings for Battery -->
     <string name="pref_header_battery">Battery</string>
