@@ -406,6 +406,14 @@ public class XmlParserPrefTrigger {
 		_parser.nextTag();
 	}
 
+	/**
+	 * Sets the weekdays settings.
+	 * 
+	 * @param _parser
+	 *            the parser of which you want to read the settings.
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
 	private void setWeekdays(XmlPullParser _parser)
 			throws XmlPullParserException, IOException {
 		_parser.require(XmlPullParser.START_TAG, null, "weekdays");
@@ -418,15 +426,54 @@ public class XmlParserPrefTrigger {
 			} else {
 				Log.i("XmlParserTriggerPref", "weekdays: no monday");
 			}
-		} else if (_parser.getAttributeValue(null, "tuesday") != null) {
+		}
+		if (_parser.getAttributeValue(null, "tuesday") != null) {
 			if (_parser.getAttributeValue(null, "tuesday").equals("true")) {
 				weekdays.add("tuesday");
 				Log.i("XmlParserTriggerPref", "weekdays: tuesday");
 			} else {
 				Log.i("XmlParserTriggerPref", "weekdays: no tuesday");
 			}
-		} else {
-			Log.e("XmlParserTriggerPref", "weekdays: Invalid Argument!");
+		}
+		if (_parser.getAttributeValue(null, "wednesday") != null) {
+			if (_parser.getAttributeValue(null, "wednesday").equals("true")) {
+				weekdays.add("wednesday");
+				Log.i("XmlParserTriggerPref", "weekdays: wednesday");
+			} else {
+				Log.i("XmlParserTriggerPref", "weekdays: no wednesday");
+			}
+		}
+		if (_parser.getAttributeValue(null, "thursday") != null) {
+			if (_parser.getAttributeValue(null, "thursday").equals("true")) {
+				weekdays.add("thursday");
+				Log.i("XmlParserTriggerPref", "weekdays: thursday");
+			} else {
+				Log.i("XmlParserTriggerPref", "weekdays: no thursday");
+			}
+		}
+		if (_parser.getAttributeValue(null, "friday") != null) {
+			if (_parser.getAttributeValue(null, "friday").equals("true")) {
+				weekdays.add("friday");
+				Log.i("XmlParserTriggerPref", "weekdays: friday");
+			} else {
+				Log.i("XmlParserTriggerPref", "weekdays: no friday");
+			}
+		}
+		if (_parser.getAttributeValue(null, "saturday") != null) {
+			if (_parser.getAttributeValue(null, "saturday").equals("true")) {
+				weekdays.add("saturday");
+				Log.i("XmlParserTriggerPref", "weekdays: saturday");
+			} else {
+				Log.i("XmlParserTriggerPref", "weekdays: no saturday");
+			}
+		}
+		if (_parser.getAttributeValue(null, "sunday") != null) {
+			if (_parser.getAttributeValue(null, "sunday").equals("true")) {
+				weekdays.add("sunday");
+				Log.i("XmlParserTriggerPref", "weekdays: sunday");
+			} else {
+				Log.i("XmlParserTriggerPref", "weekdays: no sunday");
+			}
 		}
 		
 		prefEdit.putStringSet("weekdays", weekdays);

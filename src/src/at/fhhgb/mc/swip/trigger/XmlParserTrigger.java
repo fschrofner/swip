@@ -2,6 +2,8 @@ package at.fhhgb.mc.swip.trigger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -88,6 +90,8 @@ public class XmlParserTrigger {
 				setGeofence(_parser, _trigger);
 			} else if (name.equals("priority")) {
 				setPriority(_parser, _trigger);
+			} else if (name.equals("weekdays")) {
+				setWeekdays(_parser, _trigger);
 			} else {
 				Log.w("XmlParser", "Skip!"); // invalid tag, will be skipped
 				_parser.nextTag();
@@ -345,6 +349,81 @@ public class XmlParserTrigger {
 		} else {
 			Log.e("XmlParserTrigger", "priority: Invalid Argument!");
 		}
+
+		_parser.nextTag();
+	}
+	
+	/**
+	 * Sets the weekdays of the trigger to the weekdays specified in the xml.
+	 * 
+	 * @param _parser
+	 * @param _trigger
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
+	private void setWeekdays(XmlPullParser _parser, Trigger _trigger)
+			throws XmlPullParserException, IOException {
+		_parser.require(XmlPullParser.START_TAG, null, "weekdays");
+		Set<String> weekdays = new HashSet<String>();
+
+		if (_parser.getAttributeValue(null, "monday") != null) {
+			if (_parser.getAttributeValue(null, "monday").equals("true")) {
+				weekdays.add("monday");
+				Log.i("XmlParserTriggerPref", "weekdays: monday");
+			} else {
+				Log.i("XmlParserTriggerPref", "weekdays: no monday");
+			}
+		}
+		if (_parser.getAttributeValue(null, "tuesday") != null) {
+			if (_parser.getAttributeValue(null, "tuesday").equals("true")) {
+				weekdays.add("tuesday");
+				Log.i("XmlParserTriggerPref", "weekdays: tuesday");
+			} else {
+				Log.i("XmlParserTriggerPref", "weekdays: no tuesday");
+			}
+		}
+		if (_parser.getAttributeValue(null, "wednesday") != null) {
+			if (_parser.getAttributeValue(null, "wednesday").equals("true")) {
+				weekdays.add("wednesday");
+				Log.i("XmlParserTriggerPref", "weekdays: wednesday");
+			} else {
+				Log.i("XmlParserTriggerPref", "weekdays: no wednesday");
+			}
+		}
+		if (_parser.getAttributeValue(null, "thursday") != null) {
+			if (_parser.getAttributeValue(null, "thursday").equals("true")) {
+				weekdays.add("thursday");
+				Log.i("XmlParserTriggerPref", "weekdays: thursday");
+			} else {
+				Log.i("XmlParserTriggerPref", "weekdays: no thursday");
+			}
+		}
+		if (_parser.getAttributeValue(null, "friday") != null) {
+			if (_parser.getAttributeValue(null, "friday").equals("true")) {
+				weekdays.add("friday");
+				Log.i("XmlParserTriggerPref", "weekdays: friday");
+			} else {
+				Log.i("XmlParserTriggerPref", "weekdays: no friday");
+			}
+		}
+		if (_parser.getAttributeValue(null, "saturday") != null) {
+			if (_parser.getAttributeValue(null, "saturday").equals("true")) {
+				weekdays.add("saturday");
+				Log.i("XmlParserTriggerPref", "weekdays: saturday");
+			} else {
+				Log.i("XmlParserTriggerPref", "weekdays: no saturday");
+			}
+		}
+		if (_parser.getAttributeValue(null, "sunday") != null) {
+			if (_parser.getAttributeValue(null, "sunday").equals("true")) {
+				weekdays.add("sunday");
+				Log.i("XmlParserTriggerPref", "weekdays: sunday");
+			} else {
+				Log.i("XmlParserTriggerPref", "weekdays: no sunday");
+			}
+		}
+		
+		_trigger.setWeekdays(weekdays);
 
 		_parser.nextTag();
 	}

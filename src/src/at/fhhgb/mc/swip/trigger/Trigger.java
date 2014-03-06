@@ -8,7 +8,7 @@ import android.util.Log;
  * Container class used to transfer the settings between activities and methods.
  * 
  * @author Florian Schrofner & Dominik Koeltringer
- *
+ * 
  */
 public class Trigger {
 
@@ -25,7 +25,7 @@ public class Trigger {
 	private int batteryStartLevel;
 	private int batteryEndLevel;
 	private listen_state headphones;
-	private	listen_state batteryCharging;
+	private listen_state batteryCharging;
 	private String geofence;
 	private int priority;
 	private Set<String> weekdays;
@@ -152,8 +152,7 @@ public class Trigger {
 			Log.e("Trigger", "end minutes not in allowed range!");
 		}
 	}
-	
-	
+
 	public String getProfileName() {
 		return profileName;
 	}
@@ -169,5 +168,5 @@ public class Trigger {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }
