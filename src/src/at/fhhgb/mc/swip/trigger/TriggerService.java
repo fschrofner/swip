@@ -78,19 +78,19 @@ public class TriggerService extends Service{
 	    int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
 
 	    if (Calendar.MONDAY == dayOfWeek) {
-	        weekday = "monday";
+	        weekday = "1";
 	    } else if (Calendar.TUESDAY == dayOfWeek) {
-	        weekday = "tuesday";
+	        weekday = "2";
 	    } else if (Calendar.WEDNESDAY == dayOfWeek) {
-	        weekday = "wednesday";
+	        weekday = "3";
 	    } else if (Calendar.THURSDAY == dayOfWeek) {
-	        weekday = "thursday";
+	        weekday = "4";
 	    } else if (Calendar.FRIDAY == dayOfWeek) {
-	        weekday = "friday";
+	        weekday = "5";
 	    } else if (Calendar.SATURDAY == dayOfWeek) {
-	        weekday = "saturday";
+	        weekday = "6";
 	    } else if (Calendar.SUNDAY == dayOfWeek) {
-	        weekday = "sunday";
+	        weekday = "7";
 	    }
 	    
 	    setWeekday(weekday);

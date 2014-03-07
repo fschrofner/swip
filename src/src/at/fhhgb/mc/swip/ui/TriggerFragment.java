@@ -88,13 +88,13 @@ public class TriggerFragment extends Fragment implements
 			Editor prefEditor = preferences.edit();
 			
 			Set<String> weekdays = new HashSet<String>();
-			weekdays.add("monday");
-			weekdays.add("tuesday");
-			weekdays.add("wednesday");
-			weekdays.add("thursday");
-			weekdays.add("friday");
-			weekdays.add("saturday");
-			weekdays.add("sunday");
+			weekdays.add("1");
+			weekdays.add("2");
+			weekdays.add("3");
+			weekdays.add("4");
+			weekdays.add("5");
+			weekdays.add("6");
+			weekdays.add("7");
 			
 
 			// loads the default values for a new trigger
