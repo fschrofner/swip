@@ -356,29 +356,81 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			pref.edit().putInt("battery_end_level", -1).commit();
 		}
 		
+		//Binds the summary of the weekends
+		int size = pref.getStringSet("weekdays", null).size();
 		if (pref.getStringSet("weekdays", null).isEmpty()) {
 			findPreference("weekdays").setSummary(R.string.pref_weekday_none);
-		} else if (pref.getStringSet("weekdays", null).size() == 7) {
+		} else if (size == 7) {
 			findPreference("weekdays").setSummary(R.string.pref_weekday_all);
+		} else if (size == 5 && pref.getStringSet("weekdays", null).contains("monday") && 
+				pref.getStringSet("weekdays", null).contains("tuesday") && 
+				pref.getStringSet("weekdays", null).contains("wednesday") &&
+				pref.getStringSet("weekdays", null).contains("thursday") &&
+				pref.getStringSet("weekdays", null).contains("friday")) {
+			findPreference("weekdays").setSummary(R.string.pref_weekday_workdays);
+		} else if (size == 2 && pref.getStringSet("weekdays", null).contains("saturday") && 
+				pref.getStringSet("weekdays", null).contains("sunday")) {
+			findPreference("weekdays").setSummary(R.string.pref_weekday_weekend);
 		} else {
 			StringBuilder summary = new StringBuilder();
+			int i = 1;
+			
 			if ((pref.getStringSet("weekdays", null).contains("monday"))) {
-				summary.append(getResources().getString(R.string.pref_mon) + " ");
+				summary.append(getResources().getString(R.string.pref_mon));
+				if (i < size - 1) {
+					summary.append(", ");
+					i++;
+				} else if (i == size - 1) {
+					summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+					i++;
+				}
 			}
 			if ((pref.getStringSet("weekdays", null).contains("tuesday"))) {
-				summary.append(getResources().getString(R.string.pref_tue) + " ");
+				summary.append(getResources().getString(R.string.pref_tue));
+				if (i < size - 1) {
+					summary.append(", ");
+					i++;
+				} else if (i == size - 1) {
+					summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+					i++;
+				}
 			}
 			if ((pref.getStringSet("weekdays", null).contains("wednesday"))) {
-				summary.append(getResources().getString(R.string.pref_wed) + " ");
+				summary.append(getResources().getString(R.string.pref_wed));
+				if (i < size - 1) {
+					summary.append(", ");
+					i++;
+				} else if (i == size - 1) {
+					summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+					i++;
+				}
 			}
 			if ((pref.getStringSet("weekdays", null).contains("thursday"))) {
-				summary.append(getResources().getString(R.string.pref_thur) + " ");
+				summary.append(getResources().getString(R.string.pref_thur));
+				if (i < size - 1) {
+					summary.append(", ");
+					i++;
+				} else if (i == size - 1) {
+					summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+					i++;
+				}
 			}
 			if ((pref.getStringSet("weekdays", null).contains("friday"))) {
-				summary.append(getResources().getString(R.string.pref_fri) + " ");
+				summary.append(getResources().getString(R.string.pref_fri));
+				if (i < size - 1) {
+					summary.append(", ");
+					i++;
+				} else if (i == size - 1) {
+					summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+					i++;
+				}
 			}
 			if ((pref.getStringSet("weekdays", null).contains("saturday"))) {
-				summary.append(getResources().getString(R.string.pref_sat) + " ");
+				summary.append(getResources().getString(R.string.pref_sat));
+				if (i == size - 1) {
+					summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+					i++;
+				}
 			}
 			if ((pref.getStringSet("weekdays", null).contains("sunday"))) {
 				summary.append(getResources().getString(R.string.pref_sun));
@@ -656,30 +708,82 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 			SharedPreferences pref = PreferenceManager
 					.getDefaultSharedPreferences(this);
+			
+			int size = pref.getStringSet("weekdays", null).size();
 
 			if (pref.getStringSet("weekdays", null).isEmpty()) {
 				findPreference("weekdays").setSummary(R.string.pref_weekday_none);
-			} else if (pref.getStringSet("weekdays", null).size() == 7) {
+			} else if (size == 7) {
 				findPreference("weekdays").setSummary(R.string.pref_weekday_all);
+			} else if (size == 5 && pref.getStringSet("weekdays", null).contains("monday") && 
+					pref.getStringSet("weekdays", null).contains("tuesday") && 
+					pref.getStringSet("weekdays", null).contains("wednesday") &&
+					pref.getStringSet("weekdays", null).contains("thursday") &&
+					pref.getStringSet("weekdays", null).contains("friday")) {
+				findPreference("weekdays").setSummary(R.string.pref_weekday_workdays);
+			} else if (size == 2 && pref.getStringSet("weekdays", null).contains("saturday") && 
+					pref.getStringSet("weekdays", null).contains("sunday")) {
+				findPreference("weekdays").setSummary(R.string.pref_weekday_weekend);
 			} else {
 				StringBuilder summary = new StringBuilder();
+				int i = 1;
+				
 				if ((pref.getStringSet("weekdays", null).contains("monday"))) {
-					summary.append(getResources().getString(R.string.pref_mon) + " ");
+					summary.append(getResources().getString(R.string.pref_mon));
+					if (i < size - 1) {
+						summary.append(", ");
+						i++;
+					} else if (i == size - 1) {
+						summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+						i++;
+					}
 				}
 				if ((pref.getStringSet("weekdays", null).contains("tuesday"))) {
-					summary.append(getResources().getString(R.string.pref_tue) + " ");
+					summary.append(getResources().getString(R.string.pref_tue));
+					if (i < size - 1) {
+						summary.append(", ");
+						i++;
+					} else if (i == size - 1) {
+						summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+						i++;
+					}
 				}
 				if ((pref.getStringSet("weekdays", null).contains("wednesday"))) {
-					summary.append(getResources().getString(R.string.pref_wed) + " ");
+					summary.append(getResources().getString(R.string.pref_wed));
+					if (i < size - 1) {
+						summary.append(", ");
+						i++;
+					} else if (i == size - 1) {
+						summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+						i++;
+					}
 				}
 				if ((pref.getStringSet("weekdays", null).contains("thursday"))) {
-					summary.append(getResources().getString(R.string.pref_thur) + " ");
+					summary.append(getResources().getString(R.string.pref_thur));
+					if (i < size - 1) {
+						summary.append(", ");
+						i++;
+					} else if (i == size - 1) {
+						summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+						i++;
+					}
 				}
 				if ((pref.getStringSet("weekdays", null).contains("friday"))) {
-					summary.append(getResources().getString(R.string.pref_fri) + " ");
+					summary.append(getResources().getString(R.string.pref_fri));
+					if (i < size - 1) {
+						summary.append(", ");
+						i++;
+					} else if (i == size - 1) {
+						summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+						i++;
+					}
 				}
 				if ((pref.getStringSet("weekdays", null).contains("saturday"))) {
-					summary.append(getResources().getString(R.string.pref_sat) + " ");
+					summary.append(getResources().getString(R.string.pref_sat));
+					if (i == size - 1) {
+						summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+						i++;
+					}
 				}
 				if ((pref.getStringSet("weekdays", null).contains("sunday"))) {
 					summary.append(getResources().getString(R.string.pref_sun));
