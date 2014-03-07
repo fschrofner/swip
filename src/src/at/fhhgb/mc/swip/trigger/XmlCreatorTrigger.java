@@ -172,47 +172,47 @@ public class XmlCreatorTrigger {
 		if (_trigger.getWeekdays() != null) {
 			Element weekdayElement = xmlProfile.createElement("weekdays");
 
-			if (_trigger.getWeekdays().contains("monday")) {
+			if (_trigger.getWeekdays().contains("1")) {
 				weekdayElement
-						.setAttribute("monday", "true");
+						.setAttribute("mon", "true");
 			} else {
-				weekdayElement.setAttribute("monday", "false");
+				weekdayElement.setAttribute("mon", "false");
 			}
-			if (_trigger.getWeekdays().contains("tuesday")) {
+			if (_trigger.getWeekdays().contains("2")) {
 				weekdayElement
-						.setAttribute("tuesday", "true");
+						.setAttribute("tue", "true");
 			} else {
-				weekdayElement.setAttribute("tuesday", "false");
+				weekdayElement.setAttribute("tue", "false");
 			}
-			if (_trigger.getWeekdays().contains("wednesday")) {
+			if (_trigger.getWeekdays().contains("3")) {
 				weekdayElement
-						.setAttribute("wednesday", "true");
+						.setAttribute("wed", "true");
 			} else {
-				weekdayElement.setAttribute("wednesday", "false");
+				weekdayElement.setAttribute("wed", "false");
 			}
-			if (_trigger.getWeekdays().contains("thursday")) {
+			if (_trigger.getWeekdays().contains("4")) {
 				weekdayElement
-						.setAttribute("thursday", "true");
+						.setAttribute("thur", "true");
 			} else {
-				weekdayElement.setAttribute("thursday", "false");
+				weekdayElement.setAttribute("thur", "false");
 			}
-			if (_trigger.getWeekdays().contains("friday")) {
+			if (_trigger.getWeekdays().contains("5")) {
 				weekdayElement
-						.setAttribute("friday", "true");
+						.setAttribute("fri", "true");
 			} else {
-				weekdayElement.setAttribute("friday", "false");
+				weekdayElement.setAttribute("fri", "false");
 			}
-			if (_trigger.getWeekdays().contains("saturday")) {
+			if (_trigger.getWeekdays().contains("6")) {
 				weekdayElement
-						.setAttribute("saturday", "true");
+						.setAttribute("sat", "true");
 			} else {
-				weekdayElement.setAttribute("saturday", "false");
+				weekdayElement.setAttribute("sat", "false");
 			}
-			if (_trigger.getWeekdays().contains("sunday")) {
+			if (_trigger.getWeekdays().contains("7")) {
 				weekdayElement
-						.setAttribute("sunday", "true");
+						.setAttribute("sun", "true");
 			} else {
-				weekdayElement.setAttribute("sunday", "false");
+				weekdayElement.setAttribute("sun", "false");
 			}
 
 			Log.i("XMLCreatorTrigger",
