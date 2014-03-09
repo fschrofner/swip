@@ -41,8 +41,8 @@
         <item>7</item>
     </string-array>
     
-    <string name="pref_weekday_none">No weekday selected!</string>
-    <string name="pref_weekday_all">Every weekday selected</string>
+    <string name="pref_weekday_none">Ignored</string>
+    <string name="pref_weekday_all">Every day</string>
     <string name="pref_weekday_workdays">Workdays</string>
     <string name="pref_weekday_weekend">Weekend</string>
     <string name="pref_mon">Mon</string>
