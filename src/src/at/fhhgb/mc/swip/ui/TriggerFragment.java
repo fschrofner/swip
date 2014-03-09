@@ -4,7 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -84,6 +86,16 @@ public class TriggerFragment extends Fragment implements
 			SharedPreferences preferences = PreferenceManager
 					.getDefaultSharedPreferences(getActivity());
 			Editor prefEditor = preferences.edit();
+			
+			Set<String> weekdays = new HashSet<String>();
+			weekdays.add("1");
+			weekdays.add("2");
+			weekdays.add("3");
+			weekdays.add("4");
+			weekdays.add("5");
+			weekdays.add("6");
+			weekdays.add("7");
+			
 
 			// loads the default values for a new trigger
 			prefEditor.putString("name_trigger", getString(R.string.pref_default_name));
@@ -98,6 +110,7 @@ public class TriggerFragment extends Fragment implements
 			prefEditor.putFloat("geofence_lat", -1F);
 			prefEditor.putFloat("geofence_lng", -1F);
 			prefEditor.putInt("geofence_radius", 0);
+			prefEditor.putStringSet("weekdays", weekdays);
 			prefEditor.commit();
 
 			Intent i = new Intent(getActivity(), TriggerEditActivity.class);

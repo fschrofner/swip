@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -61,7 +62,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 	// saves the previous trigger name for the case the trigger gets renamed (so
 	// the previous file of this trigger can be deleted)
 	private String previousName;
-	
+
 	/**
 	 * Sets up the actionbar.
 	 * 
@@ -325,6 +326,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("priority"));
 		bindPreferenceSummaryToValue(findPreference("start_time"));
 		bindPreferenceSummaryToValue(findPreference("end_time"));
+//		bindPreferenceSummaryToValue(findPreference("weekdays"));
 		bindPreferenceSummaryToValue(findPreference("profile"));
 		bindPreferenceSummaryToValue(findPreference("battery_state"));
 		bindPreferenceSummaryToValue(findPreference("headphone"));
@@ -333,9 +335,9 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		if (pref.getInt("geofence_radius", 50) > 0) {
 			findPreference("location").setSummary(
 					getString(R.string.pref_location_lat) + ": "
-							+ pref.getFloat("geofence_lat", 0F) + "째, "
+							+ pref.getFloat("geofence_lat", 0F) + "�, "
 							+ getString(R.string.pref_location_lng) + ": "
-							+ pref.getFloat("geofence_lng", 0F) + "째, "
+							+ pref.getFloat("geofence_lng", 0F) + "�, "
 							+ getString(R.string.pref_location_radius) + ": "
 							+ pref.getInt("geofence_radius", 50) + "m");
 		} else {
@@ -352,6 +354,88 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		if (pref.getInt("battery_start_level", -1) == -1) {
 			findPreference("battery_end_level").setEnabled(false);
 			pref.edit().putInt("battery_end_level", -1).commit();
+		}
+		
+		//Binds the summary of the weekends
+		int size = pref.getStringSet("weekdays", null).size();
+		if (pref.getStringSet("weekdays", null).isEmpty()) {
+			findPreference("weekdays").setSummary(R.string.pref_weekday_none);
+		} else if (size == 7) {
+			findPreference("weekdays").setSummary(R.string.pref_weekday_all);
+		} else if (size == 5 && pref.getStringSet("weekdays", null).contains("1") && 
+				pref.getStringSet("weekdays", null).contains("2") && 
+				pref.getStringSet("weekdays", null).contains("3") &&
+				pref.getStringSet("weekdays", null).contains("4") &&
+				pref.getStringSet("weekdays", null).contains("5")) {
+			findPreference("weekdays").setSummary(R.string.pref_weekday_workdays);
+		} else if (size == 2 && pref.getStringSet("weekdays", null).contains("6") && 
+				pref.getStringSet("weekdays", null).contains("7")) {
+			findPreference("weekdays").setSummary(R.string.pref_weekday_weekend);
+		} else {
+			StringBuilder summary = new StringBuilder();
+			int i = 1;
+			
+			if ((pref.getStringSet("weekdays", null).contains("1"))) {
+				summary.append(getResources().getString(R.string.pref_mon));
+				if (i < size - 1) {
+					summary.append(", ");
+					i++;
+				} else if (i == size - 1) {
+					summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+					i++;
+				}
+			}
+			if ((pref.getStringSet("weekdays", null).contains("2"))) {
+				summary.append(getResources().getString(R.string.pref_tue));
+				if (i < size - 1) {
+					summary.append(", ");
+					i++;
+				} else if (i == size - 1) {
+					summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+					i++;
+				}
+			}
+			if ((pref.getStringSet("weekdays", null).contains("3"))) {
+				summary.append(getResources().getString(R.string.pref_wed));
+				if (i < size - 1) {
+					summary.append(", ");
+					i++;
+				} else if (i == size - 1) {
+					summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+					i++;
+				}
+			}
+			if ((pref.getStringSet("weekdays", null).contains("4"))) {
+				summary.append(getResources().getString(R.string.pref_thur));
+				if (i < size - 1) {
+					summary.append(", ");
+					i++;
+				} else if (i == size - 1) {
+					summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+					i++;
+				}
+			}
+			if ((pref.getStringSet("weekdays", null).contains("5"))) {
+				summary.append(getResources().getString(R.string.pref_fri));
+				if (i < size - 1) {
+					summary.append(", ");
+					i++;
+				} else if (i == size - 1) {
+					summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+					i++;
+				}
+			}
+			if ((pref.getStringSet("weekdays", null).contains("6"))) {
+				summary.append(getResources().getString(R.string.pref_sat));
+				if (i == size - 1) {
+					summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+					i++;
+				}
+			}
+			if ((pref.getStringSet("weekdays", null).contains("7"))) {
+				summary.append(getResources().getString(R.string.pref_sun));
+			}
+			findPreference("weekdays").setSummary(summary.toString());
 		}
 	}
 
@@ -400,6 +484,8 @@ public class TriggerEditActivity extends PreferenceActivity implements
 					"00:00").split(":")[1]));
 		}
 
+		trigger.setWeekdays(pref.getStringSet("weekdays", null));
+
 		trigger.setProfileName(pref.getString("profile", getResources()
 				.getString(R.string.pref_profile_default)));
 
@@ -424,15 +510,15 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			trigger.setHeadphones(Trigger.listen_state.ignore);
 		}
 
-		//unregisters the old geofences from the system
+		// unregisters the old geofences from the system
 		locTrig.unregisterGeofence(name);
 		locTrig.unregisterGeofence(name + "_exit");
-		
-		//deletes the list of currently triggered geofences from the service
+
+		// deletes the list of currently triggered geofences from the service
 		Intent intent = new Intent();
 		intent.setAction("at.fhhgb.mc.swip.trigger.clearGeofences");
 		sendBroadcast(intent);
-		
+
 		if (pref.getInt("geofence_radius", 50) > 0) {
 
 			// geofence that registers if you enter the area
@@ -606,13 +692,103 @@ public class TriggerEditActivity extends PreferenceActivity implements
 			if (pref.getInt("geofence_radius", 50) > 0) {
 				findPreference("location").setSummary(
 						getString(R.string.pref_location_lat) + ": "
-								+ pref.getFloat("geofence_lat", 0F) + "째, "
+								+ pref.getFloat("geofence_lat", 0F) + "�, "
 								+ getString(R.string.pref_location_lng) + ": "
-								+ pref.getFloat("geofence_lng", 0F) + "째, "
-								+ getString(R.string.pref_location_radius) + ": "
-								+ pref.getInt("geofence_radius", 50) + "m");
+								+ pref.getFloat("geofence_lng", 0F) + "�, "
+								+ getString(R.string.pref_location_radius)
+								+ ": " + pref.getInt("geofence_radius", 50)
+								+ "m");
 			} else {
 				findPreference("location").setSummary(R.string.ignored);
+			}
+		}
+
+		// Binds the summary of the weekday
+		if (key.equals("weekdays")) {
+
+			SharedPreferences pref = PreferenceManager
+					.getDefaultSharedPreferences(this);
+			
+			int size = pref.getStringSet("weekdays", null).size();
+
+			if (pref.getStringSet("weekdays", null).isEmpty()) {
+				findPreference("weekdays").setSummary(R.string.pref_weekday_none);
+			} else if (size == 7) {
+				findPreference("weekdays").setSummary(R.string.pref_weekday_all);
+			} else if (size == 5 && pref.getStringSet("weekdays", null).contains("1") && 
+					pref.getStringSet("weekdays", null).contains("2") && 
+					pref.getStringSet("weekdays", null).contains("3") &&
+					pref.getStringSet("weekdays", null).contains("4") &&
+					pref.getStringSet("weekdays", null).contains("5")) {
+				findPreference("weekdays").setSummary(R.string.pref_weekday_workdays);
+			} else if (size == 2 && pref.getStringSet("weekdays", null).contains("6") && 
+					pref.getStringSet("weekdays", null).contains("7")) {
+				findPreference("weekdays").setSummary(R.string.pref_weekday_weekend);
+			} else {
+				StringBuilder summary = new StringBuilder();
+				int i = 1;
+				
+				if ((pref.getStringSet("weekdays", null).contains("1"))) {
+					summary.append(getResources().getString(R.string.pref_mon));
+					if (i < size - 1) {
+						summary.append(", ");
+						i++;
+					} else if (i == size - 1) {
+						summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+						i++;
+					}
+				}
+				if ((pref.getStringSet("weekdays", null).contains("2"))) {
+					summary.append(getResources().getString(R.string.pref_tue));
+					if (i < size - 1) {
+						summary.append(", ");
+						i++;
+					} else if (i == size - 1) {
+						summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+						i++;
+					}
+				}
+				if ((pref.getStringSet("weekdays", null).contains("3"))) {
+					summary.append(getResources().getString(R.string.pref_wed));
+					if (i < size - 1) {
+						summary.append(", ");
+						i++;
+					} else if (i == size - 1) {
+						summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+						i++;
+					}
+				}
+				if ((pref.getStringSet("weekdays", null).contains("4"))) {
+					summary.append(getResources().getString(R.string.pref_thur));
+					if (i < size - 1) {
+						summary.append(", ");
+						i++;
+					} else if (i == size - 1) {
+						summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+						i++;
+					}
+				}
+				if ((pref.getStringSet("weekdays", null).contains("5"))) {
+					summary.append(getResources().getString(R.string.pref_fri));
+					if (i < size - 1) {
+						summary.append(", ");
+						i++;
+					} else if (i == size - 1) {
+						summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+						i++;
+					}
+				}
+				if ((pref.getStringSet("weekdays", null).contains("6"))) {
+					summary.append(getResources().getString(R.string.pref_sat));
+					if (i == size - 1) {
+						summary.append(" " + getResources().getString(R.string.pref_and) + " ");
+						i++;
+					}
+				}
+				if ((pref.getStringSet("weekdays", null).contains("7"))) {
+					summary.append(getResources().getString(R.string.pref_sun));
+				}
+				findPreference("weekdays").setSummary(summary.toString());
 			}
 		}
 

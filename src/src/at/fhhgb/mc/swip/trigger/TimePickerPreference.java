@@ -54,15 +54,20 @@ OnCheckedChangeListener {
 	protected View onCreateDialogView() {
 		View view = super.onCreateDialogView();
 		
+		String time = getPersistedString(getContext().getString(R.string.ignored));
+		
 		picker = (TimePicker) view.findViewById(R.id.timepicker);
 		picker.setIs24HourView(true);
 		
 		checkbox = (CheckBox) view.findViewById(R.id.checkbox_timepicker);
 		checkbox.setOnCheckedChangeListener(this);
 		
-		if (getPersistedString(getContext().getString(R.string.ignored)).contains(":")) {
+//		if (getPersistedString(getContext().getString(R.string.ignored)).contains(":")) {
+			if (time.contains(":")) {
 			checkbox.setChecked(true);
 			picker.setEnabled(true);
+			lastHour = getHour(time);
+			lastMinute = getMinute(time);
 		} else {
 			checkbox.setChecked(false);
 			picker.setEnabled(false);
