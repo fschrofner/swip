@@ -163,11 +163,64 @@ public class XmlCreatorTrigger {
 			geofenceElement.setAttribute("id", "");
 		}
 
-		Log.i("XMLCreatorTrigger",
-				String.format(
-						"trigger changes were defined as follows: trigger_name: %s",
-						_trigger.getGeofence()));
+		Log.i("XMLCreatorTrigger", String.format(
+				"trigger changes were defined as follows: trigger_name: %s",
+				_trigger.getGeofence()));
 		rootElement.appendChild(geofenceElement);
+
+		// writes weekday changes
+		if (_trigger.getWeekdays() != null) {
+			Element weekdayElement = xmlProfile.createElement("weekdays");
+
+			if (_trigger.getWeekdays().contains("1")) {
+				weekdayElement
+						.setAttribute("mon", "true");
+			} else {
+				weekdayElement.setAttribute("mon", "false");
+			}
+			if (_trigger.getWeekdays().contains("2")) {
+				weekdayElement
+						.setAttribute("tue", "true");
+			} else {
+				weekdayElement.setAttribute("tue", "false");
+			}
+			if (_trigger.getWeekdays().contains("3")) {
+				weekdayElement
+						.setAttribute("wed", "true");
+			} else {
+				weekdayElement.setAttribute("wed", "false");
+			}
+			if (_trigger.getWeekdays().contains("4")) {
+				weekdayElement
+						.setAttribute("thur", "true");
+			} else {
+				weekdayElement.setAttribute("thur", "false");
+			}
+			if (_trigger.getWeekdays().contains("5")) {
+				weekdayElement
+						.setAttribute("fri", "true");
+			} else {
+				weekdayElement.setAttribute("fri", "false");
+			}
+			if (_trigger.getWeekdays().contains("6")) {
+				weekdayElement
+						.setAttribute("sat", "true");
+			} else {
+				weekdayElement.setAttribute("sat", "false");
+			}
+			if (_trigger.getWeekdays().contains("7")) {
+				weekdayElement
+						.setAttribute("sun", "true");
+			} else {
+				weekdayElement.setAttribute("sun", "false");
+			}
+
+			Log.i("XMLCreatorTrigger",
+					String.format(
+							"trigger changes were defined as follows: weekday number: %s",
+							_trigger.getWeekdays().size()));
+			rootElement.appendChild(weekdayElement);
+		}
 
 		// writes the complete xml file
 		transformer = transFactory.newTransformer();

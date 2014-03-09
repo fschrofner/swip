@@ -31,6 +31,7 @@ public class TriggerService extends Service{
 	private TriggerBroadcastReceiver triggerReceiver;
 	private int currentHours;
 	private int currentMinutes;
+	private String currentWeekday;
 	private boolean headphones;
 	private boolean batteryCharging;
 	private int batteryLevel;
@@ -65,6 +66,36 @@ public class TriggerService extends Service{
 		setTime(h, m);
 		
 		compareTriggers();
+	}
+	
+	/**
+	 * Set the weekday on initialization and compares the triggers.
+	 */
+	private void setInitialWeekday() {
+		String weekday = "";
+
+	    Calendar c = Calendar.getInstance();
+	    int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+
+	    if (Calendar.MONDAY == dayOfWeek) {
+	        weekday = "1";
+	    } else if (Calendar.TUESDAY == dayOfWeek) {
+	        weekday = "2";
+	    } else if (Calendar.WEDNESDAY == dayOfWeek) {
+	        weekday = "3";
+	    } else if (Calendar.THURSDAY == dayOfWeek) {
+	        weekday = "4";
+	    } else if (Calendar.FRIDAY == dayOfWeek) {
+	        weekday = "5";
+	    } else if (Calendar.SATURDAY == dayOfWeek) {
+	        weekday = "6";
+	    } else if (Calendar.SUNDAY == dayOfWeek) {
+	        weekday = "7";
+	    }
+	    
+	    setWeekday(weekday);
+	    
+	    compareTriggers();
 	}
 	
 	/**
@@ -129,6 +160,7 @@ public class TriggerService extends Service{
 		Log.i("TriggerService", "TriggerService started");
 
 		setInitialTime();
+		setInitialWeekday();
 		setInitialHeadphones();
 		
 		// Create a broadcast receiver to handle changes
@@ -152,6 +184,18 @@ public class TriggerService extends Service{
 		Log.i("TriggerService", "current time updated: " + currentHours + ":" + currentMinutes);
 		compareTriggers();
 	}
+	
+	/**
+	 * Sets the weekday.
+	 * 
+	 * @param _currenWeekday
+	 *            the current weekday.
+	 */
+	public void setWeekday(String _currentWeekday) {
+		currentWeekday = _currentWeekday;
+		Log.i("TriggerService", "current weekday updated: " + currentWeekday);
+		compareTriggers();
+	}
 
 	/**
 	 * Compares the triggers with the actual state.
@@ -164,36 +208,42 @@ public class TriggerService extends Service{
 			Log.i("TriggerService", "compare trigger: " + trigger.getName());
 			if(compareTime(trigger)){
 				Log.i("TriggerService", "trigger matching time");
-				if(compareHeadphones(trigger)){
-					Log.i("TriggerService", "trigger matching headphones");
-					if(compareBatteryCharging(trigger)){
-						Log.i("TriggerService", "trigger matching battery state");
-						if(compareBatteryLevel(trigger)){
-							Log.i("TriggerService", "trigger matching battery level");
-							if(compareGeofence(trigger)){
-								Log.i("TriggerService",
-										"trigger matching geofence");
-								Log.i("TriggerService", "adding trigger to triggerPriorityList: " + trigger.getName());
-									
-									
-								triggerPriorityList.add(trigger);
-								Log.i("TriggerService", "highestPriority add: " + trigger.getName());
-							} 
-							else {
-								Log.i("TriggerService", trigger.getName()
-										+ " does not match geofence");
+				if(compareWeekday(trigger)){
+					Log.i("TriggerService", "trigger matching weekday");
+					if(compareHeadphones(trigger)){
+						Log.i("TriggerService", "trigger matching headphones");
+						if(compareBatteryCharging(trigger)){
+							Log.i("TriggerService", "trigger matching battery state");
+							if(compareBatteryLevel(trigger)){
+								Log.i("TriggerService", "trigger matching battery level");
+								if(compareGeofence(trigger)){
+									Log.i("TriggerService",
+											"trigger matching geofence");
+									Log.i("TriggerService", "adding trigger to triggerPriorityList: " + trigger.getName());
+										
+										
+									triggerPriorityList.add(trigger);
+									Log.i("TriggerService", "highestPriority add: " + trigger.getName());
+								} 
+								else {
+									Log.i("TriggerService", trigger.getName()
+											+ " does not match geofence");
+								}
 							}
+							else{
+								Log.i("TriggerService", trigger.getName() + " does not match battery level");
+							}					
 						}
 						else{
-							Log.i("TriggerService", trigger.getName() + " does not match battery level");
-						}					
+							Log.i("TriggerService", trigger.getName() + " does not match battery state");
+						}
 					}
 					else{
-						Log.i("TriggerService", trigger.getName() + " does not match battery state");
+						Log.i("TriggerService", trigger.getName() + " does not match headphones");
 					}
 				}
 				else{
-					Log.i("TriggerService", trigger.getName() + " does not match headphones");
+					Log.i("TriggerService", trigger.getName() + " does not match weekday");
 				}
 			}
 			else{
@@ -233,7 +283,7 @@ public class TriggerService extends Service{
 				(_trigger.getStartHours() == _trigger.getEndHours() && _trigger.getStartMinutes() < _trigger.getEndMinutes())){
 			Log.i("TriggerService", "time range on same day");
 			
-			//if the hours are inbetween the trigger hours
+			//if the hours are in between the trigger hours
 			if(currentHours > _trigger.getStartHours() && currentHours < _trigger.getEndHours()){
 					return true;			
 			}
@@ -287,6 +337,27 @@ public class TriggerService extends Service{
 		else{
 			return false;
 		}
+	}
+	
+	/**
+	 * Compares the weekday saved inside the variables of the trigger with the current weekday received by the broadcast receiver.
+	 * 
+	 * @param _trigger the trigger to compare to
+	 * @return true = weekday matches, false = weekday does not match
+	 */
+	private boolean compareWeekday(Trigger _trigger) {
+		Log.i("TriggerService", "compare weekday called!");
+		//if every weekday is set
+		
+		if (_trigger.getWeekdays().size() == 7){
+			Log.i("TriggerService", "every weekday is set");
+			return true;
+		}
+		
+		if (_trigger.getWeekdays().contains(currentWeekday)){
+			return true;
+		}
+		return false;
 	}
 	
 	/**

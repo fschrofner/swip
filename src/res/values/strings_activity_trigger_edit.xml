@@ -19,6 +19,40 @@
     <string name="picker_start_message">Check the box and adjust the time-picker to select the start-time.</string>
     <string name="picker_title_end_time">End-Time</string>
     <string name="picker_end_message">Check the box and adjust the time-picker to select the end-time.</string>
+    <string name="pref_weekday_title">Weekday</string>
+    <string name="pref_weekday_summary">Click to choose one or more weekdays</string>
+    
+    <string-array name="pref_weekday_entries">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+    <string-array name="pref_weekday_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+    
+    <string name="pref_weekday_none">No weekday selected!</string>
+    <string name="pref_weekday_all">Every weekday selected</string>
+    <string name="pref_weekday_workdays">Workdays</string>
+    <string name="pref_weekday_weekend">Weekend</string>
+    <string name="pref_mon">Mon</string>
+    <string name="pref_tue">Tue</string>
+    <string name="pref_wed">Wed</string>
+    <string name="pref_thur">Thur</string>
+    <string name="pref_fri">Fri</string>
+    <string name="pref_sat">Sat</string>
+    <string name="pref_sun">Sun</string>
+    <string name="pref_and">and</string>
 
     <!-- Settings for Battery -->
     <string name="pref_header_battery">Battery</string>
