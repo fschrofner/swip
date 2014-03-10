@@ -13,20 +13,20 @@
   <string name="picker_start_message">Selecione o checkbox e ajuste para alterar o Horário Inicial.</string>
   <string name="picker_title_end_time">Horário final</string>
   <string name="picker_end_message">Selecione o checkbox e ajuste para alterar o Horário Final.</string>
-  <string name="pref_weekday_title">Weekday</string>
-  <string name="pref_weekday_summary">Click to choose one or more weekdays</string>
+  <string name="pref_weekday_title">Dia da semana</string>
+  <string name="pref_weekday_summary">Clique para escolher um ou mais dias da semana</string>
   <string name="pref_weekday_none">Ignorado</string>
-  <string name="pref_weekday_all">Every day</string>
-  <string name="pref_weekday_workdays">Workdays</string>
-  <string name="pref_weekday_weekend">Weekend</string>
-  <string name="pref_mon">Mon</string>
-  <string name="pref_tue">Tue</string>
-  <string name="pref_wed">Wed</string>
-  <string name="pref_thur">Thur</string>
-  <string name="pref_fri">Fri</string>
-  <string name="pref_sat">Sat</string>
-  <string name="pref_sun">Sun</string>
-  <string name="pref_and">and</string>
+  <string name="pref_weekday_all">Todos os dias</string>
+  <string name="pref_weekday_workdays">Dias úteis</string>
+  <string name="pref_weekday_weekend">Fim de Semana</string>
+  <string name="pref_mon">Seg</string>
+  <string name="pref_tue">Ter</string>
+  <string name="pref_wed">Qua</string>
+  <string name="pref_thur">Qui</string>
+  <string name="pref_fri">Sex</string>
+  <string name="pref_sat">Sáb</string>
+  <string name="pref_sun">Dom</string>
+  <string name="pref_and">e</string>
   <string name="pref_header_battery">Bateria</string>
   <string name="pref_title_battery_state">Estado da bateria</string>
   <string name="slider_title_battery_start_level">Nível mínimo da bateria</string>
@@ -53,13 +53,13 @@
   <string name="alert_discard_yes">Sim</string>
   <string name="alert_discard_no">Não</string>
   <string-array name="pref_weekday_entries">
-    <item>Monday</item>
-    <item>Tuesday</item>
-    <item>Wednesday</item>
-    <item>Thursday</item>
-    <item>Friday</item>
-    <item>Saturday</item>
-    <item>Sunday</item>
+    <item>Segunda</item>
+    <item>Terça</item>
+    <item>Quarta</item>
+    <item>Quinta</item>
+    <item>Sexta</item>
+    <item>Sábado</item>
+    <item>Domingo</item>
   </string-array>
   <string-array name="pref_weekday_entry_values">
     <item>1</item>
