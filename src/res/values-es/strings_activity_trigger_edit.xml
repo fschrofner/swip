@@ -13,6 +13,20 @@
   <string name="picker_start_message">Active la casilla de verificación y ajuste el selector de tiempo para seleccionar el tiempo de inicio.</string>
   <string name="picker_title_end_time">Hora de terminar</string>
   <string name="picker_end_message">Active la casilla de verificación y ajuste el selector de tiempo para seleccionar el tiempo de terminar.</string>
+  <string name="pref_weekday_title">Weekday</string>
+  <string name="pref_weekday_summary">Click to choose one or more weekdays</string>
+  <string name="pref_weekday_none">Ignorado</string>
+  <string name="pref_weekday_all">Every day</string>
+  <string name="pref_weekday_workdays">Workdays</string>
+  <string name="pref_weekday_weekend">Weekend</string>
+  <string name="pref_mon">Mon</string>
+  <string name="pref_tue">Tue</string>
+  <string name="pref_wed">Wed</string>
+  <string name="pref_thur">Thur</string>
+  <string name="pref_fri">Fri</string>
+  <string name="pref_sat">Sat</string>
+  <string name="pref_sun">Sun</string>
+  <string name="pref_and">and</string>
   <string name="pref_header_battery">Batería</string>
   <string name="pref_title_battery_state">Estado de la batería</string>
   <string name="slider_title_battery_start_level">Batería de bajo nivel</string>
@@ -38,6 +52,24 @@
   <string name="alert_discard_text">¿Quieres descartar los cambios y salir del editor?</string>
   <string name="alert_discard_yes">Sí</string>
   <string name="alert_discard_no">No</string>
+  <string-array name="pref_weekday_entries">
+    <item>Monday</item>
+    <item>Tuesday</item>
+    <item>Wednesday</item>
+    <item>Thursday</item>
+    <item>Friday</item>
+    <item>Saturday</item>
+    <item>Sunday</item>
+  </string-array>
+  <string-array name="pref_weekday_entry_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+    <item>6</item>
+    <item>7</item>
+  </string-array>
   <string-array name="pref_battery_state_titles">
     <item>Cargando</item>
     <item>Descargando</item>

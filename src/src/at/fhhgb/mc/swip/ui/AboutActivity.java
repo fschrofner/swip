@@ -38,7 +38,13 @@ public class AboutActivity extends Activity implements OnClickListener {
 		text.setOnClickListener(this);
 		text = (TextView) findViewById(R.id.license_apache);
 		text.setOnClickListener(this);
+		text = (TextView) findViewById(R.id.textViewFlorianSchrofner);
+		text.setOnClickListener(this);
 		text = (TextView) findViewById(R.id.textViewTranslatorRussian2);
+		text.setOnClickListener(this);
+		text = (TextView) findViewById(R.id.textViewTranslatorItalian2);
+		text.setOnClickListener(this);
+		text = (TextView) findViewById(R.id.textViewTranslatorPortuguese2);
 		text.setOnClickListener(this);
 	}
 
@@ -78,9 +84,24 @@ public class AboutActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(Intent.ACTION_VIEW,
 					Uri.parse("http://www.apache.org/licenses/LICENSE-2.0"));
 			startActivity(intent);
-		} else if(_view.getId() == R.id.textViewTranslatorRussian2){
+		} else if(_view.getId() == R.id.textViewFlorianSchrofner){
+			Intent intent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("http://flosch.at"));
+			startActivity(intent);
+		} 
+		
+		//Here the links to translator pages are added
+		else if(_view.getId() == R.id.textViewTranslatorRussian2){
 			Intent intent = new Intent(Intent.ACTION_VIEW,
 					Uri.parse("https://plus.google.com/+DmitryGaich"));
+			startActivity(intent);
+		} else if(_view.getId() == R.id.textViewTranslatorItalian2){
+			Intent intent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("https://plus.google.com/+ClaudioArseni"));
+			startActivity(intent);
+		} else if(_view.getId() == R.id.textViewTranslatorPortuguese2){
+			Intent intent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("https://crowdin.net/profile/diogosena"));
 			startActivity(intent);
 		}
 
