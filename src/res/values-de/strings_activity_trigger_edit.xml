@@ -7,12 +7,26 @@
   <string name="pref_title_profile">Profil</string>
   <string name="pref_profile_default">Ein Profil auswählen</string>
   <string name="pref_title_priority">Priorität</string>
-  <string name="pref_message_priority">Wählen Sie eine Priorität zwischen 0 und 99, Auslöser mit einer höheren Priorität werden bevorzugt.</string>
+  <string name="pref_message_priority">Wählen Sie eine Priorität zwischen 0 und 99. Auslöser mit einer höheren Priorität werden bevorzugt.</string>
   <string name="pref_header_time">Zeit</string>
   <string name="picker_title_start_time">Startzeit</string>
   <string name="picker_start_message">Haken setzen und Zeitauswahl anpassen, um die Startzeit auszuwählen.</string>
   <string name="picker_title_end_time">Endzeit</string>
   <string name="picker_end_message">Haken setzen und Zeitauswahl anpassen, um die Endzeit auszuwählen.</string>
+  <string name="pref_weekday_title">Wochentag</string>
+  <string name="pref_weekday_summary">Tippen, um einen Wochentag auszuwählen</string>
+  <string name="pref_weekday_none">Ignoriert</string>
+  <string name="pref_weekday_all">Jeden Tag</string>
+  <string name="pref_weekday_workdays">Arbeitstage</string>
+  <string name="pref_weekday_weekend">Wochenende</string>
+  <string name="pref_mon">Mo</string>
+  <string name="pref_tue">Di</string>
+  <string name="pref_wed">Mi</string>
+  <string name="pref_thur">Do</string>
+  <string name="pref_fri">Fr</string>
+  <string name="pref_sat">Sa</string>
+  <string name="pref_sun">So</string>
+  <string name="pref_and">und</string>
   <string name="pref_header_battery">Batterie</string>
   <string name="pref_title_battery_state">Batteriestatus</string>
   <string name="slider_title_battery_start_level">Unteres Batterie-Level</string>
@@ -38,6 +52,24 @@
   <string name="alert_discard_text">Die Änderungen verwerfen und den Editor verlassen?</string>
   <string name="alert_discard_yes">Ja</string>
   <string name="alert_discard_no">Nein</string>
+  <string-array name="pref_weekday_entries">
+    <item>Montag</item>
+    <item>Dienstag</item>
+    <item>Mittwoch</item>
+    <item>Donnerstag</item>
+    <item>Freitag</item>
+    <item>Samstag</item>
+    <item>Sonntag</item>
+  </string-array>
+  <string-array name="pref_weekday_entry_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+    <item>6</item>
+    <item>7</item>
+  </string-array>
   <string-array name="pref_battery_state_titles">
     <item>Ladend</item>
     <item>Entladend</item>

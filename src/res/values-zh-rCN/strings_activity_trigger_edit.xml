@@ -13,6 +13,20 @@
   <string name="picker_start_message">勾选复选框并调整时间选择器以选择开始时间。</string>
   <string name="picker_title_end_time">结束时间</string>
   <string name="picker_end_message">勾选复选框并调整时间选择器以选择结束时间。</string>
+  <string name="pref_weekday_title">Weekday</string>
+  <string name="pref_weekday_summary">Click to choose one or more weekdays</string>
+  <string name="pref_weekday_none">忽略</string>
+  <string name="pref_weekday_all">Every day</string>
+  <string name="pref_weekday_workdays">Workdays</string>
+  <string name="pref_weekday_weekend">Weekend</string>
+  <string name="pref_mon">Mon</string>
+  <string name="pref_tue">Tue</string>
+  <string name="pref_wed">Wed</string>
+  <string name="pref_thur">Thur</string>
+  <string name="pref_fri">Fri</string>
+  <string name="pref_sat">Sat</string>
+  <string name="pref_sun">Sun</string>
+  <string name="pref_and">and</string>
   <string name="pref_header_battery">电池</string>
   <string name="pref_title_battery_state">电池状态</string>
   <string name="slider_title_battery_start_level">电池低电量</string>
@@ -38,6 +52,24 @@
   <string name="alert_discard_text">放弃更改并退出编辑器？</string>
   <string name="alert_discard_yes">是</string>
   <string name="alert_discard_no">否</string>
+  <string-array name="pref_weekday_entries">
+    <item>Monday</item>
+    <item>Tuesday</item>
+    <item>Wednesday</item>
+    <item>Thursday</item>
+    <item>Friday</item>
+    <item>Saturday</item>
+    <item>Sunday</item>
+  </string-array>
+  <string-array name="pref_weekday_entry_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+    <item>6</item>
+    <item>7</item>
+  </string-array>
   <string-array name="pref_battery_state_titles">
     <item>正在充电</item>
     <item>电池放电中</item>

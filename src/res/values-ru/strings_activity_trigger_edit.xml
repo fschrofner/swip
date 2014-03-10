@@ -13,6 +13,20 @@
   <string name="picker_start_message">Установите флажок и отрегулируйте выбор, чтобы выбрать время запуска.</string>
   <string name="picker_title_end_time">Время окончания</string>
   <string name="picker_end_message">Установите флажок и отрегулируйте выбор, чтобы выбрать время окончания.</string>
+  <string name="pref_weekday_title">Будний день</string>
+  <string name="pref_weekday_summary">Нажмите, чтобы выбрать один или несколько дней</string>
+  <string name="pref_weekday_none">Игнорируется</string>
+  <string name="pref_weekday_all">Каждый день</string>
+  <string name="pref_weekday_workdays">Будни</string>
+  <string name="pref_weekday_weekend">Выходные</string>
+  <string name="pref_mon">Пн</string>
+  <string name="pref_tue">Вт</string>
+  <string name="pref_wed">Ср</string>
+  <string name="pref_thur">Чт</string>
+  <string name="pref_fri">Пт</string>
+  <string name="pref_sat">Сб</string>
+  <string name="pref_sun">Вс</string>
+  <string name="pref_and">и</string>
   <string name="pref_header_battery">Батарея</string>
   <string name="pref_title_battery_state">Состояние батареи</string>
   <string name="slider_title_battery_start_level">Нижний уровень</string>
@@ -38,6 +52,24 @@
   <string name="alert_discard_text">Хотите отменить изменения и закрыть редактор?</string>
   <string name="alert_discard_yes">Да</string>
   <string name="alert_discard_no">Нет</string>
+  <string-array name="pref_weekday_entries">
+    <item>Понедельник</item>
+    <item>Вторник</item>
+    <item>Среда</item>
+    <item>Четверг</item>
+    <item>Пятница</item>
+    <item>Суббота</item>
+    <item>Воскресенье</item>
+  </string-array>
+  <string-array name="pref_weekday_entry_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+    <item>6</item>
+    <item>7</item>
+  </string-array>
   <string-array name="pref_battery_state_titles">
     <item>Заряжается</item>
     <item>Разряжается</item>

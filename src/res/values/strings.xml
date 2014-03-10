@@ -38,7 +38,8 @@
     <string name="title_activity_about">About</string>
     <string name="developers">Developers</string>
     <string name="aboutDevelopedBy1">This app has been developed by:</string>
-    <string name="aboutDevelopedBy2">Dominik Költringer &amp; Florian Schrofner</string>
+    <string name="aboutDevelopedBy2">Dominik Költringer &amp;\u0020</string>
+    <string name="FlorianSchrofner">Florian Schrofner</string>
     <string name="libraries">Libraries</string>
     <string name="credits1">The SliderPreferences were developed by:</string>
     <string name="credits2">Jay Weisskopf, 2012</string>
@@ -52,7 +53,8 @@
     <string name="translators_chinese">Chinese - Contactfront</string>
     <string name="translators_czech">Czech - supertronic</string>
     <string name="translators_dutch">Dutch - Antonius Augustus</string>
-    <string name="translators_italian">Italian - Claudio Arseni</string>
+    <string name="translators_italian1">Italian - \u0020</string>
+    <string name="translators_italian2">Claudio Arseni</string>
     <string name="translators_polish">Polish - sti</string>
     <string name="translators_portuguese1">Portuguese -\u0020</string>
     <string name="translators_portuguese2">Diogo Sena</string>
