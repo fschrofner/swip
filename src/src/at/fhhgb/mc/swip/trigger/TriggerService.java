@@ -349,6 +349,10 @@ public class TriggerService extends Service{
 		Log.i("TriggerService", "compare weekday called!");
 		//if every weekday is set
 		
+		if (_trigger.getWeekdays() == null) {
+			return true;
+		}
+		
 		if (_trigger.getWeekdays().size() == 7 || _trigger.getWeekdays().size() == 0){
 			Log.i("TriggerService", "every or no weekday is set");
 			return true;
