@@ -13,20 +13,20 @@
   <string name="picker_start_message">勾选复选框并调整时间选择器以选择开始时间。</string>
   <string name="picker_title_end_time">结束时间</string>
   <string name="picker_end_message">勾选复选框并调整时间选择器以选择结束时间。</string>
-  <string name="pref_weekday_title">Weekday</string>
-  <string name="pref_weekday_summary">Click to choose one or more weekdays</string>
+  <string name="pref_weekday_title">周日期</string>
+  <string name="pref_weekday_summary">点击以选择一个或多个周日期</string>
   <string name="pref_weekday_none">忽略</string>
-  <string name="pref_weekday_all">Every day</string>
-  <string name="pref_weekday_workdays">Workdays</string>
-  <string name="pref_weekday_weekend">Weekend</string>
-  <string name="pref_mon">Mon</string>
-  <string name="pref_tue">Tue</string>
-  <string name="pref_wed">Wed</string>
-  <string name="pref_thur">Thur</string>
-  <string name="pref_fri">Fri</string>
-  <string name="pref_sat">Sat</string>
-  <string name="pref_sun">Sun</string>
-  <string name="pref_and">and</string>
+  <string name="pref_weekday_all">每天</string>
+  <string name="pref_weekday_workdays">工作日</string>
+  <string name="pref_weekday_weekend">周末</string>
+  <string name="pref_mon">周一</string>
+  <string name="pref_tue">周二</string>
+  <string name="pref_wed">周三</string>
+  <string name="pref_thur">周四</string>
+  <string name="pref_fri">周五</string>
+  <string name="pref_sat">周六</string>
+  <string name="pref_sun">周日</string>
+  <string name="pref_and">和</string>
   <string name="pref_header_battery">电池</string>
   <string name="pref_title_battery_state">电池状态</string>
   <string name="slider_title_battery_start_level">电池低电量</string>
@@ -53,13 +53,13 @@
   <string name="alert_discard_yes">是</string>
   <string name="alert_discard_no">否</string>
   <string-array name="pref_weekday_entries">
-    <item>Monday</item>
-    <item>Tuesday</item>
-    <item>Wednesday</item>
-    <item>Thursday</item>
-    <item>Friday</item>
-    <item>Saturday</item>
-    <item>Sunday</item>
+    <item>周一</item>
+    <item>周二</item>
+    <item>周三</item>
+    <item>周四</item>
+    <item>周五</item>
+    <item>周六</item>
+    <item>周日</item>
   </string-array>
   <string-array name="pref_weekday_entry_values">
     <item>1</item>

@@ -13,20 +13,20 @@
   <string name="picker_start_message">Zaškrtněte políčko a vyberte čas zahájení.</string>
   <string name="picker_title_end_time">Čas ukončení</string>
   <string name="picker_end_message">Zaškrtněte políčko a vyberte čas ukončení.</string>
-  <string name="pref_weekday_title">Weekday</string>
-  <string name="pref_weekday_summary">Click to choose one or more weekdays</string>
+  <string name="pref_weekday_title">Den v týdnu</string>
+  <string name="pref_weekday_summary">Klepnutím vyberte jeden nebo více dnů v týdnu</string>
   <string name="pref_weekday_none">Ignorováno</string>
-  <string name="pref_weekday_all">Every day</string>
-  <string name="pref_weekday_workdays">Workdays</string>
-  <string name="pref_weekday_weekend">Weekend</string>
-  <string name="pref_mon">Mon</string>
-  <string name="pref_tue">Tue</string>
-  <string name="pref_wed">Wed</string>
-  <string name="pref_thur">Thur</string>
-  <string name="pref_fri">Fri</string>
-  <string name="pref_sat">Sat</string>
-  <string name="pref_sun">Sun</string>
-  <string name="pref_and">and</string>
+  <string name="pref_weekday_all">Každý den</string>
+  <string name="pref_weekday_workdays">Pracovní dny</string>
+  <string name="pref_weekday_weekend">Víkend</string>
+  <string name="pref_mon">Po</string>
+  <string name="pref_tue">Út</string>
+  <string name="pref_wed">St</string>
+  <string name="pref_thur">Čt</string>
+  <string name="pref_fri">Pá</string>
+  <string name="pref_sat">So</string>
+  <string name="pref_sun">Ne</string>
+  <string name="pref_and">a</string>
   <string name="pref_header_battery">Baterie</string>
   <string name="pref_title_battery_state">Stav baterie</string>
   <string name="slider_title_battery_start_level">Nízká úroveň baterie</string>
@@ -53,13 +53,13 @@
   <string name="alert_discard_yes">Ano</string>
   <string name="alert_discard_no">Ne</string>
   <string-array name="pref_weekday_entries">
-    <item>Monday</item>
-    <item>Tuesday</item>
-    <item>Wednesday</item>
-    <item>Thursday</item>
-    <item>Friday</item>
-    <item>Saturday</item>
-    <item>Sunday</item>
+    <item>Pondělí</item>
+    <item>Úterý</item>
+    <item>Středa</item>
+    <item>Čtvrtek</item>
+    <item>Pátek</item>
+    <item>Sobota</item>
+    <item>Neděle</item>
   </string-array>
   <string-array name="pref_weekday_entry_values">
     <item>1</item>

@@ -40,6 +40,8 @@ public class AboutActivity extends Activity implements OnClickListener {
 		text.setOnClickListener(this);
 		text = (TextView) findViewById(R.id.textViewFlorianSchrofner);
 		text.setOnClickListener(this);
+		text = (TextView) findViewById(R.id.textViewTranslatorChinese2);
+		text.setOnClickListener(this);
 		text = (TextView) findViewById(R.id.textViewTranslatorRussian2);
 		text.setOnClickListener(this);
 		text = (TextView) findViewById(R.id.textViewTranslatorItalian2);
@@ -91,7 +93,11 @@ public class AboutActivity extends Activity implements OnClickListener {
 		} 
 		
 		//Here the links to translator pages are added
-		else if(_view.getId() == R.id.textViewTranslatorRussian2){
+		else if(_view.getId() == R.id.textViewTranslatorChinese2){
+			Intent intent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("https://plus.google.com/110308759094073852821/"));
+			startActivity(intent);
+		} else if(_view.getId() == R.id.textViewTranslatorRussian2){
 			Intent intent = new Intent(Intent.ACTION_VIEW,
 					Uri.parse("https://plus.google.com/+DmitryGaich"));
 			startActivity(intent);
