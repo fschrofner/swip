@@ -51,10 +51,11 @@
   <string name="credits7"><u>Apache2-License</u></string>
   <string name="credits8">A loro vanno i ringraziamenti per le solide basi su cui lavorare</string>
   <string name="translators">Traduttori</string>
-  <string name="translators_chinese">Chinese - Contactfront</string>
-  <string name="translators_czech">Czech - supertronic</string>
+  <string name="translators_chinese1">Chinese -\u0020</string>
+  <string name="translators_chinese2">ContactFront</string>
+  <string name="translators_czech">Czech - Jan K.</string>
   <string name="translators_dutch">Dutch - Antonius Augustus</string>
-  <string name="translators_italian1">Italian - \u0020</string>
+  <string name="translators_italian1">Italian -\u0020</string>
   <string name="translators_italian2">Claudio Arseni</string>
   <string name="translators_polish">Polish - sti</string>
   <string name="translators_portuguese1">Portuguese -\u0020</string>
