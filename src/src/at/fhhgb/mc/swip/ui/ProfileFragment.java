@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import android.nfc.NfcAdapter;
 import android.nfc.NfcManager;
@@ -77,6 +78,7 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 			
 			SharedPreferences.Editor editor = pref.edit();
 			editor.putBoolean("FIRST_RUN", true);
+			editor.putString("language", Locale.getDefault().getLanguage());
 			editor.commit();
 		}
 		
