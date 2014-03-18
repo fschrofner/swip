@@ -103,6 +103,13 @@ public class ProfileEditActivity extends PreferenceActivity implements
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		SharedPreferences pref = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		
+		if (pref.getBoolean("dark_theme", false)) {
+			setTheme(R.style.AppThemeDark);
+		}
+		
 		super.onCreate(savedInstanceState);
 		setupActionBar();
 	}

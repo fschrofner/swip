@@ -2,8 +2,10 @@ package at.fhhgb.mc.swip.ui;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +29,13 @@ public class AboutActivity extends Activity implements OnClickListener {
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		SharedPreferences pref = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		
+		if (pref.getBoolean("dark_theme", false)) {
+			setTheme(R.style.AppThemeDark);
+		}
+		
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_about);

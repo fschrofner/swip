@@ -8,11 +8,16 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import at.fhhgb.mc.swip.R;
@@ -54,6 +59,17 @@ public class ArrayListAdapter extends ArrayAdapter<String> implements
 			convertView = inflater.inflate(R.layout.layout_list_profiles_item,
 					null);
 		}
+		
+		SharedPreferences pref = PreferenceManager
+				.getDefaultSharedPreferences(getContext());
+		
+		if (pref.getBoolean("dark_theme", false)) {
+			
+			ImageButton buttonEdit = (ImageButton) convertView.findViewById(R.id.buttonEdit);
+			buttonEdit.setImageDrawable(getContext().getResources().getDrawable(R.drawable.content_edit_dark));
+		}
+		
+		
 
 		element = list.get(position);
 
