@@ -63,9 +63,15 @@ public class SettingsActivity extends PreferenceActivity implements
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		SharedPreferences pref = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		
+		if (pref.getBoolean("dark_theme", false)) {
+			setTheme(R.style.AppThemeDark);
+		}
+		
 		super.onCreate(savedInstanceState);
 		setupActionBar();
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		if(pref.getBoolean("root", false) && !RootTools.isAccessGiven()){
 			Editor editor = pref.edit();
 			editor.putBoolean("root", false);
@@ -270,7 +276,7 @@ public class SettingsActivity extends PreferenceActivity implements
 			notificationManager.cancel(123);
 		}
 		
-		if(_pref.getBoolean("root", false)){
+		if(_pref.getBoolean("root", false)){			
 			if(!RootTools.isAccessGiven()){
 				AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 				dialog.setTitle(getResources().getString(R.string.pref_title_noRoot));
@@ -292,7 +298,13 @@ public class SettingsActivity extends PreferenceActivity implements
 			}
 		}
 		
-		setLocale(_pref.getString("language", "en"));
+		Locale current = getResources().getConfiguration().locale;
+		
+		if (!current.getLanguage().equals(_pref.getString("language", "en"))) {
+			Log.i("SettingsActivity", "locale: " + current.getLanguage());
+			setLocale(_pref.getString("language", "en"));
+		}
+		
 	}
 
 	/**

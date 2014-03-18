@@ -8,6 +8,7 @@
     <!-- General settings -->
     <string name="pref_title_notification">Enable permanent notification</string>
     <string name="pref_description_notification">Enables the permanent notification in the status bar to change profiles quickly.</string>
+    <string name="pref_title_dark_theme">Enables the dark theme</string>
     <string name="pref_title_root">Enable root</string>
 	<string name="pref_description_root">Enables root access, which allows additional settings.</string>
 	<string name="pref_title_systemapp">Install as system-app</string>
