@@ -72,6 +72,8 @@ public class XmlParser {
 				setRingerMode(_parser);
 			} else if (name.equals("volume")) {	
 				setVolume(_parser);
+			} else if (name.equals("airplane_mode")){
+				setAirplaneMode(_parser);
 			} else if (name.equals("nfc")){
 				setNfc(_parser);
 			} else if (name.equals("bluetooth")) {
@@ -82,8 +84,6 @@ public class XmlParser {
 				setMobileData(_parser);
 			} else if (name.equals("wifi")) {
 				setWifi(_parser);
-			} else if (name.equals("airplane_mode")){
-				setAirplaneMode(_parser);
 			} else if (name.equals("display")) {
 				setDisplay(_parser);
 			} else if (name.equals("lockscreen")) {

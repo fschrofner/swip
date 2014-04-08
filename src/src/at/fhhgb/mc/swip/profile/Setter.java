@@ -14,8 +14,10 @@ import com.stericson.RootTools.execution.CommandCapture;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -38,7 +40,6 @@ import at.fhhgb.mc.swip.services.Handler;
  * 
  */
 public class Setter {
-
 	
 	/**
 	 * Sets nfc to the given state. If it is aleady in the desired state nothing will be changed.
@@ -145,7 +146,7 @@ public class Setter {
 	 *            true = enable wifi, false = disable wifi.
 	 */
 	public void setWifi(Context _context, boolean _enable) {
-
+		
 		WifiManager wifiManager = (WifiManager) _context
 				.getSystemService(Context.WIFI_SERVICE);
 
@@ -243,6 +244,7 @@ public class Setter {
 
 	}
 	
+	
 	/**
 	 * Sets the airplane mode. This setter needs the app to have root access, otherwise it won't work.
 	 * If root access isn't given already the app will ask for permission (if the device is not rooted, nothing will happen)
@@ -258,8 +260,19 @@ public class Setter {
 		//and if root access is actually given
 		try{
 			if(pref.getBoolean("root", false) && _enable && !isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
+				
+				IntentFilter filter = new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+				AirplaneReceiver receiver = new AirplaneReceiver(this);
+				_context.registerReceiver(receiver, filter);
 				command = new CommandCapture(0, "settings put global airplane_mode_on 1","am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true");
 				RootTools.getShell(true).add(command);
+				
+
+//				while(!receiver.isAirplaneModeFinished()){
+//					Thread.sleep(1000);
+//				}
+				
+//				_context.unregisterReceiver(receiver);
 				Log.i("Setter", "Airplane Mode: enabled");
 
 			} else if
