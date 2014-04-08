@@ -113,6 +113,13 @@ public class Handler {
 			setter.setRingtoneVolume(context, _profile.getRingtoneVolume());
 		}
 
+		// airplane mode
+		if (_profile.getAirplane_mode() == Profile.state.enabled) {
+			setter.setAirplaneMode(context, true);
+		} else if (_profile.getAirplane_mode() == Profile.state.disabled) {
+			setter.setAirplaneMode(context, false);
+		}
+		
 		// nfc
 		if (_profile.getNfc() == Profile.state.enabled) {
 			setter.setNfc(context, true);
@@ -146,13 +153,6 @@ public class Handler {
 			setter.setGps(context, true);
 		} else if (_profile.getGps() == Profile.state.disabled) {
 			setter.setGps(context, false);
-		}
-
-		// airplane mode
-		if (_profile.getAirplane_mode() == Profile.state.enabled) {
-			setter.setAirplaneMode(context, true);
-		} else if (_profile.getAirplane_mode() == Profile.state.disabled) {
-			setter.setAirplaneMode(context, false);
 		}
 
 		// lockscreen

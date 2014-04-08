@@ -294,22 +294,22 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			findPreference("ringtone_volume").setEnabled(false);
 		}
 
-		// disables all other connectivity settings, when airplane mode is
+		// disables mobile data, when airplane mode is
 		// enabled
 		if (pref.getString("airplane_mode", "unchanged").equals("enabled")) {
-			findPreference("gps").setEnabled(false);
+//			findPreference("gps").setEnabled(false);
 			findPreference("mobile_data").setEnabled(false);
-			findPreference("wifi").setEnabled(false);
-			findPreference("bluetooth").setEnabled(false);
-			findPreference("nfc").setEnabled(false);
+//			findPreference("wifi").setEnabled(false);
+//			findPreference("bluetooth").setEnabled(false);
+//			findPreference("nfc").setEnabled(false);
 		}
 
 		if (!pref.getBoolean("root", false)) {
-			findPreference("gps").setEnabled(true);
+//			findPreference("gps").setEnabled(true);
 			findPreference("mobile_data").setEnabled(true);
-			findPreference("wifi").setEnabled(true);
-			findPreference("bluetooth").setEnabled(true);
-			findPreference("nfc").setEnabled(true);
+//			findPreference("wifi").setEnabled(true);
+//			findPreference("bluetooth").setEnabled(true);
+//			findPreference("nfc").setEnabled(true);
 		}
 
 		// checks if the root access is disabled inside the settings and
@@ -400,6 +400,15 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		} else {
 			profile.setRingtoneVolume(pref.getInt("ringtone_volume", -1));
 		}
+		
+		if (pref.getString("airplane_mode", "unchanged").equals("enabled")) {
+			profile.setAirplane_mode(Profile.state.enabled);
+		} else if (pref.getString("airplane_mode", "unchanged").equals(
+				"disabled")) {
+			profile.setAirplane_mode(Profile.state.disabled);
+		} else {
+			profile.setAirplane_mode(Profile.state.unchanged);
+		}
 
 		if (pref.getString("gps", "unchanged").equals("enabled")) {
 			profile.setGps(Profile.state.enabled);
@@ -440,15 +449,6 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			profile.setNfc(Profile.state.disabled);
 		} else {
 			profile.setNfc(Profile.state.unchanged);
-		}
-
-		if (pref.getString("airplane_mode", "unchanged").equals("enabled")) {
-			profile.setAirplane_mode(Profile.state.enabled);
-		} else if (pref.getString("airplane_mode", "unchanged").equals(
-				"disabled")) {
-			profile.setAirplane_mode(Profile.state.disabled);
-		} else {
-			profile.setAirplane_mode(Profile.state.unchanged);
 		}
 
 		if (pref.getString("display_auto_mode", "unchanged").equals("enabled")) {
@@ -622,33 +622,33 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			//if the option to disable gps is available (android below kitkat or installed as systemapp)
 			//it should be disabled
 			Handler handler = new Handler(this);
-			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 || handler.checkSystemapp()) {
-				findPreference("gps").setEnabled(false);
-				
-				//nfc is only available if the app is installed as systemapp
-				if(handler.checkSystemapp()){
-					findPreference("nfc").setEnabled(false);
-				}				
-			}
+//			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 || handler.checkSystemapp()) {
+//				findPreference("gps").setEnabled(false);
+//				
+//				//nfc is only available if the app is installed as systemapp
+//				if(handler.checkSystemapp()){
+//					findPreference("nfc").setEnabled(false);
+//				}				
+//			}
 			
 			findPreference("mobile_data").setEnabled(false);
-			findPreference("wifi").setEnabled(false);
-			findPreference("bluetooth").setEnabled(false);
+//			findPreference("wifi").setEnabled(false);
+//			findPreference("bluetooth").setEnabled(false);
 		} else if (key.equals("airplane_mode")
 				&& (_pref.getString("airplane_mode", "unchanged").equals(
 						"disabled") || _pref.getString("airplane_mode",
 						"unchanged").equals("unchanged"))) {
 			
 			Handler handler = new Handler(this);
-			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 || handler.checkSystemapp()) {
-				findPreference("gps").setEnabled(true);
-				if(handler.checkSystemapp()){
-					findPreference("nfc").setEnabled(true);
-				}			
-			}
+//			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 || handler.checkSystemapp()) {
+//				findPreference("gps").setEnabled(true);
+//				if(handler.checkSystemapp()){
+//					findPreference("nfc").setEnabled(true);
+//				}			
+//			}
 			findPreference("mobile_data").setEnabled(true);
-			findPreference("wifi").setEnabled(true);
-			findPreference("bluetooth").setEnabled(true);
+//			findPreference("wifi").setEnabled(true);
+//			findPreference("bluetooth").setEnabled(true);
 		}
 
 		preferencesChanged = true;
