@@ -24,23 +24,6 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 	
 	TriggerBroadcastReceiver(TriggerService _service){
 		triggerservice = _service;
-		IntentFilter filter=new IntentFilter(Intent.ACTION_HEADSET_PLUG);
-		_service.registerReceiver(this,filter);
-		filter = new IntentFilter(Intent.ACTION_TIME_TICK);
-		_service.registerReceiver(this,filter);
-		filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-		Intent intent = _service.registerReceiver(this, filter);
-		_service.setInitialBatteryState(intent);
-		filter = new IntentFilter(Intent.ACTION_POWER_CONNECTED);
-		_service.registerReceiver(this, filter);
-		filter = new IntentFilter(Intent.ACTION_POWER_DISCONNECTED);
-		_service.registerReceiver(this, filter);
-		filter = new IntentFilter("at.fhhgb.mc.swip.trigger.refresh");
-		_service.registerReceiver(this, filter);
-    	filter = new IntentFilter("at.fhhgb.mc.swip.trigger.location_change");
-		_service.registerReceiver(this, filter);
-		filter = new IntentFilter("at.fhhgb.mc.swip.trigger.clearGeofences");
-		_service.registerReceiver(this, filter);
 	}
 
 	/**
