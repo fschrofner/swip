@@ -212,7 +212,7 @@ public class Handler {
 		nBuilder.setContentIntent(resultPendingIntent);
 		nBuilder.setOngoing(true);
 		nBuilder.setWhen(0);
-		nBuilder.setPriority(1);
+		nBuilder.setPriority(-1);
 
 		Notification notification = nBuilder.build();
 		NotificationManager notificationManager = (NotificationManager) context
