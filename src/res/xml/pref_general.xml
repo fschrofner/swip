@@ -18,7 +18,9 @@
      <CheckBoxPreference
         android:defaultValue="false"
         android:key="dark_theme"
-        android:title="@string/pref_title_dark_theme" />
+        android:title="@string/pref_title_dark_theme"
+        android:summaryOn="@string/pref_description_on_dark_theme"
+        android:summaryOff="@string/pref_description_off_dark_theme" />
     
     <CheckBoxPreference
         android:defaultValue="false"

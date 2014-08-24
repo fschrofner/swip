@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import at.fhhgb.mc.swip.R;
 
 /**
@@ -44,6 +45,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		
 		if (pref.getBoolean("dark_theme", false)) {
 			setTheme(R.style.AppThemeDark);
+		}
+		
+		Locale current = getResources().getConfiguration().locale;
+		if (!current.getLanguage().equals(pref.getString("language", "en"))) {
+			Log.i("MainActivity", "lang: " + pref.getString("language", "en"));
+			SettingsActivity.setLocale(pref.getString("language", "en"), this);
 		}
     	
         super.onCreate(savedInstanceState);

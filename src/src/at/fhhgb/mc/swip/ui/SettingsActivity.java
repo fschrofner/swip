@@ -1,8 +1,11 @@
 package at.fhhgb.mc.swip.ui;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -68,6 +71,12 @@ public class SettingsActivity extends PreferenceActivity implements
 		
 		if (pref.getBoolean("dark_theme", false)) {
 			setTheme(R.style.AppThemeDark);
+		}
+		
+		Locale current = getResources().getConfiguration().locale;
+		if (!current.getLanguage().equals(pref.getString("language", "en"))) {
+			Log.i("MainActivity", "lang: " + pref.getString("language", "en"));
+			SettingsActivity.setLocale(pref.getString("language", "en"), this);
 		}
 		
 		super.onCreate(savedInstanceState);
@@ -251,7 +260,7 @@ public class SettingsActivity extends PreferenceActivity implements
 		// Set the listener to watch for value changes.
 		preference
 				.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
-
+		
 		// Trigger the listener immediately with the preference's
 		// current value.
 		sBindPreferenceSummaryToValueListener.onPreferenceChange(
@@ -298,11 +307,48 @@ public class SettingsActivity extends PreferenceActivity implements
 			}
 		}
 		
+		if (_key.equals("dark_theme")) {
+			Intent i = new Intent(getIntent());
+			i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			PendingIntent RESTART_INTENT = PendingIntent.getActivity(this.getBaseContext(), 0, i, getIntent().getFlags());
+			
+			AlarmManager mgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+			mgr.set(AlarmManager.RTC, System.currentTimeMillis(), RESTART_INTENT);
+			System.exit(2);
+			
+			
+//			AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+//			dialog.setTitle(getResources().getString(R.string.pref_title_dark_theme));
+//			dialog.setMessage(getResources().getString(R.string.pref_message_dark_theme));
+//			dialog.setNeutralButton(getResources().getString(R.string.pref_neutral_button), new DialogInterface.OnClickListener(){
+//
+//				@Override
+//				public void onClick(DialogInterface dialog, int which) {
+//					dialog.dismiss();
+//					
+//					Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName() );
+//					 
+//					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//					startActivity(i);
+//				}
+//				
+//			});
+//			dialog.show();
+		}
+		
 		Locale current = getResources().getConfiguration().locale;
 		
 		if (!current.getLanguage().equals(_pref.getString("language", "en"))) {
 			Log.i("SettingsActivity", "locale: " + current.getLanguage());
-			setLocale(_pref.getString("language", "en"));
+//			setLocale(_pref.getString("language", "en"), this);
+			
+			Intent i = new Intent(getIntent());
+			i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			PendingIntent RESTART_INTENT = PendingIntent.getActivity(getBaseContext(), 0, i, getIntent().getFlags());
+			
+			AlarmManager mgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+			mgr.set(AlarmManager.RTC, System.currentTimeMillis(), RESTART_INTENT);
+			System.exit(2);
 		}
 		
 	}
@@ -345,6 +391,7 @@ public class SettingsActivity extends PreferenceActivity implements
 			Log.i("SettingsActivity", "Uninstall as systemapp selected");
 			dialog.show();
 		}
+		
 		return true;
 	}
 
@@ -518,17 +565,19 @@ public class SettingsActivity extends PreferenceActivity implements
 		}
 	}
 	
-	public void setLocale(String lang) { 
-		Log.i("SettingsActivity", "setLocale: " + lang);
+	public static void setLocale(String _lang, Activity _activity) { 
+		Log.i("SettingsActivity", "setLocale: " + _lang);
 		
-		Locale myLocale = new Locale(lang); 
-		Resources res = getResources(); 
+		Locale locale = new Locale(_lang); 
+		Resources res = _activity.getResources(); 
 		DisplayMetrics dm = res.getDisplayMetrics(); 
 		Configuration conf = res.getConfiguration(); 
-		conf.locale = myLocale; 
-		res.updateConfiguration(conf, dm); 
-		Intent refresh = new Intent(this, MainActivity.class); 
-		refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(refresh); 
-		} 
+		conf.locale = locale; 
+		res.updateConfiguration(conf, dm);
+		
+		
+//		Intent refresh = new Intent(this, MainActivity.class); 
+//		refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//		startActivity(refresh); 
+	} 
 }
