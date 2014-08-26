@@ -73,10 +73,15 @@ public class SettingsActivity extends PreferenceActivity implements
 			setTheme(R.style.AppThemeDark);
 		}
 		
+		
+		
 		Locale current = getResources().getConfiguration().locale;
-		if (!current.getLanguage().equals(pref.getString("language", "en"))) {
-			Log.i("MainActivity", "lang: " + pref.getString("language", "en"));
-			SettingsActivity.setLocale(pref.getString("language", "en"), this);
+		Log.i("SettingsActivity", "onCreate locale: " + current.getLanguage());
+		Log.i("SettingsActivity", "onCreate pref: " + pref.getString("language", "xx"));
+		
+		if (!current.getLanguage().equals(pref.getString("language", current.getLanguage()))) {
+			Log.i("MainActivity", "onCreate if: " + pref.getString("language", "xx"));
+			SettingsActivity.setLocale(pref.getString("language", "xx"), this);
 		}
 		
 		super.onCreate(savedInstanceState);
@@ -338,10 +343,11 @@ public class SettingsActivity extends PreferenceActivity implements
 		
 		Locale current = getResources().getConfiguration().locale;
 		
-		if (!current.getLanguage().equals(_pref.getString("language", "en"))) {
-			Log.i("SettingsActivity", "locale: " + current.getLanguage());
-//			setLocale(_pref.getString("language", "en"), this);
+		if (_key.equals("language") && !current.getLanguage().equals(_pref.getString("language", current.getLanguage()))) {
+			Log.i("SettingsActivity", "onSharedChanged if current: " + current.getLanguage());
+			Log.i("SettingsActivity", "onSharedChanged if pref: " + _pref.getString("language", "xx"));
 			
+			//restarts the activity
 			Intent i = new Intent(getIntent());
 			i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			PendingIntent RESTART_INTENT = PendingIntent.getActivity(getBaseContext(), 0, i, getIntent().getFlags());
@@ -568,7 +574,14 @@ public class SettingsActivity extends PreferenceActivity implements
 	public static void setLocale(String _lang, Activity _activity) { 
 		Log.i("SettingsActivity", "setLocale: " + _lang);
 		
-		Locale locale = new Locale(_lang); 
+		Locale locale;
+		
+		if (_lang.equals("xx")) {
+			locale = _activity.getResources().getConfiguration().locale; 
+		} else {
+			locale = new Locale(_lang);
+		}
+		
 		Resources res = _activity.getResources(); 
 		DisplayMetrics dm = res.getDisplayMetrics(); 
 		Configuration conf = res.getConfiguration(); 
