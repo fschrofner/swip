@@ -76,7 +76,7 @@ public class SettingsActivity extends PreferenceActivity implements
 		
 		
 		Locale current = getResources().getConfiguration().locale;
-		Log.i("SettingsActivity", "onCreate locale: " + current.getLanguage());
+		Log.i("SettingsActivity", "onCreate current: " + current.getLanguage());
 		Log.i("SettingsActivity", "onCreate pref: " + pref.getString("language", "xx"));
 		
 		if (!current.getLanguage().equals(pref.getString("language", current.getLanguage()))) {
@@ -577,7 +577,8 @@ public class SettingsActivity extends PreferenceActivity implements
 		Locale locale;
 		
 		if (_lang.equals("xx")) {
-			locale = _activity.getResources().getConfiguration().locale; 
+			locale = new Locale(Locale.getDefault().getLanguage()); 
+			Log.i("SettingsActivity", "display lang: " + locale);
 		} else {
 			locale = new Locale(_lang);
 		}

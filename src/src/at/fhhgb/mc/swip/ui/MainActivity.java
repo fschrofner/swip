@@ -48,9 +48,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 		
 		Locale current = getResources().getConfiguration().locale;
-		if (!current.getLanguage().equals(pref.getString("language", "en"))) {
-			Log.i("MainActivity", "lang: " + pref.getString("language", "en"));
-			SettingsActivity.setLocale(pref.getString("language", "en"), this);
+		Log.i("SettingsActivity", "onCreate current: " + current.getLanguage());
+		Log.i("SettingsActivity", "onCreate pref: " + pref.getString("language", "xx"));
+		
+		if (!current.getLanguage().equals(pref.getString("language", current.getLanguage()))) {
+			Log.i("MainActivity", "onCreate if: " + pref.getString("language", "xx"));
+			SettingsActivity.setLocale(pref.getString("language", "xx"), this);
 		}
     	
         super.onCreate(savedInstanceState);
