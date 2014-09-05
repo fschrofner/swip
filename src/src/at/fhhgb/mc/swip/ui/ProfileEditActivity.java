@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.Profile;
+import at.fhhgb.mc.swip.profile.Setter;
 import at.fhhgb.mc.swip.profile.XmlCreator;
 import at.fhhgb.mc.swip.services.Handler;
 
@@ -102,13 +103,6 @@ public class ProfileEditActivity extends PreferenceActivity implements
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		SharedPreferences pref = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		
-		if (pref.getBoolean("dark_theme", false)) {
-			setTheme(R.style.AppThemeDark);
-		}
-		
 		super.onCreate(savedInstanceState);
 		setupActionBar();
 	}

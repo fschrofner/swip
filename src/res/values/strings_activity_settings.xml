@@ -8,10 +8,6 @@
     <!-- General settings -->
     <string name="pref_title_notification">Enable permanent notification</string>
     <string name="pref_description_notification">Enables the permanent notification in the status bar to change profiles quickly.</string>
-    <string name="pref_title_dark_theme">Dark Theme</string>
-    <string name="pref_message_dark_theme">SwiP has to be restarted. Do you want to continue?</string>
-    <string name="pref_description_on_dark_theme">Dark theme is enabled</string>
-    <string name="pref_description_off_dark_theme">Dark theme is disabled</string>
     <string name="pref_title_root">Enable root</string>
 	<string name="pref_description_root">Enables root access, which allows additional settings.</string>
 	<string name="pref_title_systemapp">Install as system-app</string>
@@ -28,7 +24,6 @@
 	<string name="pref_title_noRoot">Root access not granted</string>
 	<string name="pref_text_noRoot">Please check if your device is rooted and you have a superuser app installed!</string>
 	<string name="pref_positive_button">OK</string>
-	<string name="pref_negative_button">Cancel</string>
+	<string name="pref_negative_button">No</string>
 	<string name="pref_neutral_button">Dismiss</string>
-	
 </resources>

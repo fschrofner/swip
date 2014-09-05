@@ -9,6 +9,7 @@ import com.google.android.gms.location.LocationClient;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.util.Log;
 

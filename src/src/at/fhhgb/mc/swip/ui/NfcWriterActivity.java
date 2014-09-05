@@ -63,13 +63,6 @@ public class NfcWriterActivity extends Activity implements
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		SharedPreferences pref = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		
-		if (pref.getBoolean("dark_theme", false)) {
-			setTheme(R.style.AppThemeDark);
-		}
-		
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_nfc_writer);
