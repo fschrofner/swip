@@ -1,0 +1,276 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ScrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    
+    tools:context=".AboutActivity" >
+
+    <LinearLayout
+        android:id="@+id/LinearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" >
+
+        <TextView
+            android:id="@+id/textViewDevelopers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/developers"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+       	<TextView
+	        android:id="@+id/textViewDevelopedBy1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/aboutDevelopedBy1"
+	        android:textAppearance="?android:attr/textAppearanceSmall" />
+       	
+       	<LinearLayout
+	        android:id="@+id/LinearLayoutDeveloper"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	
+	        <TextView
+	            android:id="@+id/textViewDevelopedBy2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/aboutDevelopedBy2"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+	
+	        <TextView
+	            android:id="@+id/textViewFlorianSchrofner"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/FlorianSchrofner"
+	            android:textAppearance="?android:attr/textAppearanceSmall" 
+	            android:textColor="#357cff" />
+	        
+	    </LinearLayout>
+        
+        <TextView
+            android:id="@+id/textViewLibraries"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/libraries"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/textViewCredits1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/credits1"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/textViewCredits2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/credits2"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/textViewCredits3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/credits3"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/license_mit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/credits4"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#357cff" />
+
+        <TextView
+            android:id="@+id/textViewCredits4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/credits5"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/textViewCredits5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/credits6"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/textViewCredits6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/credits3"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/license_apache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/credits7"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#357cff" />
+
+        <TextView
+            android:id="@+id/textViewCredits7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/credits8"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/textViewTranslators"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/translators"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <LinearLayout
+	        android:id="@+id/LinearLayoutChinese"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	         <TextView
+	            android:id="@+id/textViewTranslatorChinese1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/translators_chinese1"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+	         
+	         <TextView
+	            android:id="@+id/textViewTranslatorChinese2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/translators_chinese2"
+	            android:textAppearance="?android:attr/textAppearanceSmall"
+	            android:textColor="#357cff" />	         
+	    </LinearLayout>
+        
+        <TextView
+            android:id="@+id/textViewTranslatorCzech"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/translators_czech"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/textViewTranslatorDutch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/translators_dutch"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+       	<LinearLayout
+	        android:id="@+id/LinearLayoutItalian"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	         <TextView
+	            android:id="@+id/textViewTranslatorItalian1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/translators_italian1"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+	         
+	         <TextView
+	            android:id="@+id/textViewTranslatorItalian2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/translators_italian2"
+	            android:textAppearance="?android:attr/textAppearanceSmall"
+	            android:textColor="#357cff" />	         
+	    </LinearLayout>
+        
+       	<LinearLayout
+	        android:id="@+id/LinearLayoutPortuguese"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	         <TextView
+	            android:id="@+id/textViewTranslatorPortuguese1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/translators_portuguese1"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+	         
+	         <TextView
+	            android:id="@+id/textViewTranslatorPortuguese2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/translators_portuguese2"
+	            android:textAppearance="?android:attr/textAppearanceSmall"
+	            android:textColor="#357cff" />	         
+	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:id="@+id/LinearLayoutRussian"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	         <TextView
+	            android:id="@+id/textViewTranslatorRussian1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/translators_russian1"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+	         
+	         <TextView
+	            android:id="@+id/textViewTranslatorRussian2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/translators_russian2"
+	            android:textAppearance="?android:attr/textAppearanceSmall"
+	            android:textColor="#357cff" />	         
+	    </LinearLayout>
+	    
+	    <TextView
+            android:id="@+id/textViewTranslatorSlovak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/translators_slovak"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+	    
+        <TextView
+            android:id="@+id/textViewTranslatorSpanish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/translators_spanish"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ourLicense"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/license_gpl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ourLicense2"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#357cff" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
