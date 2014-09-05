@@ -173,6 +173,13 @@
             android:text="@string/translators_dutch"
             android:textAppearance="?android:attr/textAppearanceSmall" />
         
+        <TextView
+            android:id="@+id/textViewTranslatorFrench"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/translators_french"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
        	<LinearLayout
 	        android:id="@+id/LinearLayoutItalian"
 	        android:layout_width="match_parent"
@@ -193,6 +200,13 @@
 	            android:textAppearance="?android:attr/textAppearanceSmall"
 	            android:textColor="#357cff" />	         
 	    </LinearLayout>
+	    
+       	<TextView
+            android:id="@+id/textViewTranslatorPolish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/translators_polish"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
         
        	<LinearLayout
 	        android:id="@+id/LinearLayoutPortuguese"
@@ -248,6 +262,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/translators_spanish"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/textViewTranslatorUkrainian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/translators_ukrainian"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <LinearLayout
