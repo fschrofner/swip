@@ -36,7 +36,7 @@ import at.fhhgb.mc.swip.services.Handler;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
+//import java.util.Locale;
 import java.util.concurrent.TimeoutException;
 
 import com.stericson.RootTools.RootTools;
@@ -75,14 +75,14 @@ public class SettingsActivity extends PreferenceActivity implements
 		
 		
 		
-		Locale current = getResources().getConfiguration().locale;
-		Log.i("SettingsActivity", "onCreate current: " + current.getLanguage());
-		Log.i("SettingsActivity", "onCreate pref: " + pref.getString("language", "xx"));
-		
-		if (!current.getLanguage().equals(pref.getString("language", current.getLanguage()))) {
-			Log.i("MainActivity", "onCreate if: " + pref.getString("language", "xx"));
-			SettingsActivity.setLocale(pref.getString("language", "xx"), this);
-		}
+//		Locale current = getResources().getConfiguration().locale;
+//		Log.i("SettingsActivity", "onCreate current: " + current.getLanguage());
+//		Log.i("SettingsActivity", "onCreate pref: " + pref.getString("language", "xx"));
+//		
+//		if (!current.getLanguage().equals(pref.getString("language", current.getLanguage()))) {
+//			Log.i("MainActivity", "onCreate if: " + pref.getString("language", "xx"));
+//			SettingsActivity.setLocale(pref.getString("language", "xx"), this);
+//		}
 		
 		super.onCreate(savedInstanceState);
 		setupActionBar();
@@ -178,7 +178,7 @@ public class SettingsActivity extends PreferenceActivity implements
 		}
 		
 		// binds summary to preference
-		bindPreferenceSummaryToValue(findPreference("language"));
+//		bindPreferenceSummaryToValue(findPreference("language"));
 		
 	}
 
@@ -341,21 +341,21 @@ public class SettingsActivity extends PreferenceActivity implements
 //			dialog.show();
 		}
 		
-		Locale current = getResources().getConfiguration().locale;
-		
-		if (_key.equals("language") && !current.getLanguage().equals(_pref.getString("language", current.getLanguage()))) {
-			Log.i("SettingsActivity", "onSharedChanged if current: " + current.getLanguage());
-			Log.i("SettingsActivity", "onSharedChanged if pref: " + _pref.getString("language", "xx"));
-			
-			//restarts the activity
-			Intent i = new Intent(getIntent());
-			i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			PendingIntent RESTART_INTENT = PendingIntent.getActivity(getBaseContext(), 0, i, getIntent().getFlags());
-			
-			AlarmManager mgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-			mgr.set(AlarmManager.RTC, System.currentTimeMillis(), RESTART_INTENT);
-			System.exit(2);
-		}
+//		Locale current = getResources().getConfiguration().locale;
+//		
+//		if (_key.equals("language") && !current.getLanguage().equals(_pref.getString("language", current.getLanguage()))) {
+//			Log.i("SettingsActivity", "onSharedChanged if current: " + current.getLanguage());
+//			Log.i("SettingsActivity", "onSharedChanged if pref: " + _pref.getString("language", "xx"));
+//			
+//			//restarts the activity
+//			Intent i = new Intent(getIntent());
+//			i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//			PendingIntent RESTART_INTENT = PendingIntent.getActivity(getBaseContext(), 0, i, getIntent().getFlags());
+//			
+//			AlarmManager mgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+//			mgr.set(AlarmManager.RTC, System.currentTimeMillis(), RESTART_INTENT);
+//			System.exit(2);
+//		}
 		
 	}
 
@@ -571,27 +571,27 @@ public class SettingsActivity extends PreferenceActivity implements
 		}
 	}
 	
-	public static void setLocale(String _lang, Activity _activity) { 
-		Log.i("SettingsActivity", "setLocale: " + _lang);
-		
-		Locale locale;
-		
-		if (_lang.equals("xx")) {
-			locale = new Locale(Locale.getDefault().getLanguage()); 
-			Log.i("SettingsActivity", "display lang: " + locale);
-		} else {
-			locale = new Locale(_lang);
-		}
-		
-		Resources res = _activity.getResources(); 
-		DisplayMetrics dm = res.getDisplayMetrics(); 
-		Configuration conf = res.getConfiguration(); 
-		conf.locale = locale; 
-		res.updateConfiguration(conf, dm);
-		
-		
-//		Intent refresh = new Intent(this, MainActivity.class); 
-//		refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//		startActivity(refresh); 
-	} 
+//	public static void setLocale(String _lang, Activity _activity) { 
+//		Log.i("SettingsActivity", "setLocale: " + _lang);
+//		
+//		Locale locale;
+//		
+//		if (_lang.equals("xx")) {
+//			locale = new Locale(Locale.getDefault().getLanguage()); 
+//			Log.i("SettingsActivity", "display lang: " + locale);
+//		} else {
+//			locale = new Locale(_lang);
+//		}
+//		
+//		Resources res = _activity.getResources(); 
+//		DisplayMetrics dm = res.getDisplayMetrics(); 
+//		Configuration conf = res.getConfiguration(); 
+//		conf.locale = locale; 
+//		res.updateConfiguration(conf, dm);
+//		
+//		
+////		Intent refresh = new Intent(this, MainActivity.class); 
+////		refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+////		startActivity(refresh); 
+//	} 
 }
