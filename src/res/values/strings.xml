@@ -54,6 +54,7 @@
     <string name="translators_chinese2">ContactFront</string>
     <string name="translators_czech">Czech - Jan K.</string>
     <string name="translators_dutch">Dutch - Antonius Augustus</string>
+    <string name="translators_french">French - pos</string>
     <string name="translators_italian1">Italian -\u0020</string>
     <string name="translators_italian2">Claudio Arseni</string>
     <string name="translators_polish">Polish - sti</string>
@@ -63,6 +64,7 @@
     <string name="translators_russian2">Dm. Chernogaev</string>
     <string name="translators_slovak">Slovak - pyler</string>
     <string name="translators_spanish">Spanish - Alejandro Caral Ferro</string>
+    <string name="translators_ukrainian">Ukrainian - Andrulko</string>
     <string name="ourLicense">This app is licensed under</string>
     <string name="ourLicense2"><u>GPLv3</u></string>
     <string name="title_activity_profile_fragment">ProfileFragment</string>
