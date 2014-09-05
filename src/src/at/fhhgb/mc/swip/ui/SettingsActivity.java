@@ -1,14 +1,11 @@
 package at.fhhgb.mc.swip.ui;
 
 import android.annotation.TargetApi;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -29,11 +26,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import at.fhhgb.mc.swip.R;
+import at.fhhgb.mc.swip.profile.Setter;
 import at.fhhgb.mc.swip.services.Handler;
 
 import java.io.IOException;
 import java.util.List;
-//import java.util.Locale;
 import java.util.concurrent.TimeoutException;
 
 import com.stericson.RootTools.RootTools;
@@ -47,7 +44,7 @@ import com.stericson.RootTools.execution.CommandCapture;
  * 
  */
 public class SettingsActivity extends PreferenceActivity implements
-		OnSharedPreferenceChangeListener, OnPreferenceClickListener {
+		OnSharedPreferenceChangeListener,OnPreferenceClickListener {
 	/**
 	 * Determines whether to always show the simplified settings UI, where
 	 * settings are presented in a single list. When false, settings are shown
@@ -63,15 +60,9 @@ public class SettingsActivity extends PreferenceActivity implements
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		SharedPreferences pref = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		
-		if (pref.getBoolean("dark_theme", false)) {
-			setTheme(R.style.AppThemeDark);
-		}
-		
 		super.onCreate(savedInstanceState);
 		setupActionBar();
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		if(pref.getBoolean("root", false) && !RootTools.isAccessGiven()){
 			Editor editor = pref.edit();
 			editor.putBoolean("root", false);
@@ -163,8 +154,6 @@ public class SettingsActivity extends PreferenceActivity implements
 			systemappPreference.setOnPreferenceClickListener(this);
 		}
 		
-		// binds summary to preference
-		
 	}
 
 	/**
@@ -250,7 +239,7 @@ public class SettingsActivity extends PreferenceActivity implements
 		// Set the listener to watch for value changes.
 		preference
 				.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
-		
+
 		// Trigger the listener immediately with the preference's
 		// current value.
 		sBindPreferenceSummaryToValueListener.onPreferenceChange(
@@ -275,7 +264,7 @@ public class SettingsActivity extends PreferenceActivity implements
 			notificationManager.cancel(123);
 		}
 		
-		if(_pref.getBoolean("root", false)){			
+		if(_pref.getBoolean("root", false)){
 			if(!RootTools.isAccessGiven()){
 				AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 				dialog.setTitle(getResources().getString(R.string.pref_title_noRoot));
@@ -296,17 +285,6 @@ public class SettingsActivity extends PreferenceActivity implements
 				checkBox.setChecked(false);
 			}
 		}
-		
-		if (_key.equals("dark_theme")) {
-			Intent i = new Intent(getIntent());
-			i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			PendingIntent RESTART_INTENT = PendingIntent.getActivity(this.getBaseContext(), 0, i, getIntent().getFlags());
-			
-			AlarmManager mgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-			mgr.set(AlarmManager.RTC, System.currentTimeMillis(), RESTART_INTENT);
-			System.exit(2);
-		}
-		
 	}
 
 	/**
@@ -347,7 +325,6 @@ public class SettingsActivity extends PreferenceActivity implements
 			Log.i("SettingsActivity", "Uninstall as systemapp selected");
 			dialog.show();
 		}
-		
 		return true;
 	}
 
@@ -402,6 +379,7 @@ public class SettingsActivity extends PreferenceActivity implements
 						//puts the versionname of the app into shared preferences for update reasons
 						pref.edit().putString("versionname", pinfo.versionName).commit();
 					} catch (NameNotFoundException e) {
+						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				} catch (IOException e) {
@@ -520,5 +498,4 @@ public class SettingsActivity extends PreferenceActivity implements
 			
 		}
 	}
-	
 }

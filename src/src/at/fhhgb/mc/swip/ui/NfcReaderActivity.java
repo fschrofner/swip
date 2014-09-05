@@ -5,12 +5,9 @@ import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
-import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.Profile;
 import at.fhhgb.mc.swip.services.Handler;
 
@@ -33,13 +30,6 @@ public class NfcReaderActivity extends Activity {
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		SharedPreferences pref = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		
-		if (pref.getBoolean("dark_theme", false)) {
-			setTheme(R.style.AppThemeDark);
-		}
-		
 		super.onCreate(savedInstanceState);
 
 		Intent intent = getIntent();

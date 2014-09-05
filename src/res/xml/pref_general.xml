@@ -5,14 +5,6 @@
         android:key="notification"
         android:summary="@string/pref_description_notification"
         android:title="@string/pref_title_notification" />
-    
-     <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="dark_theme"
-        android:title="@string/pref_title_dark_theme"
-        android:summaryOn="@string/pref_description_on_dark_theme"
-        android:summaryOff="@string/pref_description_off_dark_theme" />
-    
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="root"
@@ -24,13 +16,11 @@
         android:key="systemapp"
         android:summary="@string/pref_description_systemapp"
         android:title="@string/pref_title_systemapp" />
-    
     <Preference
         android:dependency="root"
         android:key="removeSystemapp"
         android:summary="@string/pref_description_removeSystemapp"
         android:title="@string/pref_title_removeSystemapp" />
-    
     <Preference
         android:key="about"
         android:title="@string/title_activity_about" >

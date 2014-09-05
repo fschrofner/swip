@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -69,13 +70,6 @@ public class TriggerEditActivity extends PreferenceActivity implements
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		SharedPreferences pref = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		
-		if (pref.getBoolean("dark_theme", false)) {
-			setTheme(R.style.AppThemeDark);
-		}
-		
 		super.onCreate(savedInstanceState);
 		setupActionBar();
 	}
