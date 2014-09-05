@@ -31,39 +31,4 @@
 	<string name="pref_negative_button">Cancel</string>
 	<string name="pref_neutral_button">Dismiss</string>
 	
-	<!-- Language settings -->
-	<string name="pref_title_language">Language (buggy)</string>
-	
-	<string-array name="pref_language_titles">
-	    <item>System language</item>
-        <item>English</item>
-        <item>čeština</item>
-        <item>Deutsch</item>
-        <item>español</item>
-        <item>français</item>
-        <item>italiano</item>
-        <item>Nederlands</item>
-        <item>język polski</item>
-        <item>português</item>
-        <item>русский язык</item>
-        <item>slovenčina</item>
-        <item>українська</item>
-        <item>中文</item>
-    </string-array>
-    <string-array name="pref_language_values">
-        <item>xx</item>
-        <item>en</item>
-        <item>cs</item>
-        <item>de</item>
-        <item>es</item>
-        <item>fr</item>
-        <item>it</item>
-        <item>nl</item>
-        <item>pl</item>
-        <item>pt</item>
-        <item>ru</item>
-        <item>sk</item>
-        <item>uk</item>
-        <item>zh</item>
-    </string-array>
 </resources>

@@ -22,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.Profile;
-import at.fhhgb.mc.swip.profile.Setter;
 import at.fhhgb.mc.swip.profile.XmlCreator;
 import at.fhhgb.mc.swip.services.Handler;
 
