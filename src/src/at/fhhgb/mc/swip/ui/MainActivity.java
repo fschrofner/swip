@@ -4,12 +4,15 @@ import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import at.fhhgb.mc.swip.R;
 
 /**
@@ -37,6 +40,22 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	SharedPreferences pref = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		
+		if (pref.getBoolean("dark_theme", false)) {
+			setTheme(R.style.AppThemeDark);
+		}
+		
+//		Locale current = getResources().getConfiguration().locale;
+//		Log.i("SettingsActivity", "onCreate current: " + current.getLanguage());
+//		Log.i("SettingsActivity", "onCreate pref: " + pref.getString("language", "xx"));
+//		
+//		if (!current.getLanguage().equals(pref.getString("language", current.getLanguage()))) {
+//			Log.i("MainActivity", "onCreate if: " + pref.getString("language", "xx"));
+//			SettingsActivity.setLocale(pref.getString("language", "xx"), this);
+//		}
+    	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
