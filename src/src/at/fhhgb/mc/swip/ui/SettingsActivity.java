@@ -2,14 +2,11 @@ package at.fhhgb.mc.swip.ui;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -36,6 +33,7 @@ import at.fhhgb.mc.swip.services.Handler;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 //import java.util.Locale;
 import java.util.concurrent.TimeoutException;
 
@@ -69,20 +67,17 @@ public class SettingsActivity extends PreferenceActivity implements
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		
+		Log.i("SettingsActivity", "pref: " +  pref.getString("language", "xx"));
+		
 		if (pref.getBoolean("dark_theme", false)) {
 			setTheme(R.style.AppThemeDark);
 		}
+
+		Locale current = getResources().getConfiguration().locale;
 		
-		
-		
-//		Locale current = getResources().getConfiguration().locale;
-//		Log.i("SettingsActivity", "onCreate current: " + current.getLanguage());
-//		Log.i("SettingsActivity", "onCreate pref: " + pref.getString("language", "xx"));
-//		
-//		if (!current.getLanguage().equals(pref.getString("language", current.getLanguage()))) {
-//			Log.i("MainActivity", "onCreate if: " + pref.getString("language", "xx"));
-//			SettingsActivity.setLocale(pref.getString("language", "xx"), this);
-//		}
+		if (!current.getLanguage().equals(pref.getString("language", "xx"))) {
+			SettingsActivity.setLocale(pref.getString("language", "xx"), this);
+		}
 		
 		super.onCreate(savedInstanceState);
 		setupActionBar();
@@ -92,7 +87,7 @@ public class SettingsActivity extends PreferenceActivity implements
 			editor.commit();
 		}
 	}
-	
+
 	@Override
 	protected boolean isValidFragment(String fragmentName) {
 		if(fragmentName.equals("at.fhhgb.mc.swip.SettingsActivity$GeneralPreferenceFragment")){
@@ -178,7 +173,7 @@ public class SettingsActivity extends PreferenceActivity implements
 		}
 		
 		// binds summary to preference
-//		bindPreferenceSummaryToValue(findPreference("language"));
+		bindPreferenceSummaryToValue(findPreference("language"));
 		
 	}
 
@@ -313,49 +308,16 @@ public class SettingsActivity extends PreferenceActivity implements
 		}
 		
 		if (_key.equals("dark_theme")) {
-			Intent i = new Intent(getIntent());
-			i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			PendingIntent RESTART_INTENT = PendingIntent.getActivity(this.getBaseContext(), 0, i, getIntent().getFlags());
-			
-			AlarmManager mgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-			mgr.set(AlarmManager.RTC, System.currentTimeMillis(), RESTART_INTENT);
-			System.exit(2);
-			
-			
-//			AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-//			dialog.setTitle(getResources().getString(R.string.pref_title_dark_theme));
-//			dialog.setMessage(getResources().getString(R.string.pref_message_dark_theme));
-//			dialog.setNeutralButton(getResources().getString(R.string.pref_neutral_button), new DialogInterface.OnClickListener(){
-//
-//				@Override
-//				public void onClick(DialogInterface dialog, int which) {
-//					dialog.dismiss();
-//					
-//					Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName() );
-//					 
-//					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//					startActivity(i);
-//				}
-//				
-//			});
-//			dialog.show();
+			recreate();
+
 		}
 		
-//		Locale current = getResources().getConfiguration().locale;
-//		
-//		if (_key.equals("language") && !current.getLanguage().equals(_pref.getString("language", current.getLanguage()))) {
-//			Log.i("SettingsActivity", "onSharedChanged if current: " + current.getLanguage());
-//			Log.i("SettingsActivity", "onSharedChanged if pref: " + _pref.getString("language", "xx"));
-//			
-//			//restarts the activity
-//			Intent i = new Intent(getIntent());
-//			i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//			PendingIntent RESTART_INTENT = PendingIntent.getActivity(getBaseContext(), 0, i, getIntent().getFlags());
-//			
-//			AlarmManager mgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-//			mgr.set(AlarmManager.RTC, System.currentTimeMillis(), RESTART_INTENT);
-//			System.exit(2);
-//		}
+		Locale current = getResources().getConfiguration().locale;
+		
+		if (_key.equals("language") && !current.getLanguage().equals(_pref.getString("language", "xx"))) {
+			//restarts the activity
+			recreate();
+		}
 		
 	}
 
@@ -571,27 +533,21 @@ public class SettingsActivity extends PreferenceActivity implements
 		}
 	}
 	
-//	public static void setLocale(String _lang, Activity _activity) { 
-//		Log.i("SettingsActivity", "setLocale: " + _lang);
-//		
-//		Locale locale;
-//		
-//		if (_lang.equals("xx")) {
-//			locale = new Locale(Locale.getDefault().getLanguage()); 
-//			Log.i("SettingsActivity", "display lang: " + locale);
-//		} else {
-//			locale = new Locale(_lang);
-//		}
-//		
-//		Resources res = _activity.getResources(); 
-//		DisplayMetrics dm = res.getDisplayMetrics(); 
-//		Configuration conf = res.getConfiguration(); 
-//		conf.locale = locale; 
-//		res.updateConfiguration(conf, dm);
-//		
-//		
-////		Intent refresh = new Intent(this, MainActivity.class); 
-////		refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-////		startActivity(refresh); 
-//	} 
+	public static void setLocale(String _lang, Activity _activity) { 
+		Log.i("SettingsActivity", "setLocale: " + _lang);
+		
+		Locale locale;
+		
+		if (_lang.equals("xx")) {
+			locale = new Locale(Locale.getDefault().getLanguage()); 
+		} else {
+			locale = new Locale(_lang);
+		}
+		
+		Resources res = _activity.getResources(); 
+		DisplayMetrics dm = res.getDisplayMetrics(); 
+		Configuration conf = res.getConfiguration(); 
+		conf.locale = locale; 
+		res.updateConfiguration(conf, dm);
+	} 
 }
