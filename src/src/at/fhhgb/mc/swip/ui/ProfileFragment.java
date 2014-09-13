@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,7 +70,7 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(getActivity());
 		firstRun = pref.getBoolean("FIRST_RUN", false);
-
+		
 		// if the application is run for the first time
 		if (!firstRun) {
 
@@ -78,7 +79,6 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 			
 			SharedPreferences.Editor editor = pref.edit();
 			editor.putBoolean("FIRST_RUN", true);
-			editor.putString("language", Locale.getDefault().getLanguage());
 			editor.commit();
 		}
 		

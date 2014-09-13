@@ -32,22 +32,22 @@
 	<string name="pref_neutral_button">Dismiss</string>
 	
 	<!-- Language settings -->
-	<string name="pref_title_language">Language (buggy)</string>
+	<string name="pref_title_language">Language</string>
 	
 	<string-array name="pref_language_titles">
 	    <item>System language</item>
         <item>English</item>
-        <item>čeština</item>
+        <item>Čeština</item>
         <item>Deutsch</item>
-        <item>español</item>
-        <item>français</item>
-        <item>italiano</item>
+        <item>Español</item>
+        <item>Français</item>
+        <item>Italiano</item>
         <item>Nederlands</item>
-        <item>język polski</item>
-        <item>português</item>
-        <item>русский язык</item>
-        <item>slovenčina</item>
-        <item>українська</item>
+        <item>Język polski</item>
+        <item>Português</item>
+        <item>Pусский язык</item>
+        <item>Slovenčina</item>
+        <item>Yкраїнська</item>
         <item>中文</item>
     </string-array>
     <string-array name="pref_language_values">
