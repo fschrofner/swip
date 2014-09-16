@@ -63,6 +63,7 @@
     <string name="translators_russian2">Dm. Chernogaev</string>
     <string name="translators_slovak">Slovak - pyler</string>
     <string name="translators_spanish">Spanish - Alejandro Caral Ferro</string>
+    <string name="text_checkbox_seekbar">Change Value</string>
     <string name="ourLicense">This app is licensed under</string>
     <string name="ourLicense2"><u>GPLv3</u></string>
     <string name="title_activity_profile_fragment">ProfileFragment</string>
