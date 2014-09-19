@@ -1,0 +1,69 @@
+<resources>
+
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+
+    <!-- General settings -->
+    <string name="pref_title_notification">Enable permanent notification</string>
+    <string name="pref_description_notification">Enables the permanent notification in the status bar to change profiles quickly.</string>
+    <string name="pref_title_dark_theme">Dark Theme</string>
+    <string name="pref_message_dark_theme">SwiP has to be restarted. Do you want to continue?</string>
+    <string name="pref_description_on_dark_theme">Dark theme is enabled</string>
+    <string name="pref_description_off_dark_theme">Dark theme is disabled</string>
+    <string name="pref_title_root">Enable root</string>
+	<string name="pref_description_root">Enables root access, which allows additional settings.</string>
+	<string name="pref_title_systemapp">Install as system-app</string>
+	<string name="pref_description_systemapp">Install SwiP as system-app, which will allow the app to use methods that should work on every device (for certain settings) and adds new functionality.\n[Needs Root]</string>
+	<string name="pref_headline_systemapp">Install SwiP as system-app?</string>
+	<string name="pref_text_systemapp">Please understand that this will prevent the app from being uninstalled, make sure to get back to these settings to make it uninstallable again.</string>
+	<string name="pref_title_removeSystemapp">Uninstall as system-app</string>
+	<string name="pref_description_removeSystemapp">Removes SwiP as system-app, so it can be uninstalled again</string>
+	<string name="pref_headline_removeSystemapp">Uninstall SwiP as system-app?</string>
+	<string name="pref_text_removeSystemapp">Uninstalling the app as system-app will make it uninstallable again, however you will not be able to use all settings.</string>
+	<string name="pref_title_systemapp_successful">Install Successful!</string>
+	<string name="pref_title_removeSystemapp_successful">Uninstall Successful!</string>
+	<string name="pref_text_pleaseRestart">Please restart your phone for the changes to take effect.</string>
+	<string name="pref_title_noRoot">Root access not granted</string>
+	<string name="pref_text_noRoot">Please check if your device is rooted and you have a superuser app installed!</string>
+	<string name="pref_positive_button">OK</string>
+	<string name="pref_negative_button">Cancel</string>
+	<string name="pref_neutral_button">Dismiss</string>
+	
+	<!-- Language settings -->
+	<string name="pref_title_language">Language</string>
+	
+	<string-array name="pref_language_titles">
+	    <item>System language</item>
+        <item>English</item>
+        <item>Čeština</item>
+        <item>Deutsch</item>
+        <item>Español</item>
+        <item>Français</item>
+        <item>Italiano</item>
+        <item>Nederlands</item>
+        <item>Język polski</item>
+        <item>Português</item>
+        <item>Pусский язык</item>
+        <item>Slovenčina</item>
+        <item>Yкраїнська</item>
+        <item>中文</item>
+    </string-array>
+    <string-array name="pref_language_values">
+        <item>xx</item>
+        <item>en</item>
+        <item>cs</item>
+        <item>de</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>it</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ru</item>
+        <item>sk</item>
+        <item>uk</item>
+        <item>zh</item>
+    </string-array>
+</resources>
