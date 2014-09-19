@@ -78,6 +78,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		}
 		
 		super.onCreate(savedInstanceState);
+		getActionBar().setTitle(R.string.title_activity_trigger_edit);
 		setupActionBar();
 	}
 

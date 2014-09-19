@@ -111,6 +111,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		}
 		
 		super.onCreate(savedInstanceState);
+		getActionBar().setTitle(R.string.title_activity_profile_edit);
 		setupActionBar();
 	}
 
