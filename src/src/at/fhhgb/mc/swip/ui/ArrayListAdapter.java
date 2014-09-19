@@ -63,13 +63,11 @@ public class ArrayListAdapter extends ArrayAdapter<String> implements
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(getContext());
 		
+		ImageButton buttonEdit = (ImageButton) convertView.findViewById(R.id.buttonEdit);
+		
 		if (pref.getBoolean("dark_theme", false)) {
-			
-			ImageButton buttonEdit = (ImageButton) convertView.findViewById(R.id.buttonEdit);
 			buttonEdit.setImageDrawable(getContext().getResources().getDrawable(R.drawable.content_edit_dark));
 		}
-		
-		
 
 		element = list.get(position);
 
@@ -80,11 +78,9 @@ public class ArrayListAdapter extends ArrayAdapter<String> implements
 			v.setText(element);
 
 			// adds the edit buttons
-			ImageButton b = null;
-			b = (ImageButton) convertView.findViewById(R.id.buttonEdit);
-			b.setFocusable(false);
-			b.setOnClickListener(this);
-			b.setTag(this.element);
+			buttonEdit.setFocusable(false);
+			buttonEdit.setOnClickListener(this);
+			buttonEdit.setTag(this.element);
 		}
 		return convertView;
 	}

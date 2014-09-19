@@ -32,7 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
-            android:text="@string/mapRadius" />
+            android:text="@string/mapRadius"
+            android:textColor="@color/android:black" />
 
         <EditText
             android:id="@+id/editTextRadius"
@@ -44,7 +45,8 @@
             android:inputType="number"
             android:maxLength="9"
             android:selectAllOnFocus="false"
-            android:text="50" />
+            android:text="50"
+            android:textColor="@color/android:black" />
 
         <Space
             android:layout_width="wrap_content"

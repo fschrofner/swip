@@ -8,7 +8,9 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -55,6 +57,14 @@ public class ArrayListAdapterTrigger extends ArrayAdapter<String> implements
 			convertView = inflater.inflate(R.layout.layout_list_profiles_item,
 					null);
 		}
+		
+		SharedPreferences pref = PreferenceManager
+				.getDefaultSharedPreferences(getContext());
+		
+		ImageButton buttonEdit = (ImageButton) convertView.findViewById(R.id.buttonEdit);
+		if (pref.getBoolean("dark_theme", false)) {
+			buttonEdit.setImageDrawable(getContext().getResources().getDrawable(R.drawable.content_edit_dark));
+		}
 
 		element = list.get(position);
 
@@ -68,16 +78,14 @@ public class ArrayListAdapterTrigger extends ArrayAdapter<String> implements
 			v.setText(sb.toString());
 
 			// adds the edit buttons
-			ImageButton b = null;
-			b = (ImageButton) convertView.findViewById(R.id.buttonEdit);
-			b.setFocusable(false);
-			b.setOnClickListener(this);
-			b.setTag(sb.toString());
+			buttonEdit.setFocusable(false);
+			buttonEdit.setOnClickListener(this);
+			buttonEdit.setTag(sb.toString());
 			
 			if (element.contains("_tri_dis")) {
 				v.setTextColor(Color.GRAY);
-				b.setEnabled(false);
-				b.setImageDrawable(null);
+				buttonEdit.setEnabled(false);
+				buttonEdit.setImageDrawable(null);
 			}
 		}
 		return convertView;
