@@ -80,6 +80,7 @@ public class SettingsActivity extends PreferenceActivity implements
 		}
 		
 		super.onCreate(savedInstanceState);
+		getActionBar().setTitle(R.string.title_activity_settings);
 		setupActionBar();
 		if(pref.getBoolean("root", false) && !RootTools.isAccessGiven()){
 			Editor editor = pref.edit();

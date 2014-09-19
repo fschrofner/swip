@@ -54,9 +54,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			darkTheme = false;
 		}
 
-		if (!pref.getString("current_lang", "xx").equals(pref.getString("language", "xx"))) {
+		Locale current = getResources().getConfiguration().locale;
+
+		if (!pref.getString("current_lang", "xx").equals(pref.getString("language", "xx"))
+				|| !current.getLanguage().equals(pref.getString("language", "xx"))) {
+			// if (!current.getLanguage().equals(pref.getString("language",
+			// "xx"))) {
 			SettingsActivity.setLocale(pref.getString("language", "xx"), this);
-			pref.edit().putString("current_lang",pref.getString("language", "xx")).commit();
+			pref.edit().putString("current_lang", pref.getString("language", "xx")).commit();
 		}
 
 		super.onCreate(savedInstanceState);
@@ -99,13 +104,18 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	protected void onResume() {
 
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-		
+
 		if (pref.getBoolean("dark_theme", false) != darkTheme) {
 			Log.i("MainActivity", "New theme detected. Restart Activity");
 			recreate();
 		}
-		
-		if (!pref.getString("current_lang", "xx").equals(pref.getString("language", "xx"))) {
+
+		Locale current = getResources().getConfiguration().locale;
+
+		if (!pref.getString("current_lang", "xx").equals(pref.getString("language", "xx"))
+				|| !current.getLanguage().equals(pref.getString("language", "xx"))) {
+			// if (!current.getLanguage().equals(pref.getString("language",
+			// "xx"))) {
 			Log.i("MainActivity", "New language detected. Restart Activity");
 			recreate();
 		}
