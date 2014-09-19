@@ -5,7 +5,6 @@ import java.util.Locale;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
-import android.content.res.Resources.Theme;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -47,6 +46,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	protected void onCreate(Bundle savedInstanceState) {
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
+		//sets the theme
 		if (pref.getBoolean("dark_theme", false)) {
 			setTheme(R.style.AppThemeDark);
 			darkTheme = true;
@@ -54,12 +54,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			darkTheme = false;
 		}
 
+		// sets the language
 		Locale current = getResources().getConfiguration().locale;
-
 		if (!pref.getString("current_lang", "xx").equals(pref.getString("language", "xx"))
 				|| !current.getLanguage().equals(pref.getString("language", "xx"))) {
-			// if (!current.getLanguage().equals(pref.getString("language",
-			// "xx"))) {
 			SettingsActivity.setLocale(pref.getString("language", "xx"), this);
 			pref.edit().putString("current_lang", pref.getString("language", "xx")).commit();
 		}
@@ -114,8 +112,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		if (!pref.getString("current_lang", "xx").equals(pref.getString("language", "xx"))
 				|| !current.getLanguage().equals(pref.getString("language", "xx"))) {
-			// if (!current.getLanguage().equals(pref.getString("language",
-			// "xx"))) {
 			Log.i("MainActivity", "New language detected. Restart Activity");
 			recreate();
 		}

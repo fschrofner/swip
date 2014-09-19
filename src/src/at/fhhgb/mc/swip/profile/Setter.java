@@ -7,17 +7,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeoutException;
 
-import com.stericson.RootTools.RootTools;
-import com.stericson.RootTools.exceptions.RootDeniedException;
-import com.stericson.RootTools.execution.CommandCapture;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
@@ -30,6 +25,10 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
 import at.fhhgb.mc.swip.services.Handler;
+
+import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.exceptions.RootDeniedException;
+import com.stericson.RootTools.execution.CommandCapture;
 
 /**
  * Class that provides methods to apply different settings.

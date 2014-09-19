@@ -1,5 +1,14 @@
 package at.fhhgb.mc.swip.ui;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -22,18 +31,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.Profile;
-import at.fhhgb.mc.swip.profile.Setter;
 import at.fhhgb.mc.swip.profile.XmlCreator;
 import at.fhhgb.mc.swip.services.Handler;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 import com.stericson.RootTools.RootTools;
 

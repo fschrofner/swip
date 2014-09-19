@@ -1,5 +1,15 @@
 package at.fhhgb.mc.swip.ui;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,26 +26,15 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
 import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.trigger.LocationTrigger;
 import at.fhhgb.mc.swip.trigger.SimpleGeofence;
 import at.fhhgb.mc.swip.trigger.Trigger;
 import at.fhhgb.mc.swip.trigger.XmlCreatorTrigger;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 import com.google.android.gms.location.Geofence;
 
