@@ -534,6 +534,9 @@ public class SettingsActivity extends PreferenceActivity implements
 		}
 	}
 	
+	/** Sets the language
+	 * @param _lang the requested language
+	 */
 	public static void setLocale(String _lang, Activity _activity) { 
 		Log.i("SettingsActivity", "setLocale: " + _lang);
 		
