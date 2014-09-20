@@ -57,7 +57,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		// sets the language
 		Locale current = getResources().getConfiguration().locale;
 		if (!pref.getString("current_lang", "xx").equals(pref.getString("language", "xx"))
-				|| !current.getLanguage().equals(pref.getString("language", "xx"))) {
+				|| !pref.getString("language", "xx").equals("xx") && !current.getLanguage().equals(pref.getString("language", "xx"))) {
 			SettingsActivity.setLocale(pref.getString("language", "xx"), this);
 			pref.edit().putString("current_lang", pref.getString("language", "xx")).commit();
 		}
@@ -109,9 +109,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 
 		Locale current = getResources().getConfiguration().locale;
-
 		if (!pref.getString("current_lang", "xx").equals(pref.getString("language", "xx"))
-				|| !current.getLanguage().equals(pref.getString("language", "xx"))) {
+				|| !pref.getString("language", "xx").equals("xx") && !current.getLanguage().equals(pref.getString("language", "xx"))) {
 			Log.i("MainActivity", "New language detected. Restart Activity");
 			recreate();
 		}
