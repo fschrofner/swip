@@ -1,11 +1,18 @@
+syntax: glob
+
+build/*
+src/build/*
 src/gen/*
 libs/AndroidSliderPreference/gen/*
 libs/AndroidSliderPreference/bin/*
+libs/AndroidSliderPreference/build/*
 src/bin/*
 .classpath
 .project
 .settings
 .dropbox
+.gradle
+local.properties
 src/.settings
 src/.classpath
 src/.project
@@ -14,9 +21,13 @@ src/project.properties
 libs/AndroidSliderPreference/.settings
 libs/AndroidSliderPreference/.project
 libs/AndroidSliderPreference/.classpath
+libs/AndroidSliderPreference/project.properties
 libs/GooglePlayServices/.settings
 libs/GooglePlayServices/.project
 libs/GooglePlayServices/.classpath
 libs/GooglePlayServices/bin/*
 libs/GooglePlayServices/gen/*
+libs/GooglePlayServices/build/*
 libs/GooglePlayServices/project.properties
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
