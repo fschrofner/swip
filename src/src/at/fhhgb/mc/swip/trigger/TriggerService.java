@@ -10,6 +10,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources.NotFoundException;
 import android.media.AudioManager;
@@ -151,7 +152,7 @@ public class TriggerService extends Service{
 	}
 
 	/**
-	 * Sets the initial values, initialises the broadcastreceiver and loads the
+	 * Sets the initial values, initialises & registers the broadcastreceiver and loads the
 	 * already existent triggers.
 	 */
 	@Override
@@ -165,10 +166,37 @@ public class TriggerService extends Service{
 		
 		// Create a broadcast receiver to handle changes
 		triggerReceiver = new TriggerBroadcastReceiver(this);
+		
+		//register the broadcast receiver for the intents
+		IntentFilter filter=new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+		registerReceiver(triggerReceiver,filter);
+		filter = new IntentFilter(Intent.ACTION_TIME_TICK);
+		registerReceiver(triggerReceiver,filter);
+		filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+		Intent batteryIntent = registerReceiver(triggerReceiver, filter);
+		setInitialBatteryState(batteryIntent);
+		filter = new IntentFilter(Intent.ACTION_POWER_CONNECTED);
+		registerReceiver(triggerReceiver, filter);
+		filter = new IntentFilter(Intent.ACTION_POWER_DISCONNECTED);
+		registerReceiver(triggerReceiver, filter);
+		filter = new IntentFilter("at.fhhgb.mc.swip.trigger.refresh");
+		registerReceiver(triggerReceiver, filter);
+    	filter = new IntentFilter("at.fhhgb.mc.swip.trigger.location_change");
+		registerReceiver(triggerReceiver, filter);
+		filter = new IntentFilter("at.fhhgb.mc.swip.trigger.clearGeofences");
+		registerReceiver(triggerReceiver, filter);
+		
 		refreshTriggers();
 
-		return super.onStartCommand(intent, flags, startId);
+		super.onStartCommand(intent, flags, startId);
+		return START_STICKY;
 	}
+
+	@Override
+	public void onDestroy() {
+		unregisterReceiver(triggerReceiver);
+	}
+
 
 	/**
 	 * Sets the time.

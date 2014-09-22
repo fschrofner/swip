@@ -33,13 +33,11 @@
         android:key="systemapp"
         android:summary="@string/pref_description_systemapp"
         android:title="@string/pref_title_systemapp" />
-    
     <Preference
         android:dependency="root"
         android:key="removeSystemapp"
         android:summary="@string/pref_description_removeSystemapp"
         android:title="@string/pref_title_removeSystemapp" />
-    
     <Preference
         android:key="about"
         android:title="@string/title_activity_about" >
