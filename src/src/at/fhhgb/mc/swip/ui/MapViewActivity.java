@@ -51,6 +51,13 @@ public class MapViewActivity extends Activity implements
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		SharedPreferences pref = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		
+		if (pref.getBoolean("dark_theme", false)) {
+			setTheme(R.style.AppThemeDark);
+		}
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map_view);
 		// Show the Up button in the action bar.
@@ -66,9 +73,6 @@ public class MapViewActivity extends Activity implements
 		// Check if we were successful in obtaining the map.
 		if (mMap != null) {
 			// The Map is verified. It is now safe to manipulate the map.
-
-			SharedPreferences pref = PreferenceManager
-					.getDefaultSharedPreferences(this);
 
 			mMap.setPadding(0, 100, 0, 0);
 			mMap.setMyLocationEnabled(true);

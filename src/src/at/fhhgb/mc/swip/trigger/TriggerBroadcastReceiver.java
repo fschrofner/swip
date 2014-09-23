@@ -3,15 +3,14 @@ package at.fhhgb.mc.swip.trigger;
 import java.util.Calendar;
 import java.util.List;
 
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.LocationClient;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.util.Log;
+
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationClient;
 
 /**
  * Receives several broadcasts and sets the according variables in the trigger service.
