@@ -1,0 +1,12 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <Preference
+        android:key="location"
+        android:title="@string/pref_title_location" >
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="at.fhhgb.mc.swip.ui.MapViewActivity"
+            android:targetPackage="at.fhhgb.mc.swip" />
+    </Preference>
+
+</PreferenceScreen>

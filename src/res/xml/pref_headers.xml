@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- These settings headers are only used on tablets. -->
+
+    <header
+        android:fragment="at.fhhgb.mc.swip.ProfileEditActivity$GeneralPreferenceFragment"
+        android:title="@string/pref_header_name" />
+    <header
+        android:fragment="at.fhhgb.mc.swip.ProfileEditActivity$SoundPreferenceFragment"
+        android:title="@string/pref_header_sound" />
+    <header
+        android:fragment="at.fhhgb.mc.swip.ProfileEditActivity$ConnectivityPreferenceFragment"
+        android:title="@string/pref_header_connectivity" />
+    <header
+        android:fragment="at.fhhgb.mc.swip.ProfileEditActivity$DisplayPreferenceFragment"
+        android:title="@string/pref_header_display" />
+
+    <!-- These settings headers are only used on tablets. -->
+
+    <header
+        android:fragment="at.fhhgb.mc.swip.SettingsActivity$GeneralPreferenceFragment"
+        android:title="@string/pref_header_general" />
+
+    <!-- These settings headers are only used on tablets. -->
+
+    <header
+        android:fragment="at.fhhgb.mc.swip.TriggerEditActivity$GeneralPreferenceFragment"
+        android:title="@string/pref_header_general" />
+    <header
+        android:fragment="at.fhhgb.mc.swip.TriggerEditActivity$TimePreferenceFragment"
+        android:title="@string/pref_header_time" />
+    <header
+        android:fragment="at.fhhgb.mc.swip.TriggerEditActivity$BatteryPreferenceFragment"
+        android:title="@string/pref_header_battery" />
+    
+    <header
+        android:fragment="at.fhhgb.mc.swip.TriggerEditActivity$HeadphonePreferenceFragment"
+        android:title="@string/pref_header_headphone" />
+
+</preference-headers>
