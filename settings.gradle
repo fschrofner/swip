@@ -1,0 +1,1 @@
+include ':libs:AndroidSliderPreference', ':libs:GooglePlayServices', ':src'
