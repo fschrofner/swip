@@ -1,1 +1,1 @@
-include ':libs:AndroidSliderPreference', ':src'
+include ':libs:AndroidSliderPreference', ':libs:GooglePlayServices', ':src'
