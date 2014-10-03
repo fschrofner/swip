@@ -9,7 +9,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
-import android.util.Log;
+import at.flosch.logwrap.Log;
 import android.util.Xml;
 
 /**
@@ -19,6 +19,7 @@ import android.util.Xml;
  *
  */
 public class XmlParserPref {
+	final static String TAG = "XmlParserPref";
 
 	Context context;	 //the context is needed to be handed over to the setter
 	Editor prefEdit;
@@ -115,23 +116,23 @@ public class XmlParserPref {
 		if (_parser.getAttributeValue(null, "mode") != null) {					//if there is a mode attribute inside(otherwise it would not be a valid setting)
 			if (_parser.getAttributeValue(null, "mode").equals("normal")) {		//if the mode is defined as normal
 				prefEdit.putString("ringer_mode", "normal");
-				Log.i("XmlParserPref", "RingerMode: normal");
+				Log.i(TAG, "RingerMode: normal");
 			} else if (_parser.getAttributeValue(null, "mode").equals("silent")) {//if the mode is defined as silent
 				prefEdit.putString("ringer_mode", "silent");
-				Log.i("XmlParserPref", "RingerMode: silent");
+				Log.i(TAG, "RingerMode: silent");
 			} else if (_parser.getAttributeValue(null, "mode")					//if the mode is defined as vibrate
 					.equals("vibrate")) {
 				prefEdit.putString("ringer_mode", "vibrate");
-				Log.i("XmlParserPref", "RingerMode: vibrate");
+				Log.i(TAG, "RingerMode: vibrate");
 			} else if (_parser.getAttributeValue(null, "mode")					//if the mode is defined as unchanged
 					.equals("unchanged")) {
 				prefEdit.putString("ringer_mode", "unchanged");
-				Log.i("XmlParserPref", "RingerMode: unchanged");
+				Log.i(TAG, "RingerMode: unchanged");
 			} else {															//for log messages only
-				Log.e("XmlParserPref", "RingerMode: Invalid Argument!");
+				Log.e(TAG, "RingerMode: Invalid Argument!");
 			}
 		} else {
-			Log.i("XmlParserPref", "RingerMode: No change.");
+			Log.i(TAG, "RingerMode: No change.");
 		}
 		
 		_parser.nextTag();														//goes to the next tag (otherwise the readAndApplyTags method would not continue)
@@ -154,14 +155,14 @@ public class XmlParserPref {
 							.getAttributeValue(null, "media")) <= 15) {
 				prefEdit.putInt("media_volume", Integer.parseInt(_parser
 						.getAttributeValue(null, "media")));
-				Log.i("XmlParserPref",
+				Log.i(TAG,
 						"MediaVolume: "
 								+ _parser.getAttributeValue(null, "media"));
 			} else {																//if the media volume is set to an invalid value
-				Log.e("XmlParserPref", "MediaVolume: Invalid Argument!");
+				Log.e(TAG, "MediaVolume: Invalid Argument!");
 			}
 		} else {
-			Log.i("XmlParserPref", "MediaVolume: No change.");							//if the media attribute is not set
+			Log.i(TAG, "MediaVolume: No change.");							//if the media attribute is not set
 		}
 
 		if (_parser.getAttributeValue(null, "alarm") != null) {						//if the alarm attribute is set
@@ -170,14 +171,14 @@ public class XmlParserPref {
 							.getAttributeValue(null, "alarm")) <= 7) {
 				prefEdit.putInt("alarm_volume", Integer.parseInt(_parser
 						.getAttributeValue(null, "alarm")));
-				Log.i("XmlParserPref",
+				Log.i(TAG,
 						"AlarmVolume: "
 								+ _parser.getAttributeValue(null, "alarm"));
 			} else {																//if the alarm volume is set to an invalid value
-				Log.e("XmlParserPref", "AlarmVolume: Invalid Argument!");
+				Log.e(TAG, "AlarmVolume: Invalid Argument!");
 			}
 		} else {
-			Log.i("XmlParserPref", "AlarmVolume: No change.");							//if the alarm attribute is not set
+			Log.i(TAG, "AlarmVolume: No change.");							//if the alarm attribute is not set
 		}
 
 		if (_parser.getAttributeValue(null, "ringtone") != null) {					//if the ringtone attribute is set
@@ -186,14 +187,14 @@ public class XmlParserPref {
 							"ringtone")) <= 7) {									//checks if the value is set to a valid one
 				prefEdit.putInt("ringtone_volume", Integer.parseInt(_parser
 						.getAttributeValue(null, "ringtone")));					//sets the ringtone-volume
-				Log.i("XmlParserPref",
+				Log.i(TAG,
 						"Ringtone-Volume: "
 								+ _parser.getAttributeValue(null, "ringtone"));
 			} else {
-				Log.e("XmlParserPref", "RingtoneVolume: Invalid Argument!");			//if the value would be invalid
+				Log.e(TAG, "RingtoneVolume: Invalid Argument!");			//if the value would be invalid
 			}
 		} else {
-			Log.i("XmlParserPref", "RingtoneVolume: No change.");						//if the ringtone attribute was not set
+			Log.i(TAG, "RingtoneVolume: No change.");						//if the ringtone attribute was not set
 		}
 
 		_parser.nextTag();
@@ -212,18 +213,18 @@ public class XmlParserPref {
 		if (_parser.getAttributeValue(null, "enabled") != null) {
 			if (_parser.getAttributeValue(null, "enabled").equals("1")) {	//if gps is set enabled
 				prefEdit.putString("gps", "enabled");
-				Log.i("XmlParserPref", "GPS on.");
+				Log.i(TAG, "GPS on.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("0")) {	//if it is set to disabled
 				prefEdit.putString("gps", "disabled");
-				Log.i("XmlParserPref", "GPS off.");
+				Log.i(TAG, "GPS off.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("-1")) {	//if it is set to unchanged
 				prefEdit.putString("gps", "unchanged");
-				Log.i("XmlParserPref", "GPS unchanged.");
+				Log.i(TAG, "GPS unchanged.");
 			} else {
-				Log.e("XmlParserPref", "GPS: Invalid Argument!");				//if it is set to an invalid value
+				Log.e(TAG, "GPS: Invalid Argument!");				//if it is set to an invalid value
 			}
 		} else {															//if the enabled attribute is not set
-			Log.i("XmlParserPref", "GPS: No change.");
+			Log.i(TAG, "GPS: No change.");
 		}
 		_parser.nextTag();
 	}
@@ -243,31 +244,31 @@ public class XmlParserPref {
 							.getAttributeValue(null, "brightness")) <= 255)) {
 				prefEdit.putInt("display_brightness", Integer.parseInt(_parser
 						.getAttributeValue(null, "brightness")));	
-				Log.i("XmlParserPref",
+				Log.i(TAG,
 						"ScreenBrightness: "
 								+ _parser.getAttributeValue(null, "brightness"));
 			} else {																//if the brightness is set to an invalid value
-				Log.e("XmlParserPref", "ScreenBrightness: Invalid Argument!");
+				Log.e(TAG, "ScreenBrightness: Invalid Argument!");
 			}
 		} else {
-			Log.i("XmlParserPref", "ScreenBrightness: No change.");							//if the brightness attribute is not set
+			Log.i(TAG, "ScreenBrightness: No change.");							//if the brightness attribute is not set
 		}
 		
 		if (_parser.getAttributeValue(null, "auto_mode_enabled") != null) {
 			if (_parser.getAttributeValue(null, "auto_mode_enabled").equals("1")) {	//if autoMode is set enabled
 				prefEdit.putString("display_auto_mode", "enabled");
-				Log.i("XmlParserPref", "ScreenBrightnessAutoMode on.");
+				Log.i(TAG, "ScreenBrightnessAutoMode on.");
 			} else if (_parser.getAttributeValue(null, "auto_mode_enabled").equals("0")) {	//if it is set to disabled
 				prefEdit.putString("display_auto_mode", "disabled");
-				Log.i("XmlParserPref", "ScreenBrightnessAutoMode off.");
+				Log.i(TAG, "ScreenBrightnessAutoMode off.");
 			} else if (_parser.getAttributeValue(null, "auto_mode_enabled").equals("-1")) {	//if it is set to unchanged
 				prefEdit.putString("display_auto_mode", "unchanged");
-				Log.i("XmlParserPref", "ScreenBrightnessAutoMode unchanged.");
+				Log.i(TAG, "ScreenBrightnessAutoMode unchanged.");
 			} else {
-				Log.e("XmlParserPref", "ScreenBrightnessAutoMode: Invalid Argument!");				//if it is set to an invalid value
+				Log.e(TAG, "ScreenBrightnessAutoMode: Invalid Argument!");				//if it is set to an invalid value
 			}
 		} else {															//if the enabled attribute is not set
-			Log.i("XmlParserPref", "ScreenBrightnessAutoMode: No change.");
+			Log.i(TAG, "ScreenBrightnessAutoMode: No change.");
 		}
 		
 		if (_parser.getAttributeValue(null, "time_out") != null) {				//if the timeOut-attribute is set
@@ -276,14 +277,14 @@ public class XmlParserPref {
 							.getAttributeValue(null, "time_out")) <= 6) {
 				prefEdit.putString("display_time_out", _parser
 						.getAttributeValue(null, "time_out"));	
-				Log.i("XmlParserPref",
+				Log.i(TAG,
 						"TimeOut: "
 								+ _parser.getAttributeValue(null, "time_out"));
 			} else {																//if the timeOut is set to an invalid value
-				Log.e("XmlParserPref", "TimeOut: Invalid Argument!");
+				Log.e(TAG, "TimeOut: Invalid Argument!");
 			}
 		} else {
-			Log.i("XmlParserPref", "TimeOut: No change.");							//if the timeOut attribute is not set
+			Log.i(TAG, "TimeOut: No change.");							//if the timeOut attribute is not set
 		}
 		
 		_parser.nextTag();
@@ -302,18 +303,18 @@ public class XmlParserPref {
 		if (_parser.getAttributeValue(null, "enabled") != null) {				//if the right attribute is here
 			if (_parser.getAttributeValue(null, "enabled").equals("1")) {		//enables lockscreen
 				prefEdit.putString("lockscreen", "enabled");
-				Log.i("XmlParserPref", "Lockscreen on.");
+				Log.i(TAG, "Lockscreen on.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("0")) {//disables lockscreen
 				prefEdit.putString("lockscreen", "disabled");
-				Log.i("XmlParserPref", "Lockscreen off.");
+				Log.i(TAG, "Lockscreen off.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("-1")) {//lockscreen unchanged
 				prefEdit.putString("lockscreen", "unchanged");
-				Log.i("XmlParserPref", "Lockscreen unchanged.");
+				Log.i(TAG, "Lockscreen unchanged.");
 			} else {															//invalid value for the attribute
-				Log.e("XmlParserPref", "Lockscreen: Invalid Argument!");
+				Log.e(TAG, "Lockscreen: Invalid Argument!");
 			}
 		} else {																//enabled not set
-			Log.i("XmlParserPref", "Lockscreen: No change.");
+			Log.i(TAG, "Lockscreen: No change.");
 		}
 		_parser.nextTag();
 	}
@@ -329,18 +330,18 @@ public class XmlParserPref {
 		if (_parser.getAttributeValue(null, "enabled") != null) {				//if the right attribute is here
 			if (_parser.getAttributeValue(null, "enabled").equals("1")) {		//enabled bluetooth
 				prefEdit.putString("bluetooth", "enabled");
-				Log.i("XmlParserPref", "Bluetooth on.");
+				Log.i(TAG, "Bluetooth on.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("0")) {//disables bluetooth
 				prefEdit.putString("bluetooth", "disabled");
-				Log.i("XmlParserPref", "Bluetooth off.");
+				Log.i(TAG, "Bluetooth off.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("-1")) {//bluetooth unchanged
 				prefEdit.putString("bluetooth", "unchanged");
-				Log.i("XmlParserPref", "Bluetooth unchanged.");
+				Log.i(TAG, "Bluetooth unchanged.");
 			} else {															//invalid value for the attribute
-				Log.e("XmlParserPref", "Bluetooth: Invalid Argument!");
+				Log.e(TAG, "Bluetooth: Invalid Argument!");
 			}
 		} else {																//enabled not set
-			Log.i("XmlParserPref", "Bluetooth: No change.");
+			Log.i(TAG, "Bluetooth: No change.");
 		}
 		_parser.nextTag();
 	}
@@ -357,18 +358,18 @@ public class XmlParserPref {
 		if (_parser.getAttributeValue(null, "enabled") != null) {				//if the right attribute is here
 			if (_parser.getAttributeValue(null, "enabled").equals("1")) {		//enables nfc
 				prefEdit.putString("nfc", "enabled");
-				Log.i("XmlParserPref", "NFC on.");
+				Log.i(TAG, "NFC on.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("0")) {//disables nfc
 				prefEdit.putString("nfc", "disabled");
-				Log.i("XmlParserPref", "NFC off.");
+				Log.i(TAG, "NFC off.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("-1")) {//nfc unchanged
 				prefEdit.putString("nfc", "unchanged");
-				Log.i("XmlParserPref", "NFC unchanged.");
+				Log.i(TAG, "NFC unchanged.");
 			} else {															//invalid value for the attribute
-				Log.e("XmlParserPref", "NFC: Invalid Argument!");
+				Log.e(TAG, "NFC: Invalid Argument!");
 			}
 		} else {																//enabled not set
-			Log.i("XmlParserPref", "NFC: No change.");
+			Log.i(TAG, "NFC: No change.");
 		}
 		_parser.nextTag();
 	}
@@ -385,18 +386,18 @@ public class XmlParserPref {
 		if (_parser.getAttributeValue(null, "enabled") != null) {
 			if (_parser.getAttributeValue(null, "enabled").equals("1")) {
 				prefEdit.putString("mobile_data", "enabled");
-				Log.i("XmlParserPref", "MobileData on.");
+				Log.i(TAG, "MobileData on.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("0")) {
 				prefEdit.putString("mobile_data", "disabled");
-				Log.i("XmlParserPref", "MobileData off.");
+				Log.i(TAG, "MobileData off.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("-1")) {
 				prefEdit.putString("mobile_data", "unchanged");
-				Log.i("XmlParserPref", "MobileData unchanged.");
+				Log.i(TAG, "MobileData unchanged.");
 			} else {
-				Log.e("XmlParserPref", "MobileData: Invalid Argument!");
+				Log.e(TAG, "MobileData: Invalid Argument!");
 			}
 		} else {
-			Log.i("XmlParserPref", "MobileData: No change.");
+			Log.i(TAG, "MobileData: No change.");
 		}
 		_parser.nextTag();
 	}
@@ -412,18 +413,18 @@ public class XmlParserPref {
 		if (_parser.getAttributeValue(null, "enabled") != null) {
 			if (_parser.getAttributeValue(null, "enabled").equals("1")) {
 				prefEdit.putString("airplane_mode", "enabled");
-				Log.i("XmlParserPref", "Airplane Mode on.");
+				Log.i(TAG, "Airplane Mode on.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("0")) {
 				prefEdit.putString("airplane_mode", "disabled");
-				Log.i("XmlParserPref", "Airplane Mode off.");
+				Log.i(TAG, "Airplane Mode off.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("-1")) {
 				prefEdit.putString("airplane_mode", "unchanged");
-				Log.i("XmlParserPref", "Airplane Mode unchanged.");
+				Log.i(TAG, "Airplane Mode unchanged.");
 			} else {
-				Log.e("XmlParserPref", "Airplane Mode: Invalid Argument!");
+				Log.e(TAG, "Airplane Mode: Invalid Argument!");
 			}
 		} else {
-			Log.i("XmlParserPref", "Airplane Mode: No change.");
+			Log.i(TAG, "Airplane Mode: No change.");
 		}
 		_parser.nextTag();
 	}
@@ -440,18 +441,18 @@ public class XmlParserPref {
 		if (_parser.getAttributeValue(null, "enabled") != null) {
 			if (_parser.getAttributeValue(null, "enabled").equals("1")) {			//if wifi is set to enabled
 				prefEdit.putString("wifi", "enabled");
-				Log.i("XmlParserPref", "WiFi on.");
+				Log.i(TAG, "WiFi on.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("0")) {	//if it is set to disabled
 				prefEdit.putString("wifi", "disabled");
-				Log.i("XmlParserPref", "WiFi off.");
+				Log.i(TAG, "WiFi off.");
 			} else if (_parser.getAttributeValue(null, "enabled").equals("-1")) {	//if it is set to unchanged
 				prefEdit.putString("wifi", "unchanged");
-				Log.i("XmlParserPref", "WiFi unchanged.");
+				Log.i(TAG, "WiFi unchanged.");
 			} else {																//if there is not a valid value
-				Log.e("XmlParserPref", "WiFi: Invalid Argument!");
+				Log.e(TAG, "WiFi: Invalid Argument!");
 			}
 		} else {
-			Log.i("XmlParserPref", "WiFi: No change.");									//if the enabled attribute is not there
+			Log.i(TAG, "WiFi: No change.");									//if the enabled attribute is not there
 		}
 		_parser.nextTag();
 	}

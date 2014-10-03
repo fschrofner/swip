@@ -7,7 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
-import android.util.Log;
+import at.flosch.logwrap.Log;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
@@ -19,6 +19,8 @@ import com.google.android.gms.location.LocationClient;
  *
  */
 public class TriggerBroadcastReceiver extends BroadcastReceiver{
+	final static String TAG = "TriggerBroadcastReceiver";
+	
 	TriggerService triggerservice;
 	
 	TriggerBroadcastReceiver(TriggerService _service){
@@ -33,7 +35,7 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 	@Override
 	public void onReceive(Context _context, Intent _intent) {
 		
-		Log.i("TriggerBroadcastReceiver", "Broadcast received: " + _intent.getAction());
+		Log.i(TAG, "Broadcast received: " + _intent.getAction());
 		
 		if (_intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
 			
@@ -42,18 +44,18 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 			int m = Integer.parseInt(String.valueOf(Calendar
 					.getInstance().get(Calendar.MINUTE)));
 			triggerservice.setTime(h, m);
-			Log.i("TriggerBroadcastReceiver", "TimeTick: " + h + ":" + m);
+			Log.i(TAG, "TimeTick: " + h + ":" + m);
 		}
 		else if (_intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)){
 			int state = _intent.getIntExtra("state", -1);
             switch (state) {
             case 0:
             	triggerservice.setHeadphones(false);
-                Log.i("TriggerBroadcastReceiver", "Headset unplugged");
+                Log.i(TAG, "Headset unplugged");
                 break;
             case 1:
             	triggerservice.setHeadphones(true);
-                Log.i("TriggerBroadcastReceiver", "Headset plugged");
+                Log.i(TAG, "Headset plugged");
                 break;
             }
          } 
@@ -77,7 +79,7 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 			triggerservice.clearGeofences();
 		}
 		if(_intent.getAction().equals("at.fhhgb.mc.swip.trigger.location_change")){
-			Log.i("TriggerBroadcastReceiver", "Location change detected - action");
+			Log.i(TAG, "Location change detected - action");
 			// First check for errors
 			if (LocationClient.hasError(_intent)) {
 				// Get the error code with a static method
@@ -102,7 +104,7 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 					for (int i = 0; i < triggerIds.length; i++) {
 						// Store the Id of each geofence
 						triggerIds[i] = triggerList.get(i).getRequestId();
-						Log.i("TriggerBroadcastReceiver", "matching geofence: " + triggerIds[i]);
+						Log.i(TAG, "matching geofence: " + triggerIds[i]);
 					}
 					
 					triggerservice.setGeofences(triggerIds);

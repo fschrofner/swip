@@ -11,9 +11,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.services.Handler;
 
@@ -24,6 +24,7 @@ import at.fhhgb.mc.swip.services.Handler;
  * 
  */
 public class ListWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
+	final static String TAG = "ListWidgetFactory";
 
 	List<String> profileList = new ArrayList<String>();
 	Context context;
@@ -31,7 +32,7 @@ public class ListWidgetFactory implements RemoteViewsService.RemoteViewsFactory 
 	File directory;
 
 	ListWidgetFactory(Context _context, Intent _intent, File _file) {
-		Log.i("List View", "constructor");
+		Log.i(TAG, "constructor");
 		context = _context;
 		appWidgetId = _intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 				AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -42,7 +43,7 @@ public class ListWidgetFactory implements RemoteViewsService.RemoteViewsFactory 
 	 * Refreshes the list of profiles.
 	 */
 	private void refreshListView() {
-		Log.i("Widget List", "refreshListView()");
+		Log.i(TAG, "refreshListView()");
 		
 		Boolean firstRun = false;
 		SharedPreferences pref = PreferenceManager
@@ -84,7 +85,7 @@ public class ListWidgetFactory implements RemoteViewsService.RemoteViewsFactory 
 
 		});
 
-		Log.i("Widget List", "List refreshed!");
+		Log.i(TAG, "List refreshed!");
 	}
 
 	@Override
@@ -134,7 +135,7 @@ public class ListWidgetFactory implements RemoteViewsService.RemoteViewsFactory 
 
 	@Override
 	public void onCreate() {
-		Log.i("Widget List", "onCreate()");
+		Log.i(TAG, "onCreate()");
 		refreshListView();
 	}
 
@@ -145,7 +146,7 @@ public class ListWidgetFactory implements RemoteViewsService.RemoteViewsFactory 
 	 */
 	@Override
 	public void onDataSetChanged() {
-		Log.i("Factory", "onDataSetChanged");
+		Log.i(TAG, "onDataSetChanged");
 		refreshListView();
 	}
 

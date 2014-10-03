@@ -9,7 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.R;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -29,6 +29,8 @@ import com.google.android.gms.location.LocationClient.OnRemoveGeofencesResultLis
 public class LocationTrigger implements ConnectionCallbacks,
 		OnConnectionFailedListener, OnAddGeofencesResultListener,
 		OnRemoveGeofencesResultListener {
+	
+	final static String TAG = "LocationTrigger";
 
 	private Context context;
 	private PendingIntent pendingIntent;
@@ -101,7 +103,7 @@ public class LocationTrigger implements ConnectionCallbacks,
 	 * @return The pending intent.
 	 */
 	private PendingIntent getPendingIntent() {
-		Log.i("LocationTrigger", "Creating pending intent");
+		Log.i(TAG, "Creating pending intent");
 		// Create an explicit Intent
 		Intent intent = new Intent();
 		intent.setAction("at.fhhgb.mc.swip.trigger.location_change");
@@ -117,7 +119,7 @@ public class LocationTrigger implements ConnectionCallbacks,
 	 *            The geofence, which should be registered.
 	 */
 	public void registerGeofence(SimpleGeofence _geofence) {
-		Log.i("LocationTrigger", "Started registerGeofence");
+		Log.i(TAG, "Started registerGeofence");
 		geofenceList.add(_geofence.toGeofence());
 		geofenceStorage.setGeofence(_geofence.getId(), _geofence);
 		refreshGeofences();
@@ -130,7 +132,7 @@ public class LocationTrigger implements ConnectionCallbacks,
 	 *            The id of the geofence, which should be unregistered.
 	 */
 	public void unregisterGeofence(String _id) {
-		Log.i("LocationTrigger", "Started unregisterGeofence");
+		Log.i(TAG, "Started unregisterGeofence");
 		// locationClient = new LocationClient(context, this, this);
 		ArrayList<String> ids = new ArrayList<String>();
 		ids.add(_id);
@@ -145,9 +147,9 @@ public class LocationTrigger implements ConnectionCallbacks,
 	private void refreshGeofences() {
 		// Start a request to add geofences
 
-		Log.i("LocationTrigger", "Started addGeofences");
+		Log.i(TAG, "Started addGeofences");
 		if (!servicesConnected()) {
-			Log.e("LocationTrigger", "Google Play Services not connected");
+			Log.e(TAG, "Google Play Services not connected");
 			return;
 		}
 
@@ -157,9 +159,9 @@ public class LocationTrigger implements ConnectionCallbacks,
 			inProgress = true;
 			// Request a connection from the client to Location Services
 			locationClient.connect();
-			Log.i("LocationTrigger", "Location Client connected");
+			Log.i(TAG, "Location Client connected");
 		} else {
-			Log.e("LocationTrigger",
+			Log.e(TAG,
 					"There is already a location client connected");
 		}
 	}
@@ -191,11 +193,11 @@ public class LocationTrigger implements ConnectionCallbacks,
 		// Send a request to add the current geofences
 		if (geofenceList != null && geofenceList.size() > 0) {
 			locationClient.addGeofences(geofenceList, pendingIntent, this);
-			Log.i("LocationTrigger", "Geofences added");
+			Log.i(TAG, "Geofences added");
 			geofenceList = new ArrayList<Geofence>();
 		} else if (removeList != null && removeList.size() > 0) {
 			locationClient.removeGeofences(removeList, this);
-			Log.i("LocationTrigger", "Geofences removed");
+			Log.i(TAG, "Geofences removed");
 			removeList = new ArrayList<String>();
 		}
 

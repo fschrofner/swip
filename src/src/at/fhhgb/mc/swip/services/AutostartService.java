@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.util.Log;
+import at.flosch.logwrap.Log;
 
 /**
  * Service used to start the notification, if the permanent notification option
@@ -15,6 +15,7 @@ import android.util.Log;
  * 
  */
 public class AutostartService extends Service {
+	final static String TAG = "AutostartService";
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -31,7 +32,7 @@ public class AutostartService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		Log.i("AutostartService", "checking if notification is enabled");
+		Log.i(TAG, "checking if notification is enabled");
 
 		// checks if the permanent notification option is enabled
 		if (pref.getBoolean("notification", false)) {
