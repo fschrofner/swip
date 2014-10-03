@@ -26,9 +26,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
+import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.XmlParserPref;
 
@@ -42,6 +42,7 @@ import at.fhhgb.mc.swip.profile.XmlParserPref;
 
 public class NfcWriterActivity extends Activity implements
 		DialogInterface.OnClickListener {
+	final static String TAG = "NfcWriterActivity";
 
 	public static final byte NFC_REVISION = 0;  //our revision of the nfc data format, used for compatibility
 	public static final int NFC_SIZE = 7;		//the number of bytes our nfc data uses
@@ -290,19 +291,19 @@ public class NfcWriterActivity extends Activity implements
 		//checking if the value is set to unchanged or not
 		if(pref.getInt("ringtone_volume", -1) != -1){
 			ringtone_volume = (short) pref.getInt("ringtone_volume", -1);
-			Log.i("NfcWriterActivity", "ringtone_volume: " + ringtone_volume);
+			Log.i(TAG, "ringtone_volume: " + ringtone_volume);
 		} else {
 			//15 = 1111, which equals unchanged
 			ringtone_volume = (short) 15;
-			Log.i("NfcWriterActivity", "ringtone_volume unchanged!");
+			Log.i(TAG, "ringtone_volume unchanged!");
 		}
 		
 		if(pref.getInt("alarm_volume", -1) != -1){
 			alarm_volume = (short) pref.getInt("alarm_volume", -1);
-			Log.i("NfcWriterActivity", "alarm_volume: " + alarm_volume);
+			Log.i(TAG, "alarm_volume: " + alarm_volume);
 		} else {
 			alarm_volume = (short) 15;
-			Log.i("NfcWriterActivity", "alarm_volume unchanged!");
+			Log.i(TAG, "alarm_volume unchanged!");
 		}
 		
 		//now moving ringtone volume 4 bits to the left, to make space for the alarm volume
@@ -311,7 +312,7 @@ public class NfcWriterActivity extends Activity implements
 		//using bitwise or to concatenate the two shorts into one
 		byteOne = (short)(ringtone_volume | alarm_volume);
 		
-		Log.i("NfcWriterActivity", "first byte defined as: " + byteOne + "(" + Integer.toBinaryString(byteOne) + ")");
+		Log.i(TAG, "first byte defined as: " + byteOne + "(" + Integer.toBinaryString(byteOne) + ")");
 		
 		return byteOne;
 	}
@@ -331,20 +332,20 @@ public class NfcWriterActivity extends Activity implements
 		//checking if the value is set to unchanged or not
 		if(pref.getInt("media_volume", -1) != -1){
 			media_volume = (short) pref.getInt("media_volume", -1);
-			Log.i("NfcWriterActivity", "media_volume: " + media_volume);
+			Log.i(TAG, "media_volume: " + media_volume);
 		} else {
 			//31 = 11111, which equals unchanged
 			media_volume = (short) 31;
-			Log.i("NfcWriterActivity", "media_volume unchanged!");
+			Log.i(TAG, "media_volume unchanged!");
 		}
 		
 		if(!pref.getString("display_time_out", "-1").equals("-1")){
 			display_time_out = Short.parseShort(pref.getString("display_time_out", "-1"));
-			Log.i("NfcWriterActivity", "display_time_out: " + display_time_out);
+			Log.i(TAG, "display_time_out: " + display_time_out);
 		} else {
 			//7 = 111
 			display_time_out = (short) 7;
-			Log.i("NfcWriterActivity", "display_time_out unchanged!");
+			Log.i(TAG, "display_time_out unchanged!");
 		}
 		
 		//now moving media volume 3 bits to the left, to make space for the display time out
@@ -353,7 +354,7 @@ public class NfcWriterActivity extends Activity implements
 		//using bitwise or to concatenate the two shorts into one
 		byteTwo = (short)(media_volume | display_time_out);
 		
-		Log.i("NfcWriterActivity", "second byte defined as: " + byteTwo + "(" + Integer.toBinaryString(byteTwo) + ")");
+		Log.i(TAG, "second byte defined as: " + byteTwo + "(" + Integer.toBinaryString(byteTwo) + ")");
 		
 		return byteTwo;
 	}
@@ -389,11 +390,11 @@ public class NfcWriterActivity extends Activity implements
 				//10
 				ringer_mode = (short) 2;
 			}
-			Log.i("NfcWriterActivity", "ringer_mode: " + pref.getString("ringer_mode", "unchanged"));
+			Log.i(TAG, "ringer_mode: " + pref.getString("ringer_mode", "unchanged"));
 		} else {
 			//3 = 11, which equals unchanged
 			ringer_mode = (short) 3;
-			Log.i("NfcWriterActivity", "ringer_mode unchanged!");
+			Log.i(TAG, "ringer_mode unchanged!");
 		}
 		
 		//mobile data
@@ -406,11 +407,11 @@ public class NfcWriterActivity extends Activity implements
 				//01
 				mobile_data = (short) 1;
 			}
-			Log.i("NfcWriterActivity", "mobile_data: " + mobile_data);
+			Log.i(TAG, "mobile_data: " + mobile_data);
 		} else {
 			//11
 			mobile_data = (short) 3;
-			Log.i("NfcWriterActivity", "mobile_data unchanged!");
+			Log.i(TAG, "mobile_data unchanged!");
 		}
 		
 		//wifi
@@ -423,11 +424,11 @@ public class NfcWriterActivity extends Activity implements
 				//01
 				wifi = (short) 1;
 			}
-			Log.i("NfcWriterActivity", "wifi: " + wifi);
+			Log.i(TAG, "wifi: " + wifi);
 		} else {
 			//11
 			wifi = (short) 3;
-			Log.i("NfcWriterActivity", "wifi unchanged!");
+			Log.i(TAG, "wifi unchanged!");
 		}
 		
 		//bluetooth
@@ -440,11 +441,11 @@ public class NfcWriterActivity extends Activity implements
 				//01
 				bluetooth = (short) 1;
 			}
-			Log.i("NfcWriterActivity", "bluetooth: " + bluetooth);
+			Log.i(TAG, "bluetooth: " + bluetooth);
 		} else {
 			//11
 			bluetooth = (short) 3;
-			Log.i("NfcWriterActivity", "bluetooth unchanged!");
+			Log.i(TAG, "bluetooth unchanged!");
 		}
 		
 		//moving the bits accordingly so they can be concatenated correctly
@@ -455,7 +456,7 @@ public class NfcWriterActivity extends Activity implements
 		//using bitwise or to concatenate the two shorts into one
 		byteThree = (short)(ringer_mode | mobile_data | wifi | bluetooth);
 		
-		Log.i("NfcWriterActivity", "third byte defined as: " + byteThree + "(" + Integer.toBinaryString(byteThree) + ")");
+		Log.i(TAG, "third byte defined as: " + byteThree + "(" + Integer.toBinaryString(byteThree) + ")");
 		
 		return byteThree;
 	}
@@ -476,10 +477,10 @@ public class NfcWriterActivity extends Activity implements
 		//display brightness
 		if(pref.getInt("display_brightness",-1) != -1){
 			brightnessOne = (short) 0;
-			Log.i("NfcWriterActivity", "displaybrightness changed!");
+			Log.i(TAG, "displaybrightness changed!");
 		} else {
 			brightnessOne = (short) 1;
-			Log.i("NfcWriterActivity", "displaybrightness unchanged!");
+			Log.i(TAG, "displaybrightness unchanged!");
 		}
 		
 		//automatic brightness
@@ -504,7 +505,7 @@ public class NfcWriterActivity extends Activity implements
 		//concatenates the values
 		byteFour = (short)(brightnessOne | autoBrightness);
 		
-		Log.i("NfcWriterActivity", "fourth byte defined as: " + byteFour + "(" + Integer.toBinaryString(byteFour) + ")");
+		Log.i(TAG, "fourth byte defined as: " + byteFour + "(" + Integer.toBinaryString(byteFour) + ")");
 		
 		return byteFour;
 	}
@@ -525,7 +526,7 @@ public class NfcWriterActivity extends Activity implements
 			//00000000
 			byteFive = 0;
 		}
-		Log.i("NfcWriterActivity", "fifth byte defined as: " + byteFive + "(" + Integer.toBinaryString(byteFive) + ")");
+		Log.i(TAG, "fifth byte defined as: " + byteFive + "(" + Integer.toBinaryString(byteFive) + ")");
 		return byteFive;
 	}
 	
@@ -556,11 +557,11 @@ public class NfcWriterActivity extends Activity implements
 				//01
 				gps = 1;
 			}
-			Log.i("NfcWriterActivity", "gps: " + gps);
+			Log.i(TAG, "gps: " + gps);
 		} else {
 			//11
 			gps = 3;
-			Log.i("NfcWriterActivity", "gps unchanged!");
+			Log.i(TAG, "gps unchanged!");
 		}
 		
 		//nfc
@@ -573,11 +574,11 @@ public class NfcWriterActivity extends Activity implements
 				//01
 				nfc = 1;
 			}
-			Log.i("NfcWriterActivity", "nfc: " + nfc);
+			Log.i(TAG, "nfc: " + nfc);
 		} else {
 			//11
 			nfc = 3;
-			Log.i("NfcWriterActivity", "nfc unchanged");
+			Log.i(TAG, "nfc unchanged");
 		}
 		
 		//lockscreen
@@ -590,11 +591,11 @@ public class NfcWriterActivity extends Activity implements
 				//01
 				lockscreen = 1;
 			}
-			Log.i("NfcWriterActivity", "lockscreen: " + lockscreen);
+			Log.i(TAG, "lockscreen: " + lockscreen);
 		} else {
 			//11
 			lockscreen = 3;
-			Log.i("NfcWriterActivity", "lockscreen unchanged!");
+			Log.i(TAG, "lockscreen unchanged!");
 		}
 		
 		//airplane
@@ -607,11 +608,11 @@ public class NfcWriterActivity extends Activity implements
 				//01
 				airplane_mode = 1;
 			}
-			Log.i("NfcWriterActivity", "airplane mode: " + airplane_mode);
+			Log.i(TAG, "airplane mode: " + airplane_mode);
 		} else {
 			//11
 			airplane_mode = 3;
-			Log.i("NfcWriterActivity", "airplane mode unchanged!");
+			Log.i(TAG, "airplane mode unchanged!");
 		}
 		
 		gps <<= 6;
@@ -619,7 +620,7 @@ public class NfcWriterActivity extends Activity implements
 		lockscreen <<= 2;
 	
 		byteSix = (short) (gps | nfc | lockscreen | airplane_mode);
-		Log.i("NfcWriterActivity", "sixth byte defined as: " + byteSix + "(" + Integer.toBinaryString(byteSix) + ")");
+		Log.i(TAG, "sixth byte defined as: " + byteSix + "(" + Integer.toBinaryString(byteSix) + ")");
 		
 		return byteSix;
 	}

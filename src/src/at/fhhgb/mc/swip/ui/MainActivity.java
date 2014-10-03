@@ -12,8 +12,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import at.fhhgb.mc.swip.R;
+import at.flosch.logwrap.Log;
 
 /**
  * The main activity managing the two fragments, there is no other work done
@@ -24,6 +24,7 @@ import at.fhhgb.mc.swip.R;
  *
  */
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
+	final static String TAG = "MainActivity";
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -44,6 +45,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		//Log.enable();
+		
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
 		//sets the theme
@@ -104,14 +108,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
 		if (pref.getBoolean("dark_theme", false) != darkTheme) {
-			Log.i("MainActivity", "New theme detected. Restart Activity");
+			Log.i(TAG, "New theme detected. Restart Activity");
 			recreate();
 		}
 
 		Locale current = getResources().getConfiguration().locale;
 		if (!pref.getString("current_lang", "xx").equals(pref.getString("language", "xx"))
 				|| !pref.getString("language", "xx").equals("xx") && !current.getLanguage().equals(pref.getString("language", "xx"))) {
-			Log.i("MainActivity", "New language detected. Restart Activity");
+			Log.i(TAG, "New language detected. Restart Activity");
 			recreate();
 		}
 

@@ -25,9 +25,9 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.Setter;
 import at.fhhgb.mc.swip.services.Handler;
@@ -49,6 +49,8 @@ import com.stericson.RootTools.execution.CommandCapture;
  */
 public class SettingsActivity extends PreferenceActivity implements
 		OnSharedPreferenceChangeListener,OnPreferenceClickListener {
+	
+	final static String TAG = "SettingsActivity";
 	/**
 	 * Determines whether to always show the simplified settings UI, where
 	 * settings are presented in a single list. When false, settings are shown
@@ -67,7 +69,7 @@ public class SettingsActivity extends PreferenceActivity implements
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		
-		Log.i("SettingsActivity", "pref: " +  pref.getString("language", "xx"));
+		Log.i(TAG, "pref: " +  pref.getString("language", "xx"));
 		
 		if (pref.getBoolean("dark_theme", false)) {
 			setTheme(R.style.AppThemeDark);
@@ -91,10 +93,10 @@ public class SettingsActivity extends PreferenceActivity implements
 	@Override
 	protected boolean isValidFragment(String fragmentName) {
 		if(fragmentName.equals("at.fhhgb.mc.swip.SettingsActivity$GeneralPreferenceFragment")){
-			Log.i("SettingsActivity", "valid fragment started");
+			Log.i(TAG, "valid fragment started");
 			return true;
 		} else {
-			Log.i("SettingsActivity", "invalid fragment started");
+			Log.i(TAG, "invalid fragment started");
 			return false;
 		}
 	}
@@ -340,7 +342,7 @@ public class SettingsActivity extends PreferenceActivity implements
 				}
 				
 			});
-			Log.i("SettingsActivity", "Install as systemapp selected");
+			Log.i(TAG, "Install as systemapp selected");
 			dialog.show();
 		}
 		else if(_preference.getKey().equals("removeSystemapp")){
@@ -356,7 +358,7 @@ public class SettingsActivity extends PreferenceActivity implements
 				}
 				
 			});
-			Log.i("SettingsActivity", "Uninstall as systemapp selected");
+			Log.i(TAG, "Uninstall as systemapp selected");
 			dialog.show();
 		}
 		return true;
@@ -537,7 +539,7 @@ public class SettingsActivity extends PreferenceActivity implements
 	 * @param _lang the requested language
 	 */
 	public static void setLocale(String _lang, Activity _activity) { 
-		Log.i("SettingsActivity", "setLocale: " + _lang);
+		Log.i(TAG, "setLocale: " + _lang);
 		
 		Locale locale;
 		

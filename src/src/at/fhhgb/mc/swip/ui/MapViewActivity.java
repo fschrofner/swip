@@ -15,7 +15,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.support.v4.app.NavUtils;
+import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.R;
 
 import com.google.android.gms.maps.MapFragment;
@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class MapViewActivity extends Activity implements
 		GoogleMap.OnMapLongClickListener, OnClickListener {
+	final static String TAG = "MapViewActivity";
 
 	private GoogleMap mMap;
 	private LatLng point;
@@ -231,7 +232,7 @@ public class MapViewActivity extends Activity implements
 				pref.edit().putInt("geofence_radius", -1).commit();
 			} else {
 				// new geofence defined
-				Log.i("MapViewActivity", "Saved geofence: lat: " + point.latitude + ", lng: " + point.longitude);
+				Log.i(TAG, "Saved geofence: lat: " + point.latitude + ", lng: " + point.longitude);
 				pref.edit().putFloat("geofence_lat", (float) point.latitude)
 						.commit();
 				pref.edit().putFloat("geofence_lng", (float) point.longitude)
@@ -259,7 +260,7 @@ public class MapViewActivity extends Activity implements
 	 */
 	@Override
 	public void onMapLongClick(LatLng _point) {
-		Log.i("MapViewActivity", "Longpress");
+		Log.i(TAG, "Longpress");
 
 		point = _point;
 		EditText editRadius = (EditText) findViewById(R.id.editTextRadius);
@@ -301,7 +302,7 @@ public class MapViewActivity extends Activity implements
 			radius = -1;
 			EditText editRadius = (EditText) findViewById(R.id.editTextRadius);
 			editRadius.setText("50");
-			Log.i("MapViewActivity", "Cleared map.");
+			Log.i(TAG, "Cleared map.");
 
 			preferencesChanged = true;
 		}

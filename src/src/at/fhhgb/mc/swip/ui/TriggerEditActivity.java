@@ -26,8 +26,8 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import at.fhhgb.mc.swip.R;
@@ -35,6 +35,7 @@ import at.fhhgb.mc.swip.trigger.LocationTrigger;
 import at.fhhgb.mc.swip.trigger.SimpleGeofence;
 import at.fhhgb.mc.swip.trigger.Trigger;
 import at.fhhgb.mc.swip.trigger.XmlCreatorTrigger;
+import at.flosch.logwrap.Log;
 
 import com.google.android.gms.location.Geofence;
 
@@ -46,6 +47,9 @@ import com.google.android.gms.location.Geofence;
  */
 public class TriggerEditActivity extends PreferenceActivity implements
 		OnSharedPreferenceChangeListener {
+	
+	final static String TAG = "TriggerEditActivity";
+	
 	/**
 	 * Determines whether to always show the simplified settings UI, where
 	 * settings are presented in a single list. When false, settings are shown
@@ -85,10 +89,10 @@ public class TriggerEditActivity extends PreferenceActivity implements
 	protected boolean isValidFragment(String fragmentName) {
 		if (fragmentName
 				.equals("at.fhhgb.mc.swip.TriggerEditActivity$GeneralPreferenceFragment")) {
-			Log.i("TriggerEditActivity", "valid fragment started");
+			Log.i(TAG, "valid fragment started");
 			return true;
 		} else {
-			Log.i("TriggerEditActivity", "invalid fragment started");
+			Log.i(TAG, "invalid fragment started");
 			return false;
 		}
 	}
@@ -337,7 +341,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("profile"));
 		bindPreferenceSummaryToValue(findPreference("battery_state"));
 		bindPreferenceSummaryToValue(findPreference("headphone"));
-
+		
 		// binds the summary to the location-preference
 		if (pref.getInt("geofence_radius", 50) > 0) {
 			findPreference("location").setSummary(

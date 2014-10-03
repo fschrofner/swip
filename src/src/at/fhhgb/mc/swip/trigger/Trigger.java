@@ -2,7 +2,7 @@ package at.fhhgb.mc.swip.trigger;
 
 import java.util.Set;
 
-import android.util.Log;
+import at.flosch.logwrap.Log;
 
 /**
  * Container class used to transfer the settings between activities and methods.
@@ -11,6 +11,7 @@ import android.util.Log;
  * 
  */
 public class Trigger {
+	final static String TAG = "Trigger";
 
 	public enum listen_state {
 		listen_off, listen_on, ignore;
@@ -108,9 +109,9 @@ public class Trigger {
 	public void setStartHours(int _hours) {
 		if (_hours < 24 && _hours >= -1) {
 			this.startHours = _hours;
-			Log.i("Trigger", "set start hours for time range");
+			Log.i(TAG, "set start hours for time range");
 		} else {
-			Log.e("Trigger", "start hours not in allowed range!");
+			Log.e(TAG, "start hours not in allowed range!");
 		}
 	}
 
@@ -121,9 +122,9 @@ public class Trigger {
 	public void setStartMinutes(int _minutes) {
 		if (_minutes < 60 && _minutes >= -1) {
 			this.startMinutes = _minutes;
-			Log.i("Trigger", "set start minutes for time range");
+			Log.i(TAG, "set start minutes for time range");
 		} else {
-			Log.e("Trigger", "start minutes not in allowed range!");
+			Log.e(TAG, "start minutes not in allowed range!");
 		}
 	}
 
@@ -134,9 +135,9 @@ public class Trigger {
 	public void setEndHours(int _hours) {
 		if (_hours < 24 && _hours >= -1) {
 			this.endHours = _hours;
-			Log.i("Trigger", "set end hours for time range");
+			Log.i(TAG, "set end hours for time range");
 		} else {
-			Log.e("Trigger", "end hours not in allowed range!");
+			Log.e(TAG, "end hours not in allowed range!");
 		}
 	}
 
@@ -147,9 +148,9 @@ public class Trigger {
 	public void setEndMinutes(int _minutes) {
 		if (_minutes < 60 && _minutes >= -1) {
 			this.endMinutes = _minutes;
-			Log.i("Trigger", "set end minutes for time range");
+			Log.i(TAG, "set end minutes for time range");
 		} else {
-			Log.e("Trigger", "end minutes not in allowed range!");
+			Log.e(TAG, "end minutes not in allowed range!");
 		}
 	}
 

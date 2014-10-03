@@ -9,7 +9,7 @@ import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
+import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.Profile;
 import at.fhhgb.mc.swip.services.Handler;
@@ -24,6 +24,7 @@ import at.fhhgb.mc.swip.services.Handler;
  * 
  */
 public class NfcReaderActivity extends Activity {
+	final static String TAG = "NfcReaderActivity";
 
 	/**
 	 * Reads the tag object that is handed over from the intent and applies the
@@ -61,7 +62,7 @@ public class NfcReaderActivity extends Activity {
 				readSecondByte(profile,nfcProfile[2]);
 				readThirdByte(profile, nfcProfile[3]);
 				boolean setBrightness = readFourthByte(profile, nfcProfile[4]);
-				Log.i("NfcReaderActivity", "setBrightness defined as: " + setBrightness);
+				Log.i(TAG, "setBrightness defined as: " + setBrightness);
 				readFifthByte(profile, nfcProfile[5], setBrightness);
 				readSixthByte(profile, nfcProfile[6]);
 				
@@ -238,7 +239,7 @@ public class NfcReaderActivity extends Activity {
 		
 		brightnessOne = (short)(byteFour & 255);
 		brightnessOne >>= 7;
-		Log.i("NfcReaderActivity", "BrightnessOne defined as: " + brightnessOne);
+		Log.i(TAG, "BrightnessOne defined as: " + brightnessOne);
 		
 		autoBrightness = byteFour;
 		autoBrightness >>= 5;
@@ -271,7 +272,7 @@ public class NfcReaderActivity extends Activity {
 	 */
 	private void readFifthByte(Profile _profile, short byteFive, boolean setBrightness){
 		short brightnessTwo = (short)(byteFive & 255);
-		Log.i("NfcReaderActivity","brightnessTwo: " +  brightnessTwo);
+		Log.i(TAG,"brightnessTwo: " +  brightnessTwo);
 		if(setBrightness && _profile.getScreenBrightnessAutoMode() != Profile.state.enabled){
 			_profile.setScreenBrightness(brightnessTwo);
 		}
@@ -290,7 +291,7 @@ public class NfcReaderActivity extends Activity {
 		short lockscreen;
 		short airplane;
 		
-		Log.i("NfcReaderActivity", "byteSix: " + byteSix);
+		Log.i(TAG, "byteSix: " + byteSix);
 		gps = (short) (byteSix & 255);
 		gps >>= 6;
 		

@@ -18,7 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import android.util.Log;
+import at.flosch.logwrap.Log;
 
 /**
  * Class used to convert a trigger into a string containing a xml, that is
@@ -28,6 +28,8 @@ import android.util.Log;
  * 
  */
 public class XmlCreatorTrigger {
+	final static String TAG = "XmlCreatorTrigger";
+	
 	DocumentBuilderFactory buildFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder builder;
 	TransformerFactory transFactory = TransformerFactory.newInstance();
@@ -65,7 +67,7 @@ public class XmlCreatorTrigger {
 		profile.setAttribute("name",
 				String.format("%s", _trigger.getProfileName()));
 		rootElement.appendChild(profile);
-		Log.i("XMLCreatorTrigger",
+		Log.i(TAG,
 				String.format("Profile was selected: %s",
 						_trigger.getProfileName()));
 
@@ -73,7 +75,7 @@ public class XmlCreatorTrigger {
 		Element priority = xmlProfile.createElement("priority");
 		priority.setAttribute("value", String.valueOf(_trigger.getPriority()));
 		rootElement.appendChild(priority);
-		Log.i("XMLCreatorTrigger",
+		Log.i(TAG,
 				String.format("Priority was selected: %s",
 						_trigger.getPriority()));
 
@@ -94,7 +96,7 @@ public class XmlCreatorTrigger {
 				timeElement.setAttribute("end_minutes",
 						String.format("%d", _trigger.getEndMinutes()));
 
-			Log.i("XMLCreatorTrigger",
+			Log.i(TAG,
 					String.format(
 							"trigger changes were defined as follows: start_hours: %s start_minutes: %s end_minutes: %s end_hours: %s",
 							_trigger.getStartHours(),
@@ -126,7 +128,7 @@ public class XmlCreatorTrigger {
 						String.format("%d", _trigger.getBatteryEndLevel()));
 			}
 
-			Log.i("XMLCreatorTrigger",
+			Log.i(TAG,
 					String.format(
 							"trigger changes were defined as follows: batter_start_level: %s, batter_end_level: %s, battery_state: %s",
 							_trigger.getBatteryStartLevel(),
@@ -147,7 +149,7 @@ public class XmlCreatorTrigger {
 				headphoneElement.setAttribute("state", String.format("%d", -1));
 			}
 
-			Log.i("XMLCreatorTrigger",
+			Log.i(TAG,
 					String.format(
 							"trigger changes were defined as follows: headphone_state: %s",
 							_trigger.getHeadphones()));
@@ -163,7 +165,7 @@ public class XmlCreatorTrigger {
 			geofenceElement.setAttribute("id", "");
 		}
 
-		Log.i("XMLCreatorTrigger", String.format(
+		Log.i(TAG, String.format(
 				"trigger changes were defined as follows: trigger_name: %s",
 				_trigger.getGeofence()));
 		rootElement.appendChild(geofenceElement);
@@ -215,7 +217,7 @@ public class XmlCreatorTrigger {
 				weekdayElement.setAttribute("sun", "false");
 			}
 
-			Log.i("XMLCreatorTrigger",
+			Log.i(TAG,
 					String.format(
 							"trigger changes were defined as follows: weekday number: %s",
 							_trigger.getWeekdays().size()));

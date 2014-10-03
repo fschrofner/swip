@@ -26,7 +26,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
+import at.flosch.logwrap.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import at.fhhgb.mc.swip.R;
@@ -44,6 +44,7 @@ import com.stericson.RootTools.RootTools;
  */
 public class ProfileEditActivity extends PreferenceActivity implements
 		OnSharedPreferenceChangeListener {
+	final static String TAG = "ProfileEditActivity";
 	
 
 	private static final boolean ALWAYS_SIMPLE_PREFS = false;
@@ -63,10 +64,10 @@ public class ProfileEditActivity extends PreferenceActivity implements
 	@Override
 	protected boolean isValidFragment(String fragmentName) {
 		if(fragmentName.equals("at.fhhgb.mc.swip.ProfileEditActivity$GeneralPreferenceFragment")){
-			Log.i("ProfilerEditActivity", "valid fragment started");
+			Log.i(TAG, "valid fragment started");
 			return true;
 		} else {
-			Log.i("ProfilerEditActivity", "invalid fragment started");
+			Log.i(TAG, "invalid fragment started");
 			return false;
 		}
 	}

@@ -28,8 +28,8 @@ import android.content.res.Resources.NotFoundException;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
+import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.Profile;
 import at.fhhgb.mc.swip.profile.Setter;
@@ -44,6 +44,8 @@ import at.fhhgb.mc.swip.ui.ListDialogActivity;
  * 
  */
 public class Handler {
+	final static String TAG = "Handler";
+	
 	private Context context;
 	SharedPreferences pref;
 
@@ -260,7 +262,7 @@ public class Handler {
 						RootTools.getShell(true).add(command);
 						RootTools.closeAllShells();
 						pref.edit().putString("versionname", pinfo.versionName).commit();
-						Log.i("Handler", "updated systemapp!");
+						Log.i(TAG, "updated systemapp!");
 					} catch (IOException e) {
 						e.printStackTrace();
 					} catch (TimeoutException e) {
@@ -269,13 +271,13 @@ public class Handler {
 						e.printStackTrace();
 					}
 				} else {
-					Log.i("Handler", "systemapp up to date!");
+					Log.i(TAG, "systemapp up to date!");
 				}
 			} catch (NameNotFoundException e) {
 				e.printStackTrace();
 			}
 		} else {
-			Log.i("Handler", "app not installed as systemapp");
+			Log.i(TAG, "app not installed as systemapp");
 		}
 	}
 	
