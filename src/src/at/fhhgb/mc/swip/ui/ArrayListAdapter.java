@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import at.fhhgb.mc.swip.R;
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.fhhgb.mc.swip.profile.XmlParserPref;
 
 /**
@@ -62,7 +63,7 @@ public class ArrayListAdapter extends ArrayAdapter<String> implements
 		
 		ImageButton buttonEdit = (ImageButton) convertView.findViewById(R.id.buttonEdit);
 		
-		if (pref.getBoolean("dark_theme", false)) {
+		if (pref.getBoolean(SharedPrefConstants.DARK_THEME, false)) {
 			buttonEdit.setImageDrawable(getContext().getResources().getDrawable(R.drawable.content_edit_dark));
 		}
 

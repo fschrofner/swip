@@ -29,6 +29,8 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
+
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.Profile;
@@ -78,7 +80,7 @@ public class Handler {
 		pref.edit().putString("active_profile", _name).commit();
 
 		// updates the notification
-		if (pref.getBoolean("notification", false)) {
+		if (pref.getBoolean(SharedPrefConstants.NOTIFICATION, false)) {
 			updateNotification();
 		}
 
@@ -184,7 +186,7 @@ public class Handler {
 		// saves the active profile into the shared preferences
 		pref.edit().putString("active_profile", _profile.getName()).commit();
 
-		if (pref.getBoolean("notification", false)) {
+		if (pref.getBoolean(SharedPrefConstants.NOTIFICATION, false)) {
 			updateNotification();
 		}
 
@@ -227,7 +229,7 @@ public class Handler {
 	 * It does so by checking for the write to secure settings permission.
 	 * @return true = app is installed as systemapp, false = it is not
 	 */
-	public boolean checkSystemapp(){
+	public boolean checkSystemApp(){
 	    String permission = "android.permission.WRITE_SECURE_SETTINGS";
 	    int res = context.checkCallingOrSelfPermission(permission);
 	    return (res == PackageManager.PERMISSION_GRANTED);            
@@ -238,7 +240,7 @@ public class Handler {
 	 */
 	public void updateSystemApp(){
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-		if(pref.getBoolean("systemapp", false) && checkSystemapp()){
+		if(pref.getBoolean(SharedPrefConstants.SYSTEM_APP, false) && checkSystemApp()){
 		    try {
 				ComponentName comp = new ComponentName(context, context.getClass());
 				PackageInfo pinfo = context.getPackageManager().getPackageInfo(comp.getPackageName(), 0);

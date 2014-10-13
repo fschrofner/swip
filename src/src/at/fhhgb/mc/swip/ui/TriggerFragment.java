@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import at.fhhgb.mc.swip.R;
+import at.fhhgb.mc.swip.constants.IntentConstants;
 
 /**
  * Fragment, where the triggers are listed.
@@ -240,7 +241,7 @@ public class TriggerFragment extends Fragment implements
 				refreshListView();
 				// refreshes the triggerlist for the service
 				Intent intent = new Intent();
-				intent.setAction("at.fhhgb.mc.swip.trigger.refresh");
+				intent.setAction(IntentConstants.REFRESH);
 				getActivity().sendBroadcast(intent);
 			}
 				break;
@@ -253,7 +254,7 @@ public class TriggerFragment extends Fragment implements
 				refreshListView();
 				// refreshes the triggerlist for the service
 				Intent intent = new Intent();
-				intent.setAction("at.fhhgb.mc.swip.trigger.refresh");
+				intent.setAction(IntentConstants.REFRESH);
 				getActivity().sendBroadcast(intent);
 			}
 				break;

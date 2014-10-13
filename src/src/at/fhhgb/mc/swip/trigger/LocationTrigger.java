@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
+import at.fhhgb.mc.swip.constants.IntentConstants;
 import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.R;
 
@@ -106,7 +108,7 @@ public class LocationTrigger implements ConnectionCallbacks,
 		Log.i(TAG, "Creating pending intent");
 		// Create an explicit Intent
 		Intent intent = new Intent();
-		intent.setAction("at.fhhgb.mc.swip.trigger.location_change");
+		intent.setAction(IntentConstants.LOCATION_CHANGE);
 
 		return PendingIntent.getBroadcast(context, 0, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT);

@@ -23,6 +23,8 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.WindowManager;
+
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.fhhgb.mc.swip.services.Handler;
 import at.flosch.logwrap.Log;
 
@@ -50,7 +52,7 @@ public class Setter {
 	 */
 	public void setNfc(Context _context, boolean _enable) {
 		Handler handler = new Handler(_context);
-		if(handler.checkSystemapp()){
+		if(handler.checkSystemApp()){
 			Class<?> NfcClass;
 			NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(_context);
 			
@@ -183,7 +185,7 @@ public class Setter {
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_context);
 		Handler handler = new Handler (_context);
 		//if the app is not installed as system-app
-		if(!handler.checkSystemapp()){
+		if(!handler.checkSystemApp()){
 			
 			// if gps is disabled and you want to enable it or the other way round
 			if ((_enable && !provider.contains("gps"))
@@ -200,7 +202,7 @@ public class Setter {
 			}
 			
 		//this method will be used if the app is installed as system-app
-		} else if(handler.checkSystemapp()){
+		} else if(handler.checkSystemApp()){
 			String newProviders = new String();
 			
 			// if gps is disabled and you want to enable it
@@ -257,13 +259,13 @@ public class Setter {
 		//the following comparisons check if root is enabled, if there will be a change compared to the current setting
 		//and if root access is actually given
 		try{
-			if(pref.getBoolean("root", false) && _enable && !isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
+			if(pref.getBoolean(SharedPrefConstants.ROOT, false) && _enable && !isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
 				command = new CommandCapture(0, "settings put global airplane_mode_on 1","am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true");
 				RootTools.getShell(true).add(command);
 				Log.i(TAG, "Airplane Mode: enabled");
 
 			} else if
-			(pref.getBoolean("root", false) && !_enable && isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
+			(pref.getBoolean(SharedPrefConstants.ROOT, false) && !_enable && isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
 				command = new CommandCapture(0, "settings put global airplane_mode_on 0", "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state false");
 				RootTools.getShell(true).add(command);
 				Log.i(TAG, "Airplane Mode: disabled");
@@ -584,7 +586,7 @@ public class Setter {
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_context);
 		File keyFile = new File("/data/system/gesture.key");												//this file can be checked for existence, which will mean that there is a lockscreen present
 		
-		if(pref.getBoolean("root", false) && _enable && !keyFile.exists() && RootTools.isAccessGiven()){	//if you want to enable the lockscreen and none is activated at the moment (and root is checked)
+		if(pref.getBoolean(SharedPrefConstants.ROOT, false) && _enable && !keyFile.exists() && RootTools.isAccessGiven()){	//if you want to enable the lockscreen and none is activated at the moment (and root is checked)
 			CommandCapture command = new CommandCapture(2, "mv /data/system/disabled_lockscreen/*.key /data/system/");
 			try {
 				RootTools.getShell(true).add(command);
@@ -595,7 +597,7 @@ public class Setter {
 			} catch (RootDeniedException e) {
 				e.printStackTrace();
 			}
-		} else if (pref.getBoolean("root", false) && !_enable &&  RootTools.isAccessGiven()){				//if you want to disable the lockscreen (and root is checked)
+		} else if (pref.getBoolean(SharedPrefConstants.ROOT, false) && !_enable &&  RootTools.isAccessGiven()){				//if you want to disable the lockscreen (and root is checked)
 			CommandCapture command = new CommandCapture(2, "mkdir /data/system/disabled_lockscreen/","mv /data/system/*.key /data/system/disabled_lockscreen/");
 			try {
 				RootTools.getShell(true).add(command);
