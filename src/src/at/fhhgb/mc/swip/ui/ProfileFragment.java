@@ -32,6 +32,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import at.fhhgb.mc.swip.R;
+import at.fhhgb.mc.swip.constants.IntentConstants;
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.fhhgb.mc.swip.services.Handler;
 import at.fhhgb.mc.swip.widgets.ListWidget;
 
@@ -85,7 +87,7 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 		handler.updateSystemApp();
 		
 		// starts the permanent notification if it is activated
-		if (pref.getBoolean("notification", false)) {
+		if (pref.getBoolean(SharedPrefConstants.NOTIFICATION, false)) {
 			handler.updateNotification();
 		} else {
 			// deactivates the notification otherwise
@@ -225,6 +227,11 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> _a, View v, int _position, long arg3) {
+        Intent intent = new Intent();
+        intent.setAction(IntentConstants.TIMEOUT);
+        //TODO: ask for timeout first, then send the broadcast
+        intent.putExtra(IntentConstants.TIMEOUT_EXTRA, 30000l);
+        getActivity().sendBroadcast(intent);
 		Handler handler = new Handler(getActivity());
 		handler.applyProfile((String) _a.getItemAtPosition(_position));
 	}

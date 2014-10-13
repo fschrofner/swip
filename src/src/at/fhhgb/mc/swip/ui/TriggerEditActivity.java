@@ -31,6 +31,8 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import at.fhhgb.mc.swip.R;
+import at.fhhgb.mc.swip.constants.IntentConstants;
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.fhhgb.mc.swip.trigger.LocationTrigger;
 import at.fhhgb.mc.swip.trigger.SimpleGeofence;
 import at.fhhgb.mc.swip.trigger.Trigger;
@@ -76,7 +78,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		
-		if (pref.getBoolean("dark_theme", false)) {
+		if (pref.getBoolean(SharedPrefConstants.DARK_THEME, false)) {
 			setTheme(R.style.AppThemeDark);
 		}
 		
@@ -527,7 +529,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 		// deletes the list of currently triggered geofences from the service
 		Intent intent = new Intent();
-		intent.setAction("at.fhhgb.mc.swip.trigger.clearGeofences");
+		intent.setAction(IntentConstants.CLEAR_GEOFENCES);
 		sendBroadcast(intent);
 
 		if (pref.getInt("geofence_radius", 50) > 0) {
@@ -579,7 +581,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		}
 
 		intent = new Intent();
-		intent.setAction("at.fhhgb.mc.swip.trigger.refresh");
+		intent.setAction(IntentConstants.REFRESH);
 		sendBroadcast(intent);
 	}
 

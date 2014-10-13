@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.flosch.logwrap.Log;
 
 /**
@@ -35,7 +37,7 @@ public class AutostartService extends Service {
 		Log.i(TAG, "checking if notification is enabled");
 
 		// checks if the permanent notification option is enabled
-		if (pref.getBoolean("notification", false)) {
+		if (pref.getBoolean(SharedPrefConstants.NOTIFICATION, false)) {
 			Handler handler = new Handler(this);
 			handler.updateNotification();
 		}

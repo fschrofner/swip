@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import at.fhhgb.mc.swip.R;
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 
 /**
  * Activity to show the about screen.
@@ -32,7 +33,7 @@ public class AboutActivity extends Activity implements OnClickListener {
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		
-		if (pref.getBoolean("dark_theme", false)) {
+		if (pref.getBoolean(SharedPrefConstants.DARK_THEME, false)) {
 			setTheme(R.style.AppThemeDark);
 		}
 		

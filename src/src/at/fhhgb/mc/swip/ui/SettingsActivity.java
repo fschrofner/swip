@@ -27,9 +27,10 @@ import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.R;
-import at.fhhgb.mc.swip.profile.Setter;
 import at.fhhgb.mc.swip.services.Handler;
 
 import java.io.IOException;
@@ -69,23 +70,23 @@ public class SettingsActivity extends PreferenceActivity implements
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		
-		Log.i(TAG, "pref: " +  pref.getString("language", "xx"));
+		Log.i(TAG, "pref: " +  pref.getString(SharedPrefConstants.LANGUAGE, SharedPrefConstants.DEFAULT_LANGUAGE));
 		
-		if (pref.getBoolean("dark_theme", false)) {
+		if (pref.getBoolean(SharedPrefConstants.DARK_THEME, false)) {
 			setTheme(R.style.AppThemeDark);
 		}
 
 		Locale current = getResources().getConfiguration().locale;
 		
-		if (!current.getLanguage().equals(pref.getString("language", "xx"))) {
-			SettingsActivity.setLocale(pref.getString("language", "xx"), this);
+		if (!current.getLanguage().equals(pref.getString(SharedPrefConstants.LANGUAGE, SharedPrefConstants.DEFAULT_LANGUAGE))) {
+			SettingsActivity.setLocale(pref.getString(SharedPrefConstants.LANGUAGE, SharedPrefConstants.DEFAULT_LANGUAGE), this);
 		}
 		super.onCreate(savedInstanceState);
 		getActionBar().setTitle(R.string.title_activity_settings);
 		setupActionBar();
-		if(pref.getBoolean("root", false) && !RootTools.isAccessGiven()){
+		if(pref.getBoolean(SharedPrefConstants.ROOT, false) && !RootTools.isAccessGiven()){
 			Editor editor = pref.edit();
-			editor.putBoolean("root", false);
+			editor.putBoolean(SharedPrefConstants.ROOT, false);
 			editor.commit();
 		}
 	}
@@ -160,22 +161,22 @@ public class SettingsActivity extends PreferenceActivity implements
 		PreferenceScreen screen = getPreferenceScreen();
 		Handler handler = new Handler(this);
 		
-		if (pref.getBoolean("systemapp", false) || handler.checkSystemapp()) {
-			Preference install = findPreference("systemapp");
+		if (pref.getBoolean(SharedPrefConstants.SYSTEM_APP, false) || handler.checkSystemApp()) {
+			Preference install = findPreference(SharedPrefConstants.SYSTEM_APP);
 			screen.removePreference(install);
-			Preference removeSystemappPreference = (Preference) super.findPreference("removeSystemapp");
+			Preference removeSystemappPreference = (Preference) super.findPreference(SharedPrefConstants.REMOVE_SYSTEM_APP);
 			removeSystemappPreference.setOnPreferenceClickListener(this);
 		}
 		
-		else if (!pref.getBoolean("systemapp", false)) {
-			Preference uninstall = findPreference("removeSystemapp");
+		else if (!pref.getBoolean(SharedPrefConstants.SYSTEM_APP, false)) {
+			Preference uninstall = findPreference(SharedPrefConstants.REMOVE_SYSTEM_APP);
 			screen.removePreference(uninstall);
-			Preference systemappPreference = (Preference) super.findPreference("systemapp");
+			Preference systemappPreference = (Preference) super.findPreference(SharedPrefConstants.SYSTEM_APP);
 			systemappPreference.setOnPreferenceClickListener(this);
 		}
 		
 		// binds summary to preference
-		bindPreferenceSummaryToValue(findPreference("language"));
+		bindPreferenceSummaryToValue(findPreference(SharedPrefConstants.LANGUAGE));
     
 	}
 
@@ -279,7 +280,7 @@ public class SettingsActivity extends PreferenceActivity implements
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences _pref, String _key) {
 
-		if (_pref.getBoolean("notification", false)) {
+		if (_pref.getBoolean(SharedPrefConstants.NOTIFICATION, false)) {
 			Handler handler = new Handler (this);
 			handler.updateNotification();
 		} else {
@@ -287,7 +288,7 @@ public class SettingsActivity extends PreferenceActivity implements
 			notificationManager.cancel(123);
 		}
 		
-		if(_pref.getBoolean("root", false)){
+		if(_pref.getBoolean(SharedPrefConstants.ROOT, false)){
 			if(!RootTools.isAccessGiven()){
 				AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 				dialog.setTitle(getResources().getString(R.string.pref_title_noRoot));
@@ -302,21 +303,21 @@ public class SettingsActivity extends PreferenceActivity implements
 				});
 				dialog.show();
 				Editor editor = _pref.edit();
-				editor.putBoolean("root", false);
+				editor.putBoolean(SharedPrefConstants.ROOT, false);
 				editor.commit();
-				CheckBoxPreference checkBox = (CheckBoxPreference) super.findPreference("root");
+				CheckBoxPreference checkBox = (CheckBoxPreference) super.findPreference(SharedPrefConstants.ROOT);
 				checkBox.setChecked(false);
 			}
 		}
 		
-		if (_key.equals("dark_theme")) {
+		if (_key.equals(SharedPrefConstants.DARK_THEME)) {
 			recreate();
 
 		}
 		
 		Locale current = getResources().getConfiguration().locale;
 		
-		if (_key.equals("language") && !current.getLanguage().equals(_pref.getString("language", "xx"))) {
+		if (_key.equals(SharedPrefConstants.LANGUAGE) && !current.getLanguage().equals(_pref.getString(SharedPrefConstants.LANGUAGE, SharedPrefConstants.DEFAULT_LANGUAGE))) {
 			//restarts the activity
 			recreate();
 		}
@@ -329,7 +330,7 @@ public class SettingsActivity extends PreferenceActivity implements
 	 */
 	@Override
 	public boolean onPreferenceClick(Preference _preference) {
-		if(_preference.getKey().equals("systemapp")){
+		if(_preference.getKey().equals(SharedPrefConstants.SYSTEM_APP)){
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 			dialog.setTitle(getResources().getString(R.string.pref_headline_systemapp));
 			dialog.setMessage(getResources().getString(R.string.pref_text_systemapp));
@@ -345,7 +346,7 @@ public class SettingsActivity extends PreferenceActivity implements
 			Log.i(TAG, "Install as systemapp selected");
 			dialog.show();
 		}
-		else if(_preference.getKey().equals("removeSystemapp")){
+		else if(_preference.getKey().equals(SharedPrefConstants.REMOVE_SYSTEM_APP)){
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 			dialog.setTitle(getResources().getString(R.string.pref_headline_removeSystemapp));
 			dialog.setMessage(getResources().getString(R.string.pref_text_removeSystemapp));
@@ -408,7 +409,7 @@ public class SettingsActivity extends PreferenceActivity implements
 					
 
 					//saves the fact that it can use system-app possibilities now (there still will be a real check before using the system-app functionality)
-					pref.edit().putBoolean("systemapp", true).commit();							
+					pref.edit().putBoolean(SharedPrefConstants.SYSTEM_APP, true).commit();
 					try {
 						ComponentName comp = new ComponentName(context, context.getClass());
 						PackageInfo pinfo = context.getPackageManager().getPackageInfo(comp.getPackageName(), 0);
@@ -493,7 +494,7 @@ public class SettingsActivity extends PreferenceActivity implements
 					RootTools.getShell(true).add(command);
 					RootTools.closeAllShells();
 					SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-					pref.edit().putBoolean("systemapp", false).commit();							//saves that the app is not a systemapp anymore
+					pref.edit().putBoolean(SharedPrefConstants.SYSTEM_APP, false).commit();							//saves that the app is not a systemapp anymore
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (TimeoutException e) {
@@ -543,7 +544,7 @@ public class SettingsActivity extends PreferenceActivity implements
 		
 		Locale locale;
 		
-		if (_lang.equals("xx")) {
+		if (_lang.equals(SharedPrefConstants.DEFAULT_LANGUAGE)) {
 			locale = new Locale(Locale.getDefault().getLanguage()); 
 		} else {
 			locale = new Locale(_lang);
