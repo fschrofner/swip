@@ -12,6 +12,8 @@ src/bin/*
 .settings
 .dropbox
 .gradle
+.idea
+*.iml
 local.properties
 src/.settings
 src/.classpath
