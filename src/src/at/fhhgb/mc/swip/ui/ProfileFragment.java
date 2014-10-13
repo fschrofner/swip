@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,6 +47,7 @@ import at.fhhgb.mc.swip.widgets.ListWidget;
 public class ProfileFragment extends Fragment implements OnItemClickListener,
 		OnItemLongClickListener {
 
+    final static String TAG = "ProfileFragment";
 	List<String> profileList = new ArrayList<String>();
 	
 	@Override
@@ -229,9 +231,16 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 	public void onItemClick(AdapterView<?> _a, View v, int _position, long arg3) {
         Intent intent = new Intent();
         intent.setAction(IntentConstants.TIMEOUT);
-        //TODO: ask for timeout first, then send the broadcast
-        intent.putExtra(IntentConstants.TIMEOUT_EXTRA, 30000l);
+
+        //TODO: check for settings, if not defined ask for timeout first, then send the broadcast
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        long timeout = Long.valueOf(pref.getString(SharedPrefConstants.TIMEOUT,SharedPrefConstants.DEFAULT_TIMEOUT));
+        Log.d(TAG, "default timeout set in preferences: " + timeout + "ms");
+
+        intent.putExtra(IntentConstants.TIMEOUT_EXTRA, timeout);
         getActivity().sendBroadcast(intent);
+
 		Handler handler = new Handler(getActivity());
 		handler.applyProfile((String) _a.getItemAtPosition(_position));
 	}

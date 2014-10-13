@@ -8,6 +8,7 @@
     <!-- General settings -->
     <string name="pref_title_notification">Permanent Notification</string>
     <string name="pref_description_notification">Enables the permanent notification in the status bar to change profiles quickly.</string>
+    <string name="pref_title_timeout">Trigger Timeout</string>
     <string name="pref_title_dark_theme">Dark Theme</string>
     <string name="pref_message_dark_theme">SwiP has to be restarted. Do you want to continue?</string>
     <string name="pref_description_on_dark_theme">Dark theme is enabled</string>
@@ -66,4 +67,30 @@
         <item>uk</item>
         <item>zh</item>
     </string-array>
+
+    <string-array name="pref_timeout_titles">
+        <item>1 minute</item>
+        <item>5 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>45 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Unlimited</item>
+    </string-array>
+
+    <string-array name="pref_timeout_values">
+        <!-- values converted in milli seconds -->
+        <item>60000</item>
+        <item>1500000</item>
+        <item>4500000</item>
+        <item>9000000</item>
+        <item>13500000</item>
+        <item>18000000</item>
+        <item>54000000</item>
+        <item>108000000</item>
+        <item>-1</item>
+    </string-array>
+
 </resources>

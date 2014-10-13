@@ -6,7 +6,7 @@ package at.fhhgb.mc.swip.constants;
  * @author Florian Schrofner & Dominik Koeltringer
  * 
  */
-public class Build {
+public class BuildConstants {
   public enum BuildType {
     NORMAL, FOSS
   }
