@@ -5,7 +5,16 @@
         android:key="notification"
         android:summary="@string/pref_description_notification"
         android:title="@string/pref_title_notification" />
-    
+
+    <ListPreference
+        android:defaultValue="60000"
+        android:entries="@array/pref_timeout_titles"
+        android:entryValues="@array/pref_timeout_values"
+        android:key="trigger_timeout"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_timeout" />
+
      <ListPreference
         android:defaultValue="xx"
         android:entries="@array/pref_language_titles"

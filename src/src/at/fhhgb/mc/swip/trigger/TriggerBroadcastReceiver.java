@@ -86,6 +86,8 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
             if(timeframe != 0){
                 TriggerTimeout timeout = new TriggerTimeout(timeframe);
                 triggerservice.setTimeout(timeout);
+            } else {
+                triggerservice.setTimeout(null);
             }
         }
 		if(_intent.getAction().equals("")){

@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -28,6 +29,7 @@ import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
+import at.fhhgb.mc.swip.constants.IntentConstants;
 import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.R;
@@ -177,6 +179,8 @@ public class SettingsActivity extends PreferenceActivity implements
 		
 		// binds summary to preference
 		bindPreferenceSummaryToValue(findPreference(SharedPrefConstants.LANGUAGE));
+        bindPreferenceSummaryToValue(findPreference(SharedPrefConstants.TIMEOUT));
+
     
 	}
 
@@ -287,6 +291,14 @@ public class SettingsActivity extends PreferenceActivity implements
 			NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			notificationManager.cancel(123);
 		}
+
+        //clears the current timeout from the service
+        if(_key.equals(SharedPrefConstants.TIMEOUT)){
+            Intent intent = new Intent();
+            intent.setAction(IntentConstants.TIMEOUT);
+            intent.putExtra(IntentConstants.TIMEOUT_EXTRA,0);
+            sendBroadcast(intent);
+        }
 		
 		if(_pref.getBoolean(SharedPrefConstants.ROOT, false)){
 			if(!RootTools.isAccessGiven()){
