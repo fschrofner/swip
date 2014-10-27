@@ -78,6 +78,7 @@
         <item>3 hours</item>
         <item>6 hours</item>
         <item>Unlimited</item>
+        <item>Ask every time</item>
     </string-array>
 
     <string-array name="pref_timeout_values">
@@ -91,6 +92,7 @@
         <item>54000000</item>
         <item>108000000</item>
         <item>-1</item>
+        <item>0</item>
     </string-array>
 
 </resources>

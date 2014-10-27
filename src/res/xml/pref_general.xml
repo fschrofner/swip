@@ -7,7 +7,7 @@
         android:title="@string/pref_title_notification" />
 
     <ListPreference
-        android:defaultValue="60000"
+        android:defaultValue="0"
         android:entries="@array/pref_timeout_titles"
         android:entryValues="@array/pref_timeout_values"
         android:key="trigger_timeout"

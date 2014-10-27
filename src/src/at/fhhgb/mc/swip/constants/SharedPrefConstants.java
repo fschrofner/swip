@@ -16,5 +16,5 @@ public class SharedPrefConstants {
     public static final String NOTIFICATION = "notification";
     public static final String ROOT = "root";
     public static final String TIMEOUT = "trigger_timeout";
-    public static final String DEFAULT_TIMEOUT = "60000";
+    public static final String DEFAULT_TIMEOUT = "0";
 }
