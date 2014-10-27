@@ -3,6 +3,7 @@ package at.fhhgb.mc.swip.services;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.concurrent.TimeoutException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -14,9 +15,11 @@ import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.exceptions.RootDeniedException;
 import com.stericson.RootTools.execution.CommandCapture;
 
+import android.app.DialogFragment;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -26,11 +29,15 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources.NotFoundException;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import at.fhhgb.mc.swip.constants.IntentConstants;
 import at.fhhgb.mc.swip.constants.SharedPrefConstants;
+import at.fhhgb.mc.swip.ui.ListDialog;
 import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.Profile;
@@ -194,6 +201,119 @@ public class Handler {
 				+ " was applied!", Toast.LENGTH_SHORT);
 		toast.show();
 	}
+
+    /**
+     * Displays a timepicker dialog which lets the user decide how long all triggers should be overriden,
+     * when selecting a manual profile.
+     * Should only be shown, when the user did not select a timeout inside the app settings.
+     * @param _profilename the name of the profile you want to apply afterwards
+     * @return the time to timeout triggers in milliseconds
+     */
+    public void displayTimeoutDialog(final String _profilename){
+        Calendar currentTime = Calendar.getInstance();
+        int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = currentTime.get(Calendar.MINUTE);
+        TimePickerDialog timePickerDialog;
+        timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+
+            @Override
+            public void onTimeSet(TimePicker _timePicker, int _hour, int _minute) {
+                long timeoutInMs = calculateAndShowTimeDifference(_hour, _minute);
+                Log.i(TAG, "selected timeout time: " + _hour + ":" + _minute);
+                setTriggerTimeout(timeoutInMs);
+                applyProfile(_profilename);
+            }
+
+        }, hour, minute, true);//Yes 24 hour time
+        timePickerDialog.setTitle("Select Timeout");
+        //TODO: write description about dialog, move select timeout into string resources
+        //TODO: find bug, that applies the profile twice
+        timePickerDialog.show();
+    }
+
+    private long calculateAndShowTimeDifference(int _hours, int _minutes){
+        Calendar currentTime = Calendar.getInstance();
+        int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = currentTime.get(Calendar.MINUTE);
+
+        int hourDiff = 0;
+        int minuteDiff = 0;
+
+        //more than 12 hours
+        if(_hours < hour || (_hours == hour && _minutes < minute)){
+            Log.d(TAG, "more than 12 hours");
+            if(_hours != hour){
+                hourDiff = 24 - hour + _hours - 1;
+                minuteDiff = 60 - minute + _minutes;
+                if(minuteDiff >= 60){
+                    minuteDiff -= 60;
+                    hourDiff++;
+                }
+            } else {
+                hourDiff = 23;
+                minuteDiff = 60 - minute + _minutes;
+            }
+        //less than 12 hours
+        } else if (_hours > hour || (_hours == hour && _minutes > minute)){
+            Log.d(TAG, "less than 12 hours");
+            if(_hours != hour){
+                hourDiff = _hours - hour - 1;
+                minuteDiff = 60 - minute + _minutes;
+                if(minuteDiff >= 60){
+                    minuteDiff -= 60;
+                    hourDiff++;
+                }
+            } else {
+                hourDiff = 0;
+                minuteDiff = _minutes - minute;
+            }
+        } else {
+            //error: exact same time
+            Log.e(TAG, "user selected same time");
+        }
+
+        String hourString = "";
+        String minuteString = "";
+        String message = "";
+
+        if(hourDiff > 1){
+            hourString = String.format(context.getString(R.string.timeout_hours), hourDiff);
+        } else{
+            hourString = String.format(context.getString(R.string.timeout_hour), hourDiff);
+        }
+
+        if(minuteDiff > 1){
+            minuteString = String.format(context.getString(R.string.timeout_minutes), minuteDiff);
+        } else {
+            minuteString = String.format(context.getString(R.string.timeout_minute), minuteDiff);
+        }
+
+        if(hourDiff != 0 && minuteDiff != 0){
+            message = String.format(context.getString(R.string.timeout_toast_message_multiple), hourString, minuteString);
+        } else if(hourDiff != 0 && minuteDiff == 0){
+            message = String.format(context.getString(R.string.timeout_toast_message_single), hourString);
+        } else if(hourDiff == 0 && minuteDiff != 0){
+            message = String.format(context.getString(R.string.timeout_toast_message_single), minuteString);
+        }
+
+        //only show the message when the times not set to the current time
+        if(hourDiff > 0 || minuteDiff > 0){
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        }
+
+        return (hourDiff *  3600000 + minuteDiff * 60000);
+    }
+
+    /**
+     * Tells the trigger service to stop comparing triggers for the given amount of time
+     * @param _timeoutInMs the timeout in milliseconds
+     */
+    public void setTriggerTimeout(long _timeoutInMs){
+        Intent intent = new Intent();
+        intent.setAction(IntentConstants.TIMEOUT);
+        intent.putExtra(IntentConstants.TIMEOUT_EXTRA, _timeoutInMs);
+        context.sendBroadcast(intent);
+    }
 
 	/**
 	 * Updates the notification

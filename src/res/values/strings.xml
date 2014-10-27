@@ -83,6 +83,12 @@
     <string name="long_press_enable">Enable</string>
     <string name="long_press_disable">Disable</string>
     <string name="delete">Delete</string>
+    <string name="timeout_hour">%1$d hour</string>
+    <string name="timeout_hours">%1$d hours</string>
+    <string name="timeout_minute">%1$d minute</string>
+    <string name="timeout_minutes">%1$d minutes</string>
+    <string name="timeout_toast_message_single">Triggers are timed out for %1$s</string>
+    <string name="timeout_toast_message_multiple">Triggers are timed out for %1$s and %2$s</string>
     
     <!-- this value is only needed for gradle builds, it is already defined in the library otherwise -->
     <string name="text_checkbox_seekbar">Change Value</string>

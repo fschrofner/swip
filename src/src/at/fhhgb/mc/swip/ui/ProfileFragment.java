@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,6 +36,7 @@ import at.fhhgb.mc.swip.constants.IntentConstants;
 import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.fhhgb.mc.swip.services.Handler;
 import at.fhhgb.mc.swip.widgets.ListWidget;
+import at.flosch.logwrap.Log;
 
 /**
  * Fragment, where the profiles are listed.
@@ -232,17 +232,21 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
         Intent intent = new Intent();
         intent.setAction(IntentConstants.TIMEOUT);
 
-        //TODO: check for settings, if not defined ask for timeout first, then send the broadcast
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+        //gets the timeout that was set in the preferences
         long timeout = Long.valueOf(pref.getString(SharedPrefConstants.TIMEOUT,SharedPrefConstants.DEFAULT_TIMEOUT));
         Log.d(TAG, "default timeout set in preferences: " + timeout + "ms");
 
-        intent.putExtra(IntentConstants.TIMEOUT_EXTRA, timeout);
-        getActivity().sendBroadcast(intent);
-
-		Handler handler = new Handler(getActivity());
-		handler.applyProfile((String) _a.getItemAtPosition(_position));
+        //if the timeout is set to zero, the user should be asked how long the timeout should be
+        if(timeout == 0){
+            Handler handler = new Handler(getActivity());
+            handler.displayTimeoutDialog((String) _a.getItemAtPosition(_position));
+        } else {
+            Handler handler = new Handler(getActivity());
+            handler.setTriggerTimeout(timeout);
+            handler.applyProfile((String) _a.getItemAtPosition(_position));
+        }
 	}
 
 	/**
