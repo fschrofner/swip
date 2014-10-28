@@ -93,6 +93,7 @@
     <string name="timeout_minutes">%1$d minutes</string>
     <string name="timeout_toast_message_single">Triggers are timed out for %1$s</string>
     <string name="timeout_toast_message_multiple">Triggers are timed out for %1$s and %2$s</string>
+    <string name="timeout_dialog_title">Select Trigger Timeout</string>
     
     <!-- this value is only needed for gradle builds, it is already defined in the library otherwise -->
     <string name="text_checkbox_seekbar">Change Value</string>

@@ -218,16 +218,18 @@ public class Handler {
 
             @Override
             public void onTimeSet(TimePicker _timePicker, int _hour, int _minute) {
-                long timeoutInMs = calculateAndShowTimeDifference(_hour, _minute);
-                Log.i(TAG, "selected timeout time: " + _hour + ":" + _minute);
-                setTriggerTimeout(timeoutInMs);
-                applyProfile(_profilename);
+                //this if is needed, because onTimeSet gets called twice because of an android bug
+                if(_timePicker.isShown()){
+                    long timeoutInMs = calculateAndShowTimeDifference(_hour, _minute);
+                    Log.i(TAG, "selected timeout time: " + _hour + ":" + _minute);
+                    setTriggerTimeout(timeoutInMs);
+                    applyProfile(_profilename);
+                }
             }
 
         }, hour, minute, true);//Yes 24 hour time
-        timePickerDialog.setTitle("Select Timeout");
-        //TODO: write description about dialog, move select timeout into string resources
-        //TODO: find bug, that applies the profile twice
+        timePickerDialog.setTitle(context.getString(R.string.timeout_dialog_title));
+        //TODO: write description about dialog
         timePickerDialog.show();
     }
 
