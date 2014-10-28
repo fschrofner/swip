@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SwiP</string>
+
+    <!-- specifies the build type for eclipse, either NORMAL or FOSS-->
+    <!--<string name="build_type">NORMAL</string>-->
+
     <string name="action_settings">Settings</string>
     <string name="tab_profile_title">Profiles</string>
     <string name="tab_trigger_title">Triggers</string>
