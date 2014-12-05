@@ -17,6 +17,8 @@ import android.media.AudioManager;
 import android.os.BatteryManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+
+import at.fhhgb.mc.swip.constants.IntentConstants;
 import at.fhhgb.mc.swip.services.Handler;
 import at.flosch.logwrap.Log;
 
@@ -40,6 +42,7 @@ public class TriggerService extends Service{
 	private List<Trigger> triggerList = new ArrayList<Trigger>();
 	private List<Trigger> triggerPriorityList = new ArrayList<Trigger>();
 	private String[] geofences;
+    private TriggerTimeout timeout;
 
 	/**
 	 * Set the status of the headphones on initialization and compares the triggers.
@@ -180,11 +183,13 @@ public class TriggerService extends Service{
 		registerReceiver(triggerReceiver, filter);
 		filter = new IntentFilter(Intent.ACTION_POWER_DISCONNECTED);
 		registerReceiver(triggerReceiver, filter);
-		filter = new IntentFilter("at.fhhgb.mc.swip.trigger.refresh");
+		filter = new IntentFilter(IntentConstants.REFRESH);
 		registerReceiver(triggerReceiver, filter);
-    	filter = new IntentFilter("at.fhhgb.mc.swip.trigger.location_change");
+        filter = new IntentFilter(IntentConstants.TIMEOUT);
+        registerReceiver(triggerReceiver, filter);
+    	filter = new IntentFilter(IntentConstants.LOCATION_CHANGE);
 		registerReceiver(triggerReceiver, filter);
-		filter = new IntentFilter("at.fhhgb.mc.swip.trigger.clearGeofences");
+		filter = new IntentFilter(IntentConstants.CLEAR_GEOFENCES);
 		registerReceiver(triggerReceiver, filter);
 		
 		refreshTriggers();
@@ -217,7 +222,7 @@ public class TriggerService extends Service{
 	/**
 	 * Sets the weekday.
 	 * 
-	 * @param _currenWeekday
+	 * @param _currentWeekday
 	 *            the current weekday.
 	 */
 	public void setWeekday(String _currentWeekday) {
@@ -226,6 +231,14 @@ public class TriggerService extends Service{
 		compareTriggers();
 	}
 
+    /**
+     * Sets the timeout in which all triggers should be ignored.
+     * @param _timeout the timeout object containing the needed information.
+     */
+    public void setTimeout(TriggerTimeout _timeout){
+        timeout = _timeout;
+    }
+
 	/**
 	 * Compares the triggers with the actual state.
 	 */
@@ -233,54 +246,64 @@ public class TriggerService extends Service{
 		triggerPriorityList.clear();
 		
 		Log.i(TAG, "compareTriggers called");
-		for (Trigger trigger : triggerList) {
-			Log.i(TAG, "compare trigger: " + trigger.getName());
-			if(compareTime(trigger)){
-				Log.i(TAG, "trigger matching time");
-				if(compareWeekday(trigger)){
-					Log.i(TAG, "trigger matching weekday");
-					if(compareHeadphones(trigger)){
-						Log.i(TAG, "trigger matching headphones");
-						if(compareBatteryCharging(trigger)){
-							Log.i(TAG, "trigger matching battery state");
-							if(compareBatteryLevel(trigger)){
-								Log.i(TAG, "trigger matching battery level");
-								if(compareGeofence(trigger)){
-									Log.i(TAG,
-											"trigger matching geofence");
-									Log.i(TAG, "adding trigger to triggerPriorityList: " + trigger.getName());
-										
-										
-									triggerPriorityList.add(trigger);
-									Log.i(TAG, "highestPriority add: " + trigger.getName());
-								} 
-								else {
-									Log.i(TAG, trigger.getName()
-											+ " does not match geofence");
-								}
-							}
-							else{
-								Log.i(TAG, trigger.getName() + " does not match battery level");
-							}					
-						}
-						else{
-							Log.i(TAG, trigger.getName() + " does not match battery state");
-						}
-					}
-					else{
-						Log.i(TAG, trigger.getName() + " does not match headphones");
-					}
-				}
-				else{
-					Log.i(TAG, trigger.getName() + " does not match weekday");
-				}
-			}
-			else{
-				Log.i(TAG, trigger.getName() + " does not match time " + trigger.getStartHours() + " " + trigger.getEndHours());
-			}
-			
-		}
-		comparePriorities();
+
+        //first check if there's an active timeout
+        if(timeout == null || !timeout.timedOut()){
+            for (Trigger trigger : triggerList) {
+                Log.i(TAG, "compare trigger: " + trigger.getName());
+                if(compareTime(trigger)){
+                    Log.i(TAG, "trigger matching time");
+                    if(compareWeekday(trigger)){
+                        Log.i(TAG, "trigger matching weekday");
+                        if(compareHeadphones(trigger)){
+                            Log.i(TAG, "trigger matching headphones");
+                            if(compareBatteryCharging(trigger)){
+                                Log.i(TAG, "trigger matching battery state");
+                                if(compareBatteryLevel(trigger)){
+                                    Log.i(TAG, "trigger matching battery level");
+                                    if(compareGeofence(trigger)){
+                                        Log.i(TAG,
+                                                "trigger matching geofence");
+                                        Log.i(TAG, "adding trigger to triggerPriorityList: " + trigger.getName());
+
+
+                                        triggerPriorityList.add(trigger);
+                                        Log.i(TAG, "highestPriority add: " + trigger.getName());
+                                    }
+                                    else {
+                                        Log.i(TAG, trigger.getName()
+                                                + " does not match geofence");
+                                    }
+                                }
+                                else{
+                                    Log.i(TAG, trigger.getName() + " does not match battery level");
+                                }
+                            }
+                            else{
+                                Log.i(TAG, trigger.getName() + " does not match battery state");
+                            }
+                        }
+                        else{
+                            Log.i(TAG, trigger.getName() + " does not match headphones");
+                        }
+                    }
+                    else{
+                        Log.i(TAG, trigger.getName() + " does not match weekday");
+                    }
+                }
+                else{
+                    Log.i(TAG, trigger.getName() + " does not match time " + trigger.getStartHours() + " " + trigger.getEndHours());
+                }
+
+            }
+            comparePriorities();
+        } else {
+            Log.d(TAG, "there's a trigger timeout active, so no check took place");
+            if(timeout != null){
+                Log.d(TAG, "the timeout is still active for " + timeout.getTimeRemaining() + "ms");
+            }
+        }
+
 	}
 	
 	/**

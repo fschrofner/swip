@@ -9,6 +9,8 @@ import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.R;
 import at.fhhgb.mc.swip.profile.Profile;
@@ -37,7 +39,7 @@ public class NfcReaderActivity extends Activity {
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		
-		if (pref.getBoolean("dark_theme", false)) {
+		if (pref.getBoolean(SharedPrefConstants.DARK_THEME, false)) {
 			setTheme(R.style.AppThemeDark);
 		}
 		

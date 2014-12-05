@@ -22,6 +22,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.support.v4.app.NavUtils;
+
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.R;
 
@@ -55,7 +57,7 @@ public class MapViewActivity extends Activity implements
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		
-		if (pref.getBoolean("dark_theme", false)) {
+		if (pref.getBoolean(SharedPrefConstants.DARK_THEME, false)) {
 			setTheme(R.style.AppThemeDark);
 		}
 		
