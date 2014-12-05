@@ -51,11 +51,11 @@ android {
     }
     productFlavors {
       normal {
-//        buildConfig  "public final static at.fhhgb.mc.constants.Build.BuildType buildType = at.fhhgb.mc.constants.Build.BuildType.NORMAL;"
+          resValue "string", "build_type", "NORMAL"
       }
 
       foss {
-//        buildConfig  "public final static at.fhhgb.mc.constants.Build.BuildType buildType = at.fhhgb.mc.constants.Build.BuildType.FOSS;"
+          resValue "string", "build_type", "FOSS"
       }
     }
     buildTypes {

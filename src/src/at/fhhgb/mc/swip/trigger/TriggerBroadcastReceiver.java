@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
+
+import at.fhhgb.mc.swip.constants.IntentConstants;
 import at.flosch.logwrap.Log;
 
 import com.google.android.gms.location.Geofence;
@@ -72,13 +74,23 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 			batteryLevel = batteryLevel * 100;
 			triggerservice.setBatteryLevel((int)batteryLevel);
 		}
-		if(_intent.getAction().equals("at.fhhgb.mc.swip.trigger.refresh")){
+		if(_intent.getAction().equals(IntentConstants.REFRESH)){
 			triggerservice.refreshTriggers();
 		}
-		if(_intent.getAction().equals("at.fhhgb.mc.swip.trigger.clearGeofences")){
+		if(_intent.getAction().equals(IntentConstants.CLEAR_GEOFENCES)){
 			triggerservice.clearGeofences();
 		}
-		if(_intent.getAction().equals("at.fhhgb.mc.swip.trigger.location_change")){
+        if(_intent.getAction().equals(IntentConstants.TIMEOUT)){
+            long timeframe = _intent.getLongExtra(IntentConstants.TIMEOUT_EXTRA,0);
+            Log.d(TAG, "got timeout broadcast!");
+            if(timeframe != 0){
+                TriggerTimeout timeout = new TriggerTimeout(timeframe);
+                triggerservice.setTimeout(timeout);
+            } else {
+                triggerservice.setTimeout(null);
+            }
+        }
+		if(_intent.getAction().equals("")){
 			Log.i(TAG, "Location change detected - action");
 			// First check for errors
 			if (LocationClient.hasError(_intent)) {

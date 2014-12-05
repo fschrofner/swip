@@ -31,6 +31,9 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import at.fhhgb.mc.swip.R;
+import at.fhhgb.mc.swip.constants.BuildConstants;
+import at.fhhgb.mc.swip.constants.IntentConstants;
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.fhhgb.mc.swip.trigger.LocationTrigger;
 import at.fhhgb.mc.swip.trigger.SimpleGeofence;
 import at.fhhgb.mc.swip.trigger.Trigger;
@@ -49,6 +52,7 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		OnSharedPreferenceChangeListener {
 	
 	final static String TAG = "TriggerEditActivity";
+    private static String BUILD_TYPE;
 	
 	/**
 	 * Determines whether to always show the simplified settings UI, where
@@ -76,13 +80,14 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		
-		if (pref.getBoolean("dark_theme", false)) {
+		if (pref.getBoolean(SharedPrefConstants.DARK_THEME, false)) {
 			setTheme(R.style.AppThemeDark);
 		}
 		
 		super.onCreate(savedInstanceState);
 		getActionBar().setTitle(R.string.title_activity_trigger_edit);
 		setupActionBar();
+        BUILD_TYPE = getString(R.string.build_type);
 	}
 
 	@Override
@@ -308,9 +313,11 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		PreferenceCategory fakeHeader = new PreferenceCategory(this);
 
 		// Add 'Location preferences, and a corresponding header.
-		fakeHeader.setTitle(R.string.pref_header_location);
-		getPreferenceScreen().addPreference(fakeHeader);
-		addPreferencesFromResource(R.xml.pref_trigger_location);
+        if(BUILD_TYPE.equals(BuildConstants.BUILD_TYPE_NORMAL)){
+            fakeHeader.setTitle(R.string.pref_header_location);
+            getPreferenceScreen().addPreference(fakeHeader);
+            addPreferencesFromResource(R.xml.pref_trigger_location);
+        }
 
 		// Add 'Time' preferences, and a corresponding header.
 		fakeHeader = new PreferenceCategory(this);
@@ -343,17 +350,19 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		bindPreferenceSummaryToValue(findPreference("headphone"));
 		
 		// binds the summary to the location-preference
-		if (pref.getInt("geofence_radius", 50) > 0) {
-			findPreference("location").setSummary(
-					getString(R.string.pref_location_lat) + ": "
-							+ pref.getFloat("geofence_lat", 0F) + "\u00B0, "
-							+ getString(R.string.pref_location_lng) + ": "
-							+ pref.getFloat("geofence_lng", 0F) + "\u00B0, "
-							+ getString(R.string.pref_location_radius) + ": "
-							+ pref.getInt("geofence_radius", 50) + "m");
-		} else {
-			findPreference("location").setSummary(R.string.ignored);
-		}
+        if(BUILD_TYPE.equals(BuildConstants.BUILD_TYPE_NORMAL)){
+            if (pref.getInt("geofence_radius", 50) > 0) {
+                findPreference("location").setSummary(
+                        getString(R.string.pref_location_lat) + ": "
+                                + pref.getFloat("geofence_lat", 0F) + "\u00B0, "
+                                + getString(R.string.pref_location_lng) + ": "
+                                + pref.getFloat("geofence_lng", 0F) + "\u00B0, "
+                                + getString(R.string.pref_location_radius) + ": "
+                                + pref.getInt("geofence_radius", 50) + "m");
+            } else {
+                findPreference("location").setSummary(R.string.ignored);
+            }
+        }
 
 		if (pref.getString("start_time", getString(R.string.ignored)).equals(
 				getString(R.string.ignored))) {
@@ -522,37 +531,39 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		}
 
 		// unregisters the old geofences from the system
-		locTrig.unregisterGeofence(name);
-		locTrig.unregisterGeofence(name + "_exit");
+        if(BUILD_TYPE.equals(BuildConstants.BUILD_TYPE_NORMAL)){
+            locTrig.unregisterGeofence(name);
+            locTrig.unregisterGeofence(name + "_exit");
 
-		// deletes the list of currently triggered geofences from the service
-		Intent intent = new Intent();
-		intent.setAction("at.fhhgb.mc.swip.trigger.clearGeofences");
-		sendBroadcast(intent);
+            // deletes the list of currently triggered geofences from the service
+            Intent intent = new Intent();
+            intent.setAction(IntentConstants.CLEAR_GEOFENCES);
+            sendBroadcast(intent);
 
-		if (pref.getInt("geofence_radius", 50) > 0) {
+            if (pref.getInt("geofence_radius", 50) > 0) {
 
-			// geofence that registers if you enter the area
-			SimpleGeofence simple = new SimpleGeofence(name, pref.getFloat(
-					"geofence_lat", 0F), pref.getFloat("geofence_lng", 0F),
-					pref.getInt("geofence_radius", 0), Geofence.NEVER_EXPIRE,
-					Geofence.GEOFENCE_TRANSITION_ENTER);
-			locTrig.registerGeofence(simple);
+                // geofence that registers if you enter the area
+                SimpleGeofence simple = new SimpleGeofence(name, pref.getFloat(
+                        "geofence_lat", 0F), pref.getFloat("geofence_lng", 0F),
+                        pref.getInt("geofence_radius", 0), Geofence.NEVER_EXPIRE,
+                        Geofence.GEOFENCE_TRANSITION_ENTER);
+                locTrig.registerGeofence(simple);
 
-			// geofence that registers if you leave the area
-			simple = new SimpleGeofence(name + "_exit", pref.getFloat(
-					"geofence_lat", 0F), pref.getFloat("geofence_lng", 0F),
-					pref.getInt("geofence_radius", 0), Geofence.NEVER_EXPIRE,
-					Geofence.GEOFENCE_TRANSITION_EXIT);
-			locTrig.registerGeofence(simple);
+                // geofence that registers if you leave the area
+                simple = new SimpleGeofence(name + "_exit", pref.getFloat(
+                        "geofence_lat", 0F), pref.getFloat("geofence_lng", 0F),
+                        pref.getInt("geofence_radius", 0), Geofence.NEVER_EXPIRE,
+                        Geofence.GEOFENCE_TRANSITION_EXIT);
+                locTrig.registerGeofence(simple);
 
-			// sets the geofence of the trigger to the enter event
-			trigger.setGeofence(name);
-		} else {
-			locTrig.unregisterGeofence(name);
-			locTrig.unregisterGeofence(name + "_exit");
-			trigger.setGeofence(null);
-		}
+                // sets the geofence of the trigger to the enter event
+                trigger.setGeofence(name);
+            } else {
+                locTrig.unregisterGeofence(name);
+                locTrig.unregisterGeofence(name + "_exit");
+                trigger.setGeofence(null);
+            }
+        }
 
 		// Creates the xml
 		XmlCreatorTrigger creator = new XmlCreatorTrigger();
@@ -578,8 +589,8 @@ public class TriggerEditActivity extends PreferenceActivity implements
 
 		}
 
-		intent = new Intent();
-		intent.setAction("at.fhhgb.mc.swip.trigger.refresh");
+		Intent intent = new Intent();
+		intent.setAction(IntentConstants.REFRESH);
 		sendBroadcast(intent);
 	}
 
@@ -694,25 +705,27 @@ public class TriggerEditActivity extends PreferenceActivity implements
 		}
 
 		// Binds the summary of the location
-		if (key.equals("geofence_lat") || key.equals("geofence_lng")
-				|| key.equals("geofence_radius")) {
+        if(BUILD_TYPE.equals(BuildConstants.BUILD_TYPE_NORMAL)){
+            if (key.equals("geofence_lat") || key.equals("geofence_lng")
+                    || key.equals("geofence_radius")) {
 
-			SharedPreferences pref = PreferenceManager
-					.getDefaultSharedPreferences(this);
+                SharedPreferences pref = PreferenceManager
+                        .getDefaultSharedPreferences(this);
 
-			if (pref.getInt("geofence_radius", 50) > 0) {
-				findPreference("location").setSummary(
-						getString(R.string.pref_location_lat) + ": "
-								+ pref.getFloat("geofence_lat", 0F) + "\u00B0, "
-								+ getString(R.string.pref_location_lng) + ": "
-								+ pref.getFloat("geofence_lng", 0F) + "\u00B0, "
-								+ getString(R.string.pref_location_radius)
-								+ ": " + pref.getInt("geofence_radius", 50)
-								+ "m");
-			} else {
-				findPreference("location").setSummary(R.string.ignored);
-			}
-		}
+                if (pref.getInt("geofence_radius", 50) > 0) {
+                    findPreference("location").setSummary(
+                            getString(R.string.pref_location_lat) + ": "
+                                    + pref.getFloat("geofence_lat", 0F) + "\u00B0, "
+                                    + getString(R.string.pref_location_lng) + ": "
+                                    + pref.getFloat("geofence_lng", 0F) + "\u00B0, "
+                                    + getString(R.string.pref_location_radius)
+                                    + ": " + pref.getInt("geofence_radius", 50)
+                                    + "m");
+                } else {
+                    findPreference("location").setSummary(R.string.ignored);
+                }
+            }
+        }
 
 		// Binds the summary of the weekday
 		if (key.equals("weekdays")) {

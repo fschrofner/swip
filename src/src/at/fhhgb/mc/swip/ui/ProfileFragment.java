@@ -32,8 +32,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import at.fhhgb.mc.swip.R;
+import at.fhhgb.mc.swip.constants.IntentConstants;
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.fhhgb.mc.swip.services.Handler;
 import at.fhhgb.mc.swip.widgets.ListWidget;
+import at.flosch.logwrap.Log;
 
 /**
  * Fragment, where the profiles are listed.
@@ -44,6 +47,7 @@ import at.fhhgb.mc.swip.widgets.ListWidget;
 public class ProfileFragment extends Fragment implements OnItemClickListener,
 		OnItemLongClickListener {
 
+    final static String TAG = "ProfileFragment";
 	List<String> profileList = new ArrayList<String>();
 	
 	@Override
@@ -85,7 +89,7 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 		handler.updateSystemApp();
 		
 		// starts the permanent notification if it is activated
-		if (pref.getBoolean("notification", false)) {
+		if (pref.getBoolean(SharedPrefConstants.NOTIFICATION, false)) {
 			handler.updateNotification();
 		} else {
 			// deactivates the notification otherwise
@@ -225,8 +229,24 @@ public class ProfileFragment extends Fragment implements OnItemClickListener,
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> _a, View v, int _position, long arg3) {
-		Handler handler = new Handler(getActivity());
-		handler.applyProfile((String) _a.getItemAtPosition(_position));
+        Intent intent = new Intent();
+        intent.setAction(IntentConstants.TIMEOUT);
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        //gets the timeout that was set in the preferences
+        long timeout = Long.valueOf(pref.getString(SharedPrefConstants.TIMEOUT,SharedPrefConstants.DEFAULT_TIMEOUT));
+        Log.d(TAG, "default timeout set in preferences: " + timeout + "ms");
+
+        //if the timeout is set to zero, the user should be asked how long the timeout should be
+        if(timeout == 0){
+            Handler handler = new Handler(getActivity());
+            handler.displayTimeoutDialog((String) _a.getItemAtPosition(_position));
+        } else {
+            Handler handler = new Handler(getActivity());
+            handler.setTriggerTimeout(timeout);
+            handler.applyProfile((String) _a.getItemAtPosition(_position));
+        }
 	}
 
 	/**
