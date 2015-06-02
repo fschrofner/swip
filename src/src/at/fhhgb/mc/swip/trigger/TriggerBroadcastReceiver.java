@@ -3,15 +3,16 @@ package at.fhhgb.mc.swip.trigger;
 import java.util.Calendar;
 import java.util.List;
 
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.LocationClient;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.BatteryManager;
-import android.util.Log;
+
+import at.fhhgb.mc.swip.constants.IntentConstants;
+import at.flosch.logwrap.Log;
+
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationClient;
 
 /**
  * Receives several broadcasts and sets the according variables in the trigger service.
@@ -20,27 +21,12 @@ import android.util.Log;
  *
  */
 public class TriggerBroadcastReceiver extends BroadcastReceiver{
+	final static String TAG = "TriggerBroadcastReceiver";
+	
 	TriggerService triggerservice;
 	
 	TriggerBroadcastReceiver(TriggerService _service){
 		triggerservice = _service;
-		IntentFilter filter=new IntentFilter(Intent.ACTION_HEADSET_PLUG);
-		_service.registerReceiver(this,filter);
-		filter = new IntentFilter(Intent.ACTION_TIME_TICK);
-		_service.registerReceiver(this,filter);
-		filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-		Intent intent = _service.registerReceiver(this, filter);
-		_service.setInitialBatteryState(intent);
-		filter = new IntentFilter(Intent.ACTION_POWER_CONNECTED);
-		_service.registerReceiver(this, filter);
-		filter = new IntentFilter(Intent.ACTION_POWER_DISCONNECTED);
-		_service.registerReceiver(this, filter);
-		filter = new IntentFilter("at.fhhgb.mc.swip.trigger.refresh");
-		_service.registerReceiver(this, filter);
-    	filter = new IntentFilter("at.fhhgb.mc.swip.trigger.location_change");
-		_service.registerReceiver(this, filter);
-		filter = new IntentFilter("at.fhhgb.mc.swip.trigger.clearGeofences");
-		_service.registerReceiver(this, filter);
 	}
 
 	/**
@@ -51,7 +37,7 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 	@Override
 	public void onReceive(Context _context, Intent _intent) {
 		
-		Log.i("TriggerBroadcastReceiver", "Broadcast received: " + _intent.getAction());
+		Log.i(TAG, "Broadcast received: " + _intent.getAction());
 		
 		if (_intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
 			
@@ -60,18 +46,18 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 			int m = Integer.parseInt(String.valueOf(Calendar
 					.getInstance().get(Calendar.MINUTE)));
 			triggerservice.setTime(h, m);
-			Log.i("TriggerBroadcastReceiver", "TimeTick: " + h + ":" + m);
+			Log.i(TAG, "TimeTick: " + h + ":" + m);
 		}
 		else if (_intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)){
 			int state = _intent.getIntExtra("state", -1);
             switch (state) {
             case 0:
             	triggerservice.setHeadphones(false);
-                Log.i("TriggerBroadcastReceiver", "Headset unplugged");
+                Log.i(TAG, "Headset unplugged");
                 break;
             case 1:
             	triggerservice.setHeadphones(true);
-                Log.i("TriggerBroadcastReceiver", "Headset plugged");
+                Log.i(TAG, "Headset plugged");
                 break;
             }
          } 
@@ -88,14 +74,24 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 			batteryLevel = batteryLevel * 100;
 			triggerservice.setBatteryLevel((int)batteryLevel);
 		}
-		if(_intent.getAction().equals("at.fhhgb.mc.swip.trigger.refresh")){
+		if(_intent.getAction().equals(IntentConstants.REFRESH)){
 			triggerservice.refreshTriggers();
 		}
-		if(_intent.getAction().equals("at.fhhgb.mc.swip.trigger.clearGeofences")){
+		if(_intent.getAction().equals(IntentConstants.CLEAR_GEOFENCES)){
 			triggerservice.clearGeofences();
 		}
-		if(_intent.getAction().equals("at.fhhgb.mc.swip.trigger.location_change")){
-			Log.i("TriggerBroadcastReceiver", "Location change detected - action");
+        if(_intent.getAction().equals(IntentConstants.TIMEOUT)){
+            long timeframe = _intent.getLongExtra(IntentConstants.TIMEOUT_EXTRA,0);
+            Log.d(TAG, "got timeout broadcast!");
+            if(timeframe != 0){
+                TriggerTimeout timeout = new TriggerTimeout(timeframe);
+                triggerservice.setTimeout(timeout);
+            } else {
+                triggerservice.setTimeout(null);
+            }
+        }
+		if(_intent.getAction().equals("")){
+			Log.i(TAG, "Location change detected - action");
 			// First check for errors
 			if (LocationClient.hasError(_intent)) {
 				// Get the error code with a static method
@@ -120,7 +116,7 @@ public class TriggerBroadcastReceiver extends BroadcastReceiver{
 					for (int i = 0; i < triggerIds.length; i++) {
 						// Store the Id of each geofence
 						triggerIds[i] = triggerList.get(i).getRequestId();
-						Log.i("TriggerBroadcastReceiver", "matching geofence: " + triggerIds[i]);
+						Log.i(TAG, "matching geofence: " + triggerIds[i]);
 					}
 					
 					triggerservice.setGeofences(triggerIds);

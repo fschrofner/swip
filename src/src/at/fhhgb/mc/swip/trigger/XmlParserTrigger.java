@@ -9,7 +9,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
-import android.util.Log;
+import at.flosch.logwrap.Log;
 import android.util.Xml;
 
 /**
@@ -20,6 +20,7 @@ import android.util.Xml;
  * 
  */
 public class XmlParserTrigger {
+	final static String TAG = "XmlParserTrigger";
 
 	Context context;
 
@@ -113,10 +114,10 @@ public class XmlParserTrigger {
 
 		if (_parser.getAttributeValue(null, "name") != null) {
 			_trigger.setProfileName(_parser.getAttributeValue(null, "name"));
-			Log.i("XmlParserTrigger",
+			Log.i(TAG,
 					"Profile: " + _parser.getAttributeValue(null, "name"));
 		} else {
-			Log.e("XmlParserTrigger", "Profile: Invalid Argument!");
+			Log.e(TAG, "Profile: Invalid Argument!");
 		}
 		_parser.nextTag();
 	}
@@ -140,15 +141,15 @@ public class XmlParserTrigger {
 							"start_hours")) <= 23) {
 				_trigger.setStartHours(Integer.parseInt(_parser
 						.getAttributeValue(null, "start_hours")));
-				Log.i("XmlParserTrigger",
+				Log.i(TAG,
 						"start_hours: "
 								+ _parser
 										.getAttributeValue(null, "start_hours"));
 			} else {
-				Log.i("XmlParserTrigger", "start_hours: ignore.");
+				Log.i(TAG, "start_hours: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "start_hours: Invalid Argument!");
+			Log.e(TAG, "start_hours: Invalid Argument!");
 		}
 
 		if (_parser.getAttributeValue(null, "start_minutes") != null) {
@@ -158,15 +159,15 @@ public class XmlParserTrigger {
 							"start_minutes")) <= 59) {
 				_trigger.setStartMinutes(Integer.parseInt(_parser
 						.getAttributeValue(null, "start_minutes")));
-				Log.i("XmlParserTrigger",
+				Log.i(TAG,
 						"start_minutes: "
 								+ _parser.getAttributeValue(null,
 										"start_minutes"));
 			} else {
-				Log.i("XmlParserTrigger", "start_minutes: ignore.");
+				Log.i(TAG, "start_minutes: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "start_minutes: Invalid Argument!");
+			Log.e(TAG, "start_minutes: Invalid Argument!");
 		}
 
 		if (_parser.getAttributeValue(null, "end_hours") != null) {
@@ -175,14 +176,14 @@ public class XmlParserTrigger {
 							"end_hours")) <= 23) {
 				_trigger.setEndHours(Integer.parseInt(_parser
 						.getAttributeValue(null, "end_hours")));
-				Log.i("XmlParserTrigger",
+				Log.i(TAG,
 						"end_hours: "
 								+ _parser.getAttributeValue(null, "end_hours"));
 			} else {
-				Log.i("XmlParserTrigger", "end_hours: ignore.");
+				Log.i(TAG, "end_hours: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "end_hours: Invalid Argument!");
+			Log.e(TAG, "end_hours: Invalid Argument!");
 		}
 
 		if (_parser.getAttributeValue(null, "end_minutes") != null) {
@@ -192,15 +193,15 @@ public class XmlParserTrigger {
 							"end_minutes")) <= 59) {
 				_trigger.setEndMinutes(Integer.parseInt(_parser
 						.getAttributeValue(null, "end_minutes")));
-				Log.i("XmlParserTrigger",
+				Log.i(TAG,
 						"end_minutes: "
 								+ _parser
 										.getAttributeValue(null, "end_minutes"));
 			} else {
-				Log.i("XmlParserTrigger", "end_minutes: ignore.");
+				Log.i(TAG, "end_minutes: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "end_minutes: Invalid Argument!");
+			Log.e(TAG, "end_minutes: Invalid Argument!");
 		}
 
 		_parser.nextTag();
@@ -225,15 +226,15 @@ public class XmlParserTrigger {
 							"start_level")) <= 100) {
 				_trigger.setBatteryStartLevel(Integer.parseInt(_parser
 						.getAttributeValue(null, "start_level")));
-				Log.i("XmlParserTrigger",
+				Log.i(TAG,
 						"BatteryStartLevel: "
 								+ _parser
 										.getAttributeValue(null, "start_level"));
 			} else {
-				Log.i("XmlParserTrigger", "BatteryStartLevel: ignore.");
+				Log.i(TAG, "BatteryStartLevel: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "BatteryStartLevel: Invalid Argument!");
+			Log.e(TAG, "BatteryStartLevel: Invalid Argument!");
 		}
 
 		if (_parser.getAttributeValue(null, "end_level") != null) {
@@ -242,28 +243,28 @@ public class XmlParserTrigger {
 							"end_level")) <= 100) {
 				_trigger.setBatteryEndLevel(Integer.parseInt(_parser
 						.getAttributeValue(null, "end_level")));
-				Log.i("XmlParserTrigger",
+				Log.i(TAG,
 						"BatteryEndLevel: "
 								+ _parser.getAttributeValue(null, "end_level"));
 			} else {
-				Log.i("XmlParserTrigger", "BatteryEndLevel: ignore.");
+				Log.i(TAG, "BatteryEndLevel: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "BatteryEndLevel: Invalid Argument!");
+			Log.e(TAG, "BatteryEndLevel: Invalid Argument!");
 		}
 
 		if (_parser.getAttributeValue(null, "state") != null) {
 			if (_parser.getAttributeValue(null, "state").equals("1")) {
 				_trigger.setBatteryState(Trigger.listen_state.listen_on);
-				Log.i("XmlParserTrigger", "BatteryState listen on.");
+				Log.i(TAG, "BatteryState listen on.");
 			} else if (_parser.getAttributeValue(null, "state").equals("0")) {
 				_trigger.setBatteryState(Trigger.listen_state.listen_off);
-				Log.i("XmlParserTrigger", "BatteryState listen off.");
+				Log.i(TAG, "BatteryState listen off.");
 			} else {
-				Log.i("XmlParserTrigger", "BateryState: ignore.");
+				Log.i(TAG, "BateryState: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "BatteryState: Invalid Argument!");
+			Log.e(TAG, "BatteryState: Invalid Argument!");
 		}
 
 		_parser.nextTag();
@@ -284,15 +285,15 @@ public class XmlParserTrigger {
 		if (_parser.getAttributeValue(null, "state") != null) {
 			if (_parser.getAttributeValue(null, "state").equals("1")) {
 				_trigger.setHeadphones(Trigger.listen_state.listen_on);
-				Log.i("XmlParserTrigger", "Headphones listen on.");
+				Log.i(TAG, "Headphones listen on.");
 			} else if (_parser.getAttributeValue(null, "state").equals("0")) {
 				_trigger.setHeadphones(Trigger.listen_state.listen_off);
-				Log.i("XmlParserTrigger", "Headphones listen off.");
+				Log.i(TAG, "Headphones listen off.");
 			} else {
-				Log.i("XmlParserTrigger", "Headphones: ignore.");
+				Log.i(TAG, "Headphones: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "Headphones: Invalid Argument!");
+			Log.e(TAG, "Headphones: Invalid Argument!");
 		}
 
 		_parser.nextTag();
@@ -312,13 +313,13 @@ public class XmlParserTrigger {
 		if (_parser.getAttributeValue(null, "id") != null) {
 			if (!_parser.getAttributeValue(null, "id").equals("")) {
 				_trigger.setGeofence(_parser.getAttributeValue(null, "id"));
-				Log.i("XmlParserTrigger", "Geofence: " + _trigger.getGeofence());
+				Log.i(TAG, "Geofence: " + _trigger.getGeofence());
 			} else {
 				_trigger.setGeofence(null);
-				Log.i("XmlParserTrigger", "Geofence: ignore");
+				Log.i(TAG, "Geofence: ignore");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "Geofence: Invalid Argument!");
+			Log.e(TAG, "Geofence: Invalid Argument!");
 		}
 
 		_parser.nextTag();
@@ -341,13 +342,13 @@ public class XmlParserTrigger {
 							.getAttributeValue(null, "value")) <= 99) {
 				_trigger.setPriority(Integer.parseInt(_parser
 						.getAttributeValue(null, "value")));
-				Log.i("XmlParserTrigger",
+				Log.i(TAG,
 						"priority: " + _parser.getAttributeValue(null, "value"));
 			} else {
-				Log.i("XmlParserTrigger", "priority: ignore.");
+				Log.i(TAG, "priority: ignore.");
 			}
 		} else {
-			Log.e("XmlParserTrigger", "priority: Invalid Argument!");
+			Log.e(TAG, "priority: Invalid Argument!");
 		}
 
 		_parser.nextTag();
@@ -369,57 +370,57 @@ public class XmlParserTrigger {
 		if (_parser.getAttributeValue(null, "mon") != null) {
 			if (_parser.getAttributeValue(null, "mon").equals("true")) {
 				weekdays.add("1");
-				Log.i("XmlParserTriggerPref", "weekdays: monday");
+				Log.i(TAG, "weekdays: monday");
 			} else {
-				Log.i("XmlParserTriggerPref", "weekdays: no monday");
+				Log.i(TAG, "weekdays: no monday");
 			}
 		}
 		if (_parser.getAttributeValue(null, "tue") != null) {
 			if (_parser.getAttributeValue(null, "tue").equals("true")) {
 				weekdays.add("2");
-				Log.i("XmlParserTriggerPref", "weekdays: tuesday");
+				Log.i(TAG, "weekdays: tuesday");
 			} else {
-				Log.i("XmlParserTriggerPref", "weekdays: no tuesday");
+				Log.i(TAG, "weekdays: no tuesday");
 			}
 		}
 		if (_parser.getAttributeValue(null, "wed") != null) {
 			if (_parser.getAttributeValue(null, "wed").equals("true")) {
 				weekdays.add("3");
-				Log.i("XmlParserTriggerPref", "weekdays: wednesday");
+				Log.i(TAG, "weekdays: wednesday");
 			} else {
-				Log.i("XmlParserTriggerPref", "weekdays: no wednesday");
+				Log.i(TAG, "weekdays: no wednesday");
 			}
 		}
 		if (_parser.getAttributeValue(null, "thur") != null) {
 			if (_parser.getAttributeValue(null, "thur").equals("true")) {
 				weekdays.add("4");
-				Log.i("XmlParserTriggerPref", "weekdays: thursday");
+				Log.i(TAG, "weekdays: thursday");
 			} else {
-				Log.i("XmlParserTriggerPref", "weekdays: no thursday");
+				Log.i(TAG, "weekdays: no thursday");
 			}
 		}
 		if (_parser.getAttributeValue(null, "fri") != null) {
 			if (_parser.getAttributeValue(null, "fri").equals("true")) {
 				weekdays.add("5");
-				Log.i("XmlParserTriggerPref", "weekdays: friday");
+				Log.i(TAG, "weekdays: friday");
 			} else {
-				Log.i("XmlParserTriggerPref", "weekdays: no friday");
+				Log.i(TAG, "weekdays: no friday");
 			}
 		}
 		if (_parser.getAttributeValue(null, "sat") != null) {
 			if (_parser.getAttributeValue(null, "sat").equals("true")) {
 				weekdays.add("6");
-				Log.i("XmlParserTriggerPref", "weekdays: saturday");
+				Log.i(TAG, "weekdays: saturday");
 			} else {
-				Log.i("XmlParserTriggerPref", "weekdays: no saturday");
+				Log.i(TAG, "weekdays: no saturday");
 			}
 		}
 		if (_parser.getAttributeValue(null, "sun") != null) {
 			if (_parser.getAttributeValue(null, "sun").equals("true")) {
 				weekdays.add("7");
-				Log.i("XmlParserTriggerPref", "weekdays: sunday");
+				Log.i(TAG, "weekdays: sunday");
 			} else {
-				Log.i("XmlParserTriggerPref", "weekdays: no sunday");
+				Log.i(TAG, "weekdays: no sunday");
 			}
 		}
 		

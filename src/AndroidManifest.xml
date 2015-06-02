@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="20" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -41,8 +41,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="at.fhhgb.mc.swip.ui.MainActivity"
-            android:label="@string/app_name"
-            android:configChanges="locale" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -67,8 +66,7 @@
         <activity
             android:name="at.fhhgb.mc.swip.ui.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="at.fhhgb.mc.swip.ui.MainActivity"
-            android:configChanges="locale" >
+            android:parentActivityName="at.fhhgb.mc.swip.ui.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="at.fhhgb.mc.swip.ui.MainActivity" />
@@ -167,14 +165,14 @@
         </activity>
 
         <!-- Dominik Koeltringer -->
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAtTPt4AzNvtQDo6SFic1n9LgoroOi3-9Q" />
+<!--        <meta-data-->
+<!--            android:name="com.google.android.maps.v2.API_KEY"-->
+<!--            android:value="AIzaSyAtTPt4AzNvtQDo6SFic1n9LgoroOi3-9Q" />-->
 
-<!--         Florian Schrofner
+        <!-- Florian Schrofner -->
          <meta-data
              android:name="com.google.android.maps.v2.API_KEY"
-             android:value="AIzaSyChsOIkMcczpav5C7yMsgXwwWvW3G4e0Zo" /> -->
+             android:value="AIzaSyChsOIkMcczpav5C7yMsgXwwWvW3G4e0Zo" />
     </application>
 
 </manifest>

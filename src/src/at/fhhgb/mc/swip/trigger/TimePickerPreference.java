@@ -94,6 +94,9 @@ OnCheckedChangeListener {
 	protected void onDialogClosed(boolean positiveResult) {
 		super.onDialogClosed(positiveResult);
 
+		//this is needed so that the values get saved when using the keyboard
+		picker.clearFocus();
+		
 		if (checkbox.isChecked() && positiveResult) {
 			lastHour = picker.getCurrentHour();
 			lastMinute = picker.getCurrentMinute();

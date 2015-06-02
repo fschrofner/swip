@@ -5,7 +5,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
+import at.flosch.logwrap.Log;
 
 /**
  * Stores geofences in the shared preferences.
@@ -14,6 +14,7 @@ import android.util.Log;
  * 
  */
 public class SimpleGeofenceStore {
+	final static String TAG = "SimpleGeofenceStore";
 
 	// Keys for flattened geofences stored in SharedPreferences
 	public static final String KEY_LATITUDE = "at.fhhgb.mc.swip.geofence.KEY_LATITUDE";
@@ -122,7 +123,7 @@ public class SimpleGeofenceStore {
 				geofence.getTransitionType());
 		// Commit the changes
 		editor.commit();
-		Log.i("SimpleGeofenceStorage", "saved simple geofence");
+		Log.i(TAG, "saved simple geofence");
 	}
 
 	/**
@@ -138,7 +139,7 @@ public class SimpleGeofenceStore {
 				setGeofence(_geofences.get(i).getId(), _geofences.get(i));
 			}
 		}
-		Log.i("SimpleGeofenceStorage", "saved list of simple geofences");
+		Log.i(TAG, "saved list of simple geofences");
 	}
 
 	public void clearGeofenceList(String[] _ids) {
@@ -147,7 +148,7 @@ public class SimpleGeofenceStore {
 				clearGeofence(_ids[i]);
 			}
 		}
-		Log.i("SimpleGeofenceStorage", "cleared list of simple geofences");
+		Log.i(TAG, "cleared list of simple geofences");
 	}
 
 	/**
@@ -165,7 +166,7 @@ public class SimpleGeofenceStore {
 		editor.remove(getGeofenceFieldKey(id, KEY_EXPIRATION_DURATION));
 		editor.remove(getGeofenceFieldKey(id, KEY_TRANSITION_TYPE));
 		editor.commit();
-		Log.i("SimpleGeofenceStorage", "cleared simple geofence");
+		Log.i(TAG, "cleared simple geofence");
 	}
 
 	/**

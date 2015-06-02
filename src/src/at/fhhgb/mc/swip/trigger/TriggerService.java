@@ -10,14 +10,17 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources.NotFoundException;
 import android.media.AudioManager;
 import android.os.BatteryManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.util.Log;
+
+import at.fhhgb.mc.swip.constants.IntentConstants;
 import at.fhhgb.mc.swip.services.Handler;
+import at.flosch.logwrap.Log;
 
 /**
  * Service which manages the triggers.
@@ -26,6 +29,7 @@ import at.fhhgb.mc.swip.services.Handler;
  * 
  */
 public class TriggerService extends Service{
+	final static String TAG = "TriggerService";
 
 	//triggerreceiver, so the broadcastreceiver can register itself dynamically in the constructor
 	private TriggerBroadcastReceiver triggerReceiver;
@@ -38,6 +42,7 @@ public class TriggerService extends Service{
 	private List<Trigger> triggerList = new ArrayList<Trigger>();
 	private List<Trigger> triggerPriorityList = new ArrayList<Trigger>();
 	private String[] geofences;
+    private TriggerTimeout timeout;
 
 	/**
 	 * Set the status of the headphones on initialization and compares the triggers.
@@ -46,10 +51,10 @@ public class TriggerService extends Service{
 		AudioManager audiomanager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
 		if(audiomanager.isWiredHeadsetOn()){
 			headphones = true;
-			Log.i("TriggerService", "initial headphone value defined as: plugged");
+			Log.i(TAG, "initial headphone value defined as: plugged");
 		} else if (!audiomanager.isWiredHeadsetOn()){
 			headphones = false;
-			Log.i("TriggerService", "initial headphone value defined as: unplugged");
+			Log.i(TAG, "initial headphone value defined as: unplugged");
 		}
 		compareTriggers();
 	}
@@ -104,7 +109,7 @@ public class TriggerService extends Service{
 	public void clearGeofences(){
 		//should be null, the new list will be initiated by the system
 		geofences = null;
-		Log.i("TriggerService", "all geofences cleared!");
+		Log.i(TAG, "all geofences cleared!");
 	}
 	
 	/**
@@ -113,30 +118,30 @@ public class TriggerService extends Service{
 	protected void setInitialBatteryState(Intent _intent){
 		int status = _intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
 		boolean batteryCharging = (status == BatteryManager.BATTERY_STATUS_CHARGING);
-		Log.i("TriggerService", "initial battery state defined as " + batteryCharging);
+		Log.i(TAG, "initial battery state defined as " + batteryCharging);
 		int level = _intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 		int scale = _intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 		float batteryLevelF = level / (float)scale;
 		batteryLevel = (int)(batteryLevelF * 100);
-		Log.i("TriggerService", "initial battery level defined as " + batteryLevel);
+		Log.i(TAG, "initial battery level defined as " + batteryLevel);
 		compareTriggers();
 	}
 	
 	public void setBatteryCharging(boolean batteryCharging) {
 		this.batteryCharging = batteryCharging;
-		Log.i("TriggerService", "batterystate changed to " + batteryCharging);
+		Log.i(TAG, "batterystate changed to " + batteryCharging);
 		compareTriggers();
 	}
 
 	public void setHeadphones(boolean _headphones) {
 		this.headphones = _headphones;
-		Log.i("TriggerService", "headphones changed to " + _headphones);
+		Log.i(TAG, "headphones changed to " + _headphones);
 		compareTriggers();
 	}
 
 	public void setBatteryLevel(int _batteryLevel) {
 		this.batteryLevel = _batteryLevel;
-		Log.i("TriggerService", "batterylevel changed to " + _batteryLevel);
+		Log.i(TAG, "batterylevel changed to " + _batteryLevel);
 		compareTriggers();
 	}
 	
@@ -151,13 +156,13 @@ public class TriggerService extends Service{
 	}
 
 	/**
-	 * Sets the initial values, initialises the broadcastreceiver and loads the
+	 * Sets the initial values, initialises & registers the broadcastreceiver and loads the
 	 * already existent triggers.
 	 */
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
-		Log.i("TriggerService", "TriggerService started");
+		Log.i(TAG, "TriggerService started");
 
 		setInitialTime();
 		setInitialWeekday();
@@ -165,10 +170,39 @@ public class TriggerService extends Service{
 		
 		// Create a broadcast receiver to handle changes
 		triggerReceiver = new TriggerBroadcastReceiver(this);
+		
+		//register the broadcast receiver for the intents
+		IntentFilter filter=new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+		registerReceiver(triggerReceiver,filter);
+		filter = new IntentFilter(Intent.ACTION_TIME_TICK);
+		registerReceiver(triggerReceiver,filter);
+		filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+		Intent batteryIntent = registerReceiver(triggerReceiver, filter);
+		setInitialBatteryState(batteryIntent);
+		filter = new IntentFilter(Intent.ACTION_POWER_CONNECTED);
+		registerReceiver(triggerReceiver, filter);
+		filter = new IntentFilter(Intent.ACTION_POWER_DISCONNECTED);
+		registerReceiver(triggerReceiver, filter);
+		filter = new IntentFilter(IntentConstants.REFRESH);
+		registerReceiver(triggerReceiver, filter);
+        filter = new IntentFilter(IntentConstants.TIMEOUT);
+        registerReceiver(triggerReceiver, filter);
+    	filter = new IntentFilter(IntentConstants.LOCATION_CHANGE);
+		registerReceiver(triggerReceiver, filter);
+		filter = new IntentFilter(IntentConstants.CLEAR_GEOFENCES);
+		registerReceiver(triggerReceiver, filter);
+		
 		refreshTriggers();
 
-		return super.onStartCommand(intent, flags, startId);
+		super.onStartCommand(intent, flags, startId);
+		return START_STICKY;
 	}
+
+	@Override
+	public void onDestroy() {
+		unregisterReceiver(triggerReceiver);
+	}
+
 
 	/**
 	 * Sets the time.
@@ -181,21 +215,29 @@ public class TriggerService extends Service{
 	public void setTime(int _currentHours, int _currentMinutes) {
 		currentHours = _currentHours;
 		currentMinutes = _currentMinutes;
-		Log.i("TriggerService", "current time updated: " + currentHours + ":" + currentMinutes);
+		Log.i(TAG, "current time updated: " + currentHours + ":" + currentMinutes);
 		compareTriggers();
 	}
 	
 	/**
 	 * Sets the weekday.
 	 * 
-	 * @param _currenWeekday
+	 * @param _currentWeekday
 	 *            the current weekday.
 	 */
 	public void setWeekday(String _currentWeekday) {
 		currentWeekday = _currentWeekday;
-		Log.i("TriggerService", "current weekday updated: " + currentWeekday);
+		Log.i(TAG, "current weekday updated: " + currentWeekday);
 		compareTriggers();
 	}
+
+    /**
+     * Sets the timeout in which all triggers should be ignored.
+     * @param _timeout the timeout object containing the needed information.
+     */
+    public void setTimeout(TriggerTimeout _timeout){
+        timeout = _timeout;
+    }
 
 	/**
 	 * Compares the triggers with the actual state.
@@ -203,55 +245,65 @@ public class TriggerService extends Service{
 	private void compareTriggers() {
 		triggerPriorityList.clear();
 		
-		Log.i("TriggerService", "compareTriggers called");
-		for (Trigger trigger : triggerList) {
-			Log.i("TriggerService", "compare trigger: " + trigger.getName());
-			if(compareTime(trigger)){
-				Log.i("TriggerService", "trigger matching time");
-				if(compareWeekday(trigger)){
-					Log.i("TriggerService", "trigger matching weekday");
-					if(compareHeadphones(trigger)){
-						Log.i("TriggerService", "trigger matching headphones");
-						if(compareBatteryCharging(trigger)){
-							Log.i("TriggerService", "trigger matching battery state");
-							if(compareBatteryLevel(trigger)){
-								Log.i("TriggerService", "trigger matching battery level");
-								if(compareGeofence(trigger)){
-									Log.i("TriggerService",
-											"trigger matching geofence");
-									Log.i("TriggerService", "adding trigger to triggerPriorityList: " + trigger.getName());
-										
-										
-									triggerPriorityList.add(trigger);
-									Log.i("TriggerService", "highestPriority add: " + trigger.getName());
-								} 
-								else {
-									Log.i("TriggerService", trigger.getName()
-											+ " does not match geofence");
-								}
-							}
-							else{
-								Log.i("TriggerService", trigger.getName() + " does not match battery level");
-							}					
-						}
-						else{
-							Log.i("TriggerService", trigger.getName() + " does not match battery state");
-						}
-					}
-					else{
-						Log.i("TriggerService", trigger.getName() + " does not match headphones");
-					}
-				}
-				else{
-					Log.i("TriggerService", trigger.getName() + " does not match weekday");
-				}
-			}
-			else{
-				Log.i("TriggerService", trigger.getName() + " does not match time " + trigger.getStartHours() + " " + trigger.getEndHours());
-			}
-			
-		}
-		comparePriorities();
+		Log.i(TAG, "compareTriggers called");
+
+        //first check if there's an active timeout
+        if(timeout == null || !timeout.timedOut()){
+            for (Trigger trigger : triggerList) {
+                Log.i(TAG, "compare trigger: " + trigger.getName());
+                if(compareTime(trigger)){
+                    Log.i(TAG, "trigger matching time");
+                    if(compareWeekday(trigger)){
+                        Log.i(TAG, "trigger matching weekday");
+                        if(compareHeadphones(trigger)){
+                            Log.i(TAG, "trigger matching headphones");
+                            if(compareBatteryCharging(trigger)){
+                                Log.i(TAG, "trigger matching battery state");
+                                if(compareBatteryLevel(trigger)){
+                                    Log.i(TAG, "trigger matching battery level");
+                                    if(compareGeofence(trigger)){
+                                        Log.i(TAG,
+                                                "trigger matching geofence");
+                                        Log.i(TAG, "adding trigger to triggerPriorityList: " + trigger.getName());
+
+
+                                        triggerPriorityList.add(trigger);
+                                        Log.i(TAG, "highestPriority add: " + trigger.getName());
+                                    }
+                                    else {
+                                        Log.i(TAG, trigger.getName()
+                                                + " does not match geofence");
+                                    }
+                                }
+                                else{
+                                    Log.i(TAG, trigger.getName() + " does not match battery level");
+                                }
+                            }
+                            else{
+                                Log.i(TAG, trigger.getName() + " does not match battery state");
+                            }
+                        }
+                        else{
+                            Log.i(TAG, trigger.getName() + " does not match headphones");
+                        }
+                    }
+                    else{
+                        Log.i(TAG, trigger.getName() + " does not match weekday");
+                    }
+                }
+                else{
+                    Log.i(TAG, trigger.getName() + " does not match time " + trigger.getStartHours() + " " + trigger.getEndHours());
+                }
+
+            }
+            comparePriorities();
+        } else {
+            Log.d(TAG, "there's a trigger timeout active, so no check took place");
+            if(timeout != null){
+                Log.d(TAG, "the timeout is still active for " + timeout.getTimeRemaining() + "ms");
+            }
+        }
+
 	}
 	
 	/**
@@ -260,18 +312,18 @@ public class TriggerService extends Service{
 	 * @return true = time matches, false = time does not match
 	 */
 	private boolean compareTime(Trigger _trigger){
-		Log.i("TriggerService", "compare time called!");
+		Log.i(TAG, "compare time called!");
 		//if no time range is set
 		if (_trigger.getStartHours() == -1 && _trigger.getEndHours() == -1){
-			Log.i("TriggerService", "time ignored");
+			Log.i(TAG, "time ignored");
 			return true;
 		}
 		//if the end time is not set (trigger is only activated at a certain time)
 		else if (_trigger.getEndHours() == -1){
-			Log.i("TriggerService", "no end time set, only compared to certain time");
+			Log.i(TAG, "no end time set, only compared to certain time");
 			//if the current time matches the time set in the trigger
 			if(currentHours == _trigger.getStartHours() && currentMinutes == _trigger.getStartMinutes()){
-				Log.i("TriggerService", "trigger matches exact current time");
+				Log.i(TAG, "trigger matches exact current time");
 				return true;
 			}
 			else{
@@ -281,7 +333,7 @@ public class TriggerService extends Service{
 		//if the start and end hours are on the same day
 		else if((_trigger.getStartHours() < _trigger.getEndHours()) || 
 				(_trigger.getStartHours() == _trigger.getEndHours() && _trigger.getStartMinutes() < _trigger.getEndMinutes())){
-			Log.i("TriggerService", "time range on same day");
+			Log.i(TAG, "time range on same day");
 			
 			//if the hours are in between the trigger hours
 			if(currentHours > _trigger.getStartHours() && currentHours < _trigger.getEndHours()){
@@ -317,7 +369,7 @@ public class TriggerService extends Service{
 		//if the end time is already on the next day
 		} else if (_trigger.getStartHours() > _trigger.getEndHours() || 
 				(_trigger.getStartHours() == _trigger.getEndHours() && _trigger.getStartMinutes() > _trigger.getEndMinutes())){
-			Log.i("TriggerService", "time range on other day");
+			Log.i(TAG, "time range on other day");
 			//if the time is after the start time or before the end time
 			if(currentHours > _trigger.getStartHours() || currentHours < _trigger.getEndHours()){
 				return true;
@@ -346,7 +398,7 @@ public class TriggerService extends Service{
 	 * @return true = weekday matches, false = weekday does not match
 	 */
 	private boolean compareWeekday(Trigger _trigger) {
-		Log.i("TriggerService", "compare weekday called!");
+		Log.i(TAG, "compare weekday called!");
 		//if every weekday is set
 		
 		if (_trigger.getWeekdays() == null) {
@@ -354,7 +406,7 @@ public class TriggerService extends Service{
 		}
 		
 		if (_trigger.getWeekdays().size() == 7 || _trigger.getWeekdays().size() == 0){
-			Log.i("TriggerService", "every or no weekday is set");
+			Log.i(TAG, "every or no weekday is set");
 			return true;
 		}
 		
@@ -465,12 +517,12 @@ public class TriggerService extends Service{
 				if (fileList[i].contains("_trigger")) {
 					Trigger trigger = new Trigger(fileList[i].substring(0,
 							fileList[i].length() - 12));
-					Log.i("TriggerService", "Trigger found: " + trigger.getName());
+					Log.i(TAG, "Trigger found: " + trigger.getName());
 					parser.initializeXmlParser(openFileInput(fileList[i]),
 							trigger);
 					triggerList.add(trigger);
 				} else {
-					Log.i("TriggerService", "Not a trigger file");
+					Log.i(TAG, "Not a trigger file");
 				}
 			}
 		} catch (NotFoundException e) {
@@ -482,7 +534,7 @@ public class TriggerService extends Service{
 		}
 
 		registerExistingGeofences();
-		Log.i("TriggerService", "triggerList: " + triggerList.size());
+		Log.i(TAG, "triggerList: " + triggerList.size());
 	}
 	
 	/**
@@ -497,7 +549,7 @@ public class TriggerService extends Service{
 			if(triggerList.get(i).getGeofence() != null){
 				geofence = store.getGeofence(triggerList.get(i).getGeofence());
 				trigger.registerGeofence(geofence);
-				Log.i("TriggerService", "Registered existing geofence: " + geofence.getId());
+				Log.i(TAG, "Registered existing geofence: " + geofence.getId());
 			}
 		}
 	}
@@ -510,10 +562,10 @@ public class TriggerService extends Service{
 		Trigger highestTrigger = null;
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		
-		Log.i("TriggerService", "comparePriorities called");
+		Log.i(TAG, "comparePriorities called");
 		
 		if (triggerPriorityList.size() > 1) {
-			Log.i("TriggerService", "triggerPriorityList: " + triggerPriorityList.size());
+			Log.i(TAG, "triggerPriorityList: " + triggerPriorityList.size());
 			
 			for(Trigger trigger : triggerPriorityList) {
 				
@@ -526,13 +578,13 @@ public class TriggerService extends Service{
 			if (highestTrigger != null && !highestTrigger.getProfileName().equals(pref.getString("active_profile", "Default"))) {
 				Handler handler = new Handler(getApplicationContext());
 				handler.applyProfile(highestTrigger.getProfileName());
-				Log.i("TriggerService", "matching trigger found: " + highestTrigger.getName());
+				Log.i(TAG, "matching trigger found: " + highestTrigger.getName());
 			}
 			
 		} else if (triggerPriorityList.size() == 1 && !triggerPriorityList.get(0).getProfileName().equals(pref.getString("active_profile", "Default"))) {
 			Handler handler = new Handler(getApplicationContext());
 			handler.applyProfile(triggerPriorityList.get(0).getProfileName());
-			Log.i("TriggerService", "matching trigger found: " + triggerPriorityList.get(0).getName());
+			Log.i(TAG, "matching trigger found: " + triggerPriorityList.get(0).getName());
 		}		
 		
 	}
