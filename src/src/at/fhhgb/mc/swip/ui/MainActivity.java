@@ -12,8 +12,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import at.fhhgb.mc.swip.R;
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
+import at.flosch.logwrap.Log;
 
 /**
  * The main activity managing the two fragments, there is no other work done
@@ -24,6 +25,7 @@ import at.fhhgb.mc.swip.R;
  *
  */
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
+	final static String TAG = "MainActivity";
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -44,10 +46,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		Log.enable();
+		
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
 		//sets the theme
-		if (pref.getBoolean("dark_theme", false)) {
+		if (pref.getBoolean(SharedPrefConstants.DARK_THEME, false)) {
 			setTheme(R.style.AppThemeDark);
 			darkTheme = true;
 		} else {
@@ -56,10 +61,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		// sets the language
 		Locale current = getResources().getConfiguration().locale;
-		if (!pref.getString("current_lang", "xx").equals(pref.getString("language", "xx"))
-				|| !pref.getString("language", "xx").equals("xx") && !current.getLanguage().equals(pref.getString("language", "xx"))) {
-			SettingsActivity.setLocale(pref.getString("language", "xx"), this);
-			pref.edit().putString("current_lang", pref.getString("language", "xx")).commit();
+		if (!pref.getString(SharedPrefConstants.CURRENT_LANGUAGE, SharedPrefConstants.DEFAULT_LANGUAGE).equals(pref.getString(SharedPrefConstants.LANGUAGE, SharedPrefConstants.DEFAULT_LANGUAGE))
+				|| !pref.getString(SharedPrefConstants.LANGUAGE, SharedPrefConstants.DEFAULT_LANGUAGE).equals(SharedPrefConstants.DEFAULT_LANGUAGE) && !current.getLanguage().equals(pref.getString(SharedPrefConstants.LANGUAGE, SharedPrefConstants.DEFAULT_LANGUAGE))) {
+			SettingsActivity.setLocale(pref.getString(SharedPrefConstants.LANGUAGE, SharedPrefConstants.DEFAULT_LANGUAGE), this);
+			pref.edit().putString(SharedPrefConstants.CURRENT_LANGUAGE, pref.getString(SharedPrefConstants.LANGUAGE, SharedPrefConstants.DEFAULT_LANGUAGE)).commit();
 		}
 
 		super.onCreate(savedInstanceState);
@@ -103,15 +108,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
-		if (pref.getBoolean("dark_theme", false) != darkTheme) {
-			Log.i("MainActivity", "New theme detected. Restart Activity");
+		if (pref.getBoolean(SharedPrefConstants.DARK_THEME, false) != darkTheme) {
+			Log.i(TAG, "New theme detected. Restart Activity");
 			recreate();
 		}
 
 		Locale current = getResources().getConfiguration().locale;
-		if (!pref.getString("current_lang", "xx").equals(pref.getString("language", "xx"))
-				|| !pref.getString("language", "xx").equals("xx") && !current.getLanguage().equals(pref.getString("language", "xx"))) {
-			Log.i("MainActivity", "New language detected. Restart Activity");
+		if (!pref.getString(SharedPrefConstants.CURRENT_LANGUAGE, SharedPrefConstants.DEFAULT_LANGUAGE).equals(pref.getString(SharedPrefConstants.LANGUAGE, SharedPrefConstants.DEFAULT_LANGUAGE))
+				|| !pref.getString(SharedPrefConstants.LANGUAGE, SharedPrefConstants.DEFAULT_LANGUAGE).equals(SharedPrefConstants.DEFAULT_LANGUAGE) && !current.getLanguage().equals(pref.getString(SharedPrefConstants.LANGUAGE, SharedPrefConstants.DEFAULT_LANGUAGE))) {
+			Log.i(TAG, "New language detected. Restart Activity");
 			recreate();
 		}
 

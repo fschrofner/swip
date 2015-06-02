@@ -3,7 +3,7 @@ package at.fhhgb.mc.swip.widgets;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
+import at.flosch.logwrap.Log;
 import at.fhhgb.mc.swip.services.Handler;
 
 /**
@@ -13,6 +13,7 @@ import at.fhhgb.mc.swip.services.Handler;
  * 
  */
 public class WidgetActivity extends Activity {
+	final static String TAG = "WidgetActivity";
 
 	/**
 	 * Applies the profile inside the intent.
@@ -27,7 +28,7 @@ public class WidgetActivity extends Activity {
 		Handler handler = new Handler(this);
 		handler.applyProfile(fileName);
 		
-		Log.i("widget", fileName);
+		Log.i(TAG, fileName);
 		this.finish();
 	}
 

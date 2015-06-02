@@ -26,7 +26,9 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
+
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
+import at.flosch.logwrap.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import at.fhhgb.mc.swip.R;
@@ -44,6 +46,7 @@ import com.stericson.RootTools.RootTools;
  */
 public class ProfileEditActivity extends PreferenceActivity implements
 		OnSharedPreferenceChangeListener {
+	final static String TAG = "ProfileEditActivity";
 	
 
 	private static final boolean ALWAYS_SIMPLE_PREFS = false;
@@ -63,10 +66,10 @@ public class ProfileEditActivity extends PreferenceActivity implements
 	@Override
 	protected boolean isValidFragment(String fragmentName) {
 		if(fragmentName.equals("at.fhhgb.mc.swip.ProfileEditActivity$GeneralPreferenceFragment")){
-			Log.i("ProfilerEditActivity", "valid fragment started");
+			Log.i(TAG, "valid fragment started");
 			return true;
 		} else {
-			Log.i("ProfilerEditActivity", "invalid fragment started");
+			Log.i(TAG, "invalid fragment started");
 			return false;
 		}
 	}
@@ -105,7 +108,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		
-		if (pref.getBoolean("dark_theme", false)) {
+		if (pref.getBoolean(SharedPrefConstants.DARK_THEME, false)) {
 			setTheme(R.style.AppThemeDark);
 		}
 		
@@ -311,7 +314,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			findPreference("nfc").setEnabled(false);
 		}
 
-		if (!pref.getBoolean("root", false)) {
+		if (!pref.getBoolean(SharedPrefConstants.ROOT, false)) {
 			findPreference("gps").setEnabled(true);
 			findPreference("mobile_data").setEnabled(true);
 			findPreference("wifi").setEnabled(true);
@@ -323,7 +326,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		// disables all root settings in this case
 		PreferenceScreen screen = getPreferenceScreen();
 
-		if (!pref.getBoolean("root", false)) {
+		if (!pref.getBoolean(SharedPrefConstants.ROOT, false)) {
 			Preference airplane_mode = findPreference("airplane_mode");
 			Preference lockscreen = findPreference("lockscreen");
 			screen.removePreference(airplane_mode);
@@ -332,7 +335,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 
 		// if root is enabled, it checks if the app really has root permissions
 		// and disables all root settings otherwise
-		else if (pref.getBoolean("root", false)) {
+		else if (pref.getBoolean(SharedPrefConstants.ROOT, false)) {
 			if (!RootTools.isAccessGiven()) {
 
 				// if no root access is given anymore, airplane mode gets set to
@@ -355,7 +358,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		// checks if the app is installed as systemapp and if not it removes the
 		// options that require it
 		Handler handler = new Handler(this);
-		if (!handler.checkSystemapp()) {
+		if (!handler.checkSystemApp()) {
 			pref.edit().putString("nfc", "unchanged");
 			Preference nfc = findPreference("nfc");
 			screen.removePreference(nfc);
@@ -629,11 +632,11 @@ public class ProfileEditActivity extends PreferenceActivity implements
 			//if the option to disable gps is available (android below kitkat or installed as systemapp)
 			//it should be disabled
 			Handler handler = new Handler(this);
-			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 || handler.checkSystemapp()) {
+			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 || handler.checkSystemApp()) {
 				findPreference("gps").setEnabled(false);
 				
 				//nfc is only available if the app is installed as systemapp
-				if(handler.checkSystemapp()){
+				if(handler.checkSystemApp()){
 					findPreference("nfc").setEnabled(false);
 				}				
 			}
@@ -647,9 +650,9 @@ public class ProfileEditActivity extends PreferenceActivity implements
 						"unchanged").equals("unchanged"))) {
 			
 			Handler handler = new Handler(this);
-			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 || handler.checkSystemapp()) {
+			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 || handler.checkSystemApp()) {
 				findPreference("gps").setEnabled(true);
-				if(handler.checkSystemapp()){
+				if(handler.checkSystemApp()){
 					findPreference("nfc").setEnabled(true);
 				}			
 			}

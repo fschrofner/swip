@@ -22,9 +22,11 @@ import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.WindowManager;
+
+import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.fhhgb.mc.swip.services.Handler;
+import at.flosch.logwrap.Log;
 
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.exceptions.RootDeniedException;
@@ -37,6 +39,7 @@ import com.stericson.RootTools.execution.CommandCapture;
  * 
  */
 public class Setter {
+	final static String TAG = "Setter";
 
 	
 	/**
@@ -49,7 +52,7 @@ public class Setter {
 	 */
 	public void setNfc(Context _context, boolean _enable) {
 		Handler handler = new Handler(_context);
-		if(handler.checkSystemapp()){
+		if(handler.checkSystemApp()){
 			Class<?> NfcClass;
 			NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(_context);
 			
@@ -120,15 +123,15 @@ public class Setter {
 			if (_enable && !bluetoothAdapter.isEnabled()) {
 				// if you want to enable bluetooth and it is disabled at the moment
 				bluetoothAdapter.enable();
-				Log.i("Setter", "Bluetooth: " + bluetoothAdapter.getState()
+				Log.i(TAG, "Bluetooth: " + bluetoothAdapter.getState()
 						+ (" (on)"));
 			} else if (!_enable && bluetoothAdapter.isEnabled()) {
 				// if you want to disable bluetooth and it is enabled
 				bluetoothAdapter.disable();
-				Log.i("Setter", "Bluetooth: " + bluetoothAdapter.getState()
+				Log.i(TAG, "Bluetooth: " + bluetoothAdapter.getState()
 						+ (" (off)"));
 			} else {	// just for log messages
-				Log.i("Setter", "Bluetooth not changed.");
+				Log.i(TAG, "Bluetooth not changed.");
 			}
 		}
 
@@ -151,13 +154,13 @@ public class Setter {
 		if (_enable && !wifiManager.isWifiEnabled()) {
 			// if wifi should be enabled and is disabled at the moment
 			wifiManager.setWifiEnabled(true);
-			Log.i("Setter", "Wifi: " + wifiManager.getWifiState() + " (on)");
+			Log.i(TAG, "Wifi: " + wifiManager.getWifiState() + " (on)");
 		} else if (!_enable && wifiManager.isWifiEnabled()) {
 			// if wifi should be disabled and is enabled
 			wifiManager.setWifiEnabled(false);
-			Log.i("Setter", "Wifi: " + wifiManager.getWifiState() + " (off)");
+			Log.i(TAG, "Wifi: " + wifiManager.getWifiState() + " (off)");
 		} else { // just for log messages
-			Log.i("Setter", "Wifi not changed.");
+			Log.i(TAG, "Wifi not changed.");
 		}
 	}
 
@@ -182,7 +185,7 @@ public class Setter {
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_context);
 		Handler handler = new Handler (_context);
 		//if the app is not installed as system-app
-		if(!handler.checkSystemapp()){
+		if(!handler.checkSystemApp()){
 			
 			// if gps is disabled and you want to enable it or the other way round
 			if ((_enable && !provider.contains("gps"))
@@ -193,23 +196,23 @@ public class Setter {
 				poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
 				poke.setData(Uri.parse("3"));
 				_context.sendBroadcast(poke); // sends an intent to the official settings widget
-				Log.i("Setter", "GPS: state changed");
+				Log.i(TAG, "GPS: state changed");
 			} else { // just for log messages
-				Log.i("Setter", "GPS: not changed.");
+				Log.i(TAG, "GPS: not changed.");
 			}
 			
 		//this method will be used if the app is installed as system-app
-		} else if(handler.checkSystemapp()){
+		} else if(handler.checkSystemApp()){
 			String newProviders = new String();
 			
 			// if gps is disabled and you want to enable it
-			Log.i("Setter", "GPS: changed as system-app");
+			Log.i(TAG, "GPS: changed as system-app");
 			if (_enable && !provider.contains(LocationManager.GPS_PROVIDER)){
 				newProviders = String.format ("%s,%s",
 	                     provider, LocationManager.GPS_PROVIDER);				//adds the gps provider to the available providers
 				Settings.Secure.putString (_context.getContentResolver(),
 	                    Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newProviders);	//applies the providers set before
-				Log.i("Setter", "GPS: changed to on");
+				Log.i(TAG, "GPS: changed to on");
 			} 
 			
 			// if gps is enabled and you want to disable it
@@ -235,7 +238,7 @@ public class Setter {
 	            }
 				Settings.Secure.putString (_context.getContentResolver(),
 	                    Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newProviders);	//applies the providers set before
-				Log.i("Setter", "GPS: changed to off");
+				Log.i(TAG, "GPS: changed to off");
 			}
 			
 		}
@@ -256,18 +259,18 @@ public class Setter {
 		//the following comparisons check if root is enabled, if there will be a change compared to the current setting
 		//and if root access is actually given
 		try{
-			if(pref.getBoolean("root", false) && _enable && !isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
+			if(pref.getBoolean(SharedPrefConstants.ROOT, false) && _enable && !isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
 				command = new CommandCapture(0, "settings put global airplane_mode_on 1","am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true");
 				RootTools.getShell(true).add(command);
-				Log.i("Setter", "Airplane Mode: enabled");
+				Log.i(TAG, "Airplane Mode: enabled");
 
 			} else if
-			(pref.getBoolean("root", false) && !_enable && isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
+			(pref.getBoolean(SharedPrefConstants.ROOT, false) && !_enable && isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
 				command = new CommandCapture(0, "settings put global airplane_mode_on 0", "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state false");
 				RootTools.getShell(true).add(command);
-				Log.i("Setter", "Airplane Mode: disabled");
+				Log.i(TAG, "Airplane Mode: disabled");
 			} else {
-				Log.i("Setter", "Airplane Mode: no change or no root access");
+				Log.i(TAG, "Airplane Mode: no change or no root access");
 			}
 			
 		} catch (IOException e) {
@@ -321,22 +324,22 @@ public class Setter {
 				&& audioManager.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
 			// if mode should be set to normal and is not normal at the moment
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-			Log.i("Setter", "RingerMode: " + audioManager.getRingerMode()
+			Log.i(TAG, "RingerMode: " + audioManager.getRingerMode()
 					+ (" (normal)"));
 		} else if (_ringerMode == Profile.mode.silent
 				&& audioManager.getRingerMode() != AudioManager.RINGER_MODE_SILENT) {
 			// if mode should be set to silent and is not silent
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-			Log.i("Setter", "RingerMode: " + audioManager.getRingerMode()
+			Log.i(TAG, "RingerMode: " + audioManager.getRingerMode()
 					+ (" (silent)"));
 		} else if (_ringerMode == Profile.mode.vibrate
 				&& audioManager.getRingerMode() != AudioManager.RINGER_MODE_VIBRATE) {
 			// if mode should be set to vibrate and is not vibrate
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-			Log.i("Setter", "RingerMode: " + audioManager.getRingerMode()
+			Log.i(TAG, "RingerMode: " + audioManager.getRingerMode()
 					+ (" (vibrate)"));
 		} else {
-			Log.i("Setter", "RingerMode not changed."); // for log messages only
+			Log.i(TAG, "RingerMode not changed."); // for log messages only
 		}
 
 	}
@@ -360,10 +363,10 @@ public class Setter {
 			// if media-volume is not already set to the given value
 			audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
 					_mediaVolume, 0);
-			Log.i("Setter", "MediaVolume: "
+			Log.i(TAG, "MediaVolume: "
 					+ audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
 		} else {
-			Log.i("Setter", "MediaVolume not changed."); // for log messages only
+			Log.i(TAG, "MediaVolume not changed."); // for log messages only
 		}
 	}
 
@@ -386,10 +389,10 @@ public class Setter {
 			// if the ringtone-volume is not already set to the given value
 			audioManager.setStreamVolume(AudioManager.STREAM_RING,
 					_ringtoneVolume, 0);
-			Log.i("Setter", "RingtoneVolume: "
+			Log.i(TAG, "RingtoneVolume: "
 					+ audioManager.getStreamVolume(AudioManager.STREAM_RING));
 		} else {
-			Log.i("Setter", "RingtoneVolume not changed."); // for log messages only
+			Log.i(TAG, "RingtoneVolume not changed."); // for log messages only
 		}
 	}
 
@@ -412,10 +415,10 @@ public class Setter {
 			// if the alarm-volume is not already set to the given value
 			audioManager.setStreamVolume(AudioManager.STREAM_ALARM,
 					_alarmVolume, 0);
-			Log.i("Setter", "AlarmVolume: "
+			Log.i(TAG, "AlarmVolume: "
 					+ audioManager.getStreamVolume(AudioManager.STREAM_ALARM));
 		} else {
-			Log.i("Setter", "AlarmVolume not changed."); // for log messages only
+			Log.i(TAG, "AlarmVolume not changed."); // for log messages only
 		}
 	}
 
@@ -495,7 +498,7 @@ public class Setter {
 			((Activity) _context).getWindow().setAttributes(lp);
 		}
 
-		Log.i("Setter", "Brightness: " + _brightness);
+		Log.i(TAG, "Brightness: " + _brightness);
 	}
 
 	/**
@@ -516,7 +519,7 @@ public class Setter {
 					.putInt(_context.getContentResolver(),
 							android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE,
 							android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
-			Log.i("Setter",
+			Log.i(TAG,
 					"BrightnessMode: "
 							+ android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
 		} else {
@@ -524,7 +527,7 @@ public class Setter {
 					.putInt(_context.getContentResolver(),
 							android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE,
 							android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
-			Log.i("Setter",
+			Log.i(TAG,
 					"BrightnessMode: "
 							+ android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
 		}
@@ -569,7 +572,7 @@ public class Setter {
 		}
 		android.provider.Settings.System.putInt(_context.getContentResolver(),
 				Settings.System.SCREEN_OFF_TIMEOUT, time);
-		Log.i("Setter", "TimeOut: " + time);
+		Log.i(TAG, "TimeOut: " + time);
 	}
 	
 	/**
@@ -583,7 +586,7 @@ public class Setter {
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_context);
 		File keyFile = new File("/data/system/gesture.key");												//this file can be checked for existence, which will mean that there is a lockscreen present
 		
-		if(pref.getBoolean("root", false) && _enable && !keyFile.exists() && RootTools.isAccessGiven()){	//if you want to enable the lockscreen and none is activated at the moment (and root is checked)
+		if(pref.getBoolean(SharedPrefConstants.ROOT, false) && _enable && !keyFile.exists() && RootTools.isAccessGiven()){	//if you want to enable the lockscreen and none is activated at the moment (and root is checked)
 			CommandCapture command = new CommandCapture(2, "mv /data/system/disabled_lockscreen/*.key /data/system/");
 			try {
 				RootTools.getShell(true).add(command);
@@ -594,7 +597,7 @@ public class Setter {
 			} catch (RootDeniedException e) {
 				e.printStackTrace();
 			}
-		} else if (pref.getBoolean("root", false) && !_enable &&  RootTools.isAccessGiven()){				//if you want to disable the lockscreen (and root is checked)
+		} else if (pref.getBoolean(SharedPrefConstants.ROOT, false) && !_enable &&  RootTools.isAccessGiven()){				//if you want to disable the lockscreen (and root is checked)
 			CommandCapture command = new CommandCapture(2, "mkdir /data/system/disabled_lockscreen/","mv /data/system/*.key /data/system/disabled_lockscreen/");
 			try {
 				RootTools.getShell(true).add(command);

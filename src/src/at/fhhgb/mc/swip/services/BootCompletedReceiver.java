@@ -3,7 +3,7 @@ package at.fhhgb.mc.swip.services;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import at.flosch.logwrap.Log;
 
 /**
  * BootCompletedReceiver which starts the AutostartService to show the permanent
@@ -13,6 +13,7 @@ import android.util.Log;
  * 
  */
 public class BootCompletedReceiver extends BroadcastReceiver {
+	final static String TAG = "BootCompletedReceiver";
 
 	/**
 	 * Starts the AutostartService when a it receives a boot completed message.
@@ -22,7 +23,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 	 */
 	@Override
 	public void onReceive(Context _context, Intent _intent) {
-		Log.i("BootCompletedReceiver", "boot completed");
+		Log.i(TAG, "boot completed");
 		
 		Intent intent = new Intent(_context, AutostartService.class);
 		_context.startService(intent);

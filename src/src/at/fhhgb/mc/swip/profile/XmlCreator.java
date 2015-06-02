@@ -18,7 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import android.util.Log;
+import at.flosch.logwrap.Log;
 
 /**
  * Class used to convert a profile into a string containing a xml, that is
@@ -28,6 +28,8 @@ import android.util.Log;
  * 
  */
 public class XmlCreator {
+	final static String TAG = "XmlCreator";
+	
 	DocumentBuilderFactory buildFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder builder;
 	TransformerFactory transFactory = TransformerFactory.newInstance();
@@ -65,7 +67,7 @@ public class XmlCreator {
 		ringerModeElement.setAttribute("mode",
 				String.format("%s", _profile.getRingerMode()));
 		rootElement.appendChild(ringerModeElement);
-		Log.i("XMLCreator",
+		Log.i(TAG,
 				String.format("vibration was defined as %s",
 						_profile.getRingerMode()));
 
@@ -86,7 +88,7 @@ public class XmlCreator {
 				volumeElement.setAttribute("ringtone",
 						String.format("%d", _profile.getRingtoneVolume()));
 			
-			Log.i("XMLCreator",
+			Log.i(TAG,
 					String.format(
 							"volume changes were defined as follows: alarm: %s media: %s ringtone: %s",
 							_profile.getAlarmVolume(),
@@ -104,7 +106,7 @@ public class XmlCreator {
 		} else {
 			nfcElement.setAttribute("enabled", String.format("%s", -1));
 		}
-		Log.i("XMLCreator",
+		Log.i(TAG,
 				String.format("nfc was defined as %s",
 						_profile.getNfc()));
 		rootElement.appendChild(nfcElement);
@@ -118,7 +120,7 @@ public class XmlCreator {
 		} else {
 			bluetoothElement.setAttribute("enabled", String.format("%s", -1));
 		}
-		Log.i("XMLCreator",
+		Log.i(TAG,
 				String.format("bluetooth was defined as %s",
 						_profile.getBluetooth()));
 		rootElement.appendChild(bluetoothElement);
@@ -133,7 +135,7 @@ public class XmlCreator {
 			wifiElement.setAttribute("enabled", String.format("%s", -1));
 		}
 		rootElement.appendChild(wifiElement);
-		Log.i("XMLCreator",
+		Log.i(TAG,
 				String.format("wifi was defined as %s", _profile.getWifi()));
 
 		// writes mobile data change
@@ -146,7 +148,7 @@ public class XmlCreator {
 			dataElement.setAttribute("enabled", String.format("%s", -1));
 		}
 		rootElement.appendChild(dataElement);
-		Log.i("XMLCreator",
+		Log.i(TAG,
 				String.format("mobile-data was defined as %s",
 						_profile.getMobileData()));
 
@@ -160,7 +162,7 @@ public class XmlCreator {
 			gpsElement.setAttribute("enabled", String.format("%s", -1));
 		}
 		rootElement.appendChild(gpsElement);
-		Log.i("XMLCreator",
+		Log.i(TAG,
 				String.format("gps was defined as %s", _profile.getGps()));
 		
 		// writes airplane mode change
@@ -172,7 +174,7 @@ public class XmlCreator {
 			airplaneElement.setAttribute("enabled", String.format("%s", -1));
 		}
 		rootElement.appendChild(airplaneElement);
-		Log.i("XMLCreator", String.format("airplane mode was defined as %s", _profile.getAirplane_mode()));
+		Log.i(TAG, String.format("airplane mode was defined as %s", _profile.getAirplane_mode()));
 
 		// writes display changes
 		if (_profile.getScreenBrightness() >= -1
@@ -198,7 +200,7 @@ public class XmlCreator {
 				displayElement.setAttribute("time_out",
 						String.format("%d", _profile.getScreenTimeOut()));
 			
-			Log.i("XMLCreator",
+			Log.i(TAG,
 					String.format(
 							"display changes were defined as follows: brightness: %s autoMode: %s timeOut: %s",
 							_profile.getScreenBrightness(),
@@ -216,7 +218,7 @@ public class XmlCreator {
 			lockscreenElement.setAttribute("enabled", String.format("%s", -1));
 		}
 		rootElement.appendChild(lockscreenElement);
-		Log.i("XMLCreator", String.format("lockscreen was defined as %s", _profile.getLockscreen()));
+		Log.i(TAG, String.format("lockscreen was defined as %s", _profile.getLockscreen()));
 
 		
 		//writes the complete xml file
