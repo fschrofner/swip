@@ -22,15 +22,17 @@ import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyManager;
 import android.view.WindowManager;
 
 import at.fhhgb.mc.swip.constants.SharedPrefConstants;
 import at.fhhgb.mc.swip.services.Handler;
 import at.flosch.logwrap.Log;
 
+import com.stericson.RootShell.exceptions.RootDeniedException;
+import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
-import com.stericson.RootTools.exceptions.RootDeniedException;
-import com.stericson.RootTools.execution.CommandCapture;
 
 /**
  * Class that provides methods to apply different settings.
@@ -255,18 +257,18 @@ public class Setter {
 	public void setAirplaneMode(Context _context, boolean _enable){
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_context);
 		
-		CommandCapture command;
+		Command command;
 		//the following comparisons check if root is enabled, if there will be a change compared to the current setting
 		//and if root access is actually given
 		try{
 			if(pref.getBoolean(SharedPrefConstants.ROOT, false) && _enable && !isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
-				command = new CommandCapture(0, "settings put global airplane_mode_on 1","am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true");
+				command = new Command(0, "settings put global airplane_mode_on 1","am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true");
 				RootTools.getShell(true).add(command);
 				Log.i(TAG, "Airplane Mode: enabled");
 
 			} else if
 			(pref.getBoolean(SharedPrefConstants.ROOT, false) && !_enable && isAirplaneModeOn(_context) && RootTools.isAccessGiven()){
-				command = new CommandCapture(0, "settings put global airplane_mode_on 0", "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state false");
+				command = new Command(0, "settings put global airplane_mode_on 0", "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state false");
 				RootTools.getShell(true).add(command);
 				Log.i(TAG, "Airplane Mode: disabled");
 			} else {
@@ -430,32 +432,127 @@ public class Setter {
 	 *            your activity context.
 	 * @param _enable
 	 *            true = enable mobile data, false = disable mobile data.
-	 * @throws ClassNotFoundException
-	 * @throws NoSuchFieldException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
 	 */
 	public void setMobileData(Context _context, boolean _enable){
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_context);
+
+		if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+			setMobileDataAosp(_context, _enable);
+		} else if(pref.getBoolean(SharedPrefConstants.ROOT, false) && RootTools.isAccessGiven()){
+			setMobileDataRoot(_context, _enable);
+		} else {
+			Log.w(TAG, "trying to set mobile data, but using lollipop and later, and is not rooted");
+		}
+	}
+
+
+	/**
+	 * This en- and disables mobile data on rooted devices running Lollipop or later.
+	 * Unfortunately this is the only method to toggle mobile data on Android Lollipop.
+	 * @param _context the context needed for certain operations
+	 * @param _enable whether mobile data should be de- or activated
+	 */
+	private void setMobileDataRoot(Context _context, boolean _enable) {
+		try {
+
+			//do nothing if state is already present
+			if(isMobileDataEnabled(_context) == _enable){
+				return;
+			}
+
+			//use reflection to get the transaction code
+			String transactionCode = getTransactionCode(_context);
+
+
+			// all later versions than lollipop
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+
+				//noinspection ResourceType
+				SubscriptionManager mSubscriptionManager = (SubscriptionManager) _context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+
+				//loop through all subscriptions, especially needed for multi SIM card phones
+				for (int i = 0; i < mSubscriptionManager.getActiveSubscriptionInfoCountMax(); i++) {
+					if (transactionCode != null && transactionCode.length() > 0) {
+						// get the active subscription ID for a given SIM card.
+						int subscriptionId = mSubscriptionManager.getActiveSubscriptionInfoList().get(i).getSubscriptionId();
+
+						//switches the mode for the specified subscription
+						Command command = new Command(6, "service call phone " + transactionCode + " i32 " + subscriptionId + " i32 " + (_enable ? 1 : 0));
+						RootTools.getShell(true).add(command);
+					}
+				}
+
+				//lollipop needs a different command
+			} else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+				if (transactionCode != null && transactionCode.length() > 0) {
+					Command command = new Command(6,"service call phone " + transactionCode + " i32 " + (_enable ? 1 : 0));
+					RootTools.getShell(true).add(command);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String getTransactionCode(Context context) throws Exception {
+		try {
+			final TelephonyManager mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+			final Class<?> mTelephonyClass = Class.forName(mTelephonyManager.getClass().getName());
+			final Method mTelephonyMethod = mTelephonyClass.getDeclaredMethod("getITelephony");
+			mTelephonyMethod.setAccessible(true);
+			final Object mTelephonyStub = mTelephonyMethod.invoke(mTelephonyManager);
+			final Class<?> mTelephonyStubClass = Class.forName(mTelephonyStub.getClass().getName());
+			final Class<?> mClass = mTelephonyStubClass.getDeclaringClass();
+			final Field field = mClass.getDeclaredField("TRANSACTION_setDataEnabled");
+			field.setAccessible(true);
+			return String.valueOf(field.getInt(null));
+		} catch (Exception e) {
+			// The "TRANSACTION_setDataEnabled" field is not available,
+			// or named differently in the current API level
+			throw e;
+		}
+	}
+
+	/**
+	 * Checks if mobile data is currently enabled.
+	 * Only call this method on Lollipop, else it will not work.
+	 * @param context context needed for certain operations
+	 * @return true = mobile data enabled, false = mobile data disabled
+	 */
+	private boolean isMobileDataEnabled(Context context) {
+		boolean state = false;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			state = Settings.Global.getInt(context.getContentResolver(), "mobile_data", 0) == 1;
+		}
+		return state;
+	}
+
+	/**
+	 * This enables and disables mobile data on devices running AOSP-based roms
+	 * before Android 5.x. This method does not require root.
+	 * For newer Android versions use the root method.
+	 * @param _context context needed for some operations
+	 * @param _enable whether to en- or disable mobile data
+	 */
+	private void setMobileDataAosp(Context _context, boolean _enable){
 		final ConnectivityManager conman = (ConnectivityManager) _context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		Class conmanClass;
 		try {
 			conmanClass = Class.forName(conman.getClass().getName());
-		final Field iConnectivityManagerField = conmanClass
-				.getDeclaredField("mService");
-		iConnectivityManagerField.setAccessible(true);
-		final Object iConnectivityManager = iConnectivityManagerField
-				.get(conman);
-		final Class iConnectivityManagerClass = Class
-				.forName(iConnectivityManager.getClass().getName());
-		final Method setMobileDataEnabledMethod = iConnectivityManagerClass
-				.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
-		setMobileDataEnabledMethod.setAccessible(true);
+			final Field iConnectivityManagerField = conmanClass
+					.getDeclaredField("mService");
+			iConnectivityManagerField.setAccessible(true);
+			final Object iConnectivityManager = iConnectivityManagerField
+					.get(conman);
+			final Class iConnectivityManagerClass = Class
+					.forName(iConnectivityManager.getClass().getName());
+			final Method setMobileDataEnabledMethod = iConnectivityManagerClass
+					.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+			setMobileDataEnabledMethod.setAccessible(true);
 
-		setMobileDataEnabledMethod.invoke(iConnectivityManager, _enable);
-		
+			setMobileDataEnabledMethod.invoke(iConnectivityManager, _enable);
+
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (NoSuchFieldException e) {
@@ -587,7 +684,7 @@ public class Setter {
 		File keyFile = new File("/data/system/gesture.key");												//this file can be checked for existence, which will mean that there is a lockscreen present
 		
 		if(pref.getBoolean(SharedPrefConstants.ROOT, false) && _enable && !keyFile.exists() && RootTools.isAccessGiven()){	//if you want to enable the lockscreen and none is activated at the moment (and root is checked)
-			CommandCapture command = new CommandCapture(2, "mv /data/system/disabled_lockscreen/*.key /data/system/");
+			Command command = new Command(2, "mv /data/system/disabled_lockscreen/*.key /data/system/");
 			try {
 				RootTools.getShell(true).add(command);
 			} catch (IOException e) {
@@ -598,7 +695,7 @@ public class Setter {
 				e.printStackTrace();
 			}
 		} else if (pref.getBoolean(SharedPrefConstants.ROOT, false) && !_enable &&  RootTools.isAccessGiven()){				//if you want to disable the lockscreen (and root is checked)
-			CommandCapture command = new CommandCapture(2, "mkdir /data/system/disabled_lockscreen/","mv /data/system/*.key /data/system/disabled_lockscreen/");
+			Command command = new Command(2, "mkdir /data/system/disabled_lockscreen/","mv /data/system/*.key /data/system/disabled_lockscreen/");
 			try {
 				RootTools.getShell(true).add(command);
 			} catch (IOException e) {
