@@ -327,10 +327,16 @@ public class ProfileEditActivity extends PreferenceActivity implements
 		PreferenceScreen screen = getPreferenceScreen();
 
 		if (!pref.getBoolean(SharedPrefConstants.ROOT, false)) {
-			Preference airplane_mode = findPreference("airplane_mode");
+			Preference airplaneMode = findPreference("airplane_mode");
 			Preference lockscreen = findPreference("lockscreen");
-			screen.removePreference(airplane_mode);
+			screen.removePreference(airplaneMode);
 			screen.removePreference(lockscreen);
+
+			//only remove this setting, if the method without root can not be used
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+				Preference mobileData = findPreference("mobile_data");
+				screen.removePreference(mobileData);
+			}
 		}
 
 		// if root is enabled, it checks if the app really has root permissions
@@ -341,7 +347,7 @@ public class ProfileEditActivity extends PreferenceActivity implements
 				// if no root access is given anymore, airplane mode gets set to
 				// unchanged and all other settings that may be block get
 				// enabled again.
-				Preference airplane_mode = findPreference("airplane_mode");
+				Preference airplaneMode = findPreference("airplane_mode");
 				pref.edit().putString("airplane_mode", "unchanged").commit();
 				Preference lockscreen = findPreference("lockscreen");
 				pref.edit().putString("lockscreen", "unchanged").commit();
@@ -350,8 +356,15 @@ public class ProfileEditActivity extends PreferenceActivity implements
 				findPreference("wifi").setEnabled(true);
 				findPreference("bluetooth").setEnabled(true);
 				findPreference("nfc").setEnabled(true);
-				screen.removePreference(airplane_mode);
+				screen.removePreference(airplaneMode);
 				screen.removePreference(lockscreen);
+
+				//only remove this setting, if the method without root can not be used
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+					Preference mobileData = findPreference("mobile_data");
+					screen.removePreference(mobileData);
+				}
+
 			}
 		}
 

@@ -453,47 +453,58 @@ public class Setter {
 	 * @param _enable whether mobile data should be de- or activated
 	 */
 	private void setMobileDataRoot(Context _context, boolean _enable) {
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_context);
+
 		try {
 
-			//do nothing if state is already present
-			if(isMobileDataEnabled(_context) == _enable){
-				return;
-			}
+			if(pref.getBoolean(SharedPrefConstants.ROOT, false) && RootTools.isAccessGiven()){
 
-			//use reflection to get the transaction code
-			String transactionCode = getTransactionCode(_context);
+				//do nothing if state is already present
+				if(isMobileDataEnabled(_context) == _enable){
+					return;
+				}
+
+				//use reflection to get the transaction code
+				String transactionCode = getTransactionCode(_context);
 
 
-			// all later versions than lollipop
-			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+				// all later versions than lollipop
+				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
 
-				//noinspection ResourceType
-				SubscriptionManager mSubscriptionManager = (SubscriptionManager) _context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+					//noinspection ResourceType
+					SubscriptionManager mSubscriptionManager = (SubscriptionManager) _context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
 
-				//loop through all subscriptions, especially needed for multi SIM card phones
-				for (int i = 0; i < mSubscriptionManager.getActiveSubscriptionInfoCountMax(); i++) {
+					//loop through all subscriptions, especially needed for multi SIM card phones
+					for (int i = 0; i < mSubscriptionManager.getActiveSubscriptionInfoCountMax(); i++) {
+						if (transactionCode != null && transactionCode.length() > 0) {
+							// get the active subscription ID for a given SIM card.
+							int subscriptionId = mSubscriptionManager.getActiveSubscriptionInfoList().get(i).getSubscriptionId();
+
+							//switches the mode for the specified subscription
+							Command command = new Command(6, "service call phone " + transactionCode + " i32 " + subscriptionId + " i32 " + (_enable ? 1 : 0));
+							RootTools.getShell(true).add(command);
+						}
+					}
+
+					//lollipop needs a different command
+				} else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
 					if (transactionCode != null && transactionCode.length() > 0) {
-						// get the active subscription ID for a given SIM card.
-						int subscriptionId = mSubscriptionManager.getActiveSubscriptionInfoList().get(i).getSubscriptionId();
-
-						//switches the mode for the specified subscription
-						Command command = new Command(6, "service call phone " + transactionCode + " i32 " + subscriptionId + " i32 " + (_enable ? 1 : 0));
+						Command command = new Command(6,"service call phone " + transactionCode + " i32 " + (_enable ? 1 : 0));
 						RootTools.getShell(true).add(command);
 					}
 				}
-
-				//lollipop needs a different command
-			} else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-				if (transactionCode != null && transactionCode.length() > 0) {
-					Command command = new Command(6,"service call phone " + transactionCode + " i32 " + (_enable ? 1 : 0));
-					RootTools.getShell(true).add(command);
-				}
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Returns the transaction code to execute the setDataEnabled method.
+	 * @param context context needed for certain operations.
+	 * @return the code specifying the setDataEnabled method
+	 */
 	private String getTransactionCode(Context context) throws Exception {
 		try {
 			final TelephonyManager mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
